@@ -1,0 +1,7 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Frame002.Frame004.TechnicNoteSearchPB.Icon = "I_SearchItem";
+Frame002.Frame004.TechnicNoteSearchPB.IconSel = "IP_SearchItem";
+Frame002.Frame004.NewNoteAddinPB.Icon = "I_NewAddin";
+Frame002.Frame004.NewNoteAddinPB.IconSel = "IP_NewAddin";
+Frame003.SearchResultFrame.InsertToGSMToolPB.Icon = "I_WriteTechnicalNote";
+// END WIZARD REPLACEMENT ZONE

@@ -1,0 +1,8 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "申请新技术附注信息项";
+Frame001.Label005.Title = "     选择技术附注库名称:             ";
+Frame002.Title = "新技术附注信息项标注内容";
+SearchItemsFrame.Title = "填写技术附注属性项";
+Frame004.ApplyNoteToEditorPB.Title = "发送属性项到标注内容框";
+Frame004.ApplyNoteToDatabasePB.Title = "完成编辑发送申请附注到数据库";
+// END WIZARD REPLACEMENT ZONE

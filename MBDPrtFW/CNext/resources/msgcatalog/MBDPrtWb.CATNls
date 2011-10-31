@@ -1,0 +1,21 @@
+// DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+// Title of the workshop
+MBDPrtWb.Title="MBD Part Designer";
+
+// -------------------------------------------------
+// Toolbar
+// -------------------------------------------------
+MBDPrtWbFastenerTktTlb.Title = "Fastener Info";
+MBDPrtWbMBDAnnotateTktTlb.Title = "CATIA MBD Annotation";
+MBDPrtWbMBDMaterialTktTlb.Title = "CATIA MBD Material";
+
+// -------------------------------------------------
+// Menu
+// -------------------------------------------------
+MBDPrtWbTktMnu.Title = "MBD Part Designer" ;
+MBDPrtWbFastenerTktMbr.Title = "Fastener Info" ;
+MBDPrtWbMBDAnnotateTktMbr.Title = "CATIA MBD Annotation" ;
+MBDPrtWbMBDMaterialTktMbr.Title = "CATIA MBD Material";
+
+
+// END WIZARD EDITION ZONE

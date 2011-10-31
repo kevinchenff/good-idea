@@ -1,0 +1,7 @@
+// CATIA结构树显示名称  XML节点名称
+<ECCN> <ECCN>
+<Standard Notes:> <StandardNotes>
+<Material Description:> <MaterialDescription>
+<Annotation Notes:> <AnnotationNotes>
+<Part Notes:> <PartNotes>
+<Approval Status> <ApprovalStatus>

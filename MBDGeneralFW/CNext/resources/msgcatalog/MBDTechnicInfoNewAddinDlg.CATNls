@@ -1,0 +1,8 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "Insert New Technical Note";
+Frame001.Label005.Title = "     Choose Database:             ";
+Frame002.Title = "Technical Note Content";
+SearchItemsFrame.Title = "Write Technical Note Items";
+Frame004.ApplyNoteToEditorPB.Title = "Apply Technical Note To Editor";
+Frame004.ApplyNoteToDatabasePB.Title = "Apply Technical Note Content To Database";
+// END WIZARD REPLACEMENT ZONE

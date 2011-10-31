@@ -1,0 +1,30 @@
+// DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+
+// -------------------------------------------------
+// Title of the workbench
+// -------------------------------------------------
+MBDPrdWb.Title="MBD Product Designer";
+
+// -------------------------------------------------
+// Toolbar
+// -------------------------------------------------
+MBDPrdWbADETktTlb.Title = "ADE Toolkit";
+MBDPrdWbAMETktTlb.Title = "AME Toolkit";
+MBDPrdWbTechTktTlb.Title = "Technic Info Toolkit";
+MBDPrdWbDataVerifyTktTlb.Title = "Data Standard Verify";
+MBDPrdWbPartsCompareTktTlb.Title = "MBD模型信息差异对比";
+
+
+// -------------------------------------------------
+// Menu
+// -------------------------------------------------
+MBDPrdWbTktMnu.Title = "MBD CATProduct Designer" ;
+
+MBDPrdWbADETktMbr.Title = "ADE Toolkit";
+MBDPrdWbAMETktMbr.Title = "AME Toolkit";
+MBDPrdWbTechTktMbr.Title = "Technic Info Toolkit";
+MBDPrdWbDataVerifyTktMbr.Title = "Data Standard Verify";
+MBDPrdWbPartsCompareTktMbr.Title = "MBD模型信息差异对比";
+
+
+// END WIZARD EDITION ZONE

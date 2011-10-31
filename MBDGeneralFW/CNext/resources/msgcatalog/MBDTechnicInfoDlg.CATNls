@@ -1,0 +1,27 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "MBD Technical Note Designer";
+Frame002.Title = "Technical Note Search";
+Frame002.Frame004.TechnicNoteSearchPB.Title = "   Go And Search   ";
+Frame002.Frame004.TechnicNoteSearchPB.Help = "Go And Search";
+Frame002.Frame004.TechnicNoteSearchPB.ShortHelp = "Go And Search";
+Frame002.Frame004.TechnicNoteSearchPB.LongHelp = "Go And Search";
+Frame002.Frame004.NewNoteAddinPB.Title = "Insert New Technical Note";
+Frame002.Frame004.NewNoteAddinPB.Help = "Insert New Technical Note";
+Frame002.Frame004.NewNoteAddinPB.ShortHelp = "Insert New Technical Note";
+Frame002.Frame004.NewNoteAddinPB.LongHelp = "Insert New Technical Note";
+Frame002.Frame005.Label006.Title = " Special Feature: ";
+Frame002.Frame005.Label007.Title = " Materal Weight (Kg): ";
+Frame002.Frame005.Label008.Title = " Flag Note: ";
+Frame003.Title = "Technical Note Result";
+Frame003.SearchResultFrame.SearchResultML.ColumnTitle1 = "Number";
+Frame003.SearchResultFrame.SearchResultML.ColumnTitle2 = "Serial Number";
+Frame003.SearchResultFrame.SearchResultML.ColumnTitle3 = "Content";
+Frame003.SearchResultFrame.InsertToGSMToolPB.Title = "Insert Technical Note To GSMTool ";
+Frame003.SearchResultFrame.InsertToGSMToolPB.Help = "Insert Technical Note To GSMTool";
+Frame003.SearchResultFrame.InsertToGSMToolPB.ShortHelp = "Insert Technical Note To GSMTool";
+Frame003.SearchResultFrame.InsertToGSMToolPB.LongHelp = "Insert Technical Note To GSMTool";
+Frame001.Title = "CATIA Tree GSMTools";
+Frame001.TechnicNoteFrame.TreeGSMToolNotesML.ColumnTitle1 = "Number";
+Frame001.TechnicNoteFrame.TreeGSMToolNotesML.ColumnTitle2 = "Serial Number";
+Frame001.TechnicNoteFrame.TreeGSMToolNotesML.ColumnTitle3 = "Content";
+// END WIZARD REPLACEMENT ZONE

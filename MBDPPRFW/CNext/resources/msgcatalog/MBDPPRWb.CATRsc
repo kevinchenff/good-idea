@@ -1,0 +1,15 @@
+// Category of the workshop
+MBDPPRWb.Category="DPManufacturing";
+
+MBDPPRWb.Icon.PressedRep  =  "I_MBDPPRWb";
+MBDPPRWb.Icon.NormalRep  =  "I_MBDPPRWb";
+MBDPPRWb.Icon.FocusedRep  =  "I_MBDPPRWb";
+
+
+// Icons for the Welcome window 64x64
+//MBDPPRWb.Icon.NormalPnl = "NULMDPRTWBCreationWkb_I_As";
+//MBDPPRWb.Icon.PressedPnl = "NULMDPRTWBCreationWkb_IP_As";
+//MBDPPRWb.Icon.FocusPnl = "NULMDPRTWBCreationWkb_IF_As";
+
+// AllowWarmStart="YES";
+// END WIZARD EDITION ZONE

@@ -1,0 +1,11 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "Parts MBD Info Compare";
+Frame001.Title = "定义";
+Frame001.Frame002.Label006.Title = "旧版本零件:";
+Frame001.Frame002.Label007.Title = "新版本零件:";
+Frame001.Frame003.Title = "保存差异比较报告";
+Frame001.Frame003.SavePushButton.Title = "保存";
+// END WIZARD REPLACEMENT ZONE
+
+
+// END WIZARD REPLACEMENT ZONE

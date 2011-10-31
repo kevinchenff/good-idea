@@ -1,0 +1,8 @@
+// Category of the workshop
+
+MBDPrdWb.Category="MechanicalDesign";
+MBDPrdWb.Icon.PressedRep  =  "MBDPrdWb_IP";
+MBDPrdWb.Icon.NormalRep  =  "MBDPrdWb_I";
+MBDPrdWb.Icon.FocusedRep  =  "MBDPrdWb_IF";
+
+// END WIZARD EDITION ZONE
