@@ -1,0 +1,18 @@
+// DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+// END WIZARD EDITION ZONE
+// Title of MBDPrtFastenerInfoToXMLCmd
+MBDPPRWbCmdHeader.MBDPrtFastenerInfoToXMLCmd.Title="MBDPrtFastenerInfoToXMLCmd title";
+// Help associated with MBDPrtFastenerInfoToXMLCmd
+MBDPPRWbCmdHeader.MBDPrtFastenerInfoToXMLCmd.Help="MBDPrtFastenerInfoToXMLCmd help";
+// Ballon help associated with MBDPrtFastenerInfoToXMLCmd
+MBDPPRWbCmdHeader.MBDPrtFastenerInfoToXMLCmd.ShortHelp="MBDPrtFastenerInfoToXMLCmd tooltip";
+// Help for MBDPrtFastenerInfoToXMLCmd associated with What's this
+MBDPPRWbCmdHeader.MBDPrtFastenerInfoToXMLCmd.LongHelp="MBDPrtFastenerInfoToXMLCmd long help";
+// Marker found in documentation for MBDPrtFastenerInfoToXMLCmd
+MBDPPRWbCmdHeader.MBDPrtFastenerInfoToXMLCmd.LongHelpId="MBDPrtFastenerInfoToXMLCmdmarker";
+// Normal icon associated with MBDPrtFastenerInfoToXMLCmd
+MBDPPRWbCmdHeader.MBDPrtFastenerInfoToXMLCmd.Icon.Normal="I_MBDPrtFastenerInfoToXMLCmd";
+// Icon in the focused state associated with MBDPrtFastenerInfoToXMLCmd
+MBDPPRWbCmdHeader.MBDPrtFastenerInfoToXMLCmd.Icon.Focused="IF_MBDPrtFastenerInfoToXMLCmd";
+// Icon in the pressed state associated with MBDPrtFastenerInfoToXMLCmd
+MBDPPRWbCmdHeader.MBDPrtFastenerInfoToXMLCmd.Icon.Pressed="IP_MBDPrtFastenerInfoToXMLCmd";

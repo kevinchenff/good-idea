@@ -1,0 +1,26 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "MBD技术附注助手";
+Frame002.Title = "技术附注检索";
+Frame002.Frame004.TechnicNoteSearchPB.Title = "   交互搜索界面   ";
+Frame002.Frame004.TechnicNoteSearchPB.Help = "交互搜索界面";
+Frame002.Frame004.TechnicNoteSearchPB.ShortHelp = "交互搜索界面";
+Frame002.Frame004.TechnicNoteSearchPB.LongHelp = "交互搜索界面";
+Frame002.Frame004.NewNoteAddinPB.Title = "申请新技术附注信息项";
+Frame002.Frame004.NewNoteAddinPB.Help = "申请新技术附注信息项";
+Frame002.Frame004.NewNoteAddinPB.ShortHelp = "申请新技术附注信息项";
+Frame002.Frame004.NewNoteAddinPB.LongHelp = "申请新技术附注信息项";
+Frame002.Frame005.Label006.Title = " 特性分类: ";
+Frame002.Frame005.Label008.Title = " 旗注代码: ";
+Frame003.Title = "技术附注检索结果";
+ Frame003.SearchResultFrame.SearchResultML.ColumnTitle1 = "Number";
+ Frame003.SearchResultFrame.SearchResultML.ColumnTitle2 = "序列号";
+ Frame003.SearchResultFrame.SearchResultML.ColumnTitle3 = "技术附注信息内容";
+Frame003.SearchResultFrame.InsertToGSMToolPB.Title = "    插入所选技术附注项到几何图形集    ";
+Frame003.SearchResultFrame.InsertToGSMToolPB.Help = "插入所选技术附注项到几何图形集";
+Frame003.SearchResultFrame.InsertToGSMToolPB.ShortHelp = "插入所选技术附注项到几何图形集";
+Frame003.SearchResultFrame.InsertToGSMToolPB.LongHelp = "插入所选技术附注项到几何图形集";
+Frame001.Title = "CATIA技术附注几何集";
+ Frame001.TechnicNoteFrame.TreeGSMToolNotesML.ColumnTitle1 = "Number";
+ Frame001.TechnicNoteFrame.TreeGSMToolNotesML.ColumnTitle2 = "序列号";
+ Frame001.TechnicNoteFrame.TreeGSMToolNotesML.ColumnTitle3 = "技术附注信息内容";
+// END WIZARD REPLACEMENT ZONE

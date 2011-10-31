@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!-- edited with XMLSpy v2010 (http://www.altova.com) by knight (kt) -->
+<Root>
+	<DbName name="专业注释库" GSMTOOLName="技术注释" GSMTOOLSwitch="false" DbWBSItem="MBD_USER_DEFINED">
+		<Node name="编码规则" WBSItem="MBD_USER_DEFINED-BASE_MATERIAL_NAME"/>
+		<Node name="系统专业" WBSItem="MBD_USER_DEFINED-ATTRIBUTE_02"/>
+		<Node name="零组件类型" WBSItem="MBD_USER_DEFINED-APPLICABILITY"/>
+		<Node name="分 类" WBSItem="MBD_USER_DEFINED-ATTRIBUTE_01"/>
+		<Node name="备 注" WBSItem="MBD_USER_DEFINED-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_USER_DEFINED-MATERIAL_CODE"/>
+		<Node name="专业注释库标注内容" WBSItem="MBD_USER_DEFINED-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="引用技术文件库" GSMTOOLName="技术注释" GSMTOOLSwitch="false" DbWBSItem="MBD_TECHNIQUE_FILE">
+		<Node name="编码规则" WBSItem="MBD_TECHNIQUE_FILE-BASE_MATERIAL_NAME"/>
+		<Node name="零件类型" WBSItem="MBD_TECHNIQUE_FILE-ATTRIBUTE_04"/>
+		<Node name="标准类别" WBSItem="MBD_TECHNIQUE_FILE-ATTRIBUTE_03"/>
+		<Node name="技术文件号" WBSItem="MBD_TECHNIQUE_FILE-FILE_CODE"/>
+		<Node name="技术文件名" WBSItem="MBD_TECHNIQUE_FILE-FILE_NAME"/>
+		<Node name="要 求" WBSItem="MBD_TECHNIQUE_FILE-ATTRIBUTE_02"/>
+		<Node name="备 注" WBSItem="MBD_TECHNIQUE_FILE-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_TECHNIQUE_FILE-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_TECHNIQUE_FILE-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="公差粗糙度库" GSMTOOLName="技术注释" GSMTOOLSwitch="false" DbWBSItem="MBD_TOLERANCE_GRANULATE">
+		<Node name="注释类别" WBSItem="MBD_TOLERANCE_GRANULATE-BASE_MATERIAL_NAME"/>
+		<Node name="零组件类别" WBSItem="MBD_TOLERANCE_GRANULATE-PART_TYPE"/>
+		<Node name="采用标准" WBSItem="MBD_TOLERANCE_GRANULATE-STANDARD"/>
+		<Node name="范 围" WBSItem="MBD_TOLERANCE_GRANULATE-USE_RANGE"/>
+		<Node name="备 注" WBSItem="MBD_TOLERANCE_GRANULATE-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_TOLERANCE_GRANULATE-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_TOLERANCE_GRANULATE-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="几何要素库" GSMTOOLName="技术注释" GSMTOOLSwitch="false" DbWBSItem="MBD_GEOMETRY">
+		<Node name="几何分类" WBSItem="MBD_GEOMETRY-BASE_MATERIAL_NAME"/>
+		<Node name="几何类型" WBSItem="MBD_GEOMETRY-GEOMETRY_TYPE"/>
+		<Node name="采用标准" WBSItem="MBD_GEOMETRY-STANDARD"/>
+		<Node name="尺寸范围" WBSItem="MBD_GEOMETRY-SIZE_RANGE"/>
+		<Node name="要 求" WBSItem="MBD_GEOMETRY-APPEAL"/>
+		<Node name="备 注" WBSItem="MBD_GEOMETRY-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_GEOMETRY-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_GEOMETRY-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="标准件附注库" GSMTOOLName="技术注释" GSMTOOLSwitch="false" DbWBSItem="MBD_STANDARD_PART">
+		<Node name="标准件类型" WBSItem="MBD_STANDARD_PART-BASE_MATERIAL_NAME"/>
+		<Node name="标准件品种" WBSItem="MBD_STANDARD_PART-STANDARD_PART_VARIETY"/>
+		<Node name="备 注" WBSItem="MBD_STANDARD_PART-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_STANDARD_PART-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_STANDARD_PART-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="标印标记库" GSMTOOLName="技术注释" GSMTOOLSwitch="false" DbWBSItem="MBD_HARDWARE">
+		<Node name="编码规则" WBSItem="MBD_HARDWARE-BASE_MATERIAL_NAME"/>
+		<Node name="标印标准" WBSItem="MBD_HARDWARE-STANDARD"/>
+		<Node name="标印方法代号" WBSItem="MBD_HARDWARE-STANDARD_CODE"/>
+		<Node name="备 注" WBSItem="MBD_HARDWARE-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_HARDWARE-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_HARDWARE-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="表面防护库" GSMTOOLName="表面防护" GSMTOOLSwitch="false" DbWBSItem="MBD_SURFACE_TREATMENT">
+		<Node name="基体材料" WBSItem="MBD_SURFACE_TREATMENT-BASE_MATERIAL_NAME"/>
+		<Node name="材料牌号" WBSItem="MBD_SURFACE_TREATMENT-ATTRIBUTE_07"/>
+		<Node name="表面处理" WBSItem="MBD_SURFACE_TREATMENT-ATTRIBUTE_10"/>
+		<Node name="镀层厚度" WBSItem="MBD_SURFACE_TREATMENT-THICKNESS"/>
+		<Node name="底漆" WBSItem="MBD_SURFACE_TREATMENT-BOTTOM_LACQUER"/>
+		<Node name="磁漆" WBSItem="MBD_SURFACE_TREATMENT-PORCELAIN_LACQUER"/>
+		<Node name="磁漆颜色" WBSItem="MBD_SURFACE_TREATMENT-COLOR_OF_PROCELAIN_LACQUER"/>
+		<Node name="备注" WBSItem="MBD_SURFACE_TREATMENT-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_SURFACE_TREATMENT-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_SURFACE_TREATMENT-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="热处理库" GSMTOOLName="热处理" GSMTOOLSwitch="false" DbWBSItem="MBD_HEAT_TREATMENT">
+		<Node name="基体材料" WBSItem="MBD_HEAT_TREATMENT-BASE_MATERIAL_NAME"/>
+		<Node name="材料牌号" WBSItem="MBD_HEAT_TREATMENT-ATTRIBUTE_05"/>
+		<Node name="品 种" WBSItem="MBD_HEAT_TREATMENT-ATTRIBUTE_02"/>
+		<Node name="供应状态" WBSItem="MBD_HEAT_TREATMENT-ATTRIBUTE_04"/>
+		<Node name="热处理状态" WBSItem="MBD_HEAT_TREATMENT-ATTRIBUTE_03"/>
+		<Node name="热处理性能" WBSItem="MBD_HEAT_TREATMENT-CAPABILITY"/>
+		<Node name="热处理说明书" WBSItem="MBD_HEAT_TREATMENT-TECHNICS"/>
+		<Node name="检验说明书" WBSItem="MBD_HEAT_TREATMENT-CHECK_SPECIFICATION"/>
+		<Node name="检验类别" WBSItem="MBD_HEAT_TREATMENT-CHECK_TYPE"/>
+		<Node name="备 注" WBSItem="MBD_HEAT_TREATMENT-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_HEAT_TREATMENT-MATERIAL_CODE"/>
+		<Node name="标注内容:" WBSItem="MBD_HEAT_TREATMENT-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="喷丸吹砂化铣库" GSMTOOLName="技术注释" GSMTOOLSwitch="false" DbWBSItem="MBD_PILL_MILL">
+		<Node name="注释类别" WBSItem="MBD_PILL_MILL-BASE_MATERIAL_NAME"/>
+		<Node name="零件类别" WBSItem="MBD_PILL_MILL-PART_TYPE"/>
+		<Node name="要 求" WBSItem="MBD_PILL_MILL-APPEAL"/>
+		<Node name="备 注" WBSItem="MBD_PILL_MILL-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_PILL_MILL-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_PILL_MILL-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="特种检测库" GSMTOOLName="技术注释" GSMTOOLSwitch="false" DbWBSItem="MBD_SPECIAL_CHECK">
+		<Node name="检测方法" WBSItem="MBD_SPECIAL_CHECK-BASE_MATERIAL_NAME"/>
+		<Node name="零件类型" WBSItem="MBD_SPECIAL_CHECK-PART_TYPE"/>
+		<Node name="基体材料" WBSItem="MBD_SPECIAL_CHECK-REQUIREMENT"/>
+		<Node name="检测标准" WBSItem="MBD_SPECIAL_CHECK-CHECK_STANDARD"/>
+		<Node name="检测级别" WBSItem="MBD_SPECIAL_CHECK-TRADEMARK"/>
+		<Node name="备注" WBSItem="MBD_SPECIAL_CHECK-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_SPECIAL_CHECK-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_SPECIAL_CHECK-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="包装库" GSMTOOLName="技术注释" GSMTOOLSwitch="false" DbWBSItem="MBD_PACK">
+		<Node name="编码规则" WBSItem="MBD_PACK-BASE_MATERIAL_NAME"/>
+		<Node name="专业" WBSItem="MBD_PACK-SPECIALTY"/>
+		<Node name="包装零件类别" WBSItem="MBD_PACK-PACK_TYPE"/>
+		<Node name="备注" WBSItem="MBD_PACK-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_PACK-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_PACK-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+	<DbName name="参变注释库" GSMTOOLName="技术注释" GSMTOOLSwitch="true" DbWBSItem="MBD_PARAMETER">
+		<Node name="编码规则" WBSItem="MBD_PARAMETER-BASE_MATERIAL_NAME"/>
+		<Node name="参数类别" WBSItem="MBD_PARAMETER-PARA_TYPE"/>
+		<Node name="示例" WBSItem="MBD_PARAMETER-EXAMPLE"/>
+		<Node name="备注" WBSItem="MBD_PARAMETER-REMARK"/>
+		<Node name="注释编号" WBSItem="MBD_PARAMETER-MATERIAL_CODE"/>
+		<Node name="标注内容" WBSItem="MBD_PARAMETER-STANDARD_NOTE_CONTENTS"/>
+	</DbName>
+</Root>

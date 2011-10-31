@@ -1,0 +1,5 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "New Part Document";
+Label001.Title = "Insert New Part Name";
+Label002.Title = "Choose MBD Template Type:";
+// END WIZARD REPLACEMENT ZONE

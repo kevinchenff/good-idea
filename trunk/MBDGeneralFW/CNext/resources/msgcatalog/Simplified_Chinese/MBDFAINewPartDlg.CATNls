@@ -1,0 +1,5 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "新建MBD零件";
+Label001.Title = "输入新建零部件名称";
+Label002.Title = "请选择MBD模板类型";
+// END WIZARD REPLACEMENT ZONE

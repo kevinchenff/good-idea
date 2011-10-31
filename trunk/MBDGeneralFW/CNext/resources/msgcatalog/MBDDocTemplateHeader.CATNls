@@ -1,0 +1,22 @@
+// command headers resources
+MBDDocTemplateHeader.MBDAddinNewPartHdr.Title = "MBD New Part";
+MBDDocTemplateHeader.MBDAddinNewPartHdr.Help = "MBD New Part";
+MBDDocTemplateHeader.MBDAddinNewPartHdr.ShortHelp = "MBD New Part";
+
+MBDDocTemplateHeader.MBDAddinNewPartFromHdr.Title = "MBD New Part From...";
+MBDDocTemplateHeader.MBDAddinNewPartFromHdr.Help = "MBD New Part From...";
+MBDDocTemplateHeader.MBDAddinNewPartFromHdr.ShortHelp = "MBD New Part From...";
+
+MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.Title = "MBD Add MBD GSMTool";
+MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.Help = "MBD Add MBD GSMTool";
+MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.ShortHelp = "MBD Add MBD GSMTool";
+
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.Title = "MBD Add Product";
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.Help = "MBD Add Product";
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.ShortHelp = "MBD Add Product";
+
+MBDDocTemplateHeader.MBDTechnicInfoHdr.Title = "MBD Technic Designer";
+MBDDocTemplateHeader.MBDTechnicInfoHdr.Help = "MBD Technic Designer";
+MBDDocTemplateHeader.MBDTechnicInfoHdr.ShortHelp = "MBD Technic Designer";
+
+

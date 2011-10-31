@@ -1,0 +1,152 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog MBDTechnicInfoDlg
+{
+  STYLE = CATDlgWndPointerLocation|CATDlgWndAutoResize|CATDlgWndBtnClose|CATDlgGridLayout;
+  ROWRES = { 2 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame Frame002
+{
+  FATHER = MBDTechnicInfoDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame Frame004
+{
+  FATHER = Frame002;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgPushButton TechnicNoteSearchPB
+{
+  FATHER = Frame004;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton NewNoteAddinPB
+{
+  FATHER = Frame004;
+  GRID = { 0, 1, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgFrame Frame005
+{
+  FATHER = Frame002;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor SpecialFeatureEditor
+{
+  FATHER = Frame005;
+  GRID = { 0, 1, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgCombo FlagNoteCombo
+{
+  FATHER = Frame005;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 0, 3, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label006
+{
+  FATHER = Frame005;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label008
+{
+  FATHER = Frame005;
+  GRID = { 0, 2, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame003
+{
+  FATHER = MBDTechnicInfoDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0, 1 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame SearchResultFrame
+{
+  FATHER = Frame003;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList SearchResultML
+{
+  FATHER = SearchResultFrame;
+  CC = 3;
+  VCC = 3;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton InsertToGSMToolPB
+{
+  FATHER = SearchResultFrame;
+  GRID = { 1, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgFrame TechnicalNoteDetailFrame
+{
+  FATHER = Frame003;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgEditor TechnicalNoteDetailEditor
+{
+  FATHER = TechnicalNoteDetailFrame;
+  STYLE = CATDlgEdtMultiline|CATDlgEdtReadOnly;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame001
+{
+  FATHER = MBDTechnicInfoDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 1 };
+}
+
+CATDlgFrame TreeFrame
+{
+  FATHER = Frame001;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame TechnicNoteFrame
+{
+  FATHER = Frame001;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList TreeGSMToolNotesML
+{
+  FATHER = TechnicNoteFrame;
+  TW = 120;
+  CC = 3;
+  VCC = 3;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+// END WIZARD REPLACEMENT ZONE

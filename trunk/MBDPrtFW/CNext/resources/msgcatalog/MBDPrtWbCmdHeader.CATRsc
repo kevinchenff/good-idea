@@ -1,0 +1,5 @@
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr01.Icon.Normal = "I_MBDPrtGetFastenerInfo";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr02.Icon.Normal = "I_MBDPrtSetFastenerInfo";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Icon.Normal = "I_MBDPrtSetFastenerInfo";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Icon.Normal = "I_MBDAddMaterial";
+

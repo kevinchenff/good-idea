@@ -1,0 +1,70 @@
+// DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr01.Title = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr01.Help = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr01.ShortHelp = "ADE";
+
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr02.Title = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr02.Help = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr02.ShortHelp = "ADE";
+
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr03.Title = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr03.Help = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr03.ShortHelp = "ADE";
+
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr04.Title = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr04.Help = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr04.ShortHelp = "ADE";
+
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr05.Title = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr05.Help = "ADE";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr05.ShortHelp = "ADE";
+
+
+
+
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr01.Title = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr01.Help = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr01.ShortHelp = "AME";
+
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr02.Title = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr02.Help = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr02.ShortHelp = "AME";
+
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr03.Title = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr03.Help = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr03.ShortHelp = "AME";
+
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr04.Title = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr04.Help = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr04.ShortHelp = "AME";
+
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr05.Title = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr05.Help = "AME";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr05.ShortHelp = "AME";
+
+
+MBDPrdWbCmdHeader.MBDPrdWbAddTechHdr.Title = "Add Technic Info";
+MBDPrdWbCmdHeader.MBDPrdWbAddTechHdr.Help = "Add Technic Info";
+MBDPrdWbCmdHeader.MBDPrdWbAddTechHdr.ShortHelp = "Add Technic Info";
+
+MBDPrdWbCmdHeader.MBDPrdWbCheckTechHdr.Title = "Check Technic Info";
+MBDPrdWbCmdHeader.MBDPrdWbCheckTechHdr.Help = "Check Technic Info";
+MBDPrdWbCmdHeader.MBDPrdWbCheckTechHdr.ShortHelp = "Check Technic Info";
+
+
+MBDPrdWbCmdHeader.MBDPrdWbDataVerifyHdr.Title = "Data Standard Verify";
+MBDPrdWbCmdHeader.MBDPrdWbDataVerifyHdr.Help = "Data Standard Verify";
+MBDPrdWbCmdHeader.MBDPrdWbDataVerifyHdr.ShortHelp = "Data Standard Verify";
+
+
+// MBD 模型差异对比
+MBDPrdWbCmdHeader.MBDPrdLoadPrtVPMHdr.Title = "Load Old Part From VPM";
+MBDPrdWbCmdHeader.MBDPrdLoadPrtVPMHdr.Help = "Load Old Part From VPM";
+MBDPrdWbCmdHeader.MBDPrdLoadPrtVPMHdr.ShortHelp = "Load Old Part From VPM";
+
+MBDPrdWbCmdHeader.MBDPrdPartsCompareHdr.Title = "Parts MBD Info Compare";
+MBDPrdWbCmdHeader.MBDPrdPartsCompareHdr.Help = "Parts MBD Info Compare";
+MBDPrdWbCmdHeader.MBDPrdPartsCompareHdr.ShortHelp = "Parts MBD Info Compare";
+
+// END WIZARD EDITION ZONE

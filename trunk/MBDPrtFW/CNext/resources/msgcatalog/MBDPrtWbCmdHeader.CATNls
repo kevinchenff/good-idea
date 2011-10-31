@@ -1,0 +1,19 @@
+// DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr01.Title = "Fastener Info To XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr01.Help = "Fastener Info To XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr01.ShortHelp = "Fastener Info To XML";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr02.Title = "Fastener Info From XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr02.Help = "Fastener Info From XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr02.ShortHelp = "Fastener Info From XML";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Title = "CATIA MBD Annotation To XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Help = "CATIA MBD Annotation To XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.ShortHelp = "CATIA MBD Annotation To XML";
+
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Title = "Add MBD Material";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Help = "Add MBD Material";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.ShortHelp = "Add MBD Material";
+
+// END WIZARD EDITION ZONE

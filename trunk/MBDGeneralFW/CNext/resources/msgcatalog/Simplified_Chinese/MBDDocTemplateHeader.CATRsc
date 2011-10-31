@@ -1,0 +1,10 @@
+//定义command header图标资源
+MBDDocTemplateHeader.MBDAddinNewPartHdr.Icon.Normal = "I_MBDNewPart";
+
+MBDDocTemplateHeader.MBDAddinNewPartFromHdr.Icon.Normal = "I_MBDNewPartFrom";
+
+MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.Icon.Normal = "I_MBDAddMBDGSMTool";
+
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.Icon.Normal = "I_MBDAddPrd";
+
+MBDDocTemplateHeader.MBDTechnicInfoHdr.Icon.Normal = "I_MBDTechnicInfo";

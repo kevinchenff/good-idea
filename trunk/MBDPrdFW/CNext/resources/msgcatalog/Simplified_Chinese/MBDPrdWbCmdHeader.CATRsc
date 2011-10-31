@@ -1,0 +1,26 @@
+// DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr01.Icon.Normal = "MBDTechnic_I";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr02.Icon.Normal = "MBDTechnic_I";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr03.Icon.Normal = "MBDTechnic_I";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr04.Icon.Normal = "MBDTechnic_I";
+MBDPrdWbCmdHeader.MBDPrdWbADEHdr05.Icon.Normal = "MBDTechnic_I";
+
+
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr01.Icon.Normal = "MBDTechnic_I";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr02.Icon.Normal = "MBDTechnic_I";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr03.Icon.Normal = "MBDTechnic_I";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr04.Icon.Normal = "MBDTechnic_I";
+MBDPrdWbCmdHeader.MBDPrdWbAMEHdr05.Icon.Normal = "MBDTechnic_I";
+
+MBDPrdWbCmdHeader.MBDPrdWbAddTechHdr.Icon.Normal = "MBDTechnic_I";
+MBDPrdWbCmdHeader.MBDPrdWbCheckTechHdr.Icon.Normal = "MBDTechnic_I";
+
+
+MBDPrdWbCmdHeader.MBDPrdWbDataVerifyHdr.Icon.Normal = "MBDTechnic_I";
+
+// MBD模型差异对比功能
+MBDPrdWbCmdHeader.MBDPrdLoadPrtVPMHdr.Icon.Normal = "I_LoadPartVPM";
+MBDPrdWbCmdHeader.MBDPrdPartsCompareHdr.Icon.Normal = "I_MBDPrdMBDInfo";
+
+// END WIZARD EDITION ZONE

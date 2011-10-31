@@ -1,0 +1,11 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "Parts MBD Info Compare";
+Frame001.Title = "Define";
+Frame001.Frame002.Label006.Title = "Old Parts:";
+Frame001.Frame002.Label007.Title = "New Parts:";
+Frame001.Frame003.Title = "Save Report Info";
+Frame001.Frame003.SavePushButton.Title = "Save Report";
+// END WIZARD REPLACEMENT ZONE
+
+
+// END WIZARD REPLACEMENT ZONE

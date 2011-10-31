@@ -1,0 +1,22 @@
+// command headers resources
+MBDDocTemplateHeader.MBDAddinNewPartHdr.Title = "MBD 新建零件";
+MBDDocTemplateHeader.MBDAddinNewPartHdr.Help = "MBD 新建零件";
+MBDDocTemplateHeader.MBDAddinNewPartHdr.ShortHelp = "MBD 新建零件";
+
+MBDDocTemplateHeader.MBDAddinNewPartFromHdr.Title = "新建自MBD标准模板...";
+MBDDocTemplateHeader.MBDAddinNewPartFromHdr.Help = "新建自MBD标准模板...";
+MBDDocTemplateHeader.MBDAddinNewPartFromHdr.ShortHelp = "新建自MBD标准模板...";
+
+MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.Title = "MBD 添加标准几何集";
+MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.Help = "MBD 添加标准几何集";
+MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.ShortHelp = "MBD 添加标准几何集";
+
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.Title = "MBD 添加ARM模型";
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.Help = "MBD 添加ARM模型";
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.ShortHelp = "MBD 添加ARM模型";
+
+MBDDocTemplateHeader.MBDTechnicInfoHdr.Title = "MBD 技术附注助手";
+MBDDocTemplateHeader.MBDTechnicInfoHdr.Help = "MBD 技术附注助手";
+MBDDocTemplateHeader.MBDTechnicInfoHdr.ShortHelp = "MBD 技术附注助手";
+
+

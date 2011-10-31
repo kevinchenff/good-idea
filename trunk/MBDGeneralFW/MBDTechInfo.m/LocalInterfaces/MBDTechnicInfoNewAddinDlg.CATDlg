@@ -1,0 +1,74 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog MBDTechnicInfoNewAddinDlg
+{
+  STYLE = CATDlgWndModal|CATDlgWndNoResize|CATDlgWndBtnClose|CATDlgGridLayout;
+}
+
+CATDlgFrame Frame001
+{
+  FATHER = MBDTechnicInfoNewAddinDlg;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0, 1 };
+}
+
+CATDlgLabel Label005
+{
+  FATHER = Frame001;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo DatabaseListCombo
+{
+  FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame002
+{
+  FATHER = MBDTechnicInfoNewAddinDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgEditor TechnicalNoteCttEditor
+{
+  FATHER = Frame002;
+  STYLE = CATDlgEdtMultiline;
+  TH = 6;
+  TW = 25;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame SearchItemsFrame
+{
+  FATHER = MBDTechnicInfoNewAddinDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame004
+{
+  FATHER = MBDTechnicInfoNewAddinDlg;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgPushButton ApplyNoteToEditorPB
+{
+  FATHER = Frame004;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton ApplyNoteToDatabasePB
+{
+  FATHER = Frame004;
+  GRID = { 0, 1, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+// END WIZARD REPLACEMENT ZONE
