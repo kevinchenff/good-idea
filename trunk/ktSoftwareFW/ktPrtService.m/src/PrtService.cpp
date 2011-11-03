@@ -3498,13 +3498,6 @@ void PrtService::GetParamFactory(CATDocument *piDocument,CATICkeParmFactory_var 
 	}
 	CATIContainer * piCont = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
 
-	CATICkeParmFactory_var spFact(piCont);
-	if(NULL_var == spFact)
-	{
-		cout << "Could not get parm factory.\n";
-		return;
-	}
-
 	//从文档容器中获取零件CATIPrtContainer容器
 	CATIPrtContainer *piPrtCont = NULL;
 	rc = piCont->QueryInterface(IID_CATIPrtContainer, (void **)&piPrtCont);
@@ -4125,6 +4118,3 @@ void PrtService::CenterSpecGraph(CATPathElement* piPathEle)
 		CenterGraphObj.CenterGraph("OnHSO",pNavigBox);
 	}
 }
-
-
-
