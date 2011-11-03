@@ -231,7 +231,7 @@ void MBDFAINewPartFromCmd::OnMBDOKAction(CATCommand* cmd, CATNotification* evt, 
 		CATListValCATUnicodeString  ListStrSearchedFeatName;
 		CATListValCATISpecObject_var ListValOfspSearchGSMTool;
 
-		ListStrSearchedFeatName.Append("构造几何");
+		ListStrSearchedFeatName.Append("过程元素");
 		PrtService::CAAGsiSearchFeatureFromName(piDocument, ListStrSearchedFeatName,ListValOfspSearchGSMTool);
 
 		for (int j =1; j <= ListValOfspSearchGSMTool.Size(); j++)
@@ -246,8 +246,11 @@ void MBDFAINewPartFromCmd::OnMBDOKAction(CATCommand* cmd, CATNotification* evt, 
 			for (int i = 1; i <= oLst.Size(); i ++)
 			{
 				CATISpecObject* spFather = oLst[i]->GetFather();
-				spFather->Remove(oLst[i]);
-				spFather->Release();
+				if (spFather!= NULL)
+				{
+					spFather->Remove(oLst[i]);
+					spFather->Release();
+				}				
 			}
 		}
 
@@ -265,8 +268,11 @@ void MBDFAINewPartFromCmd::OnMBDOKAction(CATCommand* cmd, CATNotification* evt, 
 			for (int i = 1; i <= oLst.Size(); i ++)
 			{
 				CATISpecObject* spFather = oLst[i]->GetFather();
-				spFather->Remove(oLst[i]);
-				spFather->Release();
+				if (spFather!= NULL)
+				{
+					spFather->Remove(oLst[i]);
+					spFather->Release();
+				}	
 			}
 		}
 		
