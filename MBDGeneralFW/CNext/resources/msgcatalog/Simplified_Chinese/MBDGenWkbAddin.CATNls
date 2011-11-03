@@ -1,9 +1,9 @@
 // -------------------------------------------------
 // Toolbars
 // -------------------------------------------------
-MBDDocTemplateTlb.Title = "技术注释";	// 标识第一个toolbar的名称	
+MBDDocTemplateTlb.Title = "MBD模板助手";	// 标识第一个toolbar的名称	
 
 // -------------------------------------------------
 // Menus
 // -------------------------------------------------
-MBDDocTemplateMnu.Title = "技术注释"; // 标识主Menu的名称
+MBDDocTemplateMnu.Title = "MBD模板助手"; // 标识主Menu的名称

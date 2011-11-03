@@ -224,10 +224,10 @@ void MBDFAINewPrdCmd::InitialMBDInfo()
 						if  ( FAILED(hr) ) return;
 
 						// 检验所有的节点名称，是否含有多个ARM模型
-						int flagFind = partNumber.SearchSubString("R-",0,CATUnicodeString::CATSearchModeForward);
-						if (flagFind == 0)
+						int flagFind = partNumber.SearchSubString("-ZP",0,CATUnicodeString::CATSearchModeForward);
+						if (flagFind == partNumber.GetLengthInChar()-3)
 						{
-							//查找到了开头含有“R-”标识号的文档，但是不能唯一确定，需要进一步做判断：有文档关联、关联文档必须为CATPart文件
+							//查找到了开头含有“-ZP”标识号的文档，但是不能唯一确定，需要进一步做判断：有文档关联、关联文档必须为CATPart文件
 							CATDocument* piPrdDoc = NULL;
 							hr = PrdService::GetInstPrdDoc(spChild,piPrdDoc);
 							if (SUCCEEDED(hr))
@@ -251,43 +251,18 @@ void MBDFAINewPrdCmd::InitialMBDInfo()
 					delete ListChildren;
 					ListChildren=NULL;
 
-				}				
+				}	
+
+				if (flagCreateOrNot == TRUE)
+				{
+					PrtService::ShowDlgNotify("添加MBD装配模板提示","在该装配节点下已经存在ZP模型！！！");
+					return;
+				}
 				
 				//------------------------------------------------------------------
 				// 3 自动创建MBD装配模板文档
 				//------------------------------------------------------------------
-				CATUnicodeString iDocumentType = "Part";
-				CATUnicodeString strChangeARMName = _strDocName;
-				strChangeARMName.ReplaceSubString(strChangeARMName.GetLengthInChar()-3,1,"9");
-
-				CATUnicodeString strNum("0");
-				int Num = m_listARMInstancePrd.Size();
-				if (Num >= 1)
-				{
-					//获取ARM编号最大值
-					for (int i = 1; i <= Num; i ++)
-					{
-						CATIAlias_var spAlias = m_listARMInstancePrd[i];
-						CATUnicodeString strAlias = spAlias->GetAlias();
-						CATUnicodeString strTempNum = strAlias.SubString(2,1);
-						//cout<<"ARM编号："<<strTempNum<<endl;
-
-						if (strNum < strTempNum)
-						{
-							strNum = strTempNum;
-						}
-					}
-
-					//转换成数字
-					int NumTemp;
-					strNum.ConvertToNum(&NumTemp);
-
-					NumTemp ++;
-					strNum.BuildFromNum(NumTemp);
-				}
-								
-				strNum = "R-"+ strNum;
-				strChangeARMName = strNum + strChangeARMName; 
+				CATUnicodeString strChangeARMName = _strDocName + "-ZP";
 				CATIProduct* oNewProduct = NULL;
 									
 				// 调用函数自动添加MBD零件模板
