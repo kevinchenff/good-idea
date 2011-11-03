@@ -220,6 +220,9 @@ public:
 //打开strFile文件
 	BOOL Open(CATUnicodeString UstrFile);
 
+//打开自标准模板
+	BOOL OpenFrom(CATUnicodeString UstrTemplatePath);
+
 //打开名为strSheet的表
 	BOOL OpenSheet(CATUnicodeString UstrSheet);
 
@@ -243,27 +246,24 @@ public:
 
 //获得使用列数
 	int GetUsedColumnNum();
-
-
 	int GetBackGroundColor();
 
 //保存为strPath
 	void SaveAs(CATUnicodeString UstrPath);
 
-
-
-//-------------------------------
+// Converts (row,col) indices to an Excel-style A1:C1 string in Excel
+	void IndexToString( int row, int col, char* strResult );
 
 //退出excel
 	void Exit();
 
-	//显示excel
+//-------------------------------
+//显示excel
 	void SetVisible(BOOL blnVisible);
 	//查找此文件是否存在
 	BOOL IsFileExist(CString strFn, BOOL bDir);
 	//自动保存(针对打开已经存在的文件)
 	void Save();
-
 	//添加新的表
 	void AddSheet(CString strSheet);
 	//得到新的选择区域

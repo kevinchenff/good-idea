@@ -67,6 +67,50 @@ BOOL CKerExcel::Open()
 	return TRUE;
 }
 
+//打开自标准模板
+BOOL CKerExcel::OpenFrom(CATUnicodeString UstrTemplatePath)
+{
+	CString strFilePath(UstrTemplatePath.ConvertToChar());
+
+	if(IsFileExist(strFilePath,FALSE)==FALSE)
+	{
+		ktErrorMsgBox("对应路径下EXCEL模板文件不存在！");
+		LPDISPATCH lpDisp=NULL;
+		COleVariant covOptional((long)DISP_E_PARAMNOTFOUND,VT_ERROR);   
+		CoInitialize(NULL);
+		if (!MyApp.CreateDispatch(L"Excel.Application",NULL))
+		{
+			AfxMessageBox(_T("EXCEL初始化时出错!"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
+		lpDisp=MyApp.GetWorkbooks();
+		MyBooks.AttachDispatch(lpDisp,TRUE);
+		lpDisp = MyBooks.Add(covOptional); 
+		MyBook.AttachDispatch(lpDisp,TRUE);
+		lpDisp=MyBook.GetWorksheets();
+		MySheets.AttachDispatch(lpDisp,TRUE);
+		return TRUE;	
+	}
+	else
+	{
+		LPDISPATCH lpDisp=NULL;
+		COleVariant covOptional(strFilePath);  
+		CoInitialize(NULL);
+		if (!MyApp.CreateDispatch(L"Excel.Application",NULL))
+		{
+			AfxMessageBox(_T("EXCEL初始化时出错!"),MB_OK|MB_ICONERROR);
+			return FALSE;
+		}
+		lpDisp=MyApp.GetWorkbooks();
+		MyBooks.AttachDispatch(lpDisp,TRUE);
+		lpDisp = MyBooks.Add(covOptional); 
+		MyBook.AttachDispatch(lpDisp,TRUE);
+		lpDisp=MyBook.GetWorksheets();
+		MySheets.AttachDispatch(lpDisp,TRUE);	
+		return TRUE;
+	}	
+}
+
 //-------------------------------------------------------------------------
 //打开excel文档
 //-------------------------------------------------------------------------
@@ -305,7 +349,7 @@ int CKerExcel::GetUsedColumnNum()
 
 int CKerExcel::GetBackGroundColor()
 {
-	/*
+/*	
 LPDISPATCH  lpDisp=NULL;
 	Interior Itor;
 	lpDisp=MyRange.GetInterior();
@@ -315,8 +359,6 @@ LPDISPATCH  lpDisp=NULL;
 	else
 	{
 		Itor.SetColor((_variant_t)(long)BackStyle.Color);
-		Itor.SetPattern((_variant_t)(short)BackStyle.Pattern);
-		Itor.SetPatternColor((_variant_t)(long)BackStyle.PatternColor);
 	}
 	Itor.ReleaseDispatch();
 
@@ -368,6 +410,22 @@ void CKerExcel::SaveAs(CATUnicodeString UstrPath)
 	MyBook.SaveAs(_variant_t(strPath),vtMissing,vtMissing,vtMissing,vtMissing,vtMissing
 		,0,vtMissing,vtMissing,vtMissing,vtMissing);
 	strFilePath=strPath;
+}
+
+
+// Converts (row,col) indices to an Excel-style A1:C1 string in Excel
+void CKerExcel::IndexToString( int row, int col, char* strResult )
+{
+	{
+		if( col > 26 )
+		{
+			sprintf( strResult,"%c%c%d",'A' + (col-1)/26-1,'A' + (col-1)%26,row );
+		}
+		else
+		{
+			sprintf( strResult,"%c%d", 'A' + (col-1)%26,row );
+		}
+	}
 }
 
 
