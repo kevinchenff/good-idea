@@ -137,7 +137,7 @@ BOOL CKerExcel::Open(CATUnicodeString UstrFile )
 }
 
 //-------------------------------------------------------------------------
-//打开Sheet
+//打开Sheet,按照名称
 //-------------------------------------------------------------------------
 BOOL CKerExcel::OpenSheet(CATUnicodeString UstrSheet)
 {
@@ -159,6 +159,28 @@ BOOL CKerExcel::OpenSheet(CATUnicodeString UstrSheet)
 		}
 	}
 	return FALSE;
+}
+
+//-------------------------------------------------------------------------
+//打开Sheet,按照序号
+//-------------------------------------------------------------------------
+BOOL CKerExcel::OpenSheet(int indexSheet)
+{
+	LPDISPATCH  lpDisp=NULL;
+	long len;
+	len=MySheets.GetCount();
+	if (indexSheet <= len)
+	{
+		lpDisp=MySheets.GetItem((_variant_t)(long)indexSheet);
+		MySheet.AttachDispatch(lpDisp,TRUE);
+		lpDisp=MySheet.GetCells();
+		MyRange.AttachDispatch(lpDisp,TRUE);
+		return TRUE;		
+	}
+	else
+	{
+		return FALSE;
+	}	
 }
 
 
