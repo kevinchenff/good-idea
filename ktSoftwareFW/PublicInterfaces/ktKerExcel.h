@@ -223,6 +223,9 @@ public:
 //打开自标准模板
 	BOOL OpenFrom(CATUnicodeString UstrTemplatePath);
 
+//打开Sheet,按照序号
+	BOOL OpenSheet(int indexSheet);
+
 //打开名为strSheet的表
 	BOOL OpenSheet(CATUnicodeString UstrSheet);
 
