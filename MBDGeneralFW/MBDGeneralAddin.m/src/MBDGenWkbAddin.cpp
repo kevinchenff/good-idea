@@ -128,13 +128,13 @@ CATCmdContainer * MBDGenWkbAddin::CreateToolbars()
 	SetAccessCommand(pMBDDocTemplateTlbStr04, "MBDAddinNewPrdHdr");
 	SetAccessNext( pMBDDocTemplateTlbStr03,pMBDDocTemplateTlbStr04);
 
-	NewAccess(CATCmdSeparator,pMBDSeparator01,MBDSeparator01);
-	SetAccessNext(pMBDDocTemplateTlbStr04,pMBDSeparator01); 
+	//NewAccess(CATCmdSeparator,pMBDSeparator01,MBDSeparator01);
+	//SetAccessNext(pMBDDocTemplateTlbStr04,pMBDSeparator01); 
 
-	// Toolbar2 command starter 的内容
-	NewAccess(CATCmdStarter,pMBDTechnicInfoTlbStr01,MBDTechnicInfoTlbStr01); // MBD技术附注主功能界面
-	SetAccessCommand(pMBDTechnicInfoTlbStr01, "MBDTechnicInfoHdr");
-	SetAccessNext(pMBDSeparator01,pMBDTechnicInfoTlbStr01);
+	//// Toolbar2 command starter 的内容
+	//NewAccess(CATCmdStarter,pMBDTechnicInfoTlbStr01,MBDTechnicInfoTlbStr01); // MBD技术附注主功能界面
+	//SetAccessCommand(pMBDTechnicInfoTlbStr01, "MBDTechnicInfoHdr");
+	//SetAccessNext(pMBDSeparator01,pMBDTechnicInfoTlbStr01);
 
 	AddToolbarView(pMBDDocTemplateTlb,1,Top);
 
@@ -160,12 +160,12 @@ CATCmdContainer * MBDGenWkbAddin::CreateToolbars()
 	SetAccessCommand(pMBDDocTemplateSnuStr04,"MBDAddinNewPrdHdr");
 	SetAccessNext(pMBDDocTemplateSnuStr03,pMBDDocTemplateSnuStr04); // 二级菜单4: 新建product模板
 
-	NewAccess(CATCmdSeparator,pMBDSeparator,MBDSeparator);
-	SetAccessNext(pMBDDocTemplateSnuStr04,pMBDSeparator); 
+	//NewAccess(CATCmdSeparator,pMBDSeparator,MBDSeparator);
+	//SetAccessNext(pMBDDocTemplateSnuStr04,pMBDSeparator); 
 
-	NewAccess(CATCmdStarter,pMBDTechnicInfoSnuStr01,MBDTechnicInfoSnuStr01); // SubMenu Title
-	SetAccessCommand(pMBDTechnicInfoSnuStr01,"MBDTechnicInfoHdr");
-	SetAccessNext(pMBDSeparator,pMBDTechnicInfoSnuStr01); // 二级菜单5: 技术注释功能
+	//NewAccess(CATCmdStarter,pMBDTechnicInfoSnuStr01,MBDTechnicInfoSnuStr01); // SubMenu Title
+	//SetAccessCommand(pMBDTechnicInfoSnuStr01,"MBDTechnicInfoHdr");
+	//SetAccessNext(pMBDSeparator,pMBDTechnicInfoSnuStr01); // 二级菜单5: 技术注释功能
 
 	// Set the connection of menus and toolbars
 	SetAddinMenu(pMBDDocTemplateTlb,pMBDDocTemplateMbr);//连接menu和toolbar
