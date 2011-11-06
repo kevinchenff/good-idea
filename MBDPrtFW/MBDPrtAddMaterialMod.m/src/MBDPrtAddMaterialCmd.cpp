@@ -68,6 +68,7 @@ HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog()
 	}
 	else
 	{ 
+		PrtService::ShowDlgNotify("错误提示","路径\\intel_a\\KTCustomConfig\\MBDMaterial\\MBDMaterial.CATMaterial 不存在！");
 		cout << "ERROR in opening the document= "<< strCustomMBDMaterial << endl ;
 		return hr;
 	}
@@ -238,11 +239,9 @@ HRESULT MBDPrtAddMaterialCmd::ApplyMaterial(CATIMaterialFeature *pIMaterialFeatu
 	}
 
 	// 获取PartBody
-	CATIPartRequest_var spPrtRequst = spPart;
+	/*CATIPartRequest_var spPrtRequst = spPart;
 	CATBaseUnknown_var  oPartBody;
-	spPrtRequst->GetMainBody("MfDefault3DView",oPartBody );
-
-
+	spPrtRequst->GetMainBody("MfDefault3DView",oPartBody );*/
 	// No more need of this interface
 	pIPrtCont->Release();
 	pIPrtCont = NULL ;
@@ -251,7 +250,7 @@ HRESULT MBDPrtAddMaterialCmd::ApplyMaterial(CATIMaterialFeature *pIMaterialFeatu
 	// 2- Retrieves the material support of the part 
 	//---------------------------------------------------
 	CATIMaterialSupport * pIMaterialSupportOnPart = NULL ;
-	hr = oPartBody->QueryInterface(IID_CATIMaterialSupport,(void**) &pIMaterialSupportOnPart);
+	hr = spPart->QueryInterface(IID_CATIMaterialSupport,(void**) &pIMaterialSupportOnPart);
 	if ( FAILED(hr) )
 	{
 		cout << "Pb with the CATIMaterialSupport interface "<< endl;
@@ -279,54 +278,29 @@ HRESULT MBDPrtAddMaterialCmd::SetMaterialProperty(CATIMaterialFeature * &pIMater
 
 	HRESULT hr = S_OK;
 
-	//CATISpecObject* piSpecMat = NULL; 
-	//const CATUnicodeString  iIdentifier = "FeatureProperties";
-	//piSpecMat = pIMaterialFeature->GetApplicativeSpec( iIdentifier ) ;
+	CATISpecObject* piSpecMat = NULL; 
+	const CATUnicodeString  iIdentifier = "Analysis";
+	piSpecMat = pIMaterialFeature->GetApplicativeSpec( iIdentifier ) ;
 
-	//CATIParmPublisher_var spParmPublisher (piSpecMat);
-	//CATListValCATISpecObject_var listSpecAttrParm;
-	//spParmPublisher->GetAllChildren("CATICkeParm",listSpecAttrParm);
+	CATIParmPublisher_var spParmPublisher (piSpecMat);
+	piSpecMat->Release();
+	piSpecMat = NULL;
 
- //   //循环
-	//for (int i = 1; i <= listSpecAttrParm.Size(); i ++)
-	//{
-	//	CATICkeParm_var spConverter = listSpecAttrParm[i];
-	//	CATUnicodeString strName = spConverter->Name();
+	CATListValCATISpecObject_var listSpecAttrParm;
+	spParmPublisher->GetAllChildren("CATICkeParm",listSpecAttrParm);
 
-	//	CATUnicodeString  strShow = spConverter->Show( ); 
-	//	cout <<"Name: "<<strName<<" "<<"Value: "<<strShow<<endl;
-	//}
+    //循环
+	for (int i = 1; i <= listSpecAttrParm.Size(); i ++)
+	{
+		CATICkeParm_var spConverter = listSpecAttrParm[i];
+		CATUnicodeString strName = spConverter->Name();
+
+		CATUnicodeString  strShow = spConverter->Show( ); 
+		cout <<"Name: "<<strName<<" "<<"Value: "<<strShow<<endl;
+	}
 
 	CATIAlias_var spAlias = pIMaterialFeature;
 	spAlias->SetAlias("MBDMaterial");
 
 	return hr;
 }
-
-//HRESULT MBDPrtAddMaterialCmd::WebserviceTest()
-//{
-//	CATListValCATUnicodeString strListOfSearchItems,strListOfSearchResult;
-//	CATUnicodeString strItem;
-//
-//	strItem="MBD_Sys_DatabaseName=MBD_TECHNIQUE_FILE";
-//	strListOfSearchItems.Append(strItem);
-//	strItem="MBD_TECHNIQUE_FILE-ATTRIBUTE_04=弹簧";
-//	strListOfSearchItems.Append(strItem);
-//	strItem="MBD_TECHNIQUE_FILE-MATERIAL_CODE=########";
-//	strListOfSearchItems.Append(strItem);
-//	strItem="MBD_TECHNIQUE_FILE-STANDARD_NOTE_CONTENTS=########";
-//	strListOfSearchItems.Append(strItem);
-//
-//	QueryByGSoap(strListOfSearchItems,strListOfSearchResult);
-//
-//	for (int i = 1; i <= strListOfSearchResult.Size(); i ++)
-//	{
-//		cout<<strListOfSearchResult[i].ConvertToChar()<<endl;
-//		ShowDlgNotify("MBD", strListOfSearchResult[i]);
-//	}
-//
-//	
-//
-//	return S_OK;
-//
-//}
