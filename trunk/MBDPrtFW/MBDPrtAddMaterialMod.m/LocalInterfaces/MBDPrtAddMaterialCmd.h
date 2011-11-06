@@ -72,10 +72,6 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
   //更改材料属性
   HRESULT SetMaterialProperty(CATIMaterialFeature * &pIMaterialFeature);
 
-  // webservice 测试
-  HRESULT WebserviceTest();
-
-
   private:
 
 };
