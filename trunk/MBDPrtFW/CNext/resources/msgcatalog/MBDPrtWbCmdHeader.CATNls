@@ -11,9 +11,32 @@ MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Title = "CATIA MBD Annotation To XML";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Help = "CATIA MBD Annotation To XML";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.ShortHelp = "CATIA MBD Annotation To XML";
 
-
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Title = "Add MBD Material";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Help = "Add MBD Material";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.ShortHelp = "Add MBD Material";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Title = "Single Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Help = "Single Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.ShortHelp = "Single Fastener Design";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Title = "Combination Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Help = "Combination Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.ShortHelp = "Combination Fastener Design";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Title = "Magic Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Help = "Magic Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.ShortHelp = "Magic Fastener Design";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.Title = "Symmetry Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.Help = "Symmetry Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.ShortHelp = "Symmetry Fastener Design";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Title = "Delete Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Help = "Delete Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.ShortHelp = "Delete Fastener";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Title = "Update Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Help = "Update Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.ShortHelp = "Update Fastener";
 
 // END WIZARD EDITION ZONE

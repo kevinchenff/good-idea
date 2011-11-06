@@ -13,8 +13,12 @@ new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr01", "MBDPrtFastenerInfoXMLMod","MBDPrtFast
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr02", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL);
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr03", "MBDPrtAnnotateXMLMod","MBDPrtAnnotateToXMLCmd",(void *)NULL);
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr04", "MBDPrtAddMaterialMod","MBDPrtAddMaterialCmd",(void *)NULL);
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr05", "MBDPrtPartsCompareMod","MBDPrtPartsCompareCmd",(void *)NULL);
+
+//紧固件选用
+new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr05", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL);
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr06", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL);
+
+//紧固件变换
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr07", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL);
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr08", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL);
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr09", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL);
