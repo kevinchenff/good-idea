@@ -8,5 +8,6 @@ MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Icon.Normal = "I_MBDDAFSAGroSelApp";
 
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Icon.Normal = "I_MBDDAFTOAdvPattern";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.Icon.Normal = "I_MBDDAFTOSymmetry";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Icon.Normal = "I_MBDDAFTODelete";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Icon.Normal = "I_MBDDAFTOUpdate";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Icon.Normal = "I_MBDEditFastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Icon.Normal = "I_MBDDAFTODelete";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Icon.Normal = "I_MBDDAFTOUpdate";

@@ -107,6 +107,11 @@ NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr04,MBDPrtWbFDATransformTkt
 SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr04, "MBDPrtWbCmdHdr10");
 SetAccessNext(pMBDPrtWbFDATransformTktTlbStr03,pMBDPrtWbFDATransformTktTlbStr04);
 
+NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr05,MBDPrtWbFDATransformTktTlbStr05); // toolbar command 子按钮1: XXXX功能
+SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr05, "MBDPrtWbCmdHdr11");
+SetAccessNext(pMBDPrtWbFDATransformTktTlbStr04,pMBDPrtWbFDATransformTktTlbStr05);
+
+
 
 //放置工具条位置
 AddToolbarView(pMBDPrtWbFastenerTktTlb,1,Right);
@@ -193,6 +198,10 @@ SetAccessNext(pCATAfrInsertMnu,pMBDPrtWbTktMnu);  // 主菜单工具箱1
 	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr04,MBDPrtWbFDATransformTktMbrStr04); // MenuBar command 子按钮1: XXXX功能
 	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr04, "MBDPrtWbCmdHdr10");
 	SetAccessNext(pMBDPrtWbFDATransformTktMbrStr03,pMBDPrtWbFDATransformTktMbrStr04);
+
+	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr05,MBDPrtWbFDATransformTktMbrStr05); // MenuBar command 子按钮1: XXXX功能
+	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr05, "MBDPrtWbCmdHdr11");
+	SetAccessNext(pMBDPrtWbFDATransformTktMbrStr04,pMBDPrtWbFDATransformTktMbrStr05);
 
 
 // Menu bar to be merged with the workshop menu bar
