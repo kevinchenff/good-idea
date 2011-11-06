@@ -9,6 +9,9 @@ MBDPrtWbFastenerTktTlb.Title = "Fastener Info";
 MBDPrtWbMBDAnnotateTktTlb.Title = "CATIA MBD Annotation";
 MBDPrtWbMBDMaterialTktTlb.Title = "CATIA MBD Material";
 
+MBDPrtWbFDADesignTktTlb.Title = "Fastener Design";
+MBDPrtWbFDATransformTktTlb.Title = "Fastener Transform";
+
 // -------------------------------------------------
 // Menu
 // -------------------------------------------------
@@ -16,6 +19,9 @@ MBDPrtWbTktMnu.Title = "MBD Part Designer" ;
 MBDPrtWbFastenerTktMbr.Title = "Fastener Info" ;
 MBDPrtWbMBDAnnotateTktMbr.Title = "CATIA MBD Annotation" ;
 MBDPrtWbMBDMaterialTktMbr.Title = "CATIA MBD Material";
+
+MBDPrtWbFDADesignTktMbr.Title = "Fastener Design" ;
+MBDPrtWbFDATransformTktMbr.Title = "Fastener Transform";
 
 
 // END WIZARD EDITION ZONE

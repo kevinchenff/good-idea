@@ -65,11 +65,56 @@ SetAccessCommand(pMBDPrtWbMBDMaterialTktTlbStr01, "MBDPrtWbCmdHdr04");
 SetAccessChild(pMBDPrtWbMBDMaterialTktTlb,pMBDPrtWbMBDMaterialTktTlbStr01);
 
 
+// [11/6/2011 xyuser]
+//************************************************************************************
+//创建工具条 紧固件选用模块
+//************************************************************************************
+NewAccess(CATCmdContainer,pMBDPrtWbFDADesignTktTlb,MBDPrtWbFDADesignTktTlb);
+SetAccessNext(pMBDPrtWbMBDMaterialTktTlb,pMBDPrtWbFDADesignTktTlb);
+
+//创建 添加紧固件选用 toolbar command starter功能
+NewAccess(CATCmdStarter,pMBDPrtWbFDADesignTktTlbStr01,MBDPrtWbFDADesignTktTlbStr01); // toolbar command 子按钮1: XXXX功能
+SetAccessCommand(pMBDPrtWbFDADesignTktTlbStr01, "MBDPrtWbCmdHdr05");
+SetAccessChild(pMBDPrtWbFDADesignTktTlb,pMBDPrtWbFDADesignTktTlbStr01);
+
+NewAccess(CATCmdStarter,pMBDPrtWbFDADesignTktTlbStr02,MBDPrtWbFDADesignTktTlbStr02); // toolbar command 子按钮1: XXXX功能
+SetAccessCommand(pMBDPrtWbFDADesignTktTlbStr02, "MBDPrtWbCmdHdr06");
+SetAccessNext(pMBDPrtWbFDADesignTktTlbStr01,pMBDPrtWbFDADesignTktTlbStr02);
+
+
+
+// [11/6/2011 xyuser]
+//************************************************************************************
+//创建工具条 紧固件变换模块
+//************************************************************************************
+NewAccess(CATCmdContainer,pMBDPrtWbFDATransformTktTlb,MBDPrtWbFDATransformTktTlb);
+SetAccessNext(pMBDPrtWbFDADesignTktTlb,pMBDPrtWbFDATransformTktTlb);
+
+//创建 紧固件变换模块 toolbar command starter功能
+NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr01,MBDPrtWbFDATransformTktTlbStr01); // toolbar command 子按钮1: XXXX功能
+SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr01, "MBDPrtWbCmdHdr07");
+SetAccessChild(pMBDPrtWbFDATransformTktTlb,pMBDPrtWbFDATransformTktTlbStr01);
+
+NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr02,MBDPrtWbFDATransformTktTlbStr02); // toolbar command 子按钮1: XXXX功能
+SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr02, "MBDPrtWbCmdHdr08");
+SetAccessNext(pMBDPrtWbFDATransformTktTlbStr01,pMBDPrtWbFDATransformTktTlbStr02);
+
+NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr03,MBDPrtWbFDATransformTktTlbStr03); // toolbar command 子按钮1: XXXX功能
+SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr03, "MBDPrtWbCmdHdr09");
+SetAccessNext(pMBDPrtWbFDATransformTktTlbStr02,pMBDPrtWbFDATransformTktTlbStr03);
+
+NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr04,MBDPrtWbFDATransformTktTlbStr04); // toolbar command 子按钮1: XXXX功能
+SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr04, "MBDPrtWbCmdHdr10");
+SetAccessNext(pMBDPrtWbFDATransformTktTlbStr03,pMBDPrtWbFDATransformTktTlbStr04);
+
+
 //放置工具条位置
 AddToolbarView(pMBDPrtWbFastenerTktTlb,1,Right);
 AddToolbarView(pMBDPrtWbMBDAnnotateTktTlb,1,Right);
 AddToolbarView(pMBDPrtWbMBDMaterialTktTlb,1,Right);
 
+AddToolbarView(pMBDPrtWbFDADesignTktTlb,1,Right);
+AddToolbarView(pMBDPrtWbFDATransformTktTlb,1,Right);
 
 //************************************************************************************
 //创建menus
@@ -97,12 +142,6 @@ SetAccessNext(pCATAfrInsertMnu,pMBDPrtWbTktMnu);  // 主菜单工具箱1
 	SetAccessCommand(pMBDPrtWbFastenerTktMbrStr01, "MBDPrtWbCmdHdr01");
 	SetAccessChild(pMBDPrtWbFastenerTktMbr,pMBDPrtWbFastenerTktMbrStr01);
 
-	//创建对应的MenuBar command starter功能 紧固件信息导入
-	//NewAccess(CATCmdStarter,pMBDPrtWbFastenerTktMbrStr02,MBDPrtWbFastenerTktMbrStr02); // MenuBar command 子按钮1: XXXX功能
-	//SetAccessCommand(pMBDPrtWbFastenerTktMbrStr02, "MBDPrtWbCmdHdr02");
-	//SetAccessNext(pMBDPrtWbFastenerTktMbrStr01,pMBDPrtWbFastenerTktMbrStr02);
-
-
 	//创建二级子菜单: CATIA MBD 附注信息
 	NewAccess(CATCmdContainer,pMBDPrtWbMBDAnnotateTktMbr,MBDPrtWbMBDAnnotateTktMbr); 
 	SetAccessNext(pMBDPrtWbFastenerTktMbr,pMBDPrtWbMBDAnnotateTktMbr); // 二级菜单2:CATIA MBD 附注信息
@@ -121,6 +160,39 @@ SetAccessNext(pCATAfrInsertMnu,pMBDPrtWbTktMnu);  // 主菜单工具箱1
 	SetAccessCommand(pMBDPrtWbMBDMaterialTktMbrStr01, "MBDPrtWbCmdHdr04");
 	SetAccessChild(pMBDPrtWbMBDMaterialTktMbr,pMBDPrtWbMBDMaterialTktMbrStr01);
 
+	//创建二级子菜单: 紧固件选用
+	NewAccess(CATCmdContainer,pMBDPrtWbFDADesignTktMbr,MBDPrtWbFDADesignTktMbr); 
+	SetAccessNext(pMBDPrtWbMBDMaterialTktMbr,pMBDPrtWbFDADesignTktMbr); // 二级菜单4: 紧固件选用
+
+	//创建对应的MenuBar command starter功能 添加材料信息
+	NewAccess(CATCmdStarter,pMBDPrtWbFDADesignTktMbrStr01,MBDPrtWbFDADesignTktMbrStr01); // MenuBar command 子按钮1: XXXX功能
+	SetAccessCommand(pMBDPrtWbFDADesignTktMbrStr01, "MBDPrtWbCmdHdr05");
+	SetAccessChild(pMBDPrtWbFDADesignTktMbr,pMBDPrtWbFDADesignTktMbrStr01);
+
+	NewAccess(CATCmdStarter,pMBDPrtWbFDADesignTktMbrStr02,MBDPrtWbFDADesignTktMbrStr02); // MenuBar command 子按钮1: XXXX功能
+	SetAccessCommand(pMBDPrtWbFDADesignTktMbrStr02, "MBDPrtWbCmdHdr06");
+	SetAccessNext(pMBDPrtWbFDADesignTktMbrStr01,pMBDPrtWbFDADesignTktMbrStr02);
+
+	//创建二级子菜单: 紧固件变换
+	NewAccess(CATCmdContainer,pMBDPrtWbFDATransformTktMbr,MBDPrtWbFDATransformTktMbr); 
+	SetAccessNext(pMBDPrtWbFDADesignTktMbr,pMBDPrtWbFDATransformTktMbr); // 二级菜单5: 紧固件变换
+
+	//创建对应的MenuBar command starter功能 添加材料信息
+	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr01,MBDPrtWbFDATransformTktMbrStr01); // MenuBar command 子按钮1: XXXX功能
+	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr01, "MBDPrtWbCmdHdr07");
+	SetAccessChild(pMBDPrtWbFDATransformTktMbr,pMBDPrtWbFDATransformTktMbrStr01);
+
+	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr02,MBDPrtWbFDATransformTktMbrStr02); // MenuBar command 子按钮1: XXXX功能
+	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr02, "MBDPrtWbCmdHdr08");
+	SetAccessNext(pMBDPrtWbFDATransformTktMbrStr01,pMBDPrtWbFDATransformTktMbrStr02);
+
+	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr03,MBDPrtWbFDATransformTktMbrStr03); // MenuBar command 子按钮1: XXXX功能
+	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr03, "MBDPrtWbCmdHdr09");
+	SetAccessNext(pMBDPrtWbFDATransformTktMbrStr02,pMBDPrtWbFDATransformTktMbrStr03);
+
+	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr04,MBDPrtWbFDATransformTktMbrStr04); // MenuBar command 子按钮1: XXXX功能
+	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr04, "MBDPrtWbCmdHdr10");
+	SetAccessNext(pMBDPrtWbFDATransformTktMbrStr03,pMBDPrtWbFDATransformTktMbrStr04);
 
 
 // Menu bar to be merged with the workshop menu bar
