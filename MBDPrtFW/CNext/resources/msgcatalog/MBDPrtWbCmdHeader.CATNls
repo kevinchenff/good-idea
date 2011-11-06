@@ -31,12 +31,16 @@ MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.Title = "Symmetry Fastener Design";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.Help = "Symmetry Fastener Design";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.ShortHelp = "Symmetry Fastener Design";
 
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Title = "Delete Fastener";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Help = "Delete Fastener";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.ShortHelp = "Delete Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Title = "Edit Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Help = "Edit Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.ShortHelp = "Edit Fastener";
 
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Title = "Update Fastener";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Help = "Update Fastener";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.ShortHelp = "Update Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Title = "Delete Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Help = "Delete Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.ShortHelp = "Delete Fastener";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Title = "Update Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Help = "Update Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.ShortHelp = "Update Fastener";
 
 // END WIZARD EDITION ZONE
