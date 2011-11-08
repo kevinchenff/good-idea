@@ -123,8 +123,10 @@ HRESULT PrdService::AddExternalComponent(CATIProduct *iThisProd, CATDocument *iD
 			return 3;
 		}
 
-		rc = spProduct->QueryInterface(IID_CATIProduct, 
-			                           (void**) &*oNewProduct);
+		rc = spProduct->QueryInterface(IID_CATIProduct, (void**) &*oNewProduct);
+		
+		//更新结构树
+		PrdService::RedrawSpecTree(iThisProd);
 		
 	}
 	return rc; 
@@ -202,8 +204,10 @@ HRESULT PrdService::AddNewExternalComponent(CATIProduct* iThisProd, const CATUni
 /** @anchor err_4 iThisProduct not tested before use */ 
 					spProduct = iThisProd->AddProduct   (spRootProduct);
 					if (NULL_var ==  spProduct ) return 2;
-					rc = spProduct->QueryInterface(IID_CATIProduct, 
-						                           (void**) &*oNewProduct);
+					rc = spProduct->QueryInterface(IID_CATIProduct,(void**) &*oNewProduct);
+
+					//更新结构树
+					PrdService::RedrawSpecTree(iThisProd);
 
 				}
 		}
@@ -288,8 +292,10 @@ HRESULT PrdService::AddNewFromExternalComponent(CATIProduct* iThisProd,const CAT
 					CATIProduct_var spProduct;
 					spProduct = iThisProd->AddProduct   (spRootProduct);
 					if (NULL_var ==  spProduct ) return 2;
-					rc = spProduct->QueryInterface(IID_CATIProduct, 
-						(void**) &*oNewProduct);
+					rc = spProduct->QueryInterface(IID_CATIProduct, (void**) &*oNewProduct);
+
+					//更新结构树
+					PrdService::RedrawSpecTree(iThisProd);
 				}
 		}
 	}
