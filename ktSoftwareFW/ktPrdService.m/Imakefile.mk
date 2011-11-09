@@ -34,7 +34,7 @@ JS0GROUP JS0FM JS0CORBA \
 		CATCGMGeoMath \
 		CATBasicTopologicalOpe \
 		CATTopologicalOperators CATTopologicalObjects \ 
-		CATArrangementPubIDL ProductStructurePubIDL CATArrangementItf ktPrtService
+		CATArrangementPubIDL ProductStructurePubIDL CATArrangementItf ktPrtService CATSaiSpaceAnalysisItf
 		
 # END WIZARD EDITION ZONE
 

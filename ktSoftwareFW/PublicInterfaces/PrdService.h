@@ -15,20 +15,21 @@
 #ifndef PrdService_H
 #define PrdService_H
 
+
+#include "ktPubHeaders.h"
 #include "ktPrdService.h"
 #include "CATBaseUnknown.h"
 
-#include "ktPubHeaders.h"
 
 
-//ProductStructure Framework
-#include "CATIProduct.h"               
-
-//System Framework
-#include "CATUnicodeString.h"
-
-//ObjectModelerBase Framework
-#include "CATDocument.h"
+////ProductStructure Framework
+//#include "CATIProduct.h"               
+//
+////System Framework
+//#include "CATUnicodeString.h"
+//
+////ObjectModelerBase Framework
+//#include "CATDocument.h"
 
 //-----------------------------------------------------------------------
 
@@ -141,6 +142,12 @@ BOOL ChangePrdInstName(CATIProduct_var spPrd);
 static
 BOOL IsProductDocument();
 
+//判读Prd父子关系
+static
+BOOL IsChildPrd(CATIProduct_var spChildPrd, CATIProduct_var spFathertPrd);
+
+
+
 //**********************************************************************************************************************************************************************************************************************************************************
 //装配环境pipe run操作
 //**********************************************************************************************************************************************************************************************************************************************************
@@ -155,6 +162,25 @@ int RemoveRun(CATIProduct_var spRootPrdOnTubePrd);
 //如果为圆管 oType = 1，方管 oType = 2，其它 oType = 3
 static
 BOOL IsThisPrdATube(CATIProduct_var spPrd,int &oType);
+
+
+//**********************************************************************************************************************************************************************************************************************************************************
+//装配环境碰撞检查操作
+//**********************************************************************************************************************************************************************************************************************************************************
+
+//结构体
+typedef struct
+{
+	BOOL bIsInter;
+	BOOL bExistPt;
+	CATIProduct_var spPrd1;
+	CATIProduct_var spPrd2;
+	CATMathPoint    MathPoint;
+	CATMathPoint    VectPoint;
+}ClashStru;
+//通过ClashFactory判断product列表内是否干涉
+static BOOL  IsProductsClashByClashFct(CATListPV &pPVClashList, CATLISTV(CATISpecObject_var) iPrdLst, BOOL bIsCheckInter, int iType);
+
 
 
 };
