@@ -87,21 +87,63 @@ HRESULT PrtService::GetEnvValue(const CATUnicodeString& iKey, CATUnicodeString& 
 //**********************************************************************************************************************************************************************************************************************************************************
 
 //创造几何图形集
-HRESULT PrtService::CreateGSMTool(CATIPrtContainer* iPrtContainer,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj)
+HRESULT PrtService::CreateGSMTool(CATDocument* piDocument,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj)
 {
 	HRESULT rc=E_FAIL;
-	CATIMechanicalRootFactory_var spMechRootFact=iPrtContainer;
-	CATIPrtPart_var spPart = iPrtContainer->GetPart() ;
+	// 获得容器
+	CATInit_var spInitOnDoc = piDocument;
+	if (NULL_var == spInitOnDoc)
+	{
+		cout << "Could not get init on doc.\n";
+		rc = E_FAIL;
+		return rc;
+	}
+	CATIContainer * piContainer = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
+
+	//从文档容器中获取零件CATIPrtContainer容器
+	CATIPrtContainer *piPrtCont = NULL;
+	rc = piContainer->QueryInterface(IID_CATIPrtContainer, (void **)&piPrtCont);
+	if(FAILED(rc))return rc;
+	//释放无用的接口
+	piContainer->Release();
+	piContainer = NULL;
+	
+	CATIMechanicalRootFactory_var spMechRootFact=piPrtCont;
+	CATIPrtPart_var spPart = piPrtCont->GetPart() ;
+	piPrtCont->Release();
+	piPrtCont = NULL;
+
 	CATISpecObject_var spParentSpecObject=spPart;
 	rc=spMechRootFact->CreateGeometricalSet(iName,spParentSpecObject,oGSSpecObj);
 	return rc;
 }
 
 //获取几何图形集
-CATBoolean PrtService::ObtainGSMTool(CATIPrtContainer* iPrtContainer,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj)
+HRESULT PrtService::ObtainGSMTool(CATDocument* piDocument,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj)
 {
-	CATIMechanicalRootFactory_var spMechRootFact=iPrtContainer;
-	CATIPrtPart_var spPart = iPrtContainer->GetPart() ;
+
+	HRESULT rc = S_OK;
+	// 获得容器
+	CATInit_var spInitOnDoc = piDocument;
+	if (NULL_var == spInitOnDoc)
+	{
+		cout << "Could not get init on doc.\n";
+		return rc;
+	}
+	CATIContainer * piContainer = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
+
+	//从文档容器中获取零件CATIPrtContainer容器
+	CATIPrtContainer *piPrtCont = NULL;
+	rc = piContainer->QueryInterface(IID_CATIPrtContainer, (void **)&piPrtCont);
+	if(FAILED(rc))return rc;
+	//释放无用的接口
+	piContainer->Release();
+	piContainer = NULL;
+
+	CATIMechanicalRootFactory_var spMechRootFact=piPrtCont;
+	CATIPrtPart_var spPart = piPrtCont->GetPart() ;
+	piPrtCont->Release();
+	piPrtCont = NULL;
 
 	CATIDescendants_var spPartAsDescendants = spPart;
 	CATListValCATISpecObject_var  oLst; 
@@ -111,10 +153,11 @@ CATBoolean PrtService::ObtainGSMTool(CATIPrtContainer* iPrtContainer,CATUnicodeS
 		if(iName==PrtService::GetAlias(oLst[i]))
 		{
 			oGSSpecObj=oLst[i];
-			return TRUE;
+			rc = E_FAIL;
+			return rc;
 		}
 	}
-	return FALSE;
+	return rc;
 }
 
 //获取或者创建GSMTool
@@ -133,7 +176,7 @@ HRESULT PrtService::CreateOrRetrieveGS(CATISpecObject_var iParentGS,CATUnicodeSt
 		}
 	}
 	CATIPrtContainer_var spPartContainer=iParentGS->GetFeatContainer();
-	CATIMechanicalRootFactory_var spMechRootFact=iParentGS->GetFeatContainer();;
+	CATIMechanicalRootFactory_var spMechRootFact=iParentGS->GetFeatContainer();
 	rc=spMechRootFact->CreateGeometricalSet(iName,iParentGS,oGSSpecObj,0);
 	return rc;
 }
@@ -393,7 +436,7 @@ HRESULT PrtService::CAAGsiCreateGeometricFeatureSets (const CATIContainer_var &i
 }  
 
 //按照名称以某个父节点开始从CATIA结构树上检索几何图形集，仅限指定节点下一层
-HRESULT PrtService::SearchGSMToolByName(CATDocument *piDocument,CATISpecObject_var spGSMToolRoot,CATUnicodeString strSearchName,CATISpecObject_var &spFoundResult)
+HRESULT PrtService::SearchGSMToolByName(CATISpecObject_var spGSMToolRoot,CATUnicodeString strSearchName,CATISpecObject_var &spFoundResult)
 {
 	// 
 	HRESULT hr = S_OK;
@@ -406,27 +449,6 @@ HRESULT PrtService::SearchGSMToolByName(CATDocument *piDocument,CATISpecObject_v
 		hr = E_FAIL;
 		return hr;
 	}
-
-	// 获得容器
-	CATInit_var spInitOnDoc = piDocument;
-	if (NULL_var == spInitOnDoc)
-	{
-		cout << "Could not get init on doc.\n";
-		hr = E_FAIL;
-		return hr;
-	}
-	CATIContainer * piContainer = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
-
-	//从文档容器中获取零件CATIPrtContainer容器
-	CATIPrtContainer *piPrtCont = NULL;
-	hr = piContainer->QueryInterface(IID_CATIPrtContainer, (void **)&piPrtCont);
-	if(FAILED(hr))return hr;
-	CATIPrtPart_var spPrtPart = piPrtCont->GetPart();
-	//释放无用的接口
-	piContainer->Release();
-	piContainer = NULL;
-	piPrtCont->Release();
-	piPrtCont = NULL;
 
 	CATIDescendants_var spDescendants=  spGSMToolRoot;
 	int childrenNb= spDescendants->GetNumberOfChildren();
@@ -456,22 +478,10 @@ HRESULT PrtService::SearchGSMToolByName(CATDocument *piDocument,CATISpecObject_v
 	if (0 == iFound)
 	{
 		spFoundResult = NULL_var;
-		cout<<"不能找到该几何图形集："<<endl;
-
 		hr = E_FAIL;
 	}
 
-	//if (NULL_var != spFoundResult )
-	//{
-	//	if (NULL_var != spPrtPart) { 
-	//		//    cout << " (CAAGsiCreateGeometricFeatureSets) Set As Current the tool "<<  endl; 
-	//		spPrtPart -> SetCurrentFeature(spFoundResult);
-	//	}
-
-	//}
-
 	return hr;
-
 }
 
 //功能：VBA方式 向单个几何图形集设置参数
@@ -1218,25 +1228,12 @@ void PrtService::GetContentSpecsByNameFromDoc(CATDocument *piDoc, CATUnicodeStri
 }
 
 //根据传入的Spec IID从文档Father GSMTool中获取所有Spec
-void PrtService::GetContentSpecsByNameFromGSMTool(CATISpecObject_var spFatherGSMTool,IID SpecIID, CATListValCATISpecObject_var &iolistSpecs)
+void PrtService::GetContentSpecsByNameFromGSMTool(CATISpecObject_var spFatherGSMTool,CATUnicodeString strSpecIID, CATListValCATISpecObject_var &iolistSpecs)
 {
-	CATIBodyRequest_var spBodyReq = spFatherGSMTool;
+	CATIDescendants_var spDescendants = spFatherGSMTool;
 
 	CATListValCATBaseUnknown_var listBaseUnknow;
-	spBodyReq->GetResults("MfDefault3DView",listBaseUnknow);
-
-	for (int i = 1; i <= listBaseUnknow.Size(); i ++)
-	{
-		CATISpecObject* piSpecObt;
-		if (SUCCEEDED(listBaseUnknow[i]->QueryInterface(SpecIID,(void**)&piSpecObt)))
-		{
-			CATISpecObject_var spResult(piSpecObt);
-			piSpecObt->Release();
-			piSpecObt = NULL;
-
-			iolistSpecs.Append(spResult);
-		}
-	}
+	spDescendants->GetAllChildren(strSpecIID,iolistSpecs);
 }
 
 
