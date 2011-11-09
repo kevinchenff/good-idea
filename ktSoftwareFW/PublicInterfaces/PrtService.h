@@ -20,6 +20,9 @@
 #include "ktPubHeaders.h"
 #include "CATListOfCATPathElement.h"
 #include "CATMathDirectionf.h"
+#include "CATMathPoint.h"
+#include "CATLISTV_CATMathPoint.h"
+
 
 
 //-----------------------------------------------------------------------
@@ -312,7 +315,6 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 //**********************************************************************************************************************************************************************************************************************************************************
 //高亮显示操作分类
 //**********************************************************************************************************************************************************************************************************************************************************
-
   //添加高亮显示函数
   static
   void HighlightHSO(CATISpecObject_var spHSOSpec);
@@ -321,9 +323,13 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static
   void RemoveHSO(CATISpecObject_var spHSOSpec);
 
+  //清空高亮集
+  static 
+  BOOL ClearHSO();
 
-
-
+  //高亮显示一组几何对象
+  static 
+  BOOL HighLightObjLst(CATLISTV(CATISpecObject_var) pObjLst);
 
 
 //**********************************************************************************************************************************************************************************************************************************************************
@@ -418,6 +424,15 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   //获取特征的CATPathElement
   static CATPathElement* ExtractPathElement(CATBaseUnknown* pObject);
 
+
+  //------------------------------------------------------------------------
+  //由对象获取路径, 调用者释放
+  static BOOL GetPathElementFromSpecObject(CATPathElement* &pPathElement, const CATISpecObject_var spSpecObject);
+
+  //获取对象路径的字符串
+  static void GetPathElementString(CATPathElement * ipPath ,CATUnicodeString & oPathName, BOOL bIsBackward, int iLength);
+  //---------------------------------------------------------------------------
+
   //=====================================================================================================================================
   //函数说明:从一个特征，构造CATPathElement。调用者Release释放pPathElement指针
   //参数说明:pPathElement--[out]返回的路径指针
@@ -464,7 +479,6 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static CATISpecObject_var GetLastSpecObject(CATPathElement* pPathElement);
 
 
-
 //**********************************************************************************************************************************************************************************************************************************************************
 //视图操作分类
 //**********************************************************************************************************************************************************************************************************************************************************
@@ -473,6 +487,9 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   //模型结构树高亮居中
   static void CenterSpecGraph(CATPathElement* piPathEle);
+
+  //视图居中给定点对象
+  static BOOL CenterViewPoints(const CATLISTV(CATMathPoint) lstMathPoints);
 
 
 };
