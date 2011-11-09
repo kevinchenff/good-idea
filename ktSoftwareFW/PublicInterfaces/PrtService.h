@@ -80,8 +80,8 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 //**********************************************************************************************************************************************************************************************************************************************************
 
   //创造及获取几何图形集，
-  static HRESULT CreateGSMTool(CATIPrtContainer* iPrtContainer,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj);
-  static CATBoolean ObtainGSMTool(CATIPrtContainer* iPrtContainer,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj);
+  static HRESULT CreateGSMTool(CATDocument* piDocument,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj);
+  static HRESULT ObtainGSMTool(CATDocument* piDocument,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj);
 
   //获取或者创建GSMTool
   static HRESULT CreateOrRetrieveGS(CATISpecObject_var iParentGS,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj);
@@ -106,7 +106,7 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   //按照名称以某个父节点开始从CATIA结构树上检索几何图形集，仅限指定节点下一层
   static
-  HRESULT SearchGSMToolByName(CATDocument *piDocument,CATISpecObject_var spGSMToolRoot,CATUnicodeString strSearchName,CATISpecObject_var &spFoundResult);
+  HRESULT SearchGSMToolByName(CATISpecObject_var spGSMToolRoot,CATUnicodeString strSearchName,CATISpecObject_var &spFoundResult);
 
   //VBA方式 向单个几何图形集设置参数
   static 
@@ -158,7 +158,7 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static void GetContentSpecsByNameFromDoc(CATDocument *piDoc, CATUnicodeString strSpecIID, CATListValCATISpecObject_var &iolistSpecs);
 
   //根据传入的Spec IID从文档Father GSMTool中获取所有Spec
-  static void GetContentSpecsByNameFromGSMTool(CATISpecObject_var spFatherGSMTool,IID SpecIID, CATListValCATISpecObject_var &iolistSpecs);
+  static void GetContentSpecsByNameFromGSMTool(CATISpecObject_var spFatherGSMTool,CATUnicodeString strSpecIID, CATListValCATISpecObject_var &iolistSpecs);
 
   //按照特征以及特征名称从容器中获取 某特征指针
   static CATBoolean ObtainChild(CATIPrtContainer* iPrtContainer,CATUnicodeString iType,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj);

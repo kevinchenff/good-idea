@@ -15,21 +15,9 @@
 #ifndef PrdService_H
 #define PrdService_H
 
-
 #include "ktPubHeaders.h"
 #include "ktPrdService.h"
 #include "CATBaseUnknown.h"
-
-
-
-////ProductStructure Framework
-//#include "CATIProduct.h"               
-//
-////System Framework
-//#include "CATUnicodeString.h"
-//
-////ObjectModelerBase Framework
-//#include "CATDocument.h"
 
 //-----------------------------------------------------------------------
 
