@@ -14,6 +14,8 @@
 //===================================================================
 #include "PrtService.h"
 #include "CATSupport.h"
+#include "CATIBodyRequest.h"
+
 
 
 const CATUnicodeString StrDivisionName = "########";
@@ -1216,10 +1218,25 @@ void PrtService::GetContentSpecsByNameFromDoc(CATDocument *piDoc, CATUnicodeStri
 }
 
 //根据传入的Spec IID从文档Father GSMTool中获取所有Spec
-void PrtService::GetContentSpecsByNameFromGSMTool(CATISpecObject_var spFatherGSMTool,CATUnicodeString strSpecIID, CATListValCATISpecObject_var &iolistSpecs)
+void PrtService::GetContentSpecsByNameFromGSMTool(CATISpecObject_var spFatherGSMTool,IID SpecIID, CATListValCATISpecObject_var &iolistSpecs)
 {
-	CATIDescendants_var spDescendants = spFatherGSMTool;
-	spDescendants->GetAllChildren (strSpecIID,iolistSpecs);
+	CATIBodyRequest_var spBodyReq = spFatherGSMTool;
+
+	CATListValCATBaseUnknown_var listBaseUnknow;
+	spBodyReq->GetResults("MfDefault3DView",listBaseUnknow);
+
+	for (int i = 1; i <= listBaseUnknow.Size(); i ++)
+	{
+		CATISpecObject* piSpecObt;
+		if (SUCCEEDED(listBaseUnknow[i]->QueryInterface(SpecIID,(void**)&piSpecObt)))
+		{
+			CATISpecObject_var spResult(piSpecObt);
+			piSpecObt->Release();
+			piSpecObt = NULL;
+
+			iolistSpecs.Append(spResult);
+		}
+	}
 }
 
 
