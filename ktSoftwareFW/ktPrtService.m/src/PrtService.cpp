@@ -1190,7 +1190,7 @@ CATDocument* PrtService::GetPrtDocument()
 }
 
 //根据传入的Spec IID获取所有Spec
-void PrtService::GetContentSpecsByName(CATDocument *piDoc, CATUnicodeString strSpecIID, CATListValCATISpecObject_var iolistSpecs)
+void PrtService::GetContentSpecsByNameFromDoc(CATDocument *piDoc, CATUnicodeString strSpecIID, CATListValCATISpecObject_var &iolistSpecs)
 {
 	CATInit_var spInitOnDoc = piDoc;
 	if (NULL_var == spInitOnDoc)
@@ -1212,6 +1212,13 @@ void PrtService::GetContentSpecsByName(CATDocument *piDoc, CATUnicodeString strS
 	piPrtCont = NULL;
 
 	CATIDescendants_var spDescendants = spPrtPart;
+	spDescendants->GetAllChildren (strSpecIID,iolistSpecs);
+}
+
+//根据传入的Spec IID从文档Father GSMTool中获取所有Spec
+void PrtService::GetContentSpecsByNameFromGSMTool(CATISpecObject_var spFatherGSMTool,CATUnicodeString strSpecIID, CATListValCATISpecObject_var &iolistSpecs)
+{
+	CATIDescendants_var spDescendants = spFatherGSMTool;
 	spDescendants->GetAllChildren (strSpecIID,iolistSpecs);
 }
 

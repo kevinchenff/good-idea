@@ -331,7 +331,7 @@ CString CHandleString::USToCString(CATUnicodeString iUString)
 //  以特定字符拆分字符串
 HRESULT CHandleString::StringToVector(const CATUnicodeString &iStr,const CATUnicodeString &iToken,CATLISTV(CATUnicodeString) &oStrVector) 
 {
-	HRESULT rc = S_OK;
+	HRESULT rc = E_FAIL;
 
 	if (iStr != "" && iToken != "" && iStr.SearchSubString("//",0,CATUnicodeString::CATSearchModeForward) != 1) {
 		CATUnicodeString aStr(iStr);
@@ -352,6 +352,12 @@ HRESULT CHandleString::StringToVector(const CATUnicodeString &iStr,const CATUnic
 
 		// put the left part
 		oStrVector.Append(aStr);
+
+		rc = S_OK;
+	}
+	else
+	{
+		rc = E_FAIL;
 	}
 
 	return rc;

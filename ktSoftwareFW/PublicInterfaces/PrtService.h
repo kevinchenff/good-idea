@@ -155,7 +155,10 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   CATDocument * GetPrtDocument();
 
   //根据传入的Spec IID从文档DOC中获取所有Spec
-  static void GetContentSpecsByName(CATDocument *piDoc, CATUnicodeString strSpecIID, CATListValCATISpecObject_var iolistSpecs);
+  static void GetContentSpecsByNameFromDoc(CATDocument *piDoc, CATUnicodeString strSpecIID, CATListValCATISpecObject_var &iolistSpecs);
+
+  //根据传入的Spec IID从文档Father GSMTool中获取所有Spec
+  static void GetContentSpecsByNameFromGSMTool(CATISpecObject_var spFatherGSMTool,CATUnicodeString strSpecIID, CATListValCATISpecObject_var &iolistSpecs);
 
   //按照特征以及特征名称从容器中获取 某特征指针
   static CATBoolean ObtainChild(CATIPrtContainer* iPrtContainer,CATUnicodeString iType,CATUnicodeString iName,CATISpecObject_var &oGSSpecObj);

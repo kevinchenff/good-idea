@@ -89,9 +89,11 @@ class ExportedByktStrLogService CHandleString: public CATBaseUnknown
   //字符串转换函数
   static CATUnicodeString CStringToUS(CString iCString);
   static CString USToCString(CATUnicodeString iUString);
+
   //以特定字符拆分字符串，前后模式，例如“< >”
   //使用时，自动排除"//"、"#"注释行，但需要用户判断oStrVector的Size 大于 0
   static HRESULT ParseStringByFBToken(const CATUnicodeString &iStr,const CATUnicodeString &iFrontToken,const CATUnicodeString &iBackToken,CATLISTV(CATUnicodeString) &oStrVector);
+
   //以特定字符拆分字符串，空格模式
   static HRESULT StringToVector(const CATUnicodeString &iStr,const CATUnicodeString &iToken,CATLISTV(CATUnicodeString) &oStrVector);
 
