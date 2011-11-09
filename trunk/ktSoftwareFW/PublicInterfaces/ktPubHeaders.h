@@ -68,6 +68,14 @@
 //MecModInterfaces Framework
 #include "CATMfErrUpdate.h"
 
+
+//Åö×²¼ì²éº¯Êý
+#include "CATIClashFactory.h"
+#include "CATIClash.h"
+#include "CATIClashResult.h"
+#include "CATIClash.h"
+#include "CATIConflict.h"
+
 // ApplicationFrame 
 #include "CATFrmEditor.h"
 #include "CATApplicationFrame.h"
@@ -165,7 +173,6 @@
 
 // MechanicalModeler
 #include "CATMmrInterPartCopy.h"
-
 
 // XMLParser framework
 #include "CATSAXParseException.h" // To represent SAX parse errors.

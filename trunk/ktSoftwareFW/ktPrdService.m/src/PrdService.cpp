@@ -14,23 +14,9 @@
 //===================================================================
 #include "PrdService.h"
 
-// ObjetModelerBase Framework
-#include "CATIDocRoots.h"         
-#include "CATDocumentServices.h"  
-#include "CATIRedrawEvent.h"
-
-// Visualization 
-#include "CATIModelEvents.h"
-#include "CATModify.h"
-
-#include "CATInit.h"
-#include "CATIPrtContainer.h"
-#include "CATIPrtPart.h"
-#include "CATIPartRequest.h"
-#include "CATIAlias.h"
-
 #include <iostream>
 using namespace std;
+
  
 CATImplementClass( PrdService,
                    Implementation, 
@@ -552,9 +538,31 @@ BOOL PrdService::IsProductDocument()
 }
 
 
-
-
-
+//判读Prd父子关系
+BOOL PrdService::IsChildPrd(CATIProduct_var spChildPrd, CATIProduct_var spFathertPrd)
+{
+	if(spChildPrd->IsEqual(spFathertPrd)==1)
+	{
+		return TRUE;
+	}
+	CATIProduct_var spTempPrd = NULL_var;
+	while(1)
+	{
+		spTempPrd = spChildPrd ->GetFatherProduct( ) ;
+		if(NULL_var==spTempPrd)
+		{
+			return FALSE;
+		}
+		if(1==spTempPrd->IsEqual(spFathertPrd))
+		{
+			return TRUE;
+		}
+		else
+		{
+			spChildPrd = spTempPrd;
+		}
+	}
+}
 
 
 int PrdService::CreateTube(CATRawColldouble dLstPos, double dDiameter ,  CATIProduct_var spRootPrdOnTubePrd )
@@ -713,5 +721,178 @@ BOOL PrdService::IsThisPrdATube(CATIProduct_var spPrd,int &oType)
 
 	return FALSE;
 }
+
+
+//**********************************************************************************************************************************************************************************************************************************************************
+//装配环境碰撞检查操作
+//**********************************************************************************************************************************************************************************************************************************************************
+
+//通过ClashFactory判断product列表内是否干涉
+//----------------------------------------------------------------------------
+//iType为检查类型 1--接触； 2---碰撞； 3---接触+碰撞
+//----------------------------------------------------------------------------
+BOOL PrdService::IsProductsClashByClashFct(CATListPV &pPVClashList, CATLISTV(CATISpecObject_var) iPrdLst, BOOL bIsCheckInter, int iType)
+{
+	CATFrmEditor * pEditor = CATFrmEditor::GetCurrentEditor();
+	if(NULL==pEditor)
+		return FALSE;
+
+	CATDocument *pDoc = pEditor->GetDocument( );
+	if(NULL==pDoc)
+		return FALSE;
+	//
+	CATIDocRoots *piRootOnDoc = NULL;
+	HRESULT hr = pDoc->QueryInterface(IID_CATIDocRoots,(void**)&piRootOnDoc);
+	if (FAILED(hr))
+		return FALSE;
+
+	CATListValCATBaseUnknown_var *pRootProducts = piRootOnDoc->GiveDocRoots();
+	piRootOnDoc->Release(); 
+	piRootOnDoc = NULL;
+	CATIProduct_var spRootPrd = (*pRootProducts)[1];
+	delete pRootProducts; 
+	pRootProducts=NULL;
+
+	// 获取CATIClashFactory接口，用于生成干涉检验
+	CATIClashFactory * spClashFac = NULL;
+	hr = pDoc->QueryInterface(IID_CATIClashFactory,(void**) &spClashFac);
+	if (FAILED(hr))
+		return FALSE;
+
+	// 清除其中包含的多余干涉特征
+	CATListValCATBaseUnknown_var oObjectsList;
+	spClashFac->List(CATClashInstance,oObjectsList);
+	for (int i = 1; i <= oObjectsList.Size(); i ++)
+	{
+		CATISpecObject_var spClashFeature = oObjectsList[i];
+		CATIAlias_var spAlias = spClashFeature;
+		CATUnicodeString ustrAlias = spAlias->GetAlias();
+		CATISpecObject_var spFather = NULL_var;
+		spFather = spRootPrd;
+		if (NULL_var != spFather)
+			spFather->Remove(spClashFeature);
+		else
+			return FALSE;
+	}
+
+	CATIClash * pioGeneratedClash;
+	spClashFac->Create (pioGeneratedClash);
+	spClashFac->Release();
+	spClashFac = NULL;
+
+	//计算并获取干涉检验结果
+	pioGeneratedClash->Compute();
+	CATIClashResult * pioClashResult = NULL;
+	pioGeneratedClash->GetResult(pioClashResult);
+
+	//判断结果情况
+	int oNumberOfConflicts = 0;
+	pioClashResult->CountConflicts (oNumberOfConflicts );
+
+	for (int i = 0; i < oNumberOfConflicts; i ++)
+	{
+		CATIConflict *pioConflict = NULL;
+		pioClashResult->GetConflict(i,pioConflict);
+		CATResultType oType;
+		pioConflict->GetResultType(oType);
+
+		if ((CATTypeContact == oType&&iType==1)||(CATTypeClash == oType&&iType==2)||((CATTypeContact == oType||CATTypeClash == oType)&&iType==3))
+		{
+			//
+			CATMathPoint mPoint;
+			CATMathPoint mVecPoint;
+
+			CATIProduct * firstProduct = NULL ;
+			CATUnicodeString FirstshapeName ;
+			CATIProduct * secondProduct = NULL ;
+			CATUnicodeString SecshapeName ;
+			pioConflict->GetFirstProduct(firstProduct,FirstshapeName);
+			pioConflict->GetSecondProduct(secondProduct,SecshapeName);
+
+			double * padFirstArr = new double[ 3 ];
+			double * padSecArr = new double[ 3 ];
+			for (int j=0;j <=2; j ++)
+			{
+				padSecArr[j]=0;
+				padFirstArr[j]=0;
+			}
+
+			pioConflict->GetMinOrExtractionVectorCoordinates(padFirstArr,padSecArr);
+			cout<<"Get firstPoints RESULT: "<<padFirstArr[0]<<" "<<padFirstArr[1]<<" "<<padFirstArr[2]<<" "<<endl;
+			cout<<"Get SecPoints RESULT: "<<padSecArr[0]<<" "<<padSecArr[1]<<" "<<padSecArr[2]<<" "<<endl;
+
+			mPoint.SetX(padFirstArr[0]);
+			mPoint.SetY(padFirstArr[1]);
+			mPoint.SetZ(padFirstArr[2]);
+			delete[] padFirstArr, padFirstArr = NULL;
+
+			mVecPoint.SetX(padSecArr[0]);
+			mVecPoint.SetY(padSecArr[1]);
+			mVecPoint.SetZ(padSecArr[2]);
+			delete[] padSecArr, padSecArr = NULL;
+
+			//判断碰撞是否在发生在检查的prd列表内部, 不是则continue
+			BOOL bIsPrd1In = FALSE;
+			BOOL bIsPrd2In = FALSE;
+			for(int k=1; k<=iPrdLst.Size(); k++)
+			{
+				CATIProduct_var spCurPrd = iPrdLst[k];
+
+				if(IsChildPrd(firstProduct,spCurPrd))
+				{
+					bIsPrd1In = TRUE;
+				}
+				if(IsChildPrd(secondProduct,spCurPrd))
+				{
+					bIsPrd2In = TRUE;
+				}
+			}
+			if(FALSE==bIsPrd1In||FALSE==bIsPrd2In)
+			{
+				continue ;
+			}
+
+
+			//是否检查内部碰撞
+			BOOL bIsInOnePrd = FALSE;
+			for(int j=1; j<=iPrdLst.Size(); j++)
+			{
+				CATIProduct_var spCurrentPrd = iPrdLst[j];
+				if(IsChildPrd(firstProduct, spCurrentPrd)&&IsChildPrd(secondProduct, spCurrentPrd))
+				{
+					bIsInOnePrd = TRUE;
+					break;
+				}
+			}
+			if(FALSE == bIsCheckInter) //如果不检查内部， 碰撞发生在内部， 跳过
+			{
+				if(TRUE==bIsInOnePrd)
+					continue ;
+			}
+
+
+			//
+			ClashStru *pClashStru = new ClashStru();
+			if(bIsInOnePrd)
+				pClashStru->bIsInter = TRUE;
+			else
+				pClashStru->bIsInter = FALSE;
+
+			if (CATTypeContact == oType)
+				pClashStru->bExistPt = FALSE;
+			else
+				pClashStru->bExistPt = TRUE;
+
+			pClashStru->spPrd1 = firstProduct;
+			pClashStru->spPrd2 = secondProduct;
+			pClashStru->MathPoint = mPoint;
+			pClashStru->VectPoint = mVecPoint;
+
+			pPVClashList.Append(pClashStru);
+		}
+	}
+	return TRUE;
+}
+
 
  
