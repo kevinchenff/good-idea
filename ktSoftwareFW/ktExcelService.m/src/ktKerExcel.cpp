@@ -64,6 +64,8 @@ BOOL CKerExcel::Open()
 	MyBook.AttachDispatch(lpDisp,TRUE);
 	lpDisp=MyBook.GetWorksheets();
 	MySheets.AttachDispatch(lpDisp,TRUE);
+	CoUninitialize();
+
 	return TRUE;
 }
 
@@ -680,7 +682,6 @@ void CKerExcel::Exit()
 	MyBooks.ReleaseDispatch();
 	MyApp.Quit();
 	MyApp.ReleaseDispatch();
-	CoUninitialize();
 }
 
 
