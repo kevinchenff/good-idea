@@ -216,6 +216,11 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static
   HRESULT SetSpecObjShowAttr(CATISpecObject_var iSpecObj,CATUnicodeString iShowOrHide);
 
+  //设置特征列表为隐藏或显示
+  static
+  HRESULT SetListSpecObjShowAttr(CATListValCATISpecObject_var &iListSpecObj,CATUnicodeString iShowOrHide);
+
+
   //获取特征为隐藏或显示
   static
   HRESULT GetSpecObjShowAttr(CATISpecObject_var iSpecObj,CATBoolean &iShowOrHide);

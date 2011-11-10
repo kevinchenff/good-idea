@@ -1590,6 +1590,20 @@ HRESULT PrtService::SetSpecObjShowAttr(CATISpecObject_var iSpecObj,CATUnicodeStr
 	return S_OK;
 }
 
+//设置特征列表为隐藏或显示
+HRESULT PrtService::SetListSpecObjShowAttr(CATListValCATISpecObject_var &iListSpecObj,CATUnicodeString iShowOrHide)
+{
+
+	HRESULT hr = S_OK;
+
+	for (int i=1; i <= iListSpecObj.Size(); i++)
+	{
+		hr = SetSpecObjShowAttr(iListSpecObj[i],iShowOrHide);
+	}
+
+	return hr;
+}
+
 //获取特征为隐藏或显示
 HRESULT PrtService::GetSpecObjShowAttr(CATISpecObject_var iSpecObj,CATBoolean &iShowOrHide)
 {
