@@ -49,6 +49,7 @@ PrtFstDesignDlg::PrtFstDesignDlg() :
  _ChooseFstPB = NULL;
  _Frame004 = NULL;
  _SpecInfoEditor = NULL;
+ _Frame015 = NULL;
  _ShowDetailInfoPB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
@@ -75,6 +76,7 @@ PrtFstDesignDlg::~PrtFstDesignDlg()
  _ChooseFstPB = NULL;
  _Frame004 = NULL;
  _SpecInfoEditor = NULL;
+ _Frame015 = NULL;
  _ShowDetailInfoPB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
@@ -88,7 +90,6 @@ void PrtFstDesignDlg::Build()
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
  SetGridRowResizable(3,1);
- SetGridRowResizable(4,1);
  SetGridColumnResizable(0,1);
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -128,8 +129,10 @@ _Frame004 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
  _Frame004 -> SetGridColumnResizable(0,1);
  _SpecInfoEditor = new CATDlgEditor(_Frame004, "SpecInfoEditor", CATDlgEdtMultiline);
 _SpecInfoEditor -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _ShowDetailInfoPB = new CATDlgPushButton(this, "ShowDetailInfoPB");
-_ShowDetailInfoPB -> SetGridConstraints(4, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
+ _Frame015 = new CATDlgFrame(this, "Frame015", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame015 -> SetGridConstraints(4, 0, 1, 1, CATGRID_4SIDES);
+ _ShowDetailInfoPB = new CATDlgPushButton(_Frame015, "ShowDetailInfoPB");
+_ShowDetailInfoPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION

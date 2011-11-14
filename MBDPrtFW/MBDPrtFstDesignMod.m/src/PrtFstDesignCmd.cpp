@@ -26,7 +26,7 @@ CATCreateClass( PrtFstDesignCmd);
 PrtFstDesignCmd::PrtFstDesignCmd() :
   CATStateCommand ("PrtFstDesignCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-  ,_Indication(NULL)
+  ,m_piDlg(NULL)
 {
 }
 
@@ -35,8 +35,12 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 //-------------------------------------------------------------------------
 PrtFstDesignCmd::~PrtFstDesignCmd()
 {
-   if (_Indication != NULL) 
-      _Indication->RequestDelayedDestruction();
+	if (m_piDlg != NULL)
+	{
+		m_piDlg->RequestDelayedDestruction();
+		m_piDlg = NULL;
+	}
+   
 }
 
 
@@ -45,29 +49,48 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 //-------------------------------------------------------------------------
 void PrtFstDesignCmd::BuildGraph()
 {
+	m_piDlg = new PrtFstDesignDlg();
+	m_piDlg->Build();
+	m_piDlg->SetVisibility(CATDlgShow); 
 
 
-  // TODO: Define the StateChart 
-  // ---------------------------
-  _Indication = new CATIndicationAgent ("Indication");
-  CATMathPlane PlaneXY;
-  _Indication -> SetMathPlane (PlaneXY);
-  CATDialogState * initialState = GetInitialState("initialState");
-  initialState -> AddDialogAgent (_Indication);
-  
-  AddTransition( initialState, NULL, 
-                 IsOutputSetCondition (_Indication),
-                 Action ((ActionMethod) &PrtFstDesignCmd::ActionOne));
+	// 主对话框的消息响应
+	AddAnalyseNotificationCB (m_piDlg, 
+		m_piDlg->GetDiaOKNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::OkDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_piDlg, 
+		m_piDlg->GetWindCloseNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::CloseDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_piDlg, 
+		m_piDlg->GetDiaCANCELNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::CloseDlgCB,
+		NULL);
 }
 
 
-//-------------------------------------------------------------------------
-// ActionOne ()
-//-------------------------------------------------------------------------
-CATBoolean PrtFstDesignCmd::ActionOne( void *data )
+void PrtFstDesignCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-  // TODO: Define the action associated with the transition 
-  // ------------------------------------------------------
+	if (NULL != m_piDlg)
+	{
+		m_piDlg->RequestDelayedDestruction();
+		m_piDlg = NULL;
+	}	
 
-  return TRUE;
+	RequestDelayedDestruction();
+
+}
+void PrtFstDesignCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+	if (NULL != m_piDlg)
+	{
+		m_piDlg->RequestDelayedDestruction();
+		m_piDlg = NULL;
+	}	
+
+	RequestDelayedDestruction();
 }

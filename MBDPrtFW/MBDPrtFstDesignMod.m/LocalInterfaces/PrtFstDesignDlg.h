@@ -64,6 +64,7 @@ class PrtFstDesignDlg: public CATDlgDialog
  CATDlgPushButton*      _ChooseFstPB;
  CATDlgFrame*      _Frame004;
  CATDlgEditor*      _SpecInfoEditor;
+ CATDlgFrame*      _Frame015;
  CATDlgPushButton*      _ShowDetailInfoPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
