@@ -9,7 +9,7 @@ Frame002.Label014.Title = "安装方向";
 Frame003.Title = "定义方式";
 Frame003.ChooseFstPB.Title = "选择紧固件...";
 Frame004.Title = "规范";
-ShowDetailInfoPB.Title = "显示紧固件详细信息...";
+Frame015.ShowDetailInfoPB.Title = "显示紧固件详细信息...";
 // END WIZARD REPLACEMENT ZONE
 
 

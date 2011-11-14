@@ -2,7 +2,7 @@
 CATDlgDialog PrtFstDesignDlg
 {
   STYLE = CATDlgGridLayout;
-  ROWRES = { 3, 4 };
+  ROWRES = { 3 };
   COLRES = { 0 };
 }
 
@@ -101,10 +101,17 @@ CATDlgEditor SpecInfoEditor
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgPushButton ShowDetailInfoPB
+CATDlgFrame Frame015
 {
   FATHER = PrtFstDesignDlg;
-  GRID = { 4, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM };
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 4, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton ShowDetailInfoPB
+{
+  FATHER = Frame015;
+  GRID = { 0, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM };
 }
 
 // END WIZARD REPLACEMENT ZONE

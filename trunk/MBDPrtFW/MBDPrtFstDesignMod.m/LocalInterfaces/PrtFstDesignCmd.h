@@ -20,8 +20,7 @@
 
 #include "CATStateCommand.h"
 #include "CATBoolean.h"
-
-class CATIndicationAgent;
+#include "PrtFstDesignDlg.h"
 
 //----------------------------------------------------------------------
 
@@ -51,14 +50,13 @@ class PrtFstDesignCmd: public CATStateCommand
      */
   virtual void     BuildGraph();
 
-    /**
-     * Action associated to state transitions.
-     */
-  virtual CATBoolean  ActionOne(void * data);
+  void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
-  private:
-
-  CATIndicationAgent	* _Indication;
+ 
+  //
+private:
+	PrtFstDesignDlg *m_piDlg;
 };
 
 //----------------------------------------------------------------------

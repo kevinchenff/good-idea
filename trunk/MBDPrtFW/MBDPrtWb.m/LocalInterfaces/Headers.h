@@ -15,7 +15,7 @@ new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr03", "MBDPrtAnnotateXMLMod","MBDPrtAnnotate
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr04", "MBDPrtAddMaterialMod","MBDPrtAddMaterialCmd",(void *)NULL);
 
 //紧固件选用
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr05", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //单个紧固件选用
+new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr05", "MBDPrtFstDesignMod","PrtFstDesignCmd",(void *)NULL); //单个紧固件选用
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr06", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //组合紧固件选用
 
 //紧固件变换
