@@ -24,7 +24,6 @@
 #include "CATLISTV_CATMathPoint.h"
 
 
-
 //-----------------------------------------------------------------------
 
 /**
@@ -167,8 +166,8 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static HRESULT SetSpecObjColor(CATISpecObject_var iSpecObj,int iColor);
   static HRESULT SetSpecObjOpacityAttr(CATISpecObject_var iSpecObj,CATUnicodeString iOpacityOrNoOpacity);
 
-
-
+  //从文档指针获得PrdNumber
+  static void GetPrdNumberFormDoc(CATDocument * ipiDocument,CATUnicodeString &iostrPrdNumber);
 
 
 
@@ -385,10 +384,10 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static
   void GetParamFactory(CATDocument *piDocument,CATICkeParmFactory_var &iospParmFact);
 
-  //获取当前Part文档容器
+  //获取当前Part文档Root Container
   static HRESULT ObtainCurrentRootContainer(CATIPrtContainer *&oRootContainer);
 
-  //获取Root Container
+  //获取某Part文档Root Container
   static HRESULT ObtainRootContainer(CATDocument* iDoc,CATIPrtContainer *&oRootContainer);
 
 

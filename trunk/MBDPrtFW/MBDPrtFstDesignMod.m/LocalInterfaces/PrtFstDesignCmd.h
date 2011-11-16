@@ -18,9 +18,17 @@
 #ifndef PrtFstDesignCmd_H
 #define PrtFstDesignCmd_H
 
+#include "ktPubHeaders.h"
 #include "CATStateCommand.h"
 #include "CATBoolean.h"
 #include "PrtFstDesignDlg.h"
+#include "CATFeatureImportAgent.h"
+#include "CATPathElementAgent.h"
+#include "CATHSO.h"
+
+
+
+
 
 //----------------------------------------------------------------------
 
@@ -50,13 +58,42 @@ class PrtFstDesignCmd: public CATStateCommand
      */
   virtual void     BuildGraph();
 
+  //消息框响应函数
   void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
- 
+  //判断是否为ZP模型
+  BOOL IsThisZPPrt();
+
+  //各种转换消息响应函数
+  CATBoolean ChoosePoints( void *UsefulData);
+  CATBoolean ChooseSurfs( void *UsefulData);
+  //
+  CATBoolean ActivePointsSL( void *UsefulData);
+  CATBoolean ActiveFirstSurfSL( void *UsefulData);
+  CATBoolean ActiveSecSurfSL( void *UsefulData);
+
+
   //
 private:
 	PrtFstDesignDlg *m_piDlg;
+
+	//文档指针
+	CATDocument *m_piDoc;
+	CATUnicodeString m_strDocName;
+	CATFrmEditor *m_piEditor;
+	CATHSO *m_piHSO;
+
+	//定义代理
+	CATFeatureImportAgent *m_piSurfAgt;
+	CATFeatureImportAgent *m_piPointsAgt;
+
+	CATDialogAgent *m_piPointSLAgt,*m_piFirstSurfSLAgt,*m_piSecSurfSLAgt;
+
+	//存储中间数据变量
+	CATListValCATISpecObject_var m_lstSpecPoints;
+	CATListValCATISpecObject_var m_lstSpecFirstSurfs,m_lstSpecSecSurfs;
+	int m_SurfSLNum;
 };
 
 //----------------------------------------------------------------------

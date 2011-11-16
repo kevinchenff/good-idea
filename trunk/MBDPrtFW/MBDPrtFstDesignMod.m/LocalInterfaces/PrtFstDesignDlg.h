@@ -45,11 +45,6 @@ class PrtFstDesignDlg: public CATDlgDialog
   void Build ();
 
 
-  protected:
-
-  private:
-
-
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
  CATDlgSelectorList*      _PointsSL;

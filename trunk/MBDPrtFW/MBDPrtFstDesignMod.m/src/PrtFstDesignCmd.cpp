@@ -19,6 +19,12 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstDesignCmd);
 
+//
+#include "CATIMfZeroDimResult.h"
+#include "CATIMfBiDimResult.h"
+
+
+
 
 //-------------------------------------------------------------------------
 // Constructor
@@ -26,8 +32,26 @@ CATCreateClass( PrtFstDesignCmd);
 PrtFstDesignCmd::PrtFstDesignCmd() :
   CATStateCommand ("PrtFstDesignCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-  ,m_piDlg(NULL)
+  ,m_piDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
+  ,m_piSurfAgt(NULL),m_piPointsAgt(NULL),m_SurfSLNum(1)
 {
+	//初始化获得当前文档及名称
+	m_piDoc = PrtService::GetPrtDocument();
+	PrtService::GetPrdNumberFormDoc(m_piDoc,m_strDocName);
+
+	m_piEditor = CATFrmEditor::GetCurrentEditor();
+	if (NULL != m_piEditor)
+	{
+		m_piHSO = m_piEditor->GetHSO();
+		m_piHSO->Empty();
+	}
+
+	//判断是否为ZP模型;
+	if (!IsThisZPPrt())
+	{
+		PrtService::ShowDlgNotify("提示","该功能仅在ZP模型下操作，点击关闭！");
+		RequestDelayedDestruction();
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -40,6 +64,33 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 		m_piDlg->RequestDelayedDestruction();
 		m_piDlg = NULL;
 	}
+
+	if (NULL!=m_piPointsAgt)
+	{
+		m_piPointsAgt->RequestDelayedDestruction();
+		m_piPointsAgt=NULL;
+	}
+
+	if (NULL!=m_piSurfAgt)
+	{
+		m_piSurfAgt->RequestDelayedDestruction();
+		m_piSurfAgt=NULL;
+	}
+	if (NULL!=m_piFirstSurfSLAgt)
+	{
+		m_piFirstSurfSLAgt->RequestDelayedDestruction();
+		m_piFirstSurfSLAgt=NULL;
+	}
+	if (NULL!=m_piSecSurfSLAgt)
+	{
+		m_piSecSurfSLAgt->RequestDelayedDestruction();
+		m_piSecSurfSLAgt=NULL;
+	}
+	if (NULL!=m_piPointSLAgt)
+	{
+		m_piPointSLAgt->RequestDelayedDestruction();
+		m_piPointSLAgt=NULL;
+	}	
    
 }
 
@@ -69,6 +120,69 @@ void PrtFstDesignCmd::BuildGraph()
 		m_piDlg->GetDiaCANCELNotification(),
 		(CATCommandMethod)&PrtFstDesignCmd::CloseDlgCB,
 		NULL);
+
+	//创建安装点代理
+	m_piPointsAgt = new CATFeatureImportAgent("选择安装点");
+	m_piPointsAgt->SetBehavior( CATDlgEngWithPSOHSO | CATDlgEngWithPrevaluation | CATDlgEngMultiAcquisitionUserCtrl | CATDlgEngRepeat);
+	m_piPointsAgt->SetAgentBehavior(MfRelimitedFeaturization|MfPermanentBody); 
+	m_piPointsAgt->AddElementType(IID_CATIMfZeroDimResult);
+
+	//创建安装面代理
+	m_piSurfAgt = new CATFeatureImportAgent("选择安装面");
+	m_piSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
+	m_piSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
+	m_piSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
+
+	//points SL
+	m_piPointSLAgt = new CATDialogAgent("ChoosePoints");
+	m_piPointSLAgt->SetBehavior(CATDlgEngRepeat);
+	m_piPointSLAgt->AcceptOnNotify(m_piDlg,m_piDlg->_PointsSL->GetListSelectNotification());
+
+	//first Surf SL
+	m_piFirstSurfSLAgt = new CATDialogAgent("ChooseFirstSurf");
+	m_piFirstSurfSLAgt->SetBehavior(CATDlgEngRepeat);
+	m_piFirstSurfSLAgt->AcceptOnNotify(m_piDlg,m_piDlg->_FirstSurfSL->GetListSelectNotification());
+
+	//second Surf SL
+	m_piSecSurfSLAgt = new CATDialogAgent("ChooseSecSurf");
+	m_piSecSurfSLAgt->SetBehavior(CATDlgEngRepeat);
+	m_piSecSurfSLAgt->AcceptOnNotify(m_piDlg,m_piDlg->_SecondSurfSL->GetListSelectNotification());
+
+	//Define the StateChart
+	CATDialogState * StSelectPoints = GetInitialState("SelectPoints");
+	StSelectPoints -> AddDialogAgent (m_piPointsAgt);
+	StSelectPoints -> AddDialogAgent (m_piPointSLAgt);
+
+	CATDialogState * StSelectSurf = AddDialogState("SelectSurf");
+	StSelectSurf -> AddDialogAgent (m_piSurfAgt);
+	StSelectSurf -> AddDialogAgent (m_piFirstSurfSLAgt);
+	StSelectSurf -> AddDialogAgent (m_piSecSurfSLAgt);
+
+	//转换关系
+	AddTransition(StSelectPoints, StSelectPoints, 
+		IsOutputSetCondition(m_piPointsAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ChoosePoints));
+
+	AddTransition(StSelectPoints, StSelectPoints, 
+		IsOutputSetCondition(m_piPointSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointsSL));
+
+	AddTransition(StSelectPoints, StSelectSurf, 
+		IsOutputSetCondition(m_piFirstSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveFirstSurfSL));
+
+	AddTransition(StSelectPoints, StSelectSurf, 
+		IsOutputSetCondition(m_piSecSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveSecSurfSL));
+
+	AddTransition(StSelectSurf,StSelectPoints,
+		IsOutputSetCondition(m_piPointSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointsSL));
+
+	AddTransition(StSelectSurf,StSelectSurf,
+		IsOutputSetCondition(m_piSurfAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ChooseSurfs));
+
 }
 
 
@@ -93,4 +207,159 @@ void PrtFstDesignCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 	}	
 
 	RequestDelayedDestruction();
+}
+
+//判断是否为ZP模型
+BOOL PrtFstDesignCmd::IsThisZPPrt()
+{
+	if (m_strDocName != "")
+	{
+		int istart=m_strDocName.SearchSubString("-ZP",0,CATUnicodeString::CATSearchModeBackward);
+		if (istart == (m_strDocName.GetLengthInChar()-3) || istart == (m_strDocName.GetLengthInChar()-4))
+		{
+			return TRUE;
+		}
+		else return FALSE;
+	}
+	else return FALSE;
+}
+
+//各种转换消息响应函数
+CATBoolean PrtFstDesignCmd::ChoosePoints( void *UsefulData)
+{
+	//定义集群
+	CATSO * pSO = NULL ;
+	pSO = m_piPointsAgt->GetListOfValues();
+	if ( NULL != pSO )
+	{
+		int lg = pSO->GetSize();
+		for ( int i=0 ; i < lg ; i++)
+		{
+			CATPathElement * pPath = (CATPathElement*) (*pSO)[i];
+			CATPathElement * pSubPath = NULL;
+
+			CATBaseUnknown * pLeaf =NULL ;
+			if ( NULL != pPath )
+				pSubPath = pPath->GetSubPath("CATISpecObject");
+			pLeaf = (*pSubPath)[pSubPath->GetSize()-1];
+
+			CATISpecObject_var spLeaf = pLeaf;
+			BOOL existFlag = FALSE;
+			for (int j = 1; j <= m_lstSpecPoints.Size(); j++)
+			{
+				if (m_lstSpecPoints[j] == spLeaf)
+				{
+					existFlag = TRUE;
+					break;
+				}
+			}
+			if (!existFlag) //不存在放入
+			{
+				m_lstSpecPoints.Append(spLeaf);
+
+				//
+				CATUnicodeString strShowPath("");
+				strShowPath = spLeaf->GetDisplayName();
+				PrtService::PathElementString(pSubPath,strShowPath,TRUE);
+				m_piDlg->_PointsSL->SetLine(strShowPath);
+			}
+			
+		}
+	}
+
+	m_piPointsAgt->InitializeAcquisition();
+	return TRUE;
+
+}
+
+CATBoolean PrtFstDesignCmd::ChooseSurfs( void *UsefulData)
+{
+	HRESULT hr = E_FAIL;
+	CATBaseUnknown* piSelectElement =m_piSurfAgt->GetElementValue();//获得所选对象
+	if (piSelectElement != NULL)
+	{
+		CATISpecObject_var spSpecOnSelection = NULL_var;
+		spSpecOnSelection = piSelectElement;
+
+		if ( spSpecOnSelection != NULL_var )
+		{
+			if (m_SurfSLNum == 1)
+			{
+				CATBoolean exitFlag = FALSE;
+				for (int i = 1; i <= m_lstSpecFirstSurfs.Size(); i ++)
+				{
+					if (m_lstSpecFirstSurfs[i] == spSpecOnSelection)
+					{
+						m_lstSpecFirstSurfs.RemoveValue(spSpecOnSelection);
+						exitFlag = TRUE;
+						break;
+					}
+				}
+
+				if (exitFlag == FALSE)
+				{
+					m_lstSpecFirstSurfs.Append(spSpecOnSelection);
+				}
+				m_piDlg->_FirstSurfSL->ClearLine();
+
+				for (int i = 1; i <= m_lstSpecFirstSurfs.Size(); i ++)
+				{
+					CATIAlias_var spAlias = m_lstSpecFirstSurfs[i];
+					CATUnicodeString strAlias = spAlias->GetAlias();
+					m_piDlg->_FirstSurfSL->SetLine(strAlias);
+
+					PrtService::HighlightHSO(m_lstSpecFirstSurfs[i]);
+				}
+			} 
+			else
+			{
+				CATBoolean exitFlag = FALSE;
+				for (int i = 1; i <= m_lstSpecSecSurfs.Size(); i ++)
+				{
+					if (m_lstSpecSecSurfs[i] == spSpecOnSelection)
+					{
+						m_lstSpecSecSurfs.RemoveValue(spSpecOnSelection);
+						exitFlag = TRUE;
+						break;
+					}
+				}
+
+				if (exitFlag == FALSE)
+				{
+					m_lstSpecSecSurfs.Append(spSpecOnSelection);
+				}
+				m_piDlg->_SecondSurfSL->ClearLine();
+
+				for (int i = 1; i <= m_lstSpecSecSurfs.Size(); i ++)
+				{
+					CATIAlias_var spAlias = m_lstSpecSecSurfs[i];
+					CATUnicodeString strAlias = spAlias->GetAlias();
+					m_piDlg->_SecondSurfSL->SetLine(strAlias);
+
+					PrtService::HighlightHSO(m_lstSpecSecSurfs[i]);
+				}
+			}			
+		}
+	}
+
+	m_piSurfAgt->InitializeAcquisition();
+	return TRUE;	
+}
+//激活相关代理
+CATBoolean PrtFstDesignCmd::ActivePointsSL( void *UsefulData)
+{
+	m_piPointsAgt->InitializeAcquisition();
+	return TRUE;	
+}
+CATBoolean PrtFstDesignCmd::ActiveFirstSurfSL( void *UsefulData)
+{
+	m_SurfSLNum = 1;
+	m_piSurfAgt->InitializeAcquisition();
+	return TRUE;
+}
+CATBoolean PrtFstDesignCmd::ActiveSecSurfSL( void *UsefulData)
+{
+	m_SurfSLNum = 2;
+	m_piSurfAgt->InitializeAcquisition();
+	return TRUE;
 }
