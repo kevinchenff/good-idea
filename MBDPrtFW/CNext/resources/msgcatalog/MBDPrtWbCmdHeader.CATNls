@@ -15,13 +15,13 @@ MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Title = "Add MBD Material";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Help = "Add MBD Material";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.ShortHelp = "Add MBD Material";
 
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Title = "Single Fastener Design";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Help = "Single Fastener Design";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.ShortHelp = "Single Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Title = "Create Fastener Points";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Help = "Create Fastener Points";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.ShortHelp = "Create Fastener Points";
 
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Title = "Combination Fastener Design";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Help = "Combination Fastener Design";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.ShortHelp = "Combination Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Title = "Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Help = "Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.ShortHelp = "Fastener Design";
 
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Title = "Magic Fastener Design";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Help = "Magic Fastener Design";

@@ -1324,6 +1324,32 @@ HRESULT PrtService::SetSpecObjOpacityAttr(CATISpecObject_var iSpecObj,CATUnicode
 	return S_OK;
 }
 
+//从文档获得prdnumber
+void PrtService::GetPrdNumberFormDoc(CATDocument * ipiDocument,CATUnicodeString &iostrPrdNumber)
+{
+	//防止为空
+	if (ipiDocument == NULL)
+	{
+		iostrPrdNumber = "";
+		return;
+	}
+
+	//
+	CATInit_var spInitOnDoc(ipiDocument);
+
+	// 获得相应的容器类
+	CATIPrtContainer * piPrtCont =  (CATIPrtContainer*) spInitOnDoc->GetRootContainer("CATIPrtContainer");
+	CATIPrtPart_var spPart = piPrtCont->GetPart();
+	piPrtCont->Release();
+	piPrtCont=NULL;
+	CATISpecObject_var spSpecOnPart = spPart;
+
+	// 获得Product，更改零件编号
+	CATIProduct_var spProduct = spPart->GetProduct( );
+	iostrPrdNumber = spProduct->GetPartNumber();
+
+}
+
 //**********************************************************************************************************************************************************************************************************************************************************
 //特征操作
 //**********************************************************************************************************************************************************************************************************************************************************
@@ -3716,7 +3742,7 @@ void PrtService::PathElementString(CATPathElement * ipPath,CATUnicodeString & oP
 	if ( NULL != ipPath )
 	{
 		int sizeOfThePath = ipPath->GetSize();  
-		if(bIsBackward)
+		if(!bIsBackward)
 		{
 			for ( int i = 0 ; i < sizeOfThePath ; i++ )
 			{

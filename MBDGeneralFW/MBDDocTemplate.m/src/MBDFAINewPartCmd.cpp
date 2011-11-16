@@ -149,8 +149,6 @@ void MBDFAINewPartCmd::AddMBDTemplateType01()
 		// 通过上一步的FrmEditor获得文档的Document
 		CATDocument * piDocument = m_pFrmEditor->GetDocument();
 		CATInit_var spInitOnDoc(piDocument);
-		piDocument->Release();
-		piDocument=NULL;
 
 		// 获得相应的容器类
 		CATIPrtContainer * piPrtCont =  (CATIPrtContainer*) spInitOnDoc->GetRootContainer("CATIPrtContainer");

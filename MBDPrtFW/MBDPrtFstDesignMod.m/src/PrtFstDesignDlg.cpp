@@ -134,6 +134,9 @@ _Frame015 -> SetGridConstraints(4, 0, 1, 1, CATGRID_4SIDES);
  _ShowDetailInfoPB = new CATDlgPushButton(_Frame015, "ShowDetailInfoPB");
 _ShowDetailInfoPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+_FirstSurfSL->SetLine("未选择面");
+_SecondSurfSL->SetLine("未选择面");
+
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
