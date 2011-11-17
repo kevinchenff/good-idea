@@ -67,13 +67,12 @@ class PrtFstDesignCmd: public CATStateCommand
 
   //各种转换消息响应函数
   CATBoolean ChoosePoints( void *UsefulData);
-  CATBoolean ChooseSurfs( void *UsefulData);
+  CATBoolean ChooseFirstSurfs( void *UsefulData);
+  CATBoolean ChooseSecSurfs( void *UsefulData);
   //
   CATBoolean ActivePointsSL( void *UsefulData);
   CATBoolean ActiveFirstSurfSL( void *UsefulData);
   CATBoolean ActiveSecSurfSL( void *UsefulData);
-
-
   //
 private:
 	PrtFstDesignDlg *m_piDlg;
@@ -85,15 +84,13 @@ private:
 	CATHSO *m_piHSO;
 
 	//定义代理
-	CATFeatureImportAgent *m_piSurfAgt;
-	CATFeatureImportAgent *m_piPointsAgt;
+	CATFeatureImportAgent *m_piFirstSurfAgt,*m_piSecSurfAgt,*m_piPointsAgt;
 
 	CATDialogAgent *m_piPointSLAgt,*m_piFirstSurfSLAgt,*m_piSecSurfSLAgt;
 
 	//存储中间数据变量
 	CATListValCATISpecObject_var m_lstSpecPoints;
 	CATListValCATISpecObject_var m_lstSpecFirstSurfs,m_lstSpecSecSurfs;
-	int m_SurfSLNum;
 };
 
 //----------------------------------------------------------------------

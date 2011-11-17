@@ -24,8 +24,6 @@ CATCreateClass( PrtFstDesignCmd);
 #include "CATIMfBiDimResult.h"
 
 
-
-
 //-------------------------------------------------------------------------
 // Constructor
 //-------------------------------------------------------------------------
@@ -33,7 +31,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   CATStateCommand ("PrtFstDesignCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_piDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
-  ,m_piSurfAgt(NULL),m_piPointsAgt(NULL),m_SurfSLNum(1)
+  ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -71,11 +69,18 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 		m_piPointsAgt=NULL;
 	}
 
-	if (NULL!=m_piSurfAgt)
+	if (NULL!=m_piFirstSurfAgt)
 	{
-		m_piSurfAgt->RequestDelayedDestruction();
-		m_piSurfAgt=NULL;
+		m_piFirstSurfAgt->RequestDelayedDestruction();
+		m_piFirstSurfAgt=NULL;
 	}
+
+	if (NULL!=m_piSecSurfAgt)
+	{
+		m_piSecSurfAgt->RequestDelayedDestruction();
+		m_piSecSurfAgt=NULL;
+	}
+
 	if (NULL!=m_piFirstSurfSLAgt)
 	{
 		m_piFirstSurfSLAgt->RequestDelayedDestruction();
@@ -123,76 +128,116 @@ void PrtFstDesignCmd::BuildGraph()
 
 	//创建安装点代理
 	m_piPointsAgt = new CATFeatureImportAgent("选择安装点");
-	m_piPointsAgt->SetBehavior( CATDlgEngWithPSOHSO | CATDlgEngWithPrevaluation  | CATDlgEngRepeat);
+	m_piPointsAgt->SetBehavior( CATDlgEngWithPSOHSO | CATDlgEngWithPrevaluation | CATDlgEngMultiAcquisition | CATDlgEngRepeat);
 	m_piPointsAgt->SetAgentBehavior(MfRelimitedFeaturization|MfPermanentBody); 
 	m_piPointsAgt->AddElementType(IID_CATIMfZeroDimResult);
 
-	//创建安装面代理
-	m_piSurfAgt = new CATFeatureImportAgent("选择安装面");
-	m_piSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
-	m_piSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
-	m_piSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
+	//创建第一安装面代理
+	m_piFirstSurfAgt = new CATFeatureImportAgent("选择第一安装面");
+	m_piFirstSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
+	m_piFirstSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
+	m_piFirstSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
+
+	//创建第二安装面代理
+	m_piSecSurfAgt = new CATFeatureImportAgent("选择第二安装面");
+	m_piSecSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
+	m_piSecSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
+	m_piSecSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
 
 	//points SL
-	m_piPointSLAgt = new CATDialogAgent("ChoosePoints");
+	m_piPointSLAgt = new CATDialogAgent("选择安装点");
 	m_piPointSLAgt->SetBehavior(CATDlgEngRepeat);
 	m_piPointSLAgt->AcceptOnNotify(m_piDlg->_PointsSL,m_piDlg->_PointsSL->GetListSelectNotification());
 
 	//first Surf SL
-	m_piFirstSurfSLAgt = new CATDialogAgent("ChooseFirstSurf");
+	m_piFirstSurfSLAgt = new CATDialogAgent("选择第一安装面");
 	m_piFirstSurfSLAgt->SetBehavior(CATDlgEngRepeat);
 	m_piFirstSurfSLAgt->AcceptOnNotify(m_piDlg->_FirstSurfSL,m_piDlg->_FirstSurfSL->GetListSelectNotification());
 
 	//second Surf SL
-	m_piSecSurfSLAgt = new CATDialogAgent("ChooseSecSurf");
+	m_piSecSurfSLAgt = new CATDialogAgent("选择第二安装面");
 	m_piSecSurfSLAgt->SetBehavior(CATDlgEngRepeat);
 	m_piSecSurfSLAgt->AcceptOnNotify(m_piDlg->_SecondSurfSL,m_piDlg->_SecondSurfSL->GetListSelectNotification());
 
 	//Define the StateChart
-	CATDialogState * StSelectPoints = GetInitialState("SelectPoints");
+	CATDialogState * StSelectPoints = GetInitialState("选择安装点");
 	StSelectPoints -> AddDialogAgent (m_piPointsAgt);
 	StSelectPoints -> AddDialogAgent (m_piPointSLAgt);
 	StSelectPoints -> AddDialogAgent (m_piFirstSurfSLAgt);
 	StSelectPoints -> AddDialogAgent (m_piSecSurfSLAgt);
 
-	CATDialogState * StSelectSurf = AddDialogState("SelectSurf");
-	StSelectSurf -> AddDialogAgent (m_piSurfAgt);
-	StSelectSurf -> AddDialogAgent (m_piPointSLAgt);
-	StSelectSurf -> AddDialogAgent (m_piFirstSurfSLAgt);
-	StSelectSurf -> AddDialogAgent (m_piSecSurfSLAgt);
+	CATDialogState * StSelectFirstSurf = AddDialogState("选择第一安装面");
+	StSelectFirstSurf -> AddDialogAgent (m_piFirstSurfAgt);
+	StSelectFirstSurf -> AddDialogAgent (m_piPointSLAgt);
+	StSelectFirstSurf -> AddDialogAgent (m_piFirstSurfSLAgt);
+	StSelectFirstSurf -> AddDialogAgent (m_piSecSurfSLAgt);
 
-	//转换关系
+	CATDialogState * StSelectSecSurf = AddDialogState("选择第二安装面");
+	StSelectSecSurf -> AddDialogAgent (m_piSecSurfAgt);
+	StSelectSecSurf -> AddDialogAgent (m_piPointSLAgt);
+	StSelectSecSurf -> AddDialogAgent (m_piFirstSurfSLAgt);
+	StSelectSecSurf -> AddDialogAgent (m_piSecSurfSLAgt);
+
+	//转换关系 点到点
 	AddTransition(StSelectPoints, StSelectPoints, 
-		IsOutputSetCondition(m_piPointsAgt),
+		IsLastModifiedAgentCondition(m_piPointsAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ChoosePoints));
 
+	//转换关系 点到点
 	AddTransition(StSelectPoints, StSelectPoints, 
-		IsOutputSetCondition(m_piPointSLAgt),
+		IsLastModifiedAgentCondition(m_piPointSLAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointsSL));
 
-	AddTransition(StSelectPoints, StSelectSurf, 
-		IsOutputSetCondition(m_piFirstSurfSLAgt),
+	//转换关系 点到面1
+	AddTransition(StSelectPoints, StSelectFirstSurf, 
+		IsLastModifiedAgentCondition(m_piFirstSurfSLAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ActiveFirstSurfSL));
 
-	AddTransition(StSelectPoints, StSelectSurf, 
-		IsOutputSetCondition(m_piSecSurfSLAgt),
+	//转换关系 点到面2
+	AddTransition(StSelectPoints, StSelectSecSurf, 
+		IsLastModifiedAgentCondition(m_piSecSurfSLAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ActiveSecSurfSL));
 
-	AddTransition(StSelectSurf,StSelectPoints,
-		IsOutputSetCondition(m_piPointSLAgt),
+	//转换关系 面1到点
+	AddTransition(StSelectFirstSurf,StSelectPoints,
+		IsLastModifiedAgentCondition(m_piPointSLAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointsSL));
 
-	AddTransition(StSelectSurf,StSelectSurf,
-		IsOutputSetCondition(m_piSurfAgt),
-		Action ((ActionMethod) &PrtFstDesignCmd::ChooseSurfs));
+	//转换关系 面2到点
+	AddTransition(StSelectSecSurf,StSelectPoints,
+		IsLastModifiedAgentCondition(m_piPointSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointsSL));
 
-	AddTransition(StSelectSurf,StSelectSurf,
-		IsOutputSetCondition(m_piFirstSurfSLAgt),
+	//转换关系 面1到面1
+	AddTransition(StSelectFirstSurf,StSelectFirstSurf,
+		IsLastModifiedAgentCondition(m_piFirstSurfAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ChooseFirstSurfs));
+
+	//转换关系 面1到面1
+	AddTransition(StSelectFirstSurf,StSelectFirstSurf,
+		IsLastModifiedAgentCondition(m_piFirstSurfSLAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ActiveFirstSurfSL));
 
-	AddTransition(StSelectSurf,StSelectSurf,
-		IsOutputSetCondition(m_piSecSurfSLAgt),
+	//转换关系 面2到面2
+	AddTransition(StSelectSecSurf,StSelectSecSurf,
+		IsLastModifiedAgentCondition(m_piSecSurfAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ChooseSecSurfs));
+
+	//转换关系 面2到面2
+	AddTransition(StSelectSecSurf,StSelectSecSurf,
+		IsLastModifiedAgentCondition(m_piSecSurfSLAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ActiveSecSurfSL));
+
+	//转换关系 面1到面2
+	AddTransition(StSelectFirstSurf,StSelectSecSurf,
+		IsLastModifiedAgentCondition(m_piSecSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveSecSurfSL));
+
+	//转换关系 面2到面1
+	AddTransition(StSelectSecSurf,StSelectFirstSurf,
+		IsLastModifiedAgentCondition(m_piFirstSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveFirstSurfSL));
+
 
 }
 
@@ -266,6 +311,12 @@ CATBoolean PrtFstDesignCmd::ChoosePoints( void *UsefulData)
 			}
 			if (!existFlag) //不存在放入
 			{
+				//先清空列表
+				if (m_lstSpecPoints.Size() == 0)
+				{
+					m_piDlg->_PointsSL->ClearLine();
+				}
+				//
 				m_lstSpecPoints.Append(spLeaf);
 
 				//
@@ -278,18 +329,20 @@ CATBoolean PrtFstDesignCmd::ChoosePoints( void *UsefulData)
 		}
 	}
 
+	//清空列表选择状态
 	m_piDlg->_PointsSL->ClearSelect();
 	m_piDlg->_FirstSurfSL->ClearSelect();
 	m_piDlg->_SecondSurfSL->ClearSelect();
+
 	m_piPointsAgt->InitializeAcquisition();
 	return TRUE;
 
 }
 
-CATBoolean PrtFstDesignCmd::ChooseSurfs( void *UsefulData)
+CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 {
 	HRESULT hr = E_FAIL;
-	CATBaseUnknown* piSelectElement =m_piSurfAgt->GetElementValue();//获得所选对象
+	CATBaseUnknown* piSelectElement =m_piFirstSurfAgt->GetElementValue();//获得所选对象
 	if (piSelectElement != NULL)
 	{
 		CATISpecObject_var spSpecOnSelection = NULL_var;
@@ -297,98 +350,129 @@ CATBoolean PrtFstDesignCmd::ChooseSurfs( void *UsefulData)
 
 		if ( spSpecOnSelection != NULL_var )
 		{
-			if (m_SurfSLNum == 1)
+			CATBoolean exitFlag = FALSE;
+			for (int i = 1; i <= m_lstSpecFirstSurfs.Size(); i ++)
 			{
-				CATBoolean exitFlag = FALSE;
-				for (int i = 1; i <= m_lstSpecFirstSurfs.Size(); i ++)
+				if (m_lstSpecFirstSurfs[i] == spSpecOnSelection)
 				{
-					if (m_lstSpecFirstSurfs[i] == spSpecOnSelection)
-					{
-						m_lstSpecFirstSurfs.RemoveValue(spSpecOnSelection);
-						exitFlag = TRUE;
-						break;
-					}
+					m_lstSpecFirstSurfs.RemoveValue(spSpecOnSelection);
+					PrtService::RemoveHSO(spSpecOnSelection);
+					exitFlag = TRUE;
+					break;
 				}
+			}
 
-				if (exitFlag == FALSE)
-				{
-					m_lstSpecFirstSurfs.Append(spSpecOnSelection);
-				}
-				m_piDlg->_FirstSurfSL->ClearLine();
-
-				for (int i = 1; i <= m_lstSpecFirstSurfs.Size(); i ++)
-				{
-					CATIAlias_var spAlias = m_lstSpecFirstSurfs[i];
-					CATUnicodeString strAlias = spAlias->GetAlias();
-					m_piDlg->_FirstSurfSL->SetLine(strAlias);
-
-					PrtService::HighlightHSO(m_lstSpecFirstSurfs[i]);
-				}
-			} 
-			else
+			if (exitFlag == FALSE)
 			{
-				CATBoolean exitFlag = FALSE;
-				for (int i = 1; i <= m_lstSpecSecSurfs.Size(); i ++)
-				{
-					if (m_lstSpecSecSurfs[i] == spSpecOnSelection)
-					{
-						m_lstSpecSecSurfs.RemoveValue(spSpecOnSelection);
-						exitFlag = TRUE;
-						break;
-					}
-				}
+				m_lstSpecFirstSurfs.Append(spSpecOnSelection);
+				PrtService::HighlightHSO(spSpecOnSelection);
+			}
 
-				if (exitFlag == FALSE)
-				{
-					m_lstSpecSecSurfs.Append(spSpecOnSelection);
-				}
-				m_piDlg->_SecondSurfSL->ClearLine();
+			if (m_lstSpecFirstSurfs.Size()>=1)
+			{
+				CATUnicodeString strLineShow("共选择");
+				CATUnicodeString strNumber;
+				strNumber.BuildFromNum(m_lstSpecFirstSurfs.Size());
+				strLineShow += strNumber + "个面";
+				m_piDlg->_FirstSurfSL->SetLine(strLineShow,0,CATDlgDataModify);
+			}
+			if (m_lstSpecFirstSurfs.Size()==0)
+			{
+				m_piDlg->_FirstSurfSL->SetLine("未选择面",0,CATDlgDataModify);
+			}
+		}
+	}
 
-				for (int i = 1; i <= m_lstSpecSecSurfs.Size(); i ++)
-				{
-					CATIAlias_var spAlias = m_lstSpecSecSurfs[i];
-					CATUnicodeString strAlias = spAlias->GetAlias();
-					m_piDlg->_SecondSurfSL->SetLine(strAlias);
+	//
+	m_piDlg->_PointsSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
+	int firstRom = 0;
+	m_piDlg->_FirstSurfSL->SetSelect(&firstRom,1,0);
 
-					PrtService::HighlightHSO(m_lstSpecSecSurfs[i]);
+	m_piFirstSurfAgt->InitializeAcquisition();
+	return TRUE;	
+}
+
+CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
+{
+
+	HRESULT hr = E_FAIL;
+	CATBaseUnknown* piSelectElement =m_piSecSurfAgt->GetElementValue();//获得所选对象
+	if (piSelectElement != NULL)
+	{
+		CATISpecObject_var spSpecOnSelection = NULL_var;
+		spSpecOnSelection = piSelectElement;
+
+		if ( spSpecOnSelection != NULL_var )
+		{
+			CATBoolean exitFlag = FALSE;
+			for (int i = 1; i <= m_lstSpecSecSurfs.Size(); i ++)
+			{
+				if (m_lstSpecSecSurfs[i] == spSpecOnSelection)
+				{
+					m_lstSpecSecSurfs.RemoveValue(spSpecOnSelection);
+					PrtService::RemoveHSO(spSpecOnSelection);
+					exitFlag = TRUE;
+					break;
 				}
-			}			
+			}
+
+			if (exitFlag == FALSE)
+			{
+				m_lstSpecSecSurfs.Append(spSpecOnSelection);
+				PrtService::HighlightHSO(spSpecOnSelection);
+			}
+			
+			if (m_lstSpecSecSurfs.Size()>=1)
+			{
+				CATUnicodeString strLineShow("共选择");
+				CATUnicodeString strNumber;
+				strNumber.BuildFromNum(m_lstSpecSecSurfs.Size());
+				strLineShow += strNumber + "个面";
+				m_piDlg->_SecondSurfSL->SetLine(strLineShow,0,CATDlgDataModify);
+			}
+			if (m_lstSpecSecSurfs.Size()==1)
+			{
+				m_piDlg->_SecondSurfSL->SetLine("未选择面",0,CATDlgDataModify);
+			}
 		}
 	}
 
 	m_piDlg->_PointsSL->ClearSelect();
 	m_piDlg->_FirstSurfSL->ClearSelect();
-	m_piDlg->_SecondSurfSL->ClearSelect();
-	m_piSurfAgt->InitializeAcquisition();
+
+	int firstRom = 0;
+	m_piDlg->_SecondSurfSL->SetSelect(&firstRom,1,0);
+
+	m_piSecSurfAgt->InitializeAcquisition();
 	return TRUE;	
+
 }
+
+
 //激活相关代理
 CATBoolean PrtFstDesignCmd::ActivePointsSL( void *UsefulData)
 {
-	cout<<"ActivePointsSL( void *UsefulData)"<<endl;
-	m_piDlg->_PointsSL->ClearSelect();
+	//清除选择
 	m_piDlg->_FirstSurfSL->ClearSelect();
 	m_piDlg->_SecondSurfSL->ClearSelect();
+
 	m_piPointsAgt->InitializeAcquisition();
 	return TRUE;	
 }
 CATBoolean PrtFstDesignCmd::ActiveFirstSurfSL( void *UsefulData)
 {
-	cout<<"ActiveFirstSurfSL( void *UsefulData)"<<endl;
-	m_SurfSLNum = 1;
 	m_piDlg->_PointsSL->ClearSelect();
-	m_piDlg->_FirstSurfSL->ClearSelect();
 	m_piDlg->_SecondSurfSL->ClearSelect();
-	m_piSurfAgt->InitializeAcquisition();
+
+	m_piFirstSurfAgt->InitializeAcquisition();
 	return TRUE;
 }
 CATBoolean PrtFstDesignCmd::ActiveSecSurfSL( void *UsefulData)
 {
-	cout<<"ActiveSecSurfSL( void *UsefulData)"<<endl;
-	m_SurfSLNum = 2;
 	m_piDlg->_PointsSL->ClearSelect();
 	m_piDlg->_FirstSurfSL->ClearSelect();
-	m_piDlg->_SecondSurfSL->ClearSelect();
-	m_piSurfAgt->InitializeAcquisition();
+
+	m_piSecSurfAgt->InitializeAcquisition();
 	return TRUE;
 }
