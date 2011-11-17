@@ -89,6 +89,7 @@ void PrtFstDesignDlg::Build()
 //  -------------------------------------------------------------------
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+ SetGridRowResizable(0,1);
  SetGridRowResizable(3,1);
  SetGridColumnResizable(0,1);
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
@@ -96,12 +97,11 @@ _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame001 -> SetGridRowResizable(0,1);
  _Frame001 -> SetGridColumnResizable(0,1);
  _PointsSL = new CATDlgSelectorList(_Frame001, "PointsSL");
- _PointsSL -> SetVisibleTextHeight(8);
+ _PointsSL -> SetVisibleTextHeight(10);
  _PointsSL -> SetVisibleTextWidth(40);
 _PointsSL -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
 _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
- _Frame002 -> SetGridRowResizable(0,1);
  _Frame002 -> SetGridColumnResizable(1,1);
  _Label008 = new CATDlgLabel(_Frame002, "Label008");
 _Label008 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -119,7 +119,6 @@ _DirectionPB -> SetGridConstraints(2, 1, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_
 _Label014 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgGridLayout);
 _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
- _Frame003 -> SetGridRowResizable(0,1);
  _Frame003 -> SetGridColumnResizable(0,1);
  _ChooseFstPB = new CATDlgPushButton(_Frame003, "ChooseFstPB");
 _ChooseFstPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
