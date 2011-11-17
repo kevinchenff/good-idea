@@ -96,7 +96,7 @@ void PrtFstDesignDlg::Build()
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame001 -> SetGridRowResizable(0,1);
  _Frame001 -> SetGridColumnResizable(0,1);
- _PointsSL = new CATDlgSelectorList(_Frame001, "PointsSL");
+ _PointsSL = new CATDlgSelectorList(_Frame001, "PointsSL", CATDlgLstMultisel);
  _PointsSL -> SetVisibleTextHeight(10);
  _PointsSL -> SetVisibleTextWidth(40);
 _PointsSL -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);

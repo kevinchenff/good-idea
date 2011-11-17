@@ -18,6 +18,7 @@ CATDlgFrame Frame001
 CATDlgSelectorList PointsSL
 {
   FATHER = Frame001;
+  STYLE = CATDlgLstMultisel;
   TH = 10;
   TW = 40;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
