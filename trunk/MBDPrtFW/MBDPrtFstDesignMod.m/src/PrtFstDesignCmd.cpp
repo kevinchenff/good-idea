@@ -123,7 +123,7 @@ void PrtFstDesignCmd::BuildGraph()
 
 	//创建安装点代理
 	m_piPointsAgt = new CATFeatureImportAgent("选择安装点");
-	m_piPointsAgt->SetBehavior( CATDlgEngWithPSOHSO | CATDlgEngWithPrevaluation | CATDlgEngMultiAcquisitionUserCtrl | CATDlgEngRepeat);
+	m_piPointsAgt->SetBehavior( CATDlgEngWithPSOHSO | CATDlgEngWithPrevaluation  | CATDlgEngRepeat);
 	m_piPointsAgt->SetAgentBehavior(MfRelimitedFeaturization|MfPermanentBody); 
 	m_piPointsAgt->AddElementType(IID_CATIMfZeroDimResult);
 
@@ -136,25 +136,28 @@ void PrtFstDesignCmd::BuildGraph()
 	//points SL
 	m_piPointSLAgt = new CATDialogAgent("ChoosePoints");
 	m_piPointSLAgt->SetBehavior(CATDlgEngRepeat);
-	m_piPointSLAgt->AcceptOnNotify(m_piDlg,m_piDlg->_PointsSL->GetListSelectNotification());
+	m_piPointSLAgt->AcceptOnNotify(m_piDlg->_PointsSL,m_piDlg->_PointsSL->GetListSelectNotification());
 
 	//first Surf SL
 	m_piFirstSurfSLAgt = new CATDialogAgent("ChooseFirstSurf");
 	m_piFirstSurfSLAgt->SetBehavior(CATDlgEngRepeat);
-	m_piFirstSurfSLAgt->AcceptOnNotify(m_piDlg,m_piDlg->_FirstSurfSL->GetListSelectNotification());
+	m_piFirstSurfSLAgt->AcceptOnNotify(m_piDlg->_FirstSurfSL,m_piDlg->_FirstSurfSL->GetListSelectNotification());
 
 	//second Surf SL
 	m_piSecSurfSLAgt = new CATDialogAgent("ChooseSecSurf");
 	m_piSecSurfSLAgt->SetBehavior(CATDlgEngRepeat);
-	m_piSecSurfSLAgt->AcceptOnNotify(m_piDlg,m_piDlg->_SecondSurfSL->GetListSelectNotification());
+	m_piSecSurfSLAgt->AcceptOnNotify(m_piDlg->_SecondSurfSL,m_piDlg->_SecondSurfSL->GetListSelectNotification());
 
 	//Define the StateChart
 	CATDialogState * StSelectPoints = GetInitialState("SelectPoints");
 	StSelectPoints -> AddDialogAgent (m_piPointsAgt);
 	StSelectPoints -> AddDialogAgent (m_piPointSLAgt);
+	StSelectPoints -> AddDialogAgent (m_piFirstSurfSLAgt);
+	StSelectPoints -> AddDialogAgent (m_piSecSurfSLAgt);
 
 	CATDialogState * StSelectSurf = AddDialogState("SelectSurf");
 	StSelectSurf -> AddDialogAgent (m_piSurfAgt);
+	StSelectSurf -> AddDialogAgent (m_piPointSLAgt);
 	StSelectSurf -> AddDialogAgent (m_piFirstSurfSLAgt);
 	StSelectSurf -> AddDialogAgent (m_piSecSurfSLAgt);
 
@@ -182,6 +185,14 @@ void PrtFstDesignCmd::BuildGraph()
 	AddTransition(StSelectSurf,StSelectSurf,
 		IsOutputSetCondition(m_piSurfAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ChooseSurfs));
+
+	AddTransition(StSelectSurf,StSelectSurf,
+		IsOutputSetCondition(m_piFirstSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveFirstSurfSL));
+
+	AddTransition(StSelectSurf,StSelectSurf,
+		IsOutputSetCondition(m_piSecSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveSecSurfSL));
 
 }
 
@@ -267,6 +278,9 @@ CATBoolean PrtFstDesignCmd::ChoosePoints( void *UsefulData)
 		}
 	}
 
+	m_piDlg->_PointsSL->ClearSelect();
+	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
 	m_piPointsAgt->InitializeAcquisition();
 	return TRUE;
 
@@ -342,24 +356,39 @@ CATBoolean PrtFstDesignCmd::ChooseSurfs( void *UsefulData)
 		}
 	}
 
+	m_piDlg->_PointsSL->ClearSelect();
+	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
 	m_piSurfAgt->InitializeAcquisition();
 	return TRUE;	
 }
 //激活相关代理
 CATBoolean PrtFstDesignCmd::ActivePointsSL( void *UsefulData)
 {
+	cout<<"ActivePointsSL( void *UsefulData)"<<endl;
+	m_piDlg->_PointsSL->ClearSelect();
+	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
 	m_piPointsAgt->InitializeAcquisition();
 	return TRUE;	
 }
 CATBoolean PrtFstDesignCmd::ActiveFirstSurfSL( void *UsefulData)
 {
+	cout<<"ActiveFirstSurfSL( void *UsefulData)"<<endl;
 	m_SurfSLNum = 1;
+	m_piDlg->_PointsSL->ClearSelect();
+	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
 	m_piSurfAgt->InitializeAcquisition();
 	return TRUE;
 }
 CATBoolean PrtFstDesignCmd::ActiveSecSurfSL( void *UsefulData)
 {
+	cout<<"ActiveSecSurfSL( void *UsefulData)"<<endl;
 	m_SurfSLNum = 2;
+	m_piDlg->_PointsSL->ClearSelect();
+	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
 	m_piSurfAgt->InitializeAcquisition();
 	return TRUE;
 }

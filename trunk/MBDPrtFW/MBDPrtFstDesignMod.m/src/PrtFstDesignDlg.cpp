@@ -136,6 +136,7 @@ _ShowDetailInfoPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CAT
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 _FirstSurfSL->SetLine("未选择面");
 _SecondSurfSL->SetLine("未选择面");
+_PointsSL->SetLine("未选择点");
 
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
