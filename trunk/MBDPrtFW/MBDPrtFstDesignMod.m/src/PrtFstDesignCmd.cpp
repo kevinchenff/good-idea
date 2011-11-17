@@ -431,7 +431,7 @@ CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 				strLineShow += strNumber + "个面";
 				m_piDlg->_SecondSurfSL->SetLine(strLineShow,0,CATDlgDataModify);
 			}
-			if (m_lstSpecSecSurfs.Size()==1)
+			if (m_lstSpecSecSurfs.Size()==0)
 			{
 				m_piDlg->_SecondSurfSL->SetLine("未选择面",0,CATDlgDataModify);
 			}
