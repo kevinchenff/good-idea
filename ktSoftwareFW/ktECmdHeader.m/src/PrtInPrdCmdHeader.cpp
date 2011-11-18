@@ -77,7 +77,7 @@ void PrtInPrdCmdHeader::UIActivatedCmd(CATCallbackEvent     iPublishedEvent,
 											   CATSubscriberData    iUsefulData,
 											   CATCallback          iCallbackId)
 {
-	if(PrdService::IsProductDocument()==TRUE)
+	if(PrdService::IsPathProductDocument()==TRUE)
 	{
 		BecomeAvailable();
 	}

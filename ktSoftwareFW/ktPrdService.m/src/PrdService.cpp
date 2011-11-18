@@ -513,7 +513,7 @@ BOOL PrdService::ChangePrdInstName(CATIProduct_var spPrd)
 
 
 //判断当前DOCUMENT是否为PRD
-BOOL PrdService::IsProductDocument()
+BOOL PrdService::IsPathProductDocument()
 {
 	//得到是当前编辑的document
 	CATFrmEditor * pEditor =CATFrmEditor::GetCurrentEditor();
@@ -535,6 +535,26 @@ BOOL PrdService::IsProductDocument()
 	} 
 
 	return FALSE;
+}
+
+//判断设计上下文是否为PRD环境
+BOOL PrdService::IsContextualPrd()
+{
+	// 获取editor
+	//得到是当前编辑的document
+	CATFrmEditor * pEditor =CATFrmEditor::GetCurrentEditor();
+	CATPathElement spPath = pEditor->GetUIActiveObject( );
+	spPath.Reverse();
+	void*  oPtr = NULL;
+	HRESULT rc = spPath.Search(IID_CATIProduct,&oPtr);
+
+	//
+	if (SUCCEEDED(rc))
+	{
+		return TRUE;
+	}
+	else 
+		return FALSE;
 }
 
 

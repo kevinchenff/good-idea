@@ -128,7 +128,13 @@ BOOL ChangePrdInstName(CATIProduct_var spPrd);
 
 //判断当前DOCUMENT是否为PRD
 static
-BOOL IsProductDocument();
+BOOL IsPathProductDocument();
+
+//判断设计上下文是否为PRD环境
+static
+BOOL IsContextualPrd();
+
+//
 
 //判读Prd父子关系
 static

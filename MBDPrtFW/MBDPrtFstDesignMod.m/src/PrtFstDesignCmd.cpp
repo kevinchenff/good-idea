@@ -31,7 +31,8 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   CATStateCommand ("PrtFstDesignCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_piDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
-  ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL)
+  ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
+  ,m_piPointGSMAgt(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -47,7 +48,13 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 	//判断是否为ZP模型;
 	if (!IsThisZPPrt())
 	{
-		PrtService::ShowDlgNotify("提示","该功能仅在ZP模型下操作，点击关闭！");
+		PrtService::ShowDlgNotify("提示","该功能仅在装配上下文环境且ZP模型中操作，点击关闭！");
+		RequestDelayedDestruction();
+	}
+
+	if (!PrdService::IsContextualPrd())
+	{
+		PrtService::ShowDlgNotify("提示","该功能仅在装配上下文环境且ZP模型中操作，点击关闭！");
 		RequestDelayedDestruction();
 	}
 }
@@ -96,6 +103,30 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 		m_piPointSLAgt->RequestDelayedDestruction();
 		m_piPointSLAgt=NULL;
 	}	
+
+	if (NULL!=m_piPrdSLAgt)
+	{
+		m_piPrdSLAgt->RequestDelayedDestruction();
+		m_piPrdSLAgt=NULL;
+	}	
+
+	if (NULL!=m_piPointGSMPBAgt)
+	{
+		m_piPointGSMPBAgt->RequestDelayedDestruction();
+		m_piPointGSMPBAgt=NULL;
+	}	
+
+	if (NULL!=m_piPointGSMAgt)
+	{
+		m_piPointGSMAgt->RequestDelayedDestruction();
+		m_piPointGSMAgt=NULL;
+	}	
+
+	if (NULL!=m_piPrdAgt)
+	{
+		m_piPrdAgt->RequestDelayedDestruction();
+		m_piPrdAgt=NULL;
+	}
    
 }
 
@@ -137,12 +168,27 @@ void PrtFstDesignCmd::BuildGraph()
 	m_piFirstSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
 	m_piFirstSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
 	m_piFirstSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
+	m_piFirstSurfAgt -> AddElementType (IID_CATFace);
 
 	//创建第二安装面代理
 	m_piSecSurfAgt = new CATFeatureImportAgent("选择第二安装面");
 	m_piSecSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
 	m_piSecSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
 	m_piSecSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
+	m_piSecSurfAgt -> AddElementType (IID_CATFace);
+
+	//创建prd代理
+	m_piPrdAgt = new CATPathElementAgent("选择连接零件");
+	m_piPrdAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
+	m_piPrdAgt -> AddElementType (IID_CATIProduct);
+	CATAcquisitionFilter * pFilterForPrt = Filter((FilterMethod) & PrtFstDesignCmd::SeletedIsPart,(void*)NULL);
+	m_piPrdAgt->SetFilter(pFilterForPrt);
+
+	//创建GSM代理
+	m_piPointGSMAgt = new CATFeatureImportAgent("选择点几何图形集");
+	m_piPointGSMAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
+	m_piPointGSMAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
+	m_piPointGSMAgt -> AddElementType (IID_CATIGSMTool);
 
 	//points SL
 	m_piPointSLAgt = new CATDialogAgent("选择安装点");
@@ -159,24 +205,58 @@ void PrtFstDesignCmd::BuildGraph()
 	m_piSecSurfSLAgt->SetBehavior(CATDlgEngRepeat);
 	m_piSecSurfSLAgt->AcceptOnNotify(m_piDlg->_SecondSurfSL,m_piDlg->_SecondSurfSL->GetListSelectNotification());
 
+	//Prd SL
+	m_piPrdSLAgt = new CATDialogAgent("选择连接零件");
+	m_piPrdSLAgt->SetBehavior(CATDlgEngRepeat);
+	m_piPrdSLAgt->AcceptOnNotify(m_piDlg->_PrdSL,m_piDlg->_PrdSL->GetListSelectNotification());
+
+	//Choose Point GSM PB
+	m_piPointGSMPBAgt = new CATDialogAgent("选择点几何图形集");
+	m_piPointGSMPBAgt->SetBehavior(CATDlgEngRepeat);
+	m_piPointGSMPBAgt->AcceptOnNotify(m_piDlg->_ChoosePointGSMToolPB,m_piDlg->_ChoosePointGSMToolPB->GetPushBActivateNotification());
+
+
 	//Define the StateChart
-	CATDialogState * StSelectPoints = GetInitialState("选择安装点");
+	CATDialogState * StSelectPrds = GetInitialState("选择连接零件");
+	StSelectPrds -> AddDialogAgent (m_piPrdAgt);
+	StSelectPrds -> AddDialogAgent (m_piPointSLAgt);
+	StSelectPrds -> AddDialogAgent (m_piFirstSurfSLAgt);
+	StSelectPrds -> AddDialogAgent (m_piSecSurfSLAgt);
+	StSelectPrds -> AddDialogAgent (m_piSecSurfSLAgt);
+	StSelectPrds -> AddDialogAgent (m_piPrdSLAgt);
+	StSelectPrds -> AddDialogAgent (m_piPointGSMPBAgt);
+
+	CATDialogState * StSelectPoints = AddDialogState("选择安装点");
 	StSelectPoints -> AddDialogAgent (m_piPointsAgt);
 	StSelectPoints -> AddDialogAgent (m_piPointSLAgt);
 	StSelectPoints -> AddDialogAgent (m_piFirstSurfSLAgt);
 	StSelectPoints -> AddDialogAgent (m_piSecSurfSLAgt);
+	StSelectPoints -> AddDialogAgent (m_piPrdSLAgt);
+	StSelectPoints -> AddDialogAgent (m_piPointGSMPBAgt);
+
+	CATDialogState * StSelectPointGSM = AddDialogState("选择点几何图形集");
+	StSelectPointGSM -> AddDialogAgent (m_piPointGSMAgt);
+	StSelectPointGSM -> AddDialogAgent (m_piPointSLAgt);
+	StSelectPointGSM -> AddDialogAgent (m_piFirstSurfSLAgt);
+	StSelectPointGSM -> AddDialogAgent (m_piSecSurfSLAgt);
+	StSelectPointGSM -> AddDialogAgent (m_piPrdSLAgt);
+	StSelectPointGSM -> AddDialogAgent (m_piPointGSMPBAgt);
 
 	CATDialogState * StSelectFirstSurf = AddDialogState("选择第一安装面");
 	StSelectFirstSurf -> AddDialogAgent (m_piFirstSurfAgt);
 	StSelectFirstSurf -> AddDialogAgent (m_piPointSLAgt);
 	StSelectFirstSurf -> AddDialogAgent (m_piFirstSurfSLAgt);
 	StSelectFirstSurf -> AddDialogAgent (m_piSecSurfSLAgt);
+	StSelectFirstSurf -> AddDialogAgent (m_piPrdSLAgt);
+	StSelectFirstSurf -> AddDialogAgent (m_piPointGSMPBAgt);
 
 	CATDialogState * StSelectSecSurf = AddDialogState("选择第二安装面");
 	StSelectSecSurf -> AddDialogAgent (m_piSecSurfAgt);
 	StSelectSecSurf -> AddDialogAgent (m_piPointSLAgt);
 	StSelectSecSurf -> AddDialogAgent (m_piFirstSurfSLAgt);
 	StSelectSecSurf -> AddDialogAgent (m_piSecSurfSLAgt);
+	StSelectSecSurf -> AddDialogAgent (m_piPrdSLAgt);
+	StSelectSecSurf -> AddDialogAgent (m_piPointGSMPBAgt);
 
 	//转换关系 点到点
 	AddTransition(StSelectPoints, StSelectPoints, 
@@ -238,9 +318,94 @@ void PrtFstDesignCmd::BuildGraph()
 		IsLastModifiedAgentCondition(m_piFirstSurfSLAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ActiveFirstSurfSL));
 
+	// [11/18/2011 zhangwenyang]
+	//转换关系 Prd Prd
+	AddTransition(StSelectPrds,StSelectPrds,
+		IsLastModifiedAgentCondition(m_piPrdAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ChoosePrds));
+	//转换关系 Prd Prd
+	AddTransition(StSelectPrds,StSelectPrds,
+		IsLastModifiedAgentCondition(m_piPrdSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePrdSL));
+
+	//转换关系 GSM GSM
+	AddTransition(StSelectPointGSM,StSelectPointGSM,
+		IsLastModifiedAgentCondition(m_piPointGSMAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ChoosePointGSM));
+
+	//转换关系 GSM GSM
+	AddTransition(StSelectPointGSM,StSelectPointGSM,
+		IsLastModifiedAgentCondition(m_piPointGSMPBAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointGSMPB));
+
+	//转换关系 Prd GSM
+	AddTransition(StSelectPrds,StSelectPointGSM,
+		IsLastModifiedAgentCondition(m_piPointGSMPBAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointGSMPB));
+
+	//转换关系 GSM Prd
+	AddTransition(StSelectPointGSM,StSelectPrds,
+		IsLastModifiedAgentCondition(m_piPrdSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePrdSL));
+
+	// [11/18/2011 zhangwenyang]
+	//转换关系 Prd 点
+	AddTransition(StSelectPrds,StSelectPoints,
+		IsLastModifiedAgentCondition(m_piPointSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointsSL));
+	//转换关系 点 Prd 
+	AddTransition(StSelectPoints,StSelectPrds,
+		IsLastModifiedAgentCondition(m_piPrdSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePrdSL));
+
+	//转换关系 Prd 面1
+	AddTransition(StSelectPrds, StSelectFirstSurf, 
+		IsLastModifiedAgentCondition(m_piFirstSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveFirstSurfSL));
+	//转换关系 面1 Prd 
+	AddTransition(StSelectFirstSurf,StSelectPrds,
+		IsLastModifiedAgentCondition(m_piPrdSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePrdSL));
+
+	//转换关系 Prd 面2
+	AddTransition(StSelectPrds,StSelectSecSurf,
+		IsLastModifiedAgentCondition(m_piSecSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveSecSurfSL));
+	//转换关系 面2 Prd 
+	AddTransition(StSelectSecSurf,StSelectPrds,
+		IsLastModifiedAgentCondition(m_piPrdSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePrdSL));
+
+	// [11/18/2011 zhangwenyang]
+	//转换关系 GSM 点
+	AddTransition(StSelectPointGSM,StSelectPoints,
+		IsLastModifiedAgentCondition(m_piPointSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointsSL));
+	//转换关系 点 GSM 
+	AddTransition(StSelectPoints,StSelectPointGSM,
+		IsLastModifiedAgentCondition(m_piPointGSMPBAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointGSMPB));
+	
+	//转换关系 GSM 面1
+	AddTransition(StSelectPointGSM, StSelectFirstSurf, 
+		IsLastModifiedAgentCondition(m_piFirstSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveFirstSurfSL));
+	//转换关系 面1 GSM 
+	AddTransition(StSelectFirstSurf,StSelectPointGSM,
+		IsLastModifiedAgentCondition(m_piPointGSMPBAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointGSMPB));
+
+	//转换关系 GSM 面2
+	AddTransition(StSelectPointGSM,StSelectSecSurf,
+		IsLastModifiedAgentCondition(m_piSecSurfSLAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActiveSecSurfSL));
+	//转换关系 面2 GSM 
+	AddTransition(StSelectSecSurf,StSelectPointGSM,
+		IsLastModifiedAgentCondition(m_piPointGSMPBAgt),
+		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointGSMPB));
+
 
 }
-
 
 void PrtFstDesignCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
@@ -333,6 +498,7 @@ CATBoolean PrtFstDesignCmd::ChoosePoints( void *UsefulData)
 	m_piDlg->_PointsSL->ClearSelect();
 	m_piDlg->_FirstSurfSL->ClearSelect();
 	m_piDlg->_SecondSurfSL->ClearSelect();
+	m_piDlg->_PrdSL->ClearSelect();
 
 	m_piPointsAgt->InitializeAcquisition();
 	return TRUE;
@@ -378,7 +544,7 @@ CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 			}
 			if (m_lstSpecFirstSurfs.Size()==0)
 			{
-				m_piDlg->_FirstSurfSL->SetLine("未选择面",0,CATDlgDataModify);
+				m_piDlg->_FirstSurfSL->SetLine("请选择面",0,CATDlgDataModify);
 			}
 		}
 	}
@@ -386,6 +552,7 @@ CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 	//
 	m_piDlg->_PointsSL->ClearSelect();
 	m_piDlg->_SecondSurfSL->ClearSelect();
+	m_piDlg->_PrdSL->ClearSelect();
 	int firstRom = 0;
 	m_piDlg->_FirstSurfSL->SetSelect(&firstRom,1,0);
 
@@ -433,13 +600,14 @@ CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 			}
 			if (m_lstSpecSecSurfs.Size()==0)
 			{
-				m_piDlg->_SecondSurfSL->SetLine("未选择面",0,CATDlgDataModify);
+				m_piDlg->_SecondSurfSL->SetLine("请选择面",0,CATDlgDataModify);
 			}
 		}
 	}
 
 	m_piDlg->_PointsSL->ClearSelect();
 	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_PrdSL->ClearSelect();
 
 	int firstRom = 0;
 	m_piDlg->_SecondSurfSL->SetSelect(&firstRom,1,0);
@@ -456,6 +624,7 @@ CATBoolean PrtFstDesignCmd::ActivePointsSL( void *UsefulData)
 	//清除选择
 	m_piDlg->_FirstSurfSL->ClearSelect();
 	m_piDlg->_SecondSurfSL->ClearSelect();
+	m_piDlg->_PrdSL->ClearSelect();
 
 	m_piPointsAgt->InitializeAcquisition();
 	return TRUE;	
@@ -464,6 +633,7 @@ CATBoolean PrtFstDesignCmd::ActiveFirstSurfSL( void *UsefulData)
 {
 	m_piDlg->_PointsSL->ClearSelect();
 	m_piDlg->_SecondSurfSL->ClearSelect();
+	m_piDlg->_PrdSL->ClearSelect();
 
 	m_piFirstSurfAgt->InitializeAcquisition();
 	return TRUE;
@@ -472,7 +642,116 @@ CATBoolean PrtFstDesignCmd::ActiveSecSurfSL( void *UsefulData)
 {
 	m_piDlg->_PointsSL->ClearSelect();
 	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_PrdSL->ClearSelect();
 
 	m_piSecSurfAgt->InitializeAcquisition();
 	return TRUE;
 }
+
+CATBoolean PrtFstDesignCmd::ActivePrdSL( void *UsefulData)
+{
+	m_piDlg->_PointsSL->ClearSelect();
+	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
+
+	m_piPrdAgt->InitializeAcquisition();
+	return TRUE;
+}
+CATBoolean PrtFstDesignCmd::ActivePointGSMPB( void *UsefulData)
+{
+	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
+	m_piDlg->_PrdSL->ClearSelect();
+
+	m_piPointGSMAgt->InitializeAcquisition();
+	return TRUE;
+}
+
+//响应
+CATBoolean PrtFstDesignCmd::ChoosePrds( void *UsefulData)
+{
+	HRESULT hr = E_FAIL;
+	CATBaseUnknown* piSelectElement =m_piPrdAgt->GetElementValue();//获得所选对象
+	if (piSelectElement != NULL)
+	{
+		CATISpecObject_var spSpecOnSelection = NULL_var;
+		spSpecOnSelection = piSelectElement;
+
+		if ( spSpecOnSelection != NULL_var )
+		{
+			CATBoolean exitFlag = FALSE;
+			for (int i = 1; i <= m_lstSpecPrds.Size(); i ++)
+			{
+				if (m_lstSpecPrds[i] == spSpecOnSelection)
+				{
+					m_lstSpecPrds.RemoveValue(spSpecOnSelection);
+					exitFlag = TRUE;
+					break;
+				}
+			}
+
+			if (exitFlag == FALSE)
+			{
+				m_lstSpecPrds.Append(spSpecOnSelection);				
+			}
+
+			m_piDlg->_PrdSL->ClearLine();
+			for (int i = 1; i <= m_lstSpecPrds.Size(); i ++)
+			{
+				CATIAlias_var spAlias = m_lstSpecPrds[i];
+				CATUnicodeString strAlias = spAlias->GetAlias();
+				m_piDlg->_PrdSL->SetLine(strAlias);
+			}
+
+			if (m_lstSpecPrds.Size()==0)
+			{
+				m_piDlg->_PrdSL->SetLine("请选择连接零件");
+			}
+		}
+	}
+
+	//
+	m_piDlg->_PointsSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
+	m_piDlg->_FirstSurfSL->ClearSelect();
+
+	m_piFirstSurfAgt->InitializeAcquisition();
+	return TRUE;	
+}
+
+CATBoolean PrtFstDesignCmd::ChoosePointGSM( void *UsefulData)
+{
+
+
+
+	m_piDlg->_PrdSL->ClearSelect();
+	m_piDlg->_FirstSurfSL->ClearSelect();
+	m_piDlg->_SecondSurfSL->ClearSelect();
+
+	m_piPointGSMAgt->InitializeAcquisition();
+	return TRUE;
+}
+
+CATBoolean PrtFstDesignCmd::SeletedIsPart(CATDialogAgent * iAgent, void * iUsefulData)
+{
+	CATBoolean rc = FALSE ;
+	if ( NULL == iAgent ) return rc ;
+
+	CATBaseUnknown* piSelectElement =m_piPrdAgt->GetElementValue();//获得所选对象
+	if (piSelectElement != NULL)
+	{
+		CATIProduct_var spPrd = NULL_var;
+		spPrd = piSelectElement;
+
+		CATUnicodeString strDocType("");
+		PrdService::GetInstPrdType(spPrd,strDocType);
+
+		if (strDocType == "CATPart")
+		{
+			return TRUE;
+		}
+	}
+
+	return rc;
+}
+
