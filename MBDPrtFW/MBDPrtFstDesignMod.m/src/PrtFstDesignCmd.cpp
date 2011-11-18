@@ -16,6 +16,7 @@
 #include "CATIndicationAgent.h"
 #include "CATMathPlane.h"
 #include "CATFace.h"
+#include "CATSurface.h"
 
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstDesignCmd);
@@ -168,15 +169,18 @@ void PrtFstDesignCmd::BuildGraph()
 	m_piFirstSurfAgt = new CATFeatureImportAgent("选择第一安装面");
 	m_piFirstSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
 	m_piFirstSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
+	/*m_piFirstSurfAgt -> SetOrderedElementType ( "CATIMfBiDimResult" );
+	m_piFirstSurfAgt -> AddOrderedElementType ( "CATFace"  );
+	m_piFirstSurfAgt -> AddOrderedElementType ( "CATSurface"  );*/
 	m_piFirstSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
-	m_piFirstSurfAgt -> AddElementType (IID_CATFace);
+	m_piFirstSurfAgt -> AddElementType (IID_CATSurface);
 
 	//创建第二安装面代理
 	m_piSecSurfAgt = new CATFeatureImportAgent("选择第二安装面");
 	m_piSecSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
 	m_piSecSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
 	m_piSecSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
-	m_piSecSurfAgt -> AddElementType (IID_CATFace);
+	m_piSecSurfAgt -> AddElementType (IID_CATSurface);
 
 	//创建prd代理
 	m_piPrdAgt = new CATPathElementAgent("选择连接零件");
