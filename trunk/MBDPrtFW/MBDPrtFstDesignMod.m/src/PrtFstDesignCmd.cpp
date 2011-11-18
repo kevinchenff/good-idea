@@ -15,6 +15,7 @@
 #include "PrtFstDesignCmd.h"
 #include "CATIndicationAgent.h"
 #include "CATMathPlane.h"
+#include "CATFace.h"
 
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstDesignCmd);
