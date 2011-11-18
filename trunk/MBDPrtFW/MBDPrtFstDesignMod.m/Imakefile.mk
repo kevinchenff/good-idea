@@ -34,7 +34,7 @@ CATMathematics CATDialogEngine \
 	    CATObjectModelerBase \
         CATCclInterfaces \
         CATObjectSpecsModeler \
-	    CATMecModInterfaces ktPrdService CATTopologicalObjects 
+	    CATMecModInterfaces ktPrdService CATTopologicalObjects CATGeometricObjects 
 	    
 # END WIZARD EDITION ZONE
 
