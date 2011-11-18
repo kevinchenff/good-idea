@@ -19,7 +19,7 @@ CATDlgSelectorList PointsSL
 {
   FATHER = Frame001;
   STYLE = CATDlgLstMultisel;
-  TH = 10;
+  TH = 8;
   TW = 40;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
@@ -152,13 +152,19 @@ CATDlgFrame Frame017
 CATDlgPushButton DeletePointPB
 {
   FATHER = Frame017;
-  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 0, 2, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgPushButton ChoosePointGSMToolPB
 {
   FATHER = Frame017;
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCheckButton SeleDeleteCheckB
+{
+  FATHER = Frame017;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

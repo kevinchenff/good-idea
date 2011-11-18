@@ -58,6 +58,7 @@ PrtFstDesignDlg::PrtFstDesignDlg() :
  _Frame017 = NULL;
  _DeletePointPB = NULL;
  _ChoosePointGSMToolPB = NULL;
+ _SeleDeleteCheckB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -92,6 +93,7 @@ PrtFstDesignDlg::~PrtFstDesignDlg()
  _Frame017 = NULL;
  _DeletePointPB = NULL;
  _ChoosePointGSMToolPB = NULL;
+ _SeleDeleteCheckB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -112,7 +114,7 @@ _Frame001 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame001 -> SetGridRowResizable(0,1);
  _Frame001 -> SetGridColumnResizable(0,1);
  _PointsSL = new CATDlgSelectorList(_Frame001, "PointsSL", CATDlgLstMultisel);
- _PointsSL -> SetVisibleTextHeight(10);
+ _PointsSL -> SetVisibleTextHeight(8);
  _PointsSL -> SetVisibleTextWidth(40);
 _PointsSL -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
@@ -162,12 +164,14 @@ _PrdSL -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame017 = new CATDlgFrame(this, "Frame017", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame017 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  _DeletePointPB = new CATDlgPushButton(_Frame017, "DeletePointPB");
-_DeletePointPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+_DeletePointPB -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
  _ChoosePointGSMToolPB = new CATDlgPushButton(_Frame017, "ChoosePointGSMToolPB");
 _ChoosePointGSMToolPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _SeleDeleteCheckB = new CATDlgCheckButton(_Frame017, "SeleDeleteCheckB");
+_SeleDeleteCheckB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
-_FirstSurfSL->SetLine("请选择面");
-_SecondSurfSL->SetLine("请选择面");
+_FirstSurfSL->SetLine("未选择");
+_SecondSurfSL->SetLine("未选择");
 _PointsSL->SetLine("请选择安装点");
 _PrdSL->SetLine("请选择连接零件");
 
