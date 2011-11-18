@@ -81,6 +81,8 @@ class PrtFstDesignCmd: public CATStateCommand
   //
   //过滤函数
   CATBoolean SeletedIsPart(CATDialogAgent * iAgent, void * iUsefulData);
+  //高亮显示当前所选行
+  void ShowSeletedLine(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
 
 private:
 	PrtFstDesignDlg *m_piDlg;
