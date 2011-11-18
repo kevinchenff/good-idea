@@ -2,7 +2,7 @@
 CATDlgDialog PrtFstDesignDlg
 {
   STYLE = CATDlgGridLayout;
-  ROWRES = { 0, 3 };
+  ROWRES = { 0, 1, 5 };
   COLRES = { 0 };
 }
 
@@ -10,7 +10,7 @@ CATDlgFrame Frame001
 {
   FATHER = PrtFstDesignDlg;
   STYLE = CATDlgGridLayout;
-  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
   ROWRES = { 0 };
   COLRES = { 0 };
 }
@@ -28,7 +28,7 @@ CATDlgFrame Frame002
 {
   FATHER = PrtFstDesignDlg;
   STYLE = CATDlgGridLayout;
-  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
   COLRES = { 1 };
 }
 
@@ -70,11 +70,23 @@ CATDlgLabel Label014
   GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
 }
 
+CATDlgPushButton FirstSurfMorePB
+{
+  FATHER = Frame002;
+  GRID = { 0, 2, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton SecSurfMorePB
+{
+  FATHER = Frame002;
+  GRID = { 1, 2, 1, 1, CATGRID_4SIDES };
+}
+
 CATDlgFrame Frame003
 {
   FATHER = PrtFstDesignDlg;
   STYLE = CATDlgGridLayout;
-  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 4, 0, 1, 1, CATGRID_4SIDES };
   COLRES = { 0 };
 }
 
@@ -88,7 +100,7 @@ CATDlgFrame Frame004
 {
   FATHER = PrtFstDesignDlg;
   STYLE = CATDlgGridLayout;
-  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 5, 0, 1, 1, CATGRID_4SIDES };
   ROWRES = { 0 };
   COLRES = { 0 };
 }
@@ -97,6 +109,7 @@ CATDlgEditor SpecInfoEditor
 {
   FATHER = Frame004;
   STYLE = CATDlgEdtMultiline;
+  TH = 4;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
@@ -104,13 +117,48 @@ CATDlgFrame Frame015
 {
   FATHER = PrtFstDesignDlg;
   STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
-  GRID = { 4, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 6, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgPushButton ShowDetailInfoPB
 {
   FATHER = Frame015;
   GRID = { 0, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgFrame Frame016
+{
+  FATHER = PrtFstDesignDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgSelectorList PrdSL
+{
+  FATHER = Frame016;
+  TH = 3;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame017
+{
+  FATHER = PrtFstDesignDlg;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton DeletePointPB
+{
+  FATHER = Frame017;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton ChoosePointGSMToolPB
+{
+  FATHER = Frame017;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

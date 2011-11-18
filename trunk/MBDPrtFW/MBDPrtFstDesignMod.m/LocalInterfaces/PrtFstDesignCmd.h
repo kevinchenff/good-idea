@@ -74,6 +74,14 @@ class PrtFstDesignCmd: public CATStateCommand
   CATBoolean ActiveFirstSurfSL( void *UsefulData);
   CATBoolean ActiveSecSurfSL( void *UsefulData);
   //
+  CATBoolean ChoosePrds( void *UsefulData);
+  CATBoolean ActivePrdSL( void *UsefulData);  
+  CATBoolean ChoosePointGSM( void *UsefulData);  
+  CATBoolean ActivePointGSMPB( void *UsefulData);  
+  //
+  //过滤函数
+  CATBoolean SeletedIsPart(CATDialogAgent * iAgent, void * iUsefulData);
+
 private:
 	PrtFstDesignDlg *m_piDlg;
 
@@ -84,12 +92,12 @@ private:
 	CATHSO *m_piHSO;
 
 	//定义代理
-	CATFeatureImportAgent *m_piFirstSurfAgt,*m_piSecSurfAgt,*m_piPointsAgt;
-
-	CATDialogAgent *m_piPointSLAgt,*m_piFirstSurfSLAgt,*m_piSecSurfSLAgt;
+	CATFeatureImportAgent *m_piFirstSurfAgt,*m_piSecSurfAgt,*m_piPointsAgt,*m_piPointGSMAgt;
+	CATPathElementAgent *m_piPrdAgt;
+	CATDialogAgent *m_piPointSLAgt,*m_piFirstSurfSLAgt,*m_piSecSurfSLAgt,*m_piPrdSLAgt,*m_piPointGSMPBAgt;
 
 	//存储中间数据变量
-	CATListValCATISpecObject_var m_lstSpecPoints;
+	CATListValCATISpecObject_var m_lstSpecPoints,m_lstSpecPrds;
 	CATListValCATISpecObject_var m_lstSpecFirstSurfs,m_lstSpecSecSurfs;
 };
 
