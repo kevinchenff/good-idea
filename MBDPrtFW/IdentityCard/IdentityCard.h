@@ -42,3 +42,4 @@ AddPrereqComponent("ConstraintModeler",Public);
 AddPrereqComponent("InteractiveInterfaces",Public);
 AddPrereqComponent("MeasureGeometryInterfaces",Public);
 AddPrereqComponent("ComponentsCatalogsInterfaces",Public);
+AddPrereqComponent("NewTopologicalObjects",Public);
