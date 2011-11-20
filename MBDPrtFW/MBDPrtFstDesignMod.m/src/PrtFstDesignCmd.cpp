@@ -54,7 +54,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 	}
 
 	//判断是否为ZP模型;
-	if (!IsThisZPPrt())
+	if (!IsThisZPPrt(m_strDocName))
 	{
 		PrtService::ShowDlgNotify("提示","该功能仅在装配上下文环境且ZP模型中操作，点击关闭！");
 		RequestDelayedDestruction();
@@ -141,8 +141,6 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 	pISO->Empty();
 	//高亮点清空
 	m_piHSO->Empty();
-
-
    
 }
 
@@ -438,6 +436,19 @@ void PrtFstDesignCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		m_piDlg = NULL;
 	}	
 
+
+	//隐藏第一安装面
+	for (int i = 1; i <= m_lstSpecFirstSurfs.Size(); i++)
+	{
+		PrtService::SetSpecObjShowAttr(m_lstSpecFirstSurfs[i],"Hide");
+	}
+
+	//隐藏第二安装面
+	for (int i = 1; i <= m_lstSpecSecSurfs.Size(); i++)
+	{
+		PrtService::SetSpecObjShowAttr(m_lstSpecSecSurfs[i],"Hide");
+	}
+
 	RequestDelayedDestruction();
 
 }
@@ -450,16 +461,28 @@ void PrtFstDesignCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 		m_piDlg = NULL;
 	}	
 
+	//隐藏第一安装面
+	for (int i = 1; i <= m_lstSpecFirstSurfs.Size(); i++)
+	{
+		PrtService::SetSpecObjShowAttr(m_lstSpecFirstSurfs[i],"Hide");
+	}
+
+	//隐藏第二安装面
+	for (int i = 1; i <= m_lstSpecSecSurfs.Size(); i++)
+	{
+		PrtService::SetSpecObjShowAttr(m_lstSpecSecSurfs[i],"Hide");
+	}
+
 	RequestDelayedDestruction();
 }
 
 //判断是否为ZP模型
-BOOL PrtFstDesignCmd::IsThisZPPrt()
+BOOL PrtFstDesignCmd::IsThisZPPrt(CATUnicodeString istrDocName)
 {
-	if (m_strDocName != "")
+	if (istrDocName != "")
 	{
-		int istart=m_strDocName.SearchSubString("-ZP",0,CATUnicodeString::CATSearchModeBackward);
-		if (istart == (m_strDocName.GetLengthInChar()-3) || istart == (m_strDocName.GetLengthInChar()-4))
+		int istart=istrDocName.SearchSubString("-ZP",0,CATUnicodeString::CATSearchModeBackward);
+		if (istart == (istrDocName.GetLengthInChar()-3) || istart == (istrDocName.GetLengthInChar()-4))
 		{
 			return TRUE;
 		}
@@ -616,9 +639,17 @@ CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 
 			if (existFlag == FALSE)
 			{
-				PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
-				m_lstSpecFirstSurfs.Append(spSpecOnSelection);
-				PrtService::HighlightHSO(spSpecOnSelection);
+				//判断是否在另一个曲面数组中
+				if (IsTheSpecInLstSpec(spSpecOnSelection,m_lstSpecSecSurfs))
+				{
+					PrtService::ktWarningMsgBox("您不能选择与终止面相同的面，请重新选择！");
+				}
+				else
+				{
+					PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
+					m_lstSpecFirstSurfs.Append(spSpecOnSelection);
+					PrtService::HighlightHSO(spSpecOnSelection);
+				}
 			}
 
 			if (m_lstSpecFirstSurfs.Size()>=1)
@@ -649,7 +680,6 @@ CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 
 CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 {
-
 	HRESULT hr = E_FAIL;
 	CATPathElement* piSelectElement =m_piSecSurfAgt->GetValue();//获得所选对象
 	if (piSelectElement != NULL)
@@ -678,9 +708,17 @@ CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 
 			if (existFlag == FALSE)
 			{
-				PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
-				m_lstSpecSecSurfs.Append(spSpecOnSelection);
-				PrtService::HighlightHSO(spSpecOnSelection);
+				//判断是否在另一个曲面数组中
+				if (IsTheSpecInLstSpec(spSpecOnSelection,m_lstSpecFirstSurfs))
+				{
+					PrtService::ktWarningMsgBox("您不能选择与起始面相同的面，请重新选择！");
+				}
+				else
+				{
+					PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
+					m_lstSpecSecSurfs.Append(spSpecOnSelection);
+					PrtService::HighlightHSO(spSpecOnSelection);
+				}
 			}
 			
 			if (m_lstSpecSecSurfs.Size()>=1)
@@ -740,7 +778,18 @@ CATBoolean PrtFstDesignCmd::ChoosePrds( void *UsefulData)
 
 			if (existFlag == FALSE)
 			{
-				m_lstSpecPrds.Append(spSpecOnSelection);				
+				CATDocument* opiPrdDoc = NULL;
+				PrdService::GetInstPrdDoc(spSpecOnSelection,opiPrdDoc);
+				CATUnicodeString strPrdName;
+				PrtService::GetPrdNumberFormDoc(opiPrdDoc,strPrdName);
+				
+				if (IsThisZPPrt(strPrdName))
+				{
+					PrtService::ktWarningMsgBox("不能选择ZP模型为安装零件，请重新选择！");
+					PrtService::RemoveHSO(spSpecOnSelection);
+				}
+				else
+					m_lstSpecPrds.Append(spSpecOnSelection);				
 			}
 
 			m_piDlg->_PrdSL->ClearLine();
@@ -981,7 +1030,22 @@ void PrtFstDesignCmd::ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCAT
 		CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
 		piRepPtAlias->SetRep(pRepForTextStart) ;
 		pISO->AddElement(piRepPtAlias);
+
+		piRepPtAlias->Release();
+		piRepPtAlias=NULL;
 	}
 }
 
+//判断一个曲面特征是否在另一个数组中
+BOOL PrtFstDesignCmd::IsTheSpecInLstSpec(CATISpecObject_var iSpec, CATListValCATISpecObject_var iLstSpec)
+{
+	for (int i = 1; i <= iLstSpec.Size(); i ++)
+	{
+		if (iSpec == iLstSpec[i])
+		{
+			return TRUE;
+		}
+	}
 
+	return FALSE;		
+}

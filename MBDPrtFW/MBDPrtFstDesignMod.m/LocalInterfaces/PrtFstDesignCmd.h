@@ -63,7 +63,7 @@ class PrtFstDesignCmd: public CATStateCommand
   void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
   //判断是否为ZP模型
-  BOOL IsThisZPPrt();
+  BOOL IsThisZPPrt(CATUnicodeString istrDocName);
 
   //各种转换消息响应函数
   CATBoolean ChoosePoints( void *UsefulData);
@@ -87,6 +87,10 @@ class PrtFstDesignCmd: public CATStateCommand
   void DeleteAllPointsCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //在IOS中显示标记点
   void ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
+  //判断一个曲面特征是否在另一个数组中
+  BOOL IsTheSpecInLstSpec(CATISpecObject_var iSpec, CATListValCATISpecObject_var iLstSpec);
+
+
 
 private:
 	PrtFstDesignDlg *m_piDlg;
