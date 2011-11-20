@@ -45,8 +45,6 @@ PrtFstDesignDlg::PrtFstDesignDlg() :
  _SecondSurfSL = NULL;
  _DirectionPB = NULL;
  _Label014 = NULL;
- _FirstSurfMorePB = NULL;
- _SecSurfMorePB = NULL;
  _Frame003 = NULL;
  _ChooseFstPB = NULL;
  _Frame004 = NULL;
@@ -80,8 +78,6 @@ PrtFstDesignDlg::~PrtFstDesignDlg()
  _SecondSurfSL = NULL;
  _DirectionPB = NULL;
  _Label014 = NULL;
- _FirstSurfMorePB = NULL;
- _SecSurfMorePB = NULL;
  _Frame003 = NULL;
  _ChooseFstPB = NULL;
  _Frame004 = NULL;
@@ -134,10 +130,6 @@ _SecondSurfSL -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 _DirectionPB -> SetGridConstraints(2, 1, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
  _Label014 = new CATDlgLabel(_Frame002, "Label014");
 _Label014 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
- _FirstSurfMorePB = new CATDlgPushButton(_Frame002, "FirstSurfMorePB");
-_FirstSurfMorePB -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
- _SecSurfMorePB = new CATDlgPushButton(_Frame002, "SecSurfMorePB");
-_SecSurfMorePB -> SetGridConstraints(1, 2, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgGridLayout);
 _Frame003 -> SetGridConstraints(4, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 -> SetGridColumnResizable(0,1);
