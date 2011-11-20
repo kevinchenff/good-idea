@@ -24,7 +24,12 @@ CATCreateClass( PrtFstDesignCmd);
 //
 #include "CATIMfZeroDimResult.h"
 #include "CATIMfBiDimResult.h"
-
+#include "CATISO.h"
+#include "CAT3DAnnotationTextGP.h"
+#include "CATIMeasurablePoint.h"
+#include "CATModelForRep3D.h"
+#include "CAT3DCustomRep.h"
+#include "CATGraphicAttributeSet.h"
 
 
 //-------------------------------------------------------------------------
@@ -130,6 +135,14 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 		m_piPrdAgt->RequestDelayedDestruction();
 		m_piPrdAgt=NULL;
 	}
+
+	//获得并清空ISO
+	CATISO *pISO = m_piEditor->GetISO();
+	pISO->Empty();
+	//高亮点清空
+	m_piHSO->Empty();
+
+
    
 }
 
@@ -159,6 +172,13 @@ void PrtFstDesignCmd::BuildGraph()
 		m_piDlg->GetDiaCANCELNotification(),
 		(CATCommandMethod)&PrtFstDesignCmd::CloseDlgCB,
 		NULL);
+
+	//删除所有点
+	AddAnalyseNotificationCB (m_piDlg->_DeletePointPB, 
+		m_piDlg->_DeletePointPB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::DeleteAllPointsCB,
+		NULL);
+
 
 	//创建安装点代理
 	m_piPointsAgt = new CATFeatureImportAgent("选择安装点");
@@ -766,6 +786,8 @@ CATBoolean PrtFstDesignCmd::ActivePointsSL( void *UsefulData)
 	PrtService::ClearHSO();
 	//加入需要高亮的特征
 	PrtService::HighLightObjLst(m_lstSpecPoints);
+	//显示ISO POINTS
+	ShowPointInfoInISO(m_piDlg->_PointsSL,m_lstSpecPoints);
 
 	m_piPointsAgt->InitializeAcquisition();
 	return TRUE;	
@@ -826,6 +848,44 @@ CATBoolean PrtFstDesignCmd::ActivePointGSMPB( void *UsefulData)
 CATBoolean PrtFstDesignCmd::ChoosePointGSM( void *UsefulData)
 {
 
+	CATPathElement* piSelectElement =m_piPointGSMAgt->GetValue();//获得所选对象
+	if (piSelectElement != NULL)
+	{
+		//获得SUB PATH
+		CATBaseUnknown * pLeaf =NULL ;
+		//获得路径下第一个特征spec类型
+		pLeaf = (*piSelectElement)[piSelectElement->GetSize()-1];
+		CATISpecObject_var spSpecOnSelection = NULL_var;
+		spSpecOnSelection = pLeaf;
+		//
+		if ( spSpecOnSelection != NULL_var )
+		{
+			//获得几何图形集下面所有的点
+			PrtService::GetContentSpecsByNameFromGSMTool(spSpecOnSelection,"CATIMfZeroDimResult",m_lstSpecPoints);
+
+			m_piDlg->_PointsSL->ClearLine();
+			for (int i = 1; i <= m_lstSpecPoints.Size(); i ++)
+			{
+				//
+				CATUnicodeString strShowPath("");
+				CATPathElement *piPath = NULL;
+				PrtService::GetPathElementFromSpecObject(piPath,m_lstSpecPoints[i],NULL);
+				PrtService::PathElementString(piPath,strShowPath,TRUE);
+				m_piDlg->_PointsSL->SetLine(strShowPath);
+
+				piPath->Release();
+				piPath=NULL;
+
+				PrtService::HighlightHSO(m_lstSpecPoints[i]);
+			}
+
+			if (m_lstSpecPoints.Size()==0)
+			{
+				m_piDlg->_PointsSL->SetLine("请选择安装点");
+			}
+		}
+	}
+	
 	m_piDlg->_PrdSL->ClearSelect();
 	m_piDlg->_FirstSurfSL->ClearSelect();
 	m_piDlg->_SecondSurfSL->ClearSelect();
@@ -854,6 +914,73 @@ void PrtFstDesignCmd::ShowSeletedLine(CATDlgSelectorList* opiSL,CATListValCATISp
 	for (int i = 0; i < NumberOfRowsSelected; i ++)
 	{
 		PrtService::HighlightHSO(olstSpecs[iSelectedRows[i]+1]);
+	}
+}
+
+
+//删除所有点
+void PrtFstDesignCmd::DeleteAllPointsCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	PrtService::ClearHSO();
+	m_lstSpecPoints.RemoveAll();
+	m_piDlg->_PointsSL->ClearLine();
+	m_piDlg->_PointsSL->SetLine("请选择安装点");
+
+	//获得并清空ISO
+	CATFrmEditor *pEditor = CATFrmEditor::GetCurrentEditor();
+	CATISO       *pISO ;
+	pISO = pEditor->GetISO();
+	pISO->Empty();
+}
+
+//在IOS中显示标记点
+void PrtFstDesignCmd::ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs)
+{
+	//如果为空，直接退出
+	if (olstSpecs.Size() == 0)
+	{
+		return;
+	}
+	//获取所选行
+	int NumberOfRowsSelected;
+	NumberOfRowsSelected = opiSL->GetSelectCount();
+
+	int *iSelectedRows = new int[NumberOfRowsSelected];
+	opiSL->GetSelect(iSelectedRows,NumberOfRowsSelected);
+
+	//获得并清空ISO
+	CATFrmEditor *pEditor = CATFrmEditor::GetCurrentEditor();
+	CATISO       *pISO ;
+	pISO = pEditor->GetISO();
+	pISO->Empty();
+
+	//重新添加高亮
+	for (int i = 0; i < NumberOfRowsSelected; i ++)
+	{
+		CATIMeasurablePoint_var spMeasurablePt = olstSpecs[iSelectedRows[i]+1];
+		if (spMeasurablePt==NULL_var)
+		{
+			return ;
+		}
+		CATMathPoint mPrjPt;
+		spMeasurablePt->GetPoint(mPrjPt);
+
+		CATIAlias_var spAliasOnPt = olstSpecs[iSelectedRows[i]+1];
+		CATUnicodeString StrTextValue = spAliasOnPt->GetAlias();
+		
+		CATMathPointf TextPosNode;
+		TextPosNode.x = (float)(mPrjPt.GetX());
+		TextPosNode.y = (float)(mPrjPt.GetY());
+		TextPosNode.z = (float)(mPrjPt.GetZ());
+
+		CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
+		CATGraphicAttributeSet   TextGaNode ;
+		TextGaNode.SetColor(RED);
+		CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
+		pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
+		CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
+		piRepPtAlias->SetRep(pRepForTextStart) ;
+		pISO->AddElement(piRepPtAlias);
 	}
 }
 

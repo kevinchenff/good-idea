@@ -83,6 +83,10 @@ class PrtFstDesignCmd: public CATStateCommand
   CATBoolean SeletedIsPart(CATDialogAgent * iAgent, void * iUsefulData);
   //高亮显示当前所选行
   void ShowSeletedLine(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
+  //删除所有点
+  void DeleteAllPointsCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  //在IOS中显示标记点
+  void ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
 
 private:
 	PrtFstDesignDlg *m_piDlg;
