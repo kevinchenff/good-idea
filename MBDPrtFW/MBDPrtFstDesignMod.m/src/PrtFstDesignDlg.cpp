@@ -57,6 +57,7 @@ PrtFstDesignDlg::PrtFstDesignDlg() :
  _DeletePointPB = NULL;
  _ChoosePointGSMToolPB = NULL;
  _SeleDeleteCheckB = NULL;
+ _PointCountEditor = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -90,6 +91,7 @@ PrtFstDesignDlg::~PrtFstDesignDlg()
  _DeletePointPB = NULL;
  _ChoosePointGSMToolPB = NULL;
  _SeleDeleteCheckB = NULL;
+ _PointCountEditor = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -161,11 +163,14 @@ _DeletePointPB -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
 _ChoosePointGSMToolPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _SeleDeleteCheckB = new CATDlgCheckButton(_Frame017, "SeleDeleteCheckB");
 _SeleDeleteCheckB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _PointCountEditor = new CATDlgEditor(_Frame017, "PointCountEditor", CATDlgEdtReadOnly);
+_PointCountEditor -> SetGridConstraints(0, 3, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 _FirstSurfSL->SetLine("未选择");
 _SecondSurfSL->SetLine("未选择");
 _PointsSL->SetLine("请选择安装点");
 _PrdSL->SetLine("请选择连接零件");
+_PointCountEditor->SetText("0 个");
 
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
