@@ -70,18 +70,6 @@ CATDlgLabel Label014
   GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgPushButton FirstSurfMorePB
-{
-  FATHER = Frame002;
-  GRID = { 0, 2, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgPushButton SecSurfMorePB
-{
-  FATHER = Frame002;
-  GRID = { 1, 2, 1, 1, CATGRID_4SIDES };
-}
-
 CATDlgFrame Frame003
 {
   FATHER = PrtFstDesignDlg;

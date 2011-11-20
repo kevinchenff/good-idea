@@ -55,8 +55,6 @@ class PrtFstDesignDlg: public CATDlgDialog
  CATDlgSelectorList*      _SecondSurfSL;
  CATDlgPushButton*      _DirectionPB;
  CATDlgLabel*      _Label014;
- CATDlgPushButton*      _FirstSurfMorePB;
- CATDlgPushButton*      _SecSurfMorePB;
  CATDlgFrame*      _Frame003;
  CATDlgPushButton*      _ChooseFstPB;
  CATDlgFrame*      _Frame004;
