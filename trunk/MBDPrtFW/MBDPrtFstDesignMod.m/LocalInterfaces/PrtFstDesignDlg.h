@@ -67,6 +67,7 @@ class PrtFstDesignDlg: public CATDlgDialog
  CATDlgPushButton*      _DeletePointPB;
  CATDlgPushButton*      _ChoosePointGSMToolPB;
  CATDlgCheckButton*      _SeleDeleteCheckB;
+ CATDlgEditor*      _PointCountEditor;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
 

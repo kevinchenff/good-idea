@@ -561,7 +561,6 @@ CATBoolean PrtFstDesignCmd::ChoosePoints( void *UsefulData)
 						{
 							m_piDlg->_PointsSL->SetLine("请选择安装点",0,CATDlgDataModify);
 						}
-
 					}
 
 					existFlag = TRUE;
@@ -596,6 +595,12 @@ CATBoolean PrtFstDesignCmd::ChoosePoints( void *UsefulData)
 
 		}
 	}
+
+	//显示安装点个数
+	CATUnicodeString strCount("");
+	strCount.BuildFromNum(m_lstSpecPoints.Size());
+	strCount += " 个";
+	m_piDlg->_PointCountEditor->SetText(strCount);
 
 	//清空列表选择状态
 	m_piDlg->_PointsSL->ClearSelect();
@@ -932,6 +937,12 @@ CATBoolean PrtFstDesignCmd::ChoosePointGSM( void *UsefulData)
 			{
 				m_piDlg->_PointsSL->SetLine("请选择安装点");
 			}
+
+			//显示安装点个数
+			CATUnicodeString strCount("");
+			strCount.BuildFromNum(m_lstSpecPoints.Size());
+			strCount += " 个";
+			m_piDlg->_PointCountEditor->SetText(strCount);
 		}
 	}
 	
@@ -974,6 +985,12 @@ void PrtFstDesignCmd::DeleteAllPointsCB(CATCommand* cmd, CATNotification* evt, C
 	m_lstSpecPoints.RemoveAll();
 	m_piDlg->_PointsSL->ClearLine();
 	m_piDlg->_PointsSL->SetLine("请选择安装点");
+
+	//显示安装点个数
+	CATUnicodeString strCount("");
+	strCount.BuildFromNum(m_lstSpecPoints.Size());
+	strCount += " 个";
+	m_piDlg->_PointCountEditor->SetText(strCount);
 
 	//获得并清空ISO
 	CATFrmEditor *pEditor = CATFrmEditor::GetCurrentEditor();
