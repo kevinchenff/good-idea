@@ -30,6 +30,10 @@ CATCreateClass( PrtFstDesignCmd);
 #include "CATModelForRep3D.h"
 #include "CAT3DCustomRep.h"
 #include "CATGraphicAttributeSet.h"
+#include "CATIStructureAnalyse.h"
+#include "CATIMmiInternalCopyWithLink.h"
+
+
 
 
 //-------------------------------------------------------------------------
@@ -723,6 +727,7 @@ CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 					PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
 					m_lstSpecSecSurfs.Append(spSpecOnSelection);
 					PrtService::HighlightHSO(spSpecOnSelection);
+					GetAllParents(spSpecOnSelection);
 				}
 			}
 			
@@ -748,6 +753,7 @@ CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 	int firstRom = 0;
 	m_piDlg->_SecondSurfSL->SetSelect(&firstRom,1,0);
 
+	//重新初始化代理
 	m_piSecSurfAgt->InitializeAcquisition();
 	return TRUE;	
 
@@ -1065,4 +1071,31 @@ BOOL PrtFstDesignCmd::IsTheSpecInLstSpec(CATISpecObject_var iSpec, CATListValCAT
 	}
 
 	return FALSE;		
+}
+
+//获得传入特征的的父级节点
+void PrtFstDesignCmd::GetAllParents(CATISpecObject_var& spFeature)
+{
+
+	CATIMmiInternalCopyWithLink *piLink = NULL;
+	HRESULT rc = spFeature->QueryInterface(IID_CATIMmiInternalCopyWithLink,(void**)&piLink);
+	if (SUCCEEDED(rc))
+	{
+		void *oPointedElem = NULL;
+		rc = piLink->GetSelectedElement(IID_CATISpecObject,&oPointedElem);
+		piLink->Release();
+		piLink=NULL;
+		
+		if (SUCCEEDED(rc))
+		{
+			CATISpecObject *spiLink = (CATISpecObject *)piLink;
+			CATUnicodeString strShowPath("");
+			CATPathElement *piPath = NULL;
+			PrtService::GetPathElementFromSpecObject(piPath,spiLink,NULL);
+			PrtService::PathElementString(piPath,strShowPath,TRUE);	
+			PrtService::ktWarningMsgBox(strShowPath);
+		}
+		
+	}
+	
 }

@@ -89,6 +89,8 @@ class PrtFstDesignCmd: public CATStateCommand
   void ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
   //判断一个曲面特征是否在另一个数组中
   BOOL IsTheSpecInLstSpec(CATISpecObject_var iSpec, CATListValCATISpecObject_var iLstSpec);
+  //获得传入特征的的父级节点
+  void PrtFstDesignCmd::GetAllParents(CATISpecObject_var& spFeature);
 
 
 
