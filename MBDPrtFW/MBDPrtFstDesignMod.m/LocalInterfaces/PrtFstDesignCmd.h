@@ -92,6 +92,9 @@ class PrtFstDesignCmd: public CATStateCommand
   //获得传入特征的的父级节点
   HRESULT GetLinkImportPrd(CATISpecObject_var& ispFeature,CATIProduct_var &ospSourcePrd);
 
+  //获得初始化的法线方向
+  HRESULT GetInitialArrow(CATISpecObject_var ispPoint, CATListValCATISpecObject_var ilstFirstSurf,CATListValCATISpecObject_var ilstSecSurf);
+
 
 
 private:

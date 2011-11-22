@@ -32,6 +32,13 @@ CATCreateClass( PrtFstDesignCmd);
 #include "CATGraphicAttributeSet.h"
 #include "CATIStructureAnalyse.h"
 #include "CATIMmiMechanicalImportApplicative.h"
+#include "CATIGSMIntersect.h"
+#include "CATIGSMLineNormal.h"
+#include "CAT3DMarkerGP.h"
+#include "CAT3DFixedArrowGP.h"
+
+
+
 
 
 
@@ -757,6 +764,12 @@ CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 								PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
 								m_lstSpecSecSurfs.Append(spSpecOnSelection);
 								PrtService::HighlightHSO(spSpecOnSelection);
+
+								//测试代码获取方向
+								if ((m_lstSpecPoints.Size()>=1) && (m_lstSpecFirstSurfs.Size()>=1) && (m_lstSpecSecSurfs.Size()>=1))
+								{
+									GetInitialArrow(m_lstSpecPoints[1],m_lstSpecFirstSurfs,m_lstSpecSecSurfs);
+								}
 							}
 							else
 							{
@@ -1142,4 +1155,95 @@ HRESULT PrtFstDesignCmd::GetLinkImportPrd(CATISpecObject_var& ispFeature,CATIPro
 	}
 	
 	return rc;
+}
+
+//获得初始化的法线方向
+HRESULT PrtFstDesignCmd::GetInitialArrow(CATISpecObject_var ispPoint, CATListValCATISpecObject_var ilstFirstSurf,CATListValCATISpecObject_var ilstSecSurf)
+{
+	HRESULT rc =S_OK;
+	CATIGSMFactory_var spGSMFac = NULL_var;
+	PrtService::GetGSMFactory(m_piDoc,spGSMFac);
+
+	//计算法线方向
+	double iLength1 = 100.0;
+	double iLength2 = -100.0;
+	CATICkeParm_var spCkeParm1 = PrtService::LocalInstLitteral(&iLength1, 1, "Length","Length"); 
+	CATICkeParm_var spCkeParm2 = PrtService::LocalInstLitteral(&iLength2, 1, "Length", "Length"); 
+	CATISpecObject_var spNormalLine = spGSMFac->CreateLineNormal(ilstFirstSurf[1],ispPoint,spCkeParm1,spCkeParm2,CATGSMSameOrientation);
+
+	if (spNormalLine != NULL_var)
+	{
+		//得到两个交点
+		CATISpecObject_var spIntersect01 = spGSMFac->CreateIntersect(spNormalLine,ilstFirstSurf[1]); 
+		CATISpecObject_var spIntersect02 = spGSMFac->CreateIntersect(spNormalLine,ilstSecSurf[1]);
+
+		CATISpecObject_var spGSMTool = NULL_var;
+		PrtService::ObtainGSMTool(m_piDoc,"过程元素",spGSMTool);
+
+		CATTry{
+			PrtService::CAAGsiInsertInProceduralView(spIntersect01,spGSMTool);
+			spIntersect01->Update();
+		}
+
+		// This block is specific for Update Errors
+		CATCatch( CATMfErrUpdate, pError ){	
+			// 			cerr << " Update Error: " << (pError-> GetDiagnostic()).ConvertToChar() << endl; 
+			Flush(pError) ; 
+			// When error happens, what to do 
+			spIntersect01->GetFather()->Remove(spIntersect01);
+			spIntersect01 = NULL_var;
+		}
+		CATEndTry;  	
+
+		CATTry{
+			PrtService::CAAGsiInsertInProceduralView(spIntersect02,spGSMTool);
+			spIntersect02->Update();
+		}
+
+		// This block is specific for Update Errors
+		CATCatch( CATMfErrUpdate, pError ){	
+			// 			cerr << " Update Error: " << (pError-> GetDiagnostic()).ConvertToChar() << endl; 
+			Flush(pError) ; 
+			// When error happens, what to do 
+			spIntersect02->GetFather()->Remove(spIntersect02);
+			spIntersect02 = NULL_var;
+		}
+		CATEndTry; 
+
+		//如果两个都不为空，挂载到结构树
+		if (spIntersect01!=NULL_var && spIntersect02!=NULL_var)
+		{		
+			CATIMeasurablePoint_var spMeasurePoint1=spIntersect01;
+			CATIMeasurablePoint_var spMeasurePoint2=spIntersect02;
+			//
+			CATMathPoint mathPoint1,mathPoint2;
+			spMeasurePoint1->GetPoint(mathPoint1);
+			spMeasurePoint2->GetPoint(mathPoint2);
+			//
+			spIntersect01->GetFather()->Remove(spIntersect01);
+			spIntersect02->GetFather()->Remove(spIntersect02);
+			//获得并清空ISO
+			CATFrmEditor *pEditor = CATFrmEditor::GetCurrentEditor();
+			CATISO       *pISO ;
+			pISO = pEditor->GetISO();
+			pISO->Empty();
+
+			CATMathDirectionf oArrowVector(mathPoint1,mathPoint2);
+			//在OriginPoint处创建3D fixed arrow.
+			CAT3DFixedArrowGP *pArrowGP = new CAT3DFixedArrowGP(mathPoint1,oArrowVector,20,5);
+			//创建图形属性，包括Color和Thickness
+			CATGraphicAttributeSet AttributsDir;
+			AttributsDir.SetColor(GREEN);
+			AttributsDir.SetThickness(2);
+			//
+			CAT3DCustomRep * pRepForArrow= new CAT3DCustomRep(pArrowGP,AttributsDir);
+			//
+			CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
+			piRepPtAlias->SetRep(pRepForArrow) ;			
+			//
+			pISO->AddElement(piRepPtAlias);
+		}
+	}
+
+	return rc;	
 }
