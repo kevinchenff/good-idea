@@ -3832,48 +3832,6 @@ CATPathElement* PrtService::ExtractPathElement(CATBaseUnknown* pObject)
 
 }
 
-
-//------------------------------------------------------------------------
-//由对象获取路径, 调用者释放
-BOOL PrtService::GetPathElementFromSpecObject(CATPathElement* &pPathElement, const CATISpecObject_var spSpecObject)
-{
-	pPathElement=NULL;
-	if(spSpecObject==NULL_var)
-	{
-		return FALSE;
-	}
-	//
-	//获得当前editor
-	CATFrmEditor * pEditor = CATFrmEditor::GetCurrentEditor ();
-	if (NULL == pEditor)
-	{
-		ktErrorMsgBox("\nerror: failed to get current editor");
-		return FALSE;
-	}
-	CATPathElement Context=pEditor->GetUIActiveObject();
-
-	if (Context==NULL)
-		return FALSE;
-	//
-	CATIBuildPath_var spBuildPathAccess = spSpecObject;
-	if(spBuildPathAccess==NULL_var)
-	{
-		ktErrorMsgBox("\nerror: failed to get build path access");
-		return FALSE;
-	}
-	//
-	HRESULT rc=spBuildPathAccess -> ExtractPathElement (&Context, &pPathElement);
-
-	if(FAILED(rc))
-	{
-		ktErrorMsgBox("\nerror: failed to extract path element");
-		return FALSE;
-	}
-	//
-	return TRUE;
-
-}
-
 //获取对象路径的字符串
 void PrtService::GetPathElementString(CATPathElement * ipPath ,CATUnicodeString & oPathName, BOOL bIsBackward, int iLength)
 {
