@@ -219,7 +219,6 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static
   HRESULT SetListSpecObjShowAttr(CATListValCATISpecObject_var &iListSpecObj,CATUnicodeString iShowOrHide);
 
-
   //获取特征为隐藏或显示
   static
   HRESULT GetSpecObjShowAttr(CATISpecObject_var iSpecObj,CATBoolean &iShowOrHide);
@@ -430,11 +429,6 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   //获取特征的CATPathElement
   static CATPathElement* ExtractPathElement(CATBaseUnknown* pObject);
-
-
-  //------------------------------------------------------------------------
-  //由对象获取路径, 调用者释放
-  static BOOL GetPathElementFromSpecObject(CATPathElement* &pPathElement, const CATISpecObject_var spSpecObject);
 
   //获取对象路径的字符串
   static void GetPathElementString(CATPathElement * ipPath ,CATUnicodeString & oPathName, BOOL bIsBackward, int iLength);
