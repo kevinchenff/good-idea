@@ -1495,7 +1495,7 @@ HRESULT PrtService::SetSpecGraphProperty(CATISpecObject_var spSpecOnObject,CATVi
 // -----------------------------------------------------------------------------
 // Litteral 
 // ---------------------------------------------------------------------------
-CATICkeParm_var PrtService::LocalInstLitteral (void * Value, int IsValuate, CATUnicodeString NomLitteral, CATIContainer_var  Cont, CATUnicodeString Name)
+CATICkeParm_var PrtService::LocalInstLitteral (void * Value, int IsValuate, CATUnicodeString NomLitteral, CATUnicodeString Name)
 {
 #ifdef DEBUG_CAASERVICES 
 	cout << "(CAAGsiServices) LocalInstLitteral "  << endl;
@@ -1506,10 +1506,12 @@ CATICkeParm_var PrtService::LocalInstLitteral (void * Value, int IsValuate, CATU
 	double         *dist;
 	int            *idist;
 
-	CATICkeParmFactory_var		fact = Cont;
+	CATIPrtContainer*  piCont;
+	ObtainCurrentRootContainer(piCont);
+	CATICkeParmFactory_var		fact = piCont;
 	CATICkeParm_var				Litteral = NULL_var;
 
-	if (Cont == NULL_var)
+	if (piCont == NULL_var)
 		return Litteral;
 
 	if (NomLitteral == "Length")
@@ -1570,14 +1572,14 @@ CATICkeParm_var PrtService::LocalInstLitteral (void * Value, int IsValuate, CATU
 	return Litteral;
 }
 
-CATICkeParm_var PrtService::CAAGsiInstanciateLitteral (CATUnicodeString  NomLitteral, CATIContainer_var  Cont,CATUnicodeString Name)
+CATICkeParm_var PrtService::CAAGsiInstanciateLitteral (CATUnicodeString  NomLitteral, CATUnicodeString Name)
 {
 
 #ifdef DEBUG_CAASERVICES 
 	cout << "(CAAGsiServices) CAAGsiInstanciateLitteral "  << endl;
 #endif 
 	double		pipo = 0.0;
-	return LocalInstLitteral (&pipo, 0, NomLitteral, Cont, Name);
+	return LocalInstLitteral (&pipo, 0, NomLitteral,Name);
 }
 
 
@@ -3578,35 +3580,22 @@ void PrtService::SetGSMToolParamEnum(CATDocument *piDocument,CATISpecObject_var 
 //**********************************************************************************************************************************************************************************************************************************************************
 
 //从文档获取CATICkeParmFactory
-void PrtService::GetParamFactory(CATDocument *piDocument,CATICkeParmFactory_var &iospParmFact)
+HRESULT PrtService::GetParamFactory(CATDocument *piDocument,CATICkeParmFactory_var &iospParmFact)
 {
-
-	//1、从CATDocument * ipDoc中得到CATIProduct spRootProduct
-	CATIDocRoots* piDocRootsOnDoc = NULL;
-	HRESULT rc = piDocument->QueryInterface(IID_CATIDocRoots, (void**) &piDocRootsOnDoc);
-	if ( FAILED(rc) ) return;
-
-	CATListValCATBaseUnknown_var* pRootProducts = piDocRootsOnDoc->GiveDocRoots();
-	CATIProduct_var spRootProduct =  (*pRootProducts)[1];
-
-	delete pRootProducts;
-	pRootProducts=NULL;
-	piDocRootsOnDoc->Release();
-	piDocRootsOnDoc = NULL;
-
-	//2、获得容器类，并得到CATICkeParmFactory工厂接口
+	HRESULT rc = S_OK;
+	//获得容器类，并得到CATICkeParmFactory工厂接口
 	CATInit_var spInitOnDoc = piDocument;
 	if (NULL_var == spInitOnDoc)
 	{
 		cout << "Could not get init on doc.\n";
-		return;
+		return S_FALSE;
 	}
 	CATIContainer * piCont = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
 
 	//从文档容器中获取零件CATIPrtContainer容器
 	CATIPrtContainer *piPrtCont = NULL;
 	rc = piCont->QueryInterface(IID_CATIPrtContainer, (void **)&piPrtCont);
-	if(FAILED(rc))return;
+	if(FAILED(rc))return rc;
 	CATIPrtPart_var spPrtPart = piPrtCont->GetPart();
 	iospParmFact = piCont;
 
@@ -3615,6 +3604,36 @@ void PrtService::GetParamFactory(CATDocument *piDocument,CATICkeParmFactory_var 
 	piCont = NULL;
 	piPrtCont->Release();
 	piPrtCont = NULL;
+
+	return rc;
+}
+
+//从文档获取CATIGSMFactory
+HRESULT PrtService::GetGSMFactory(CATDocument *piDocument,CATIGSMFactory_var &iospGSMFact)
+{
+	HRESULT rc = S_OK;
+	//获得容器类，并得到CATIGSMFactory工厂接口
+	CATInit_var spInitOnDoc = piDocument;
+	if (NULL_var == spInitOnDoc)
+	{
+		cout << "Could not get init on doc.\n";
+		return S_FALSE;
+	}
+	CATIContainer * piCont = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
+
+	//从文档容器中获取零件CATIPrtContainer容器
+	CATIPrtContainer *piPrtCont = NULL;
+	rc = piCont->QueryInterface(IID_CATIPrtContainer, (void **)&piPrtCont);
+	if(FAILED(rc))return rc;
+	iospGSMFact = piCont;
+
+	//释放无用的接口
+	piCont->Release();
+	piCont = NULL;
+	piPrtCont->Release();
+	piPrtCont = NULL;
+
+	return rc;
 }
 
 //获取当前Part文档容器
