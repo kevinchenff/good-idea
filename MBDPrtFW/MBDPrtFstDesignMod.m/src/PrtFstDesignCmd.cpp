@@ -31,8 +31,7 @@ CATCreateClass( PrtFstDesignCmd);
 #include "CAT3DCustomRep.h"
 #include "CATGraphicAttributeSet.h"
 #include "CATIStructureAnalyse.h"
-#include "CATIMmiInternalCopyWithLink.h"
-
+#include "CATIMmiMechanicalImportApplicative.h"
 
 
 
@@ -620,17 +619,17 @@ CATBoolean PrtFstDesignCmd::ChoosePoints( void *UsefulData)
 CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 {
 	HRESULT hr = E_FAIL;
+	
 	CATPathElement* piSelectElement =m_piFirstSurfAgt->GetValue();//获得所选对象
-
 	if (piSelectElement != NULL)
 	{
 		//获得SUB PATH
 		CATBaseUnknown * pLeaf =NULL ;
 		//获得路径下第一个特征spec类型
 		pLeaf = (*piSelectElement)[piSelectElement->GetSize()-2];
-		CATISpecObject_var spSpecOnSelection = NULL_var;
-		spSpecOnSelection = pLeaf;
+		CATISpecObject_var spSpecOnSelection = pLeaf;
 
+		//根据情况判断
 		if ( spSpecOnSelection != NULL_var )
 		{
 			CATBoolean existFlag = FALSE;
@@ -655,10 +654,28 @@ CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 				}
 				else
 				{
-					PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
-					m_lstSpecFirstSurfs.Append(spSpecOnSelection);
-					PrtService::HighlightHSO(spSpecOnSelection);
+					//判断确定所引用的曲面所在零件必须在定义上下文中
+					CATIProduct_var spRefPrd;
+					GetLinkImportPrd(spSpecOnSelection,spRefPrd);
+					if (m_lstSpecPrds.Size() >= 2)
+					{
+						if (IsTheSpecInLstSpec(spRefPrd,m_lstSpecPrds))
+						{
+							PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
+							m_lstSpecFirstSurfs.Append(spSpecOnSelection);
+							PrtService::HighlightHSO(spSpecOnSelection);
+						}
+						else
+						{
+							PrtService::ktErrorMsgBox("当前所选元素所在零件不在“设计上下文”列表中，请重新选择！");
+						}
+					}
+					else //当前“设计上下文”元素小于二个
+					{
+						PrtService::ktWarningMsgBox("“设计上下文”零件列表必须大于等于2，请首先选择设计上下文零件！");
+					}
 				}
+				
 			}
 
 			if (m_lstSpecFirstSurfs.Size()>=1)
@@ -697,8 +714,7 @@ CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 		CATBaseUnknown * pLeaf =NULL ;
 		//获得路径下第一个特征spec类型
 		pLeaf = (*piSelectElement)[piSelectElement->GetSize()-2];
-		CATISpecObject_var spSpecOnSelection = NULL_var;
-		spSpecOnSelection = pLeaf;
+		CATISpecObject_var spSpecOnSelection = pLeaf;
 
 		if ( spSpecOnSelection != NULL_var )
 		{
@@ -724,10 +740,34 @@ CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 				}
 				else
 				{
-					PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
-					m_lstSpecSecSurfs.Append(spSpecOnSelection);
-					PrtService::HighlightHSO(spSpecOnSelection);
-					GetAllParents(spSpecOnSelection);
+					//判断是否在另一个曲面数组中
+					if (IsTheSpecInLstSpec(spSpecOnSelection,m_lstSpecSecSurfs))
+					{
+						PrtService::ktWarningMsgBox("您不能选择与终止面相同的面，请重新选择！");
+					}
+					else
+					{
+						//判断确定所引用的曲面所在零件必须在定义上下文中
+						CATIProduct_var spRefPrd;
+						GetLinkImportPrd(spSpecOnSelection,spRefPrd);
+						if (m_lstSpecPrds.Size() >= 2)
+						{
+							if (IsTheSpecInLstSpec(spRefPrd,m_lstSpecPrds))
+							{
+								PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
+								m_lstSpecSecSurfs.Append(spSpecOnSelection);
+								PrtService::HighlightHSO(spSpecOnSelection);
+							}
+							else
+							{
+								PrtService::ktErrorMsgBox("当前所选元素所在零件不在“设计上下文”列表中，请重新选择！");
+							}
+						}
+						else //当前“设计上下文”元素小于二个
+						{
+							PrtService::ktWarningMsgBox("“设计上下文”零件列表必须大于等于2，请首先选择设计上下文零件！");
+						}
+					}
 				}
 			}
 			
@@ -1074,28 +1114,32 @@ BOOL PrtFstDesignCmd::IsTheSpecInLstSpec(CATISpecObject_var iSpec, CATListValCAT
 }
 
 //获得传入特征的的父级节点
-void PrtFstDesignCmd::GetAllParents(CATISpecObject_var& spFeature)
+HRESULT PrtFstDesignCmd::GetLinkImportPrd(CATISpecObject_var& ispFeature,CATIProduct_var &ospSourcePrd)
 {
-
-	CATIMmiInternalCopyWithLink *piLink = NULL;
-	HRESULT rc = spFeature->QueryInterface(IID_CATIMmiInternalCopyWithLink,(void**)&piLink);
-	if (SUCCEEDED(rc))
+	HRESULT rc = S_OK;
+	ospSourcePrd=NULL_var;
+	CATIMmiMechanicalImportApplicative* piLinkImport = NULL;
+	//
+	rc = ispFeature->QueryInterface(IID_CATIMmiMechanicalImportApplicative,(void**)&piLinkImport);
+	//
+	if (SUCCEEDED(rc) && (piLinkImport!=NULL))
 	{
-		void *oPointedElem = NULL;
-		rc = piLink->GetSelectedElement(IID_CATISpecObject,&oPointedElem);
-		piLink->Release();
-		piLink=NULL;
+		CATIProduct_var spSourcePrd = NULL_var;
+		piLinkImport->GetSourceProduct(ospSourcePrd);
+		//
+		piLinkImport->Release();
+		piLinkImport=NULL;
 		
-		if (SUCCEEDED(rc))
+		//输出路径测试
+		/*if (ospSourcePrd!=NULL_var)
 		{
-			CATISpecObject *spiLink = (CATISpecObject *)piLink;
 			CATUnicodeString strShowPath("");
 			CATPathElement *piPath = NULL;
-			PrtService::GetPathElementFromSpecObject(piPath,spiLink,NULL);
-			PrtService::PathElementString(piPath,strShowPath,TRUE);	
-			PrtService::ktWarningMsgBox(strShowPath);
-		}
-		
+			PrtService::GetPathElementFromSpecObject(piPath,ospSourcePrd,NULL);
+			PrtService::PathElementString(piPath,strShowPath,TRUE);
+			PrtService::ktInfoMsgBox(strShowPath);
+		}*/
 	}
 	
+	return rc;
 }

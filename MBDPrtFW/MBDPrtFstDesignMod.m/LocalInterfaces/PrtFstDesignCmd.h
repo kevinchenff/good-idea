@@ -90,7 +90,7 @@ class PrtFstDesignCmd: public CATStateCommand
   //判断一个曲面特征是否在另一个数组中
   BOOL IsTheSpecInLstSpec(CATISpecObject_var iSpec, CATListValCATISpecObject_var iLstSpec);
   //获得传入特征的的父级节点
-  void PrtFstDesignCmd::GetAllParents(CATISpecObject_var& spFeature);
+  HRESULT GetLinkImportPrd(CATISpecObject_var& ispFeature,CATIProduct_var &ospSourcePrd);
 
 
 
