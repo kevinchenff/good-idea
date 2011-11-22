@@ -205,11 +205,11 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   // "Real"
   // "Booleen" 
   static 
-  CATICkeParm_var CAAGsiInstanciateLitteral (CATUnicodeString  NomLitteral, CATIContainer_var  Cont,CATUnicodeString Name);
+  CATICkeParm_var CAAGsiInstanciateLitteral (CATUnicodeString  NomLitteral,CATUnicodeString Name);
 
   //创建参数
   static 
-  CATICkeParm_var LocalInstLitteral (void * Value, int IsValuate, CATUnicodeString NomLitteral, CATIContainer_var  Cont, CATUnicodeString Name);
+  CATICkeParm_var LocalInstLitteral (void * Value, int IsValuate, CATUnicodeString NomLitteral,CATUnicodeString Name);
 
   //设置特征为隐藏或显示
   static
@@ -380,15 +380,16 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 //**********************************************************************************************************************************************************************************************************************************************************
 
   //从文档获取CATICkeParmFactory
-  static
-  void GetParamFactory(CATDocument *piDocument,CATICkeParmFactory_var &iospParmFact);
+  static HRESULT GetParamFactory(CATDocument *piDocument,CATICkeParmFactory_var &iospParmFact);
+
+  //从文档获取CATIGSMFactory
+  static HRESULT GetGSMFactory(CATDocument *piDocument,CATIGSMFactory_var &iospGSMFact);
 
   //获取当前Part文档Root Container
   static HRESULT ObtainCurrentRootContainer(CATIPrtContainer *&oRootContainer);
 
   //获取某Part文档Root Container
   static HRESULT ObtainRootContainer(CATDocument* iDoc,CATIPrtContainer *&oRootContainer);
-
 
 
 
