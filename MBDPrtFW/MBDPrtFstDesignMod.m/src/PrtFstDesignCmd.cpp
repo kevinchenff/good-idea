@@ -36,6 +36,10 @@ CATCreateClass( PrtFstDesignCmd);
 #include "CATIGSMLineNormal.h"
 #include "CAT3DMarkerGP.h"
 #include "CAT3DFixedArrowGP.h"
+#include "CATIMfBRep.h"
+#include "CAT4x4Matrix.h"
+
+
 
 
 
@@ -50,7 +54,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_piDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
-  ,m_piPointGSMAgt(NULL)
+  ,m_piPointGSMAgt(NULL),m_pi3DBagRep(NULL),m_piManipulator(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -144,6 +148,18 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 	{
 		m_piPrdAgt->RequestDelayedDestruction();
 		m_piPrdAgt=NULL;
+	}
+
+	if (m_pi3DBagRep != NULL)
+	{
+		m_pi3DBagRep->Release();
+		m_pi3DBagRep=NULL;
+	}
+
+	if (m_piManipulator != NULL)
+	{
+		m_piManipulator->Release();
+		m_piManipulator=NULL;
 	}
 
 	//获得并清空ISO
@@ -435,6 +451,9 @@ void PrtFstDesignCmd::BuildGraph()
 		IsLastModifiedAgentCondition(m_piPointGSMPBAgt),
 		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointGSMPB));
 
+	// [11/23/2011 zhangwenyang]
+	AddAnalyseNotificationCB(m_piManipulator,CATManipulator::GetCATManipulate(),
+		(CATCommandMethod)&PrtFstDesignCmd::CBManipulator,(void*)NULL);
 
 }
 
@@ -627,14 +646,25 @@ CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 {
 	HRESULT hr = E_FAIL;
 	
-	CATPathElement* piSelectElement =m_piFirstSurfAgt->GetValue();//获得所选对象
+	CATBaseUnknown* piSelectElement =m_piFirstSurfAgt->GetElementValue();//获得所选对象
 	if (piSelectElement != NULL)
 	{
 		//获得SUB PATH
-		CATBaseUnknown * pLeaf =NULL ;
-		//获得路径下第一个特征spec类型
-		pLeaf = (*piSelectElement)[piSelectElement->GetSize()-2];
-		CATISpecObject_var spSpecOnSelection = pLeaf;
+		CATIMfBRep *piBrep = NULL;
+		hr = piSelectElement->QueryInterface(IID_CATIMfBRep,(void**)&piBrep);
+		//
+		CATISpecObject_var spSpecOnSelection =NULL_var;
+		if (SUCCEEDED(hr)&&(piBrep!=NULL))
+		{
+			spSpecOnSelection = piBrep->GetSupport();
+			piBrep->Release();
+			piBrep=NULL;
+		}
+		else
+		{
+			spSpecOnSelection = piSelectElement;
+		}
+		
 
 		//根据情况判断
 		if ( spSpecOnSelection != NULL_var )
@@ -714,15 +744,26 @@ CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 {
 	HRESULT hr = E_FAIL;
-	CATPathElement* piSelectElement =m_piSecSurfAgt->GetValue();//获得所选对象
+	CATBaseUnknown* piSelectElement =m_piSecSurfAgt->GetElementValue();//获得所选对象
 	if (piSelectElement != NULL)
 	{
 		//获得SUB PATH
-		CATBaseUnknown * pLeaf =NULL ;
-		//获得路径下第一个特征spec类型
-		pLeaf = (*piSelectElement)[piSelectElement->GetSize()-2];
-		CATISpecObject_var spSpecOnSelection = pLeaf;
+		CATIMfBRep *piBrep = NULL;
+		hr = piSelectElement->QueryInterface(IID_CATIMfBRep,(void**)&piBrep);
+		//
+		CATISpecObject_var spSpecOnSelection =NULL_var;
+		if (SUCCEEDED(hr)&&(piBrep!=NULL))
+		{
+			spSpecOnSelection = piBrep->GetSupport();
+			piBrep->Release();
+			piBrep=NULL;
+		}
+		else
+		{
+			spSpecOnSelection = piSelectElement;
+		}
 
+		//
 		if ( spSpecOnSelection != NULL_var )
 		{
 			CATBoolean existFlag = FALSE;
@@ -1101,6 +1142,7 @@ void PrtFstDesignCmd::ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCAT
 		CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
 		CATGraphicAttributeSet   TextGaNode ;
 		TextGaNode.SetColor(RED);
+		TextGaNode.SetHighlightMode (0);
 		CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
 		pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
 		CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
@@ -1238,12 +1280,51 @@ HRESULT PrtFstDesignCmd::GetInitialArrow(CATISpecObject_var ispPoint, CATListVal
 			//
 			CAT3DCustomRep * pRepForArrow= new CAT3DCustomRep(pArrowGP,AttributsDir);
 			//
-			CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
-			piRepPtAlias->SetRep(pRepForArrow) ;			
+			CATModelForRep3D *piRepPtAlias = new CATModelForRep3D();
+			piRepPtAlias->SetRep(pRepForArrow);		
 			//
-			pISO->AddElement(piRepPtAlias);
+			if( m_pi3DBagRep!=NULL)
+			{
+				m_pi3DBagRep->Release();
+				m_pi3DBagRep=NULL;
+			}
+			m_pi3DBagRep = new CAT3DBagRep();m_pi3DBagRep->AddChild(*pRepForArrow);
+			//
+			CATFrmLayout *pFrmLayout = CATFrmLayout::GetCurrentLayout();
+			CATFrmWindow *pFrmWindow = pFrmLayout->GetCurrentWindow();
+			CATViewer *pViewer = pFrmWindow->GetViewer();
+			pViewer->AddRep(m_pi3DBagRep);pViewer->Draw();
+			//pISO->AddElement(piRepPtAlias);
+
+			//
+			if (m_piManipulator!=NULL)
+			{
+				m_piManipulator->Release();
+				m_piManipulator=NULL;
+			}
+			m_piManipulator = new CAT3DManipulator(this,"Manip",m_pi3DBagRep,CAT3DManipulator::DirectionTranslation);
+			//CATMathPoint P(0,0,0);
+			CATMathVector I(1,0,0),J(0,1,0),K(0,0,1);
+			CATMathAxis Axis(mathPoint1,I,J,K);
+			m_piManipulator->SetPosition(Axis);
+			CATMathDirection D(0,1,0);
+			m_piManipulator->SetTranslationDirection(D);
 		}
 	}
 
 	return rc;	
+}
+
+//箭头的回调函数
+void PrtFstDesignCmd::CBManipulator(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	cout<<"CBManipulator(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)!"<<endl;
+	CATMathAxis Position=((CAT3DManipulator *)cmd)->GetPosition();
+	CAT4x4Matrix initialisationMatrix(Position);
+	m_pi3DBagRep->SetMatrix(initialisationMatrix);
+	//
+	CATFrmLayout *pFrmLayout = CATFrmLayout::GetCurrentLayout();
+	CATFrmWindow *pFrmWindow = pFrmLayout->GetCurrentWindow();
+	CATViewer *pViewer = pFrmWindow->GetViewer();
+	pViewer->Draw();
 }
