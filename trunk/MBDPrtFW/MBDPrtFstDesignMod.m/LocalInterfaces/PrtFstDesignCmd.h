@@ -25,6 +25,10 @@
 #include "CATFeatureImportAgent.h"
 #include "CATPathElementAgent.h"
 #include "CATHSO.h"
+#include "CAT3DBagRep.h"
+#include "CAT3DManipulator.h"
+
+
 
 
 
@@ -91,10 +95,10 @@ class PrtFstDesignCmd: public CATStateCommand
   BOOL IsTheSpecInLstSpec(CATISpecObject_var iSpec, CATListValCATISpecObject_var iLstSpec);
   //获得传入特征的的父级节点
   HRESULT GetLinkImportPrd(CATISpecObject_var& ispFeature,CATIProduct_var &ospSourcePrd);
-
   //获得初始化的法线方向
   HRESULT GetInitialArrow(CATISpecObject_var ispPoint, CATListValCATISpecObject_var ilstFirstSurf,CATListValCATISpecObject_var ilstSecSurf);
-
+  //箭头的回调函数
+  void CBManipulator(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
 
 private:
@@ -114,6 +118,10 @@ private:
 	//存储中间数据变量
 	CATListValCATISpecObject_var m_lstSpecPoints,m_lstSpecPrds;
 	CATListValCATISpecObject_var m_lstSpecFirstSurfs,m_lstSpecSecSurfs;
+
+	//箭头临时变量
+	CAT3DBagRep *m_pi3DBagRep;
+	CAT3DManipulator *m_piManipulator;
 };
 
 //----------------------------------------------------------------------
