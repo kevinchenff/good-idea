@@ -411,6 +411,7 @@ HRESULT PrdService::GetInstPrdDoc(const CATIProduct_var &ispProduct,CATDocument*
 {
 	//初始化
 	HRESULT hr = S_OK;
+	opiPrdDoc = NULL;
 
 	//获取
 	CATIProduct_var spRefPrd=NULL_var;
