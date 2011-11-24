@@ -40,12 +40,6 @@ CATCreateClass( PrtFstDesignCmd);
 #include "CAT4x4Matrix.h"
 
 
-
-
-
-
-
-
 //-------------------------------------------------------------------------
 // Constructor
 //-------------------------------------------------------------------------
@@ -54,7 +48,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_piDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
-  ,m_piPointGSMAgt(NULL),m_pi3DBagRep(NULL),m_piManipulator(NULL)
+  ,m_piPointGSMAgt(NULL),m_pi3DBagRep(NULL),m_piManipulator(NULL),m_piISO(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -65,6 +59,9 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 	{
 		m_piHSO = m_piEditor->GetHSO();
 		m_piHSO->Empty();
+
+		m_piISO = m_piEditor->GetISO();
+		m_piISO->Empty();
 	}
 
 	//判断是否为ZP模型;
@@ -162,11 +159,9 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 		m_piManipulator=NULL;
 	}
 
-	//获得并清空ISO
-	CATISO *pISO = m_piEditor->GetISO();
-	pISO->Empty();
 	//高亮点清空
 	m_piHSO->Empty();
+	m_piISO->Empty();
    
 }
 
@@ -452,8 +447,8 @@ void PrtFstDesignCmd::BuildGraph()
 		Action ((ActionMethod) &PrtFstDesignCmd::ActivePointGSMPB));
 
 	// [11/23/2011 zhangwenyang]
-	AddAnalyseNotificationCB(m_piManipulator,CATManipulator::GetCATManipulate(),
-		(CATCommandMethod)&PrtFstDesignCmd::CBManipulator,(void*)NULL);
+	/*AddAnalyseNotificationCB(m_piManipulator,CATManipulator::GetCATManipulate(),
+		(CATCommandMethod)&PrtFstDesignCmd::CBManipulator,(void*)NULL);*/
 
 }
 
@@ -1093,10 +1088,7 @@ void PrtFstDesignCmd::DeleteAllPointsCB(CATCommand* cmd, CATNotification* evt, C
 	m_piDlg->_PointCountEditor->SetText(strCount);
 
 	//获得并清空ISO
-	CATFrmEditor *pEditor = CATFrmEditor::GetCurrentEditor();
-	CATISO       *pISO ;
-	pISO = pEditor->GetISO();
-	pISO->Empty();
+	m_piISO->Empty();
 }
 
 //在IOS中显示标记点
@@ -1115,10 +1107,7 @@ void PrtFstDesignCmd::ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCAT
 	opiSL->GetSelect(iSelectedRows,NumberOfRowsSelected);
 
 	//获得并清空ISO
-	CATFrmEditor *pEditor = CATFrmEditor::GetCurrentEditor();
-	CATISO       *pISO ;
-	pISO = pEditor->GetISO();
-	pISO->Empty();
+	m_piISO->Empty();
 
 	//重新添加高亮
 	for (int i = 0; i < NumberOfRowsSelected; i ++)
@@ -1147,7 +1136,7 @@ void PrtFstDesignCmd::ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCAT
 		pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
 		CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
 		piRepPtAlias->SetRep(pRepForTextStart) ;
-		pISO->AddElement(piRepPtAlias);
+		m_piISO->AddElement(piRepPtAlias);
 
 		piRepPtAlias->Release();
 		piRepPtAlias=NULL;
@@ -1265,11 +1254,8 @@ HRESULT PrtFstDesignCmd::GetInitialArrow(CATISpecObject_var ispPoint, CATListVal
 			spIntersect01->GetFather()->Remove(spIntersect01);
 			spIntersect02->GetFather()->Remove(spIntersect02);
 			//获得并清空ISO
-			CATFrmEditor *pEditor = CATFrmEditor::GetCurrentEditor();
-			CATISO       *pISO ;
-			pISO = pEditor->GetISO();
-			pISO->Empty();
-
+			m_piISO->Empty();
+			//
 			CATMathDirectionf oArrowVector(mathPoint1,mathPoint2);
 			//在OriginPoint处创建3D fixed arrow.
 			CAT3DFixedArrowGP *pArrowGP = new CAT3DFixedArrowGP(mathPoint1,oArrowVector,20,5);
@@ -1283,6 +1269,7 @@ HRESULT PrtFstDesignCmd::GetInitialArrow(CATISpecObject_var ispPoint, CATListVal
 			CATModelForRep3D *piRepPtAlias = new CATModelForRep3D();
 			piRepPtAlias->SetRep(pRepForArrow);		
 			//
+			m_piISO->AddElement(piRepPtAlias);
 			if( m_pi3DBagRep!=NULL)
 			{
 				m_pi3DBagRep->Release();
