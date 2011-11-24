@@ -109,6 +109,7 @@ private:
 	CATUnicodeString m_strDocName;
 	CATFrmEditor *m_piEditor;
 	CATHSO *m_piHSO;
+	CATISO *m_piISO;
 
 	//定义代理
 	CATFeatureImportAgent *m_piFirstSurfAgt,*m_piSecSurfAgt,*m_piPointsAgt,*m_piPointGSMAgt;
