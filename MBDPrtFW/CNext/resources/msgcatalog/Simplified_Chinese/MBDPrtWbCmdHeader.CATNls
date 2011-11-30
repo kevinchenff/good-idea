@@ -1,0 +1,46 @@
+// DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr01.Title = "Fastener Info To XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr01.Help = "Fastener Info To XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr01.ShortHelp = "Fastener Info To XML";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr02.Title = "Fastener Info From XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr02.Help = "Fastener Info From XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr02.ShortHelp = "Fastener Info From XML";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Title = "CATIA MBD Annotation To XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Help = "CATIA MBD Annotation To XML";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.ShortHelp = "CATIA MBD Annotation To XML";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Title = "Add MBD Material";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Help = "Add MBD Material";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.ShortHelp = "Add MBD Material";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Title = "Create Fastener Points";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Help = "Create Fastener Points";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.ShortHelp = "Create Fastener Points";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Title = "Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Help = "Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.ShortHelp = "Fastener Design";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Title = "Magic Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Help = "Magic Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.ShortHelp = "Magic Fastener Design";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.Title = "Symmetry Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.Help = "Symmetry Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.ShortHelp = "Symmetry Fastener Design";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Title = "Edit Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Help = "Edit Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.ShortHelp = "Edit Fastener";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Title = "Delete Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Help = "Delete Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.ShortHelp = "Delete Fastener";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Title = "Update Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Help = "Update Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.ShortHelp = "Update Fastener";
+
+// END WIZARD EDITION ZONE

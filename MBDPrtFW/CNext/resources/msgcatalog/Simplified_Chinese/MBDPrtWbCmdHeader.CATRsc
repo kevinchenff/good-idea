@@ -1,0 +1,13 @@
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr01.Icon.Normal = "I_MBDPrtGetFastenerInfo";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr02.Icon.Normal = "I_MBDPrtSetFastenerInfo";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Icon.Normal = "I_MBDPrtSetFastenerInfo";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Icon.Normal = "I_MBDAddMaterial";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Icon.Normal = "I_MBDDAFSASinSelApp";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Icon.Normal = "I_MBDDAFSAGroSelApp";
+
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Icon.Normal = "I_MBDDAFTOAdvPattern";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr08.Icon.Normal = "I_MBDDAFTOSymmetry";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Icon.Normal = "I_MBDEditFastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Icon.Normal = "I_MBDDAFTODelete";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Icon.Normal = "I_MBDDAFTOUpdate";
