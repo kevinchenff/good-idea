@@ -2,13 +2,103 @@
 CATDlgDialog PrtFstPointsDlg
 {
   STYLE = CATDlgWndBtnOKCancelPreview|CATDlgGridLayout;
+  ROWRES = { 0, 1 };
+  COLRES = { 0 };
 }
 
 CATDlgFrame Frame001
 {
   FATHER = PrtFstPointsDlg;
-  STYLE = CATDlgGridLayout;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 0 };
+}
+
+CATDlgLabel Label002
+{
+  FATHER = Frame001;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label003
+{
+  FATHER = Frame001;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSelectorList CurveSL
+{
+  FATHER = Frame001;
+  TH = 1;
+  TW = 30;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSelectorList SurfSL
+{
+  FATHER = Frame001;
+  TH = 1;
+  TW = 30;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label007
+{
+  FATHER = Frame001;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner DistanceSpinner
+{
+  FATHER = Frame001;
+  STYLE = CATDlgSpnEntry;
+  MIN = 0.000000;
+  MAX = 10.000000;
+  STEP = 10.000000;
+  FORM = "%d";
+  GRID = { 2, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame009
+{
+  FATHER = PrtFstPointsDlg;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 0, 1 };
+}
+
+CATDlgRadioButton NumPointRB
+{
+  FATHER = Frame009;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgRadioButton DistanceRB
+{
+  FATHER = Frame009;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner NumSpinner
+{
+  FATHER = Frame009;
+  STYLE = CATDlgSpnEntry;
+  MIN = 0.000000;
+  MAX = 10.000000;
+  STEP = 10.000000;
+  FORM = "%d";
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner PointDistSpinner
+{
+  FATHER = Frame009;
+  STYLE = CATDlgSpnEntry;
+  MIN = 0.000000;
+  MAX = 10.000000;
+  STEP = 10.000000;
+  FORM = "%d";
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

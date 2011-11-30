@@ -20,6 +20,8 @@
 
 #include "CATDlgDialog.h"
 #include "CATDlgInclude.h"
+#include "CATDlgControl.h"
+
 
 //----------------------------------------------------------------------
 
@@ -52,10 +54,20 @@ class PrtFstPointsDlg: public CATDlgDialog
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
+ CATDlgLabel*      _Label002;
+ CATDlgLabel*      _Label003;
+ CATDlgSelectorList*      _CurveSL;
+ CATDlgSelectorList*      _SurfSL;
+ CATDlgLabel*      _Label007;
+ CATDlgSpinner*      _DistanceSpinner;
+ CATDlgFrame*      _Frame009;
+ CATDlgRadioButton*      _NumPointRB;
+ CATDlgRadioButton*      _DistanceRB;
+ CATDlgSpinner*      _NumSpinner;
+ CATDlgSpinner*      _PointDistSpinner;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
 
 //----------------------------------------------------------------------
