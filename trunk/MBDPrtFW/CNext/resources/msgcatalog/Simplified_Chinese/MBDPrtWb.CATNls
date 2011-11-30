@@ -1,0 +1,26 @@
+// DO NOT EDIT :: THE CAA2 WIZARDS WILL ADD CODE HERE
+// Title of the workshop
+MBDPrtWb.Title="MBD Part Designer";
+
+// -------------------------------------------------
+// Toolbar
+// -------------------------------------------------
+MBDPrtWbFastenerTktTlb.Title = "Fastener Info";
+MBDPrtWbMBDAnnotateTktTlb.Title = "MBD Annotation";
+MBDPrtWbMBDMaterialTktTlb.Title = "MBD Material";
+
+MBDPrtWbFDADesignTktTlb.Title = "Fastener Design";
+MBDPrtWbFDATransformTktTlb.Title = "Fastener Transform";
+
+// -------------------------------------------------
+// Menu
+// -------------------------------------------------
+MBDPrtWbTktMnu.Title = "MBD Part Designer" ;
+MBDPrtWbFastenerTktMbr.Title = "Fastener Info" ;
+MBDPrtWbMBDAnnotateTktMbr.Title = "MBD Annotation" ;
+MBDPrtWbMBDMaterialTktMbr.Title = "MBD Material";
+
+MBDPrtWbFDADesignTktMbr.Title = "Fastener Design" ;
+MBDPrtWbFDATransformTktMbr.Title = "Fastener Transform";
+
+// END WIZARD EDITION ZONE
