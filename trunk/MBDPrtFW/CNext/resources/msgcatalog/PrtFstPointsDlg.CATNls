@@ -1,6 +1,8 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "定义安装点";
-// END WIZARD REPLACEMENT ZONE
-
-
+Title = "Fastener points";
+Frame001.Label002.Title = "Selected Curve:";
+Frame001.Label003.Title = "Selected Surface:";
+Frame001.Label007.Title = "Curve Offset Distance:";
+Frame009.NumPointRB.Title = "Number Of Points:";
+Frame009.DistanceRB.Title = "Distance Between Points:";
 // END WIZARD REPLACEMENT ZONE

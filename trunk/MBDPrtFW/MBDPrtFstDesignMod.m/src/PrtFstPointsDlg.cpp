@@ -16,6 +16,7 @@
 #include "CATApplicationFrame.h"
 #include "CATDlgGridConstraints.h"
 #include "CATMsgCatalog.h"
+
 #ifdef PrtFstPointsDlg_ParameterEditorInclude
 #include "CATIParameterEditorFactory.h"
 #include "CATIParameterEditor.h"
@@ -37,6 +38,17 @@ PrtFstPointsDlg::PrtFstPointsDlg() :
 {
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
  _Frame001 = NULL;
+ _Label002 = NULL;
+ _Label003 = NULL;
+ _CurveSL = NULL;
+ _SurfSL = NULL;
+ _Label007 = NULL;
+ _DistanceSpinner = NULL;
+ _Frame009 = NULL;
+ _NumPointRB = NULL;
+ _DistanceRB = NULL;
+ _NumSpinner = NULL;
+ _PointDistSpinner = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -50,6 +62,17 @@ PrtFstPointsDlg::~PrtFstPointsDlg()
 //  --------------------------------------------------
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
  _Frame001 = NULL;
+ _Label002 = NULL;
+ _Label003 = NULL;
+ _CurveSL = NULL;
+ _SurfSL = NULL;
+ _Label007 = NULL;
+ _DistanceSpinner = NULL;
+ _Frame009 = NULL;
+ _NumPointRB = NULL;
+ _DistanceRB = NULL;
+ _NumSpinner = NULL;
+ _PointDistSpinner = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -61,12 +84,78 @@ void PrtFstPointsDlg::Build()
 //  -------------------------------------------------------------------
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
- _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
+ SetGridRowResizable(0,1);
+ SetGridRowResizable(1,1);
+ SetGridColumnResizable(0,1);
+ _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame001 -> SetGridColumnResizable(0,1);
+ _Label002 = new CATDlgLabel(_Frame001, "Label002");
+_Label002 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Label003 = new CATDlgLabel(_Frame001, "Label003");
+_Label003 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _CurveSL = new CATDlgSelectorList(_Frame001, "CurveSL");
+ _CurveSL -> SetVisibleTextHeight(1);
+ _CurveSL -> SetVisibleTextWidth(30);
+_CurveSL -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _SurfSL = new CATDlgSelectorList(_Frame001, "SurfSL");
+ _SurfSL -> SetVisibleTextHeight(1);
+ _SurfSL -> SetVisibleTextWidth(30);
+_SurfSL -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _Label007 = new CATDlgLabel(_Frame001, "Label007");
+_Label007 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+// _DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntry);
+// _DistanceSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+// _DistanceSpinner -> SetFormat("%d");
+//_DistanceSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
+ _Frame009 = new CATDlgFrame(this, "Frame009", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame009 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame009 -> SetGridColumnResizable(0,1);
+ _Frame009 -> SetGridColumnResizable(1,1);
+ _NumPointRB = new CATDlgRadioButton(_Frame009, "NumPointRB");
+_NumPointRB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _DistanceRB = new CATDlgRadioButton(_Frame009, "DistanceRB");
+_DistanceRB -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+// _NumSpinner = new CATDlgSpinner(_Frame009, "NumSpinner", CATDlgSpnEntry);
+// _NumSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+// _NumSpinner -> SetFormat("%d");
+//_NumSpinner -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+// _PointDistSpinner = new CATDlgSpinner(_Frame009, "PointDistSpinner", CATDlgSpnEntry);
+// _PointDistSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+// _PointDistSpinner -> SetFormat("%d");
+//_PointDistSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+
+_DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+_DistanceSpinner -> SetFormat("%d");
+_DistanceSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
+
+_NumSpinner = new CATDlgSpinner(_Frame009, "NumSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+_NumSpinner -> SetFormat("%d");
+_NumSpinner -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+
+_PointDistSpinner = new CATDlgSpinner(_Frame009, "PointDistSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+_PointDistSpinner -> SetFormat("%d");
+_PointDistSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+
+//ÉèÖÃ²ÎÊý
+double Start, End, StepMM,StepNum;
+Start = 0.0;
+End = 1e+6;
+StepMM = 0.001;
+StepNum = 1;
+//
+_NumSpinner->SetMinMaxStep(Start, End, StepNum);
+_DistanceSpinner->SetMinMaxStep(Start, End, StepMM);
+_PointDistSpinner->SetMinMaxStep(Start, End, StepMM);
+//
+//_DistanceSpinner->SetMagnitude (CATDlgControl::Length);
+//_PointDistSpinner->SetMagnitude (CATDlgControl::Length);
+//
+_DistanceSpinner->SetUnit(CATDlgControl::Millimeter);
+_PointDistSpinner->SetUnit(CATDlgControl::Millimeter);
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
 
 }
-

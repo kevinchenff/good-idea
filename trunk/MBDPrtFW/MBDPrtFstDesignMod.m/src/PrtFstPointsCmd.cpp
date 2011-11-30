@@ -26,7 +26,7 @@ CATCreateClass( PrtFstPointsCmd);
 PrtFstPointsCmd::PrtFstPointsCmd() :
   CATStateCommand ("PrtFstPointsCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-  ,_Indication(NULL)
+  ,m_pDlg(NULL)
 {
 }
 
@@ -35,8 +35,12 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
 //-------------------------------------------------------------------------
 PrtFstPointsCmd::~PrtFstPointsCmd()
 {
-   if (_Indication != NULL) 
-      _Indication->RequestDelayedDestruction();
+	if (NULL!=m_pDlg)
+	{
+		m_pDlg->RequestDelayedDestruction();
+		m_pDlg=NULL;
+	}
+
 }
 
 
@@ -45,29 +49,35 @@ PrtFstPointsCmd::~PrtFstPointsCmd()
 //-------------------------------------------------------------------------
 void PrtFstPointsCmd::BuildGraph()
 {
+	//
+	m_pDlg = new PrtFstPointsDlg();
+	m_pDlg->Build();
+	m_pDlg->SetVisibility(CATDlgShow); 
 
+	// 主对话框的消息响应
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetDiaOKNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OkDlgCB,
+		NULL);
 
-  // TODO: Define the StateChart 
-  // ---------------------------
-  _Indication = new CATIndicationAgent ("Indication");
-  CATMathPlane PlaneXY;
-  _Indication -> SetMathPlane (PlaneXY);
-  CATDialogState * initialState = GetInitialState("initialState");
-  initialState -> AddDialogAgent (_Indication);
-  
-  AddTransition( initialState, NULL, 
-                 IsOutputSetCondition (_Indication),
-                 Action ((ActionMethod) &PrtFstPointsCmd::ActionOne));
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetWindCloseNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::CloseDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetDiaCANCELNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::CloseDlgCB,
+		NULL);
+
 }
 
-
-//-------------------------------------------------------------------------
-// ActionOne ()
-//-------------------------------------------------------------------------
-CATBoolean PrtFstPointsCmd::ActionOne( void *data )
+//消息框响应函数
+void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-  // TODO: Define the action associated with the transition 
-  // ------------------------------------------------------
-
-  return TRUE;
+	RequestDelayedDestruction();
+}
+void PrtFstPointsCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	RequestDelayedDestruction();
 }

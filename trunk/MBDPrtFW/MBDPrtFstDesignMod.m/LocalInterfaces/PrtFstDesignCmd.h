@@ -30,10 +30,6 @@
 
 
 
-
-
-
-
 //----------------------------------------------------------------------
 
 /**
@@ -102,7 +98,7 @@ class PrtFstDesignCmd: public CATStateCommand
 
 
 private:
-	PrtFstDesignDlg *m_piDlg;
+	PrtFstDesignDlg *m_pDlg;
 
 	//ÎÄµµÖ¸Õë
 	CATDocument *m_piDoc;
