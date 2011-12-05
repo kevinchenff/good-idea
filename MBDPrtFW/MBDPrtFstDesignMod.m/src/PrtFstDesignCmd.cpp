@@ -38,6 +38,7 @@ CATCreateClass( PrtFstDesignCmd);
 #include "CAT3DFixedArrowGP.h"
 #include "CATIMfBRep.h"
 #include "CAT4x4Matrix.h"
+//#include "CATIMmiInternalCopyWithLink.h"
 
 
 //-------------------------------------------------------------------------

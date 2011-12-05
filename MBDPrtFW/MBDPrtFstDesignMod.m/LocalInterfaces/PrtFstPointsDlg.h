@@ -47,9 +47,41 @@ class PrtFstPointsDlg: public CATDlgDialog
   void Build ();
 
 
-  protected:
+  //protected:
+  /**
+  * Callback on RadBModify of _DistanceRB
+  *
+  * <br><b>Role</b>: This method handles the RadBModify event and does
+  *   a check on ...
+  *
+  * @param Command [in]
+  *   Pointer to the publisher of the event.
+  * @param Notification [in]
+  *   Pointer to the notification representing the event.
+  * @param data [in]
+  *   Possible useful data transmitted to the command OnDistanceRBRadBModifyNotification
+  *
+  *
+  */
+  virtual void OnDistanceRBRadBModifyNotification (CATCommand *, CATNotification* , CATCommandClientData data);
+  /**
+  * Callback on RadBModify of _NumPointRB
+  *
+  * <br><b>Role</b>: This method handles the RadBModify event and does
+  *   a check on ...
+  *
+  * @param Command [in]
+  *   Pointer to the publisher of the event.
+  * @param Notification [in]
+  *   Pointer to the notification representing the event.
+  * @param data [in]
+  *   Possible useful data transmitted to the command OnNumPointRBRadBModifyNotification
+  *
+  *
+  */
+  virtual void OnNumPointRBRadBModifyNotification (CATCommand *, CATNotification* , CATCommandClientData data);
 
-  private:
+ // private:
 
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION

@@ -155,7 +155,50 @@ _PointDistSpinner->SetMinMaxStep(Start, End, StepMM);
 _DistanceSpinner->SetUnit(CATDlgControl::Millimeter);
 _PointDistSpinner->SetUnit(CATDlgControl::Millimeter);
 
+_SurfSL->SetLine("No Selection");
+_CurveSL->SetLine("No Selection");
+
+_NumPointRB->SetState(CATDlgCheck,0);
+_PointDistSpinner->SetSensitivity(CATDlgDisable);
+
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
+     AddAnalyseNotificationCB (_DistanceRB, 
+                               _DistanceRB->GetRadBModifyNotification(),
+                               (CATCommandMethod)&PrtFstPointsDlg::OnDistanceRBRadBModifyNotification,
+                               NULL);
+     AddAnalyseNotificationCB (_NumPointRB, 
+                               _NumPointRB->GetRadBModifyNotification(),
+                               (CATCommandMethod)&PrtFstPointsDlg::OnNumPointRBRadBModifyNotification,
+                               NULL);
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
 
 }
+//-------------------------------------------------------------------------
+// Callback on RadBModify of _NumPointRB
+//-------------------------------------------------------------------------
+void PrtFstPointsDlg::OnNumPointRBRadBModifyNotification(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+  // Add your code here
+	if (_NumPointRB->GetState()==CATDlgCheck)
+	{
+		_PointDistSpinner->SetSensitivity(CATDlgDisable);
+		_NumSpinner->SetSensitivity(CATDlgEnable);
+
+	}
+}
+
+
+//-------------------------------------------------------------------------
+// Callback on RadBModify of _DistanceRB
+//-------------------------------------------------------------------------
+void PrtFstPointsDlg::OnDistanceRBRadBModifyNotification(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+  // Add your code here
+	if (_DistanceRB->GetState()==CATDlgCheck)
+	{
+		_PointDistSpinner->SetSensitivity(CATDlgEnable);
+		_NumSpinner->SetSensitivity(CATDlgDisable);
+
+	}
+}
+
