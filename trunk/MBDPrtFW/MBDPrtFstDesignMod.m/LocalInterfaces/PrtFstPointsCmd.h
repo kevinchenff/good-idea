@@ -21,6 +21,8 @@
 #include "CATStateCommand.h"
 #include "CATBoolean.h"
 #include "PrtFstPointsDlg.h"
+#include "CATFeatureImportAgent.h"
+
 
 //----------------------------------------------------------------------
 
@@ -54,11 +56,23 @@ class PrtFstPointsCmd: public CATStateCommand
   void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
+  CATBoolean ChooseCurve( void *UsefulData);
+  CATBoolean ChooseSurf( void *UsefulData);
+  //
+  CATBoolean ActiveCurveSL( void *UsefulData);
+  CATBoolean ActiveSurfSL( void *UsefulData);
+
+
 
   
   private:
 
 	  PrtFstPointsDlg *m_pDlg;
+
+	  //定义代理
+	  CATFeatureImportAgent *m_pCurveAgt,*m_pSurfAgt;
+	  CATDialogAgent *m_pCurveSLAgt,*m_pSurfSLAgt;
+
 
 };
 
