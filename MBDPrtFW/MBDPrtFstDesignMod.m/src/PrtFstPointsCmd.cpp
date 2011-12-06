@@ -104,14 +104,14 @@ void PrtFstPointsCmd::BuildGraph()
 
 	//创建边线代理
 	m_pCurveAgt = new CATFeatureImportAgent("选择边线");
-	m_pCurveAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSO | CATDlgEngRepeat );
+	m_pCurveAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat );
 	m_pCurveAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
 	m_pCurveAgt -> AddElementType (IID_CATIMfMonoDimResult);
 	m_pCurveAgt -> AddElementType (IID_CATCurve);
 
 	//创建安装面代理
 	m_pSurfAgt = new CATFeatureImportAgent("选择安装面");
-	m_pSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSO | CATDlgEngRepeat );
+	m_pSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat );
 	m_pSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
 	m_pSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
 	m_pSurfAgt -> AddElementType (IID_CATSurface);
