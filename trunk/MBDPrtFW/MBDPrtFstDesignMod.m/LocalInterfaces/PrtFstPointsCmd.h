@@ -18,6 +18,7 @@
 #ifndef PrtFstPointsCmd_H
 #define PrtFstPointsCmd_H
 
+#include "ktPubHeaders.h"
 #include "CATStateCommand.h"
 #include "CATBoolean.h"
 #include "PrtFstPointsDlg.h"
@@ -73,6 +74,9 @@ class PrtFstPointsCmd: public CATStateCommand
 	  CATFeatureImportAgent *m_pCurveAgt,*m_pSurfAgt;
 	  CATDialogAgent *m_pCurveSLAgt,*m_pSurfSLAgt;
 
+	  //定义数据列表环境变量
+	  CATListValCATISpecObject_var m_lstSpecCurves;
+	  CATISpecObject_var m_SpecSurfs;
 
 };
 
