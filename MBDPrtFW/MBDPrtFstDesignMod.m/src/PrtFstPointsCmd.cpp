@@ -27,6 +27,10 @@ using namespace std;
 #include "CATIMfBiDimResult.h"
 #include "CATIMfMonoDimResult.h"
 #include "CATCurve.h"
+#include "PrtService.h"
+#include "CATIMfBRep.h"
+
+
 
 
 //-------------------------------------------------------------------------
@@ -36,6 +40,7 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
   CATStateCommand ("PrtFstPointsCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL)
+  ,m_SpecSurfs(NULL_var)
 {
 }
 
@@ -104,14 +109,14 @@ void PrtFstPointsCmd::BuildGraph()
 
 	//创建边线代理
 	m_pCurveAgt = new CATFeatureImportAgent("选择边线");
-	m_pCurveAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat );
+	m_pCurveAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSO | CATDlgEngRepeat );
 	m_pCurveAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
 	m_pCurveAgt -> AddElementType (IID_CATIMfMonoDimResult);
 	m_pCurveAgt -> AddElementType (IID_CATCurve);
 
 	//创建安装面代理
 	m_pSurfAgt = new CATFeatureImportAgent("选择安装面");
-	m_pSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat );
+	m_pSurfAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSO | CATDlgEngRepeat );
 	m_pSurfAgt -> SetAgentBehavior( MfPermanentBody | MfLastFeatureSupport | MfRelimitedFeaturization);
 	m_pSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
 	m_pSurfAgt -> AddElementType (IID_CATSurface);
@@ -170,22 +175,154 @@ void PrtFstPointsCmd::BuildGraph()
 //消息框响应函数
 void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//隐藏线
+	for (int i = 1; i <= m_lstSpecCurves.Size(); i++)
+	{
+		PrtService::SetSpecObjShowAttr(m_lstSpecCurves[i],"Hide");
+	}
+
+	//隐藏面
+	PrtService::SetSpecObjShowAttr(m_SpecSurfs,"Hide");
+
 	RequestDelayedDestruction();
 }
 void PrtFstPointsCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//隐藏线
+	for (int i = 1; i <= m_lstSpecCurves.Size(); i++)
+	{
+		PrtService::SetSpecObjShowAttr(m_lstSpecCurves[i],"Hide");
+	}
+
+	//隐藏面
+	PrtService::SetSpecObjShowAttr(m_SpecSurfs,"Hide");
+
 	RequestDelayedDestruction();
 }
 
 //
 CATBoolean PrtFstPointsCmd::ChooseCurve( void *UsefulData)
 {
+	HRESULT hr = E_FAIL;
 
+	CATBaseUnknown* piSelectElement =m_pCurveAgt->GetElementValue();//获得所选对象
+	if (piSelectElement != NULL)
+	{
+		//获得SUB PATH
+		CATIMfBRep *piBrep = NULL;
+		hr = piSelectElement->QueryInterface(IID_CATIMfBRep,(void**)&piBrep);
+		//
+		CATISpecObject_var spSpecOnSelection =NULL_var;
+		if (SUCCEEDED(hr)&&(piBrep!=NULL))
+		{
+			spSpecOnSelection = piBrep->GetSupport();
+			piBrep->Release();
+			piBrep=NULL;
+		}
+		else
+		{
+			spSpecOnSelection = piSelectElement;
+		}
+
+		//根据情况判断
+		if ( spSpecOnSelection != NULL_var )
+		{
+			CATBoolean existFlag = FALSE;
+			for (int i = 1; i <= m_lstSpecCurves.Size(); i ++)
+			{
+				if (m_lstSpecCurves[i] == spSpecOnSelection)
+				{
+					m_lstSpecCurves.RemoveValue(spSpecOnSelection);
+					PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Hide");
+					PrtService::RemoveHSO(spSpecOnSelection);
+					existFlag = TRUE;
+					break;
+				}
+			}
+
+			if (existFlag == FALSE)
+			{		
+				PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
+				m_lstSpecCurves.Append(spSpecOnSelection);
+				PrtService::HighlightHSO(spSpecOnSelection);				
+			}
+
+			if (m_lstSpecCurves.Size()>=1)
+			{
+				CATUnicodeString strLineShow("共选择");
+				CATUnicodeString strNumber;
+				strNumber.BuildFromNum(m_lstSpecCurves.Size());
+				strLineShow += strNumber + "个线";
+				m_pDlg->_CurveSL->SetLine(strLineShow,0,CATDlgDataModify);
+			}
+			if (m_lstSpecCurves.Size()==0)
+			{
+				m_pDlg->_CurveSL->SetLine("No Selection",0,CATDlgDataModify);
+			}
+		}
+	}
+
+	//
+	m_pDlg->_SurfSL->ClearSelect();
+	
 	m_pCurveAgt->InitializeAcquisition();
 	return TRUE;
 }
 CATBoolean PrtFstPointsCmd::ChooseSurf( void *UsefulData)
 {
+	HRESULT hr = E_FAIL;
+
+	CATBaseUnknown* piSelectElement =m_pSurfAgt->GetElementValue();//获得所选对象
+	if (piSelectElement != NULL)
+	{
+		//获得SUB PATH
+		CATIMfBRep *piBrep = NULL;
+		hr = piSelectElement->QueryInterface(IID_CATIMfBRep,(void**)&piBrep);
+		//
+		CATISpecObject_var spSpecOnSelection =NULL_var;
+		if (SUCCEEDED(hr)&&(piBrep!=NULL))
+		{
+			spSpecOnSelection = piBrep->GetSupport();
+			piBrep->Release();
+			piBrep=NULL;
+		}
+		else
+		{
+			spSpecOnSelection = piSelectElement;
+		}
+
+		//根据情况判断
+		if ( spSpecOnSelection != NULL_var )
+		{
+			if (m_SpecSurfs == spSpecOnSelection)
+			{
+				PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Hide");
+				PrtService::RemoveHSO(spSpecOnSelection);
+				m_pDlg->_SurfSL->SetLine("No Selection",0,CATDlgDataModify);
+				m_SpecSurfs = NULL_var;
+			}	
+			else
+			{	
+				PrtService::SetSpecObjShowAttr(m_SpecSurfs,"Hide");
+				PrtService::RemoveHSO(m_SpecSurfs);
+				PrtService::SetSpecObjShowAttr(spSpecOnSelection,"Show");
+				PrtService::HighlightHSO(spSpecOnSelection);
+				m_SpecSurfs = spSpecOnSelection;
+				//
+				CATUnicodeString strShowPath("");
+				CATPathElement *piPath = NULL;
+				PrtService::GetPathElementFromSpecObject(piPath,spSpecOnSelection,NULL);
+				PrtService::PathElementString(piPath,strShowPath,TRUE);
+				m_pDlg->_SurfSL->SetLine(strShowPath,0,CATDlgDataModify);
+
+				piPath->Release();
+				piPath=NULL;
+			}
+		}
+	}
+
+	//
+	m_pDlg->_CurveSL->ClearSelect();
 
 	m_pSurfAgt->InitializeAcquisition();
 	return TRUE;
@@ -193,11 +330,15 @@ CATBoolean PrtFstPointsCmd::ChooseSurf( void *UsefulData)
 //
 CATBoolean PrtFstPointsCmd::ActiveCurveSL( void *UsefulData)
 {
+	m_pDlg->_SurfSL->ClearSelect();
+
 	m_pCurveAgt->InitializeAcquisition();
 	return TRUE;
 }
 CATBoolean PrtFstPointsCmd::ActiveSurfSL( void *UsefulData)
 {
+	m_pDlg->_CurveSL->ClearSelect();
+
 	m_pSurfAgt->InitializeAcquisition();
 	return TRUE;
 }
