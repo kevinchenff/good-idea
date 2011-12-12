@@ -1,68 +1,17 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "定义紧固件";
-Frame001.Title = "安装点";
-Frame002.Title = "安装表面和方向";
-Frame002.Label008.Title = "第一安装表面";
-Frame002.Label009.Title = "第二安装表面";
-Frame002.DirectionPB.Title = "反转方向";
-Frame002.Label014.Title = "安装方向";
-Frame003.Title = "定义方式";
-Frame003.ChooseFstPB.Title = "选择紧固件...";
-Frame004.Title = "规范";
-Frame015.ShowDetailInfoPB.Title = "显示紧固件详细信息...";
-Frame016.Title = "设计上下文";
-Frame017.DeletePointPB.Title = "删除所有安装点";
-Frame017.ChoosePointGSMToolPB.Title = "选择几何图形集";
-Frame017.SeleDeleteCheckB.Title = "移除选择模式";
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
+Title = "Define Fastener";
+Frame001.Title = "Points";
+Frame002.Title = "Fastener Surf And Direction";
+Frame002.Label008.Title = "First Fastener Surf";
+Frame002.Label009.Title = "Second Fastener Surf";
+Frame002.DirectionPB.Title = "Reverse";
+Frame002.Label014.Title = "Fastener Direction";
+Frame003.Title = "Fastener Style";
+Frame003.ChooseFstPB.Title = "Choose Fastener STD...";
+Frame004.Title = "Specific Info";
+Frame015.ShowDetailInfoPB.Title = "Show Fastener STD Info...";
+Frame016.Title = "Fastener Contextual";
+Frame017.DeletePointPB.Title = "Delete All Points";
+Frame017.ChoosePointGSMToolPB.Title = "Choose Points GSMTool";
+Frame017.SeleDeleteCheckB.Title = "Remove mode";
 // END WIZARD REPLACEMENT ZONE
