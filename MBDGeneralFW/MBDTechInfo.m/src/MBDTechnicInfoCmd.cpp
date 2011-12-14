@@ -505,7 +505,7 @@ HRESULT MBDTechnicInfoCmd::GetInitialInfo()
 			// 1 获得PRD ROOT
 			//----------------------------------------------------------------------------
 			CATIProduct *piProductOnRoot = NULL;
-			PrdService::GetRootProduct(piCurrentDoc,piProductOnRoot);
+			PrdService::GetRootProductFromDoc(piCurrentDoc,piProductOnRoot);
 
 			//----------------------------------------------------------------------------
 			// 2 查找该Product是否有MBD安装模板实例，如果有则得到该文档的指针

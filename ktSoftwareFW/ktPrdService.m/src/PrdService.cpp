@@ -324,8 +324,8 @@ HRESULT PrdService::RetrieveRootProduct(CATIProduct *&oRootProduct)
 	return rc;
 }
 
-//
-HRESULT PrdService::GetRootProduct(CATDocument *ipiDocument,CATIProduct *& opiProductOnRoot)
+//从文档上获取CATIProduct *
+HRESULT PrdService::GetRootProductFromDoc(CATDocument *ipiDocument,CATIProduct *& opiProductOnRoot)
 {
 	HRESULT rc = S_OK;
 	//-----------------------------------------------------------
@@ -354,6 +354,29 @@ HRESULT PrdService::GetRootProduct(CATDocument *ipiDocument,CATIProduct *& opiPr
 	if ( FAILED(rc) ) return rc;
 
 	return rc;
+}
+
+
+//从文档上获取CATIProduct_var
+HRESULT PrdService::GetRootProductFromDoc(CATDocument *ipDoc,CATIProduct_var &ospRootPrd)
+{
+	CATIDocRoots_var spDocRoot = ipDoc;
+	if(NULL_var==spDocRoot)
+	{
+		return E_FAIL;
+	}
+	CATListValCATBaseUnknown_var* pRootProducts = spDocRoot->GiveDocRoots( );
+	if(NULL==pRootProducts)
+	{
+		return E_FAIL;
+	}
+	if(pRootProducts->Size())
+	{
+		ospRootPrd = (* pRootProducts)[1];
+		delete pRootProducts;
+		pRootProducts = NULL;
+	}
+	return S_OK;
 }
 
 //刷新当前装配结构树
@@ -437,27 +460,6 @@ HRESULT PrdService::GetInstPrdDoc(const CATIProduct_var &ispProduct,CATDocument*
 	return hr;
 }
 
-//从文档上获取CATIProduct
-HRESULT PrdService::GetRootProduct(CATDocument *ipDoc,CATIProduct_var &ospRootPrd)
-{
-	CATIDocRoots_var spDocRoot = ipDoc;
-	if(NULL_var==spDocRoot)
-	{
-		return E_FAIL;
-	}
-	CATListValCATBaseUnknown_var* pRootProducts = spDocRoot->GiveDocRoots( );
-	if(NULL==pRootProducts)
-	{
-		return E_FAIL;
-	}
-	if(pRootProducts->Size())
-	{
-		ospRootPrd = (* pRootProducts)[1];
-		delete pRootProducts;
-		pRootProducts = NULL;
-	}
-	return S_OK;
-}
 
 HRESULT PrdService::GetRefPrdDoc(const CATIProduct_var &ispProduct,CATDocument* &opiPrdDoc)
 {

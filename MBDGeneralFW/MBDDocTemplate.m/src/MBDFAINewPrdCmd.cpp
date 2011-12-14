@@ -195,7 +195,7 @@ void MBDFAINewPrdCmd::InitialMBDInfo()
 				// 1 得到选中Product文档的Root Product
 				//-----------------------------------------------------------
 				CATIProduct *piProductOnRoot = NULL;
-				PrdService::GetRootProduct(piCurrentDoc,piProductOnRoot);
+				PrdService::GetRootProductFromDoc(piCurrentDoc,piProductOnRoot);
 				
 				//----------------------------------------------------------------------------
 				// 2 查找该Product是否有MBD安装模板实例，如果有则得到该文档的指针方便下一步操作

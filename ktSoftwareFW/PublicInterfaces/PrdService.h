@@ -100,11 +100,11 @@ HRESULT RetrieveRootProduct(CATIProduct *&oRootProduct);
 
 //得到product模型的Root Product指针
 static
-HRESULT GetRootProduct(CATDocument *ipiDocument,CATIProduct *& opiProductOnRoot);
+HRESULT GetRootProductFromDoc(CATDocument *ipiDocument,CATIProduct *& opiProductOnRoot);
 
 //得到product模型的Root Product智能指针
 static
-HRESULT GetRootProduct(CATDocument *ipDoc,CATIProduct_var &ospRootPrd);
+HRESULT GetRootProductFromDoc(CATDocument *ipDoc,CATIProduct_var &ospRootPrd);
 
 // 刷新当前装配结构树
 static
