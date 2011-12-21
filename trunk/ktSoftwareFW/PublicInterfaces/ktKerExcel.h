@@ -330,6 +330,7 @@ public:
 // ×Ö·û´®×ª»»º¯Êý
 
 CATUnicodeString CStringToUS(CString iCString);
+CString USToCString(CATUnicodeString iUString);
 //---------------------------------------------------------------------
 
 };

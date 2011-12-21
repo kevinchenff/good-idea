@@ -146,6 +146,7 @@ BOOL CKerExcel::OpenSheet(CATUnicodeString UstrSheet)
 	LPDISPATCH  lpDisp=NULL;
 	long len;
 	len=MySheets.GetCount();
+	bool existFlag = FALSE;
 	for(long i=1;i<=len;i++)
 	{
 		lpDisp=MySheets.GetItem((_variant_t)(long)i);
@@ -155,10 +156,24 @@ BOOL CKerExcel::OpenSheet(CATUnicodeString UstrSheet)
 		{
 			lpDisp=MySheet.GetCells();
 			MyRange.AttachDispatch(lpDisp,TRUE);
-			return TRUE;
+			existFlag = TRUE;
+			break;
 		}
 	}
-	return FALSE;
+
+	//如果没能找到则创建
+	if (existFlag == FALSE)
+	{
+		lpDisp = MySheets.Add(vtMissing, vtMissing, COleVariant(1L), vtMissing);
+		//获取sheet
+		MySheet.AttachDispatch(lpDisp,TRUE);
+		MySheet.SetName((LPCTSTR)strSheet); //(const WCHAR *)(strSheet.AllocSysString())
+		//获得range
+		lpDisp=MySheet.GetCells();
+		MyRange.AttachDispatch(lpDisp,TRUE);
+	}
+
+	return TRUE;
 }
 
 //-------------------------------------------------------------------------
@@ -1014,4 +1029,10 @@ CATUnicodeString CKerExcel::CStringToUS(CString iCString)
 	return StrBSTR;
 }
 
-
+CString CKerExcel::USToCString(CATUnicodeString iUString)
+{
+	CATString sTemp = iUString.ConvertToChar();
+	char *cTemp = sTemp.CastToCharPtr();
+	CString csTemp = cTemp;
+	return csTemp;
+}
