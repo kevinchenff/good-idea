@@ -68,12 +68,6 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   HRESULT GetEnvValue(const CATUnicodeString& iKey, CATUnicodeString& oValue);
 
 
-
-
-
-
-
-
 //**********************************************************************************************************************************************************************************************************************************************************
 //几何图形集操作分类
 //**********************************************************************************************************************************************************************************************************************************************************
@@ -300,6 +294,10 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   //功能：获得文档User Property里面所有参数信息
   static
   void GetMBDPartUserParams(CATDocument * ipDoc,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue);
+
+  // 功能：获得文档User Property里面某些参数信息
+  static
+  void GetMBDPartUserCertainParams(CATDocument * ipDoc,CATListValCATUnicodeString  iListStrName,CATListValCATUnicodeString  &ioListStrNameValue);
 
   //在用户自定义属性中添加枚举类型参数
   static 

@@ -2683,6 +2683,81 @@ void PrtService::GetMBDPartUserParams(CATDocument * ipDoc,CATListValCATUnicodeSt
 
 }
 
+//功能：获得文档User Property里面某些参数信息
+void PrtService::GetMBDPartUserCertainParams(CATDocument * ipDoc,CATListValCATUnicodeString  iListStrName,CATListValCATUnicodeString  &ioListStrNameValue)
+{
+	//1、从CATDocument * ipDoc中得到CATIProduct spRootProduct
+	CATIDocRoots* piDocRootsOnDoc = NULL;
+	HRESULT RC = ipDoc->QueryInterface(IID_CATIDocRoots, (void**) &piDocRootsOnDoc);
+	if ( FAILED(RC) ) return;
+
+	CATListValCATBaseUnknown_var* pRootProducts = piDocRootsOnDoc->GiveDocRoots();
+	CATIProduct_var spRootProduct =  (*pRootProducts)[1];
+	piDocRootsOnDoc->Release();
+	piDocRootsOnDoc = NULL;
+
+	//2、获得容器类，并得到CATICkeParmFactory工厂接口
+	CATInit_var spInitOnDoc = ipDoc;
+	if (NULL_var == spInitOnDoc)
+	{
+		cout << "Could not get init on doc.\n";
+		return;
+	}
+	CATIContainer * piCont = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
+
+	CATICkeParmFactory_var spFact(piCont);
+	piCont->Release();
+	piCont=NULL;
+
+	if(NULL_var == spFact)
+	{
+		cout << "Could not get parm factory.\n";
+		return;
+	}
+
+	//3、获取publisher
+	CATIPrdProperties_var spProp(spRootProduct);
+	if(!!spProp)
+	{
+		CATIParmPublisher* pPublisher = NULL;
+		spProp->GetUserProperties(pPublisher, TRUE);
+
+		//4、对part属性赋值
+		//取得direct children parameters
+		CATListValCATISpecObject_var  iListFound;
+		pPublisher->GetDirectChildren("CATICkeParm",iListFound);
+
+		CATICkeParm_var spCkeParm = NULL_var;
+		for (int j=1; j <= iListStrName.Size(); j++)
+		{
+			CATBoolean existFlag=FALSE;
+			for (int i = 1; i <= iListFound.Size(); i++)
+			{
+				spCkeParm = iListFound[i];			
+				CATUnicodeString StrCkeParmName = spCkeParm->Name();
+				//
+				int BenginNum = StrCkeParmName.SearchSubString("\\",0,CATUnicodeString::CATSearchModeBackward); 
+				//cout<<"BenginNum is :"<<BenginNum<<endl;
+				int StrLength = StrCkeParmName.GetLengthInChar();
+				CATUnicodeString StrParaName = StrCkeParmName.SubString(BenginNum+1,StrLength-BenginNum-1);
+				CATUnicodeString strParaValue = spCkeParm->Value()->AsString();	
+				//
+				if (StrParaName == iListStrName[j])
+				{
+					ioListStrNameValue.Append(strParaValue);
+					existFlag=TRUE;
+					break;
+				}
+			}
+
+			if (existFlag == FALSE)
+			{
+				ioListStrNameValue.Append("");
+			}
+		}		
+	}	
+}
+
 //在用户自定义属性中添加枚举类型参数
 void PrtService::SetUserPropertyParamEnum(CATDocument *piDocument,CATListValCATUnicodeString listStrParamName,CATListOfInt countNode,CATListValCATUnicodeString listStrParamValue)
 {
