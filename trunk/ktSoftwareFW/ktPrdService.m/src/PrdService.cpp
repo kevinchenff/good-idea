@@ -514,6 +514,39 @@ BOOL PrdService::ChangePrdInstName(CATIProduct_var spPrd)
 	return FALSE;
 }
 
+//从Instance Prd中获取Part
+HRESULT PrdService::GetPartFromPrd(CATIProduct_var spInsProduct,CATISpecObject_var &ospPart)
+{
+	HRESULT rc=S_OK;
+
+	if (spInsProduct==NULL_var) return E_FAIL;
+
+	CATIProduct_var spRefPrd=NULL_var;
+	spRefPrd=spInsProduct->GetReferenceProduct();
+	if(spRefPrd!=NULL_var)
+	{
+		CATIPrtContainer *piPrtContainerOnRoot =NULL;
+		CATILinkableObject_var spLinkObj=spRefPrd;
+		if(spLinkObj!=NULL_var)
+		{
+			CATDocument * piDocument=spLinkObj->GetDocument();
+			CATInit * piInitOnDoc = NULL;
+			rc = piDocument->QueryInterface(IID_CATInit, (void**)&piInitOnDoc);
+			if(SUCCEEDED(rc)&&piInitOnDoc!=NULL) 
+			{
+				CATIPrtContainer *piPrtContainerOnRoot =(CATIPrtContainer*)piInitOnDoc->GetRootContainer("CATIPrtContainer");
+				piInitOnDoc->Release();
+				piInitOnDoc=NULL;
+
+				ospPart = piPrtContainerOnRoot->GetPart() ;
+				piPrtContainerOnRoot->Release();piPrtContainerOnRoot=NULL;
+			}
+		}
+	}
+
+	return S_OK;
+}
+
 
 //判断当前DOCUMENT是否为PRD
 BOOL PrdService::IsPathProductDocument()

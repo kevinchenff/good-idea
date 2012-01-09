@@ -134,6 +134,11 @@ BOOL IsPathProductDocument();
 static
 BOOL IsContextualPrd();
 
+
+//从Instance Prd中获取Part
+static
+HRESULT GetPartFromPrd(CATIProduct_var spInsProduct,CATISpecObject_var &ospPart);
+
 //
 
 //判读Prd父子关系
