@@ -271,7 +271,7 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static BOOL IsExistSpecObjectAttEx(const CATUnicodeString strKey,const CATISpecObject_var spSpecObject);
 
   //¹¦ÄÜ£ºÌØÕ÷¿½±´
-  static BOOL CopyFeatureToPartDocument(CATISpecObject_var &spSpecCopyResult, const CATISpecObject_var spObjectToCopy, const CATISpecObject_var spTarget, BOOL LinkMode);
+  static BOOL CopyFeatureToPartDocument(CATISpecObject_var &spSpecCopyResult, const CATISpecObject_var spObjectToCopy, const CATISpecObject_var spTarget,CATIProduct *piSourceInst,CATIProduct *piTargetInst, CATBoolean LinkMode,int iAttributeMode=3);
 
 
 
