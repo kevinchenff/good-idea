@@ -2391,7 +2391,7 @@ BOOL PrtService::IsExistSpecObjectAttEx(const CATUnicodeString strKey,const CATI
 
 
 //¹¦ÄÜ£ºÌØÕ÷¿½±´
-BOOL PrtService::CopyFeatureToPartDocument(CATISpecObject_var &spSpecCopyResult, const CATISpecObject_var spObjectToCopy, const CATISpecObject_var spTarget, BOOL LinkMode)
+BOOL PrtService::CopyFeatureToPartDocument(CATISpecObject_var &spSpecCopyResult, const CATISpecObject_var spObjectToCopy, const CATISpecObject_var spTarget,CATIProduct *piSourceInst,CATIProduct *piTargetInst, CATBoolean LinkMode,int iAttributeMode)
 {
 	spSpecCopyResult=NULL_var; 
 	if (NULL_var==spObjectToCopy||NULL_var==spTarget)
@@ -2407,9 +2407,14 @@ BOOL PrtService::CopyFeatureToPartDocument(CATISpecObject_var &spSpecCopyResult,
 		return FALSE;
 	}
 
+	//
 	ptCATMmrInterPartCopy->SetLinkMode(LinkMode);
-	ptCATMmrInterPartCopy->SetAttributeMode(1);
+	ptCATMmrInterPartCopy->SetAttributeMode(iAttributeMode);
+	//
+	ptCATMmrInterPartCopy->SetSourceInstance(piSourceInst);
+	ptCATMmrInterPartCopy->SetTargetInstance(piTargetInst);
 
+	//
 	CATUnicodeString ErrorMsg ;
 	HRESULT hr = ptCATMmrInterPartCopy->Run(&ErrorMsg);
 	if ( FAILED(hr) )
