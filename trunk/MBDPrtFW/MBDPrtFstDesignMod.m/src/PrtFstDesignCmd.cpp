@@ -66,13 +66,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 	}
 
 	//判断是否为ZP模型;
-	if (!IsThisZPPrt(m_strDocName))
-	{
-		PrtService::ShowDlgNotify("提示","该功能仅在装配上下文环境且ZP模型中操作，点击关闭！");
-		RequestDelayedDestruction();
-	}
-
-	if (!PrdService::IsContextualPrd())
+	if ((!IsThisZPPrt(m_strDocName))||(!PrdService::IsContextualPrd()))
 	{
 		PrtService::ShowDlgNotify("提示","该功能仅在装配上下文环境且ZP模型中操作，点击关闭！");
 		RequestDelayedDestruction();

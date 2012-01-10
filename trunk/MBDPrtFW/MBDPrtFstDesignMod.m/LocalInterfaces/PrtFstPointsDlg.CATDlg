@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PrtFstPointsDlg
 {
-  STYLE = CATDlgWndBtnOKCancelPreview|CATDlgGridLayout;
+  STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
   ROWRES = { 0, 1 };
   COLRES = { 0 };
 }
