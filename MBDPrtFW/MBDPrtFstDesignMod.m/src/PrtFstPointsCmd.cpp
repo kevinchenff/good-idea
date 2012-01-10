@@ -31,10 +31,8 @@ using namespace std;
 #include "CATIMfBRep.h"
 #include "CATIGSMAssemble.h"
 #include "CATIGSMCurvePar.h"
-
-
-
-
+#include "CATIMeasurableCurve.h"
+#include "CATIGSMExtremum.h"
 
 
 //-------------------------------------------------------------------------
@@ -191,6 +189,8 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	PrtService::ObtainGSMTool(pDoc,"过程元素",ospFatGSSpecObj);
 	CATIPrtContainer *opiRootContainer = NULL;
 	PrtService::ObtainRootContainer(pDoc,opiRootContainer);
+	//获得part
+	CATISpecObject_var spPart = opiRootContainer->GetPart();
 	if (ospFatGSSpecObj == NULL_var)
 	{
 		//不存在则创建
@@ -250,26 +250,46 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	}
 	
 	//获得交付设置的参数
-	//if (m_pDlg->_NumPointRB->GetState() == CATDlgCheck)
-	//{
-	//	//如果选择 点数模式
-	//	double odNumValue = 0;
-	//	odNumValue = m_pDlg->_NumSpinner->GetValue();
-	//	//获得长度值
-	//	CATIMeasurableCurve_var spMeasCurve = NULL_var;
-	//	spMeasCurve = spInputCurve;
-	//	if (spMeasCurve != NULL_var)
-	//	{
-	//		double dCrvLength = 0;
-	//		spMeasCurve->GetLength(dCrvLength);
-	//	}
-	//} 
-	//else
-	//{
-	//	//如果选择 间距模式
-	//}
-
-
+	if (m_pDlg->_NumPointRB->GetState() == CATDlgCheck)
+	{
+		//如果选择 点数模式
+		double odNumValue = 0;
+		odNumValue = m_pDlg->_NumSpinner->GetValue();
+		//
+		if (odNumValue == 0)
+		{
+			PrtService::ShowDlgNotify("错误提示","所设置点数不能为0!");
+			return;	
+		}
+		//获得长度值
+		CATIMeasurableCurve_var spMeasCurve = NULL_var;
+		spMeasCurve = spCurvePar;
+		if (spMeasCurve != NULL_var)
+		{
+			double dCrvLength = 0;
+			spMeasCurve->GetLength(dCrvLength);
+			//
+			double dDistanceV = dCrvLength/(odNumValue+1);
+			//
+			/*CATISpecObject_var spDirection = iospGSMFact->CreateDirection(spCurvePar);
+			CATISpecObject_var spCrvExtremum = iospGSMFact->CreateExtremum(spCurvePar,spDirection,GSMMax);*/
+			//
+			for (int i=1; i <= odNumValue; i ++)
+			{
+				double dDistValues = i*dDistanceV;
+				CATICkeParm_var spCkedDistanceV = NULL_var;
+				spCkedDistanceV = PrtService::LocalInstLitteral(&dDistValues,1,"Length","Length");
+				//
+				CATISpecObject_var spPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedDistanceV,CATGSMSameOrientation);
+				PrtService::CAAGsiInsertInProceduralView(spPoint,spPointGSMTool);
+			}
+		}
+	} 
+	else
+	{
+		//如果选择 间距模式
+	}
+	PrtService::ObjectUpdate(spPart);
 
 	//隐藏线
 	for (int i = 1; i <= m_lstSpecCurves.Size(); i++)

@@ -32,7 +32,7 @@
 PrtFstPointsDlg::PrtFstPointsDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstPointsDlg",CATDlgWndBtnOKCancelPreview|CATDlgGridLayout
+"PrtFstPointsDlg",CATDlgWndBtnOKCancel|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
