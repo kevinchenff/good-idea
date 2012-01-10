@@ -271,8 +271,7 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			//
 			double dDistanceV = dCrvLength/(odNumValue+1);
 			//
-			/*CATISpecObject_var spDirection = iospGSMFact->CreateDirection(spCurvePar);
-			CATISpecObject_var spCrvExtremum = iospGSMFact->CreateExtremum(spCurvePar,spDirection,GSMMax);*/
+			CATBoolean pointErrFlag = FALSE;
 			//
 			for (int i=1; i <= odNumValue; i ++)
 			{
@@ -282,7 +281,21 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 				//
 				CATISpecObject_var spPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedDistanceV,CATGSMSameOrientation);
 				PrtService::CAAGsiInsertInProceduralView(spPoint,spPointGSMTool);
+				//
+				rc = PrtService::ObjectUpdate(spPoint);
+				if (FAILED(rc))
+				{
+					spPoint->GetFather()->Remove(spPoint);
+					pointErrFlag = TRUE;
+				}
 			}
+			//
+			if (pointErrFlag == TRUE)
+			{
+				PrtService::ShowDlgNotify("错误提示","所选线不能为闭合曲线，无法生存安装点，请重新选择!");
+				return;
+			}
+			
 		}
 	} 
 	else
