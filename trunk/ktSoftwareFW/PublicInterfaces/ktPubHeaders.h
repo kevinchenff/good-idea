@@ -196,10 +196,10 @@
 
 // Standard C++ library
 #include "atlstr.h"
-#include <iostream>
 #include <fstream>
 #include <string>
 #include <iomanip>
 #include "stdio.h"
+#include <sstream>
 #include "iostream"
 using namespace std;
