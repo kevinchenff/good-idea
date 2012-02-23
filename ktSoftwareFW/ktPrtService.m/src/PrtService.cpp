@@ -2763,6 +2763,156 @@ void PrtService::GetMBDPartUserCertainParams(CATDocument * ipDoc,CATListValCATUn
 	}	
 }
 
+// 功能：获得Instance PRD 用户自定义参数
+bool PrtService::GetPrdUserCertainParams(CATIProduct_var spPrd,CATListValCATUnicodeString  iListStrName,CATListValCATUnicodeString  &ioListStrNameValue)
+{
+	if (spPrd==NULL_var)
+	{
+		return FALSE;
+	}
+
+	//获得RootContainer
+	CATIProduct_var spRefPrd = spPrd->GetReferenceProduct();
+	if (spRefPrd==NULL_var)
+	{
+		return FALSE;
+	}
+	CATILinkableObject_var  spLinkShape  = spRefPrd;
+	if (spLinkShape==NULL_var)
+	{
+		return FALSE;
+	}
+	CATDocument *pCurrentDoc = spLinkShape-> GetDocument( );
+	if (pCurrentDoc==NULL)
+	{
+		return FALSE;
+	}
+
+	CATInit_var spInitOnDoc = pCurrentDoc;
+	if (spInitOnDoc == NULL_var)
+	{
+		return FALSE;
+	}
+	CATIContainer * piCont = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
+	if(piCont==NULL)
+	{
+		return FALSE;
+	}
+
+	//3、获取publisher
+	CATIPrdProperties_var spProp(spRefPrd);
+	if(!!spProp)
+	{
+		CATIParmPublisher* pPublisher = NULL;
+		spProp->GetUserProperties(pPublisher, TRUE);
+
+		//4、对part属性赋值
+		//取得direct children parameters
+		CATListValCATISpecObject_var  iListFound;
+		pPublisher->GetDirectChildren("CATICkeParm",iListFound);
+
+		CATICkeParm_var spCkeParm = NULL_var;
+		for (int j=1; j <= iListStrName.Size(); j++)
+		{
+			CATBoolean existFlag=FALSE;
+			for (int i = 1; i <= iListFound.Size(); i++)
+			{
+				spCkeParm = iListFound[i];			
+				CATUnicodeString StrCkeParmName = ((CATISpecObject_var)spCkeParm)->GetDisplayName();
+				//
+				CATUnicodeString strParaValue = spCkeParm->Value()->AsString();	
+				//
+				if (StrCkeParmName == iListStrName[j])
+				{
+					ioListStrNameValue.Append(strParaValue);
+					existFlag=TRUE;
+					break;
+				}
+			}
+
+			if (existFlag == FALSE)
+			{
+				ioListStrNameValue.Append("");
+			}
+		}		
+	}
+
+	return TRUE;
+}
+
+//
+//功能：修改Instance PRD 中的某些用户自定义参数
+bool PrtService::ModifyPrdUserCertainParams(CATIProduct_var spPrd,CATListValCATUnicodeString  iListStrName,CATListValCATUnicodeString iListStrNameValue)
+{
+	if (spPrd==NULL_var)
+	{
+		return FALSE;
+	}
+
+	//获得RootContainer
+	CATIProduct_var spRefPrd = spPrd->GetReferenceProduct();
+	if (spRefPrd==NULL_var)
+	{
+		return FALSE;
+	}
+	CATILinkableObject_var  spLinkShape  = spRefPrd;
+	if (spLinkShape==NULL_var)
+	{
+		return FALSE;
+	}
+	CATDocument *pCurrentDoc = spLinkShape-> GetDocument( );
+	if (pCurrentDoc==NULL)
+	{
+		return FALSE;
+	}
+
+	CATInit_var spInitOnDoc = pCurrentDoc;
+	if (spInitOnDoc == NULL_var)
+	{
+		return FALSE;
+	}
+	CATIContainer * piCont = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
+	if(piCont==NULL)
+	{
+		return FALSE;
+	}
+
+	//3、获取publisher
+	CATIPrdProperties_var spProp(spRefPrd);
+	if(!!spProp)
+	{
+		CATIParmPublisher* pPublisher = NULL;
+		spProp->GetUserProperties(pPublisher, TRUE);
+
+		//取得direct children parameters
+		CATListValCATISpecObject_var  iListFound;
+		pPublisher->GetDirectChildren("CATICkeParm",iListFound);
+
+		CATICkeParm_var spCkeParm = NULL_var;
+		for (int j=1; j <= iListStrName.Size(); j++)
+		{
+			CATBoolean existFlag=FALSE;
+			for (int i = 1; i <= iListFound.Size(); i++)
+			{
+				spCkeParm = iListFound[i];			
+				CATUnicodeString StrCkeParmName = ((CATISpecObject_var)spCkeParm)->GetDisplayName();
+				//
+				CATUnicodeString strParaValue = spCkeParm->Value()->AsString();	
+				//
+				if (StrCkeParmName == iListStrName[j])
+				{
+					spCkeParm->Valuate(iListStrNameValue[j]);
+					break;
+				}
+			}
+		}		
+	}
+
+	return TRUE;
+
+}
+
+
 //在用户自定义属性中添加枚举类型参数
 void PrtService::SetUserPropertyParamEnum(CATDocument *piDocument,CATListValCATUnicodeString listStrParamName,CATListOfInt countNode,CATListValCATUnicodeString listStrParamValue)
 {
