@@ -299,6 +299,14 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static
   void GetMBDPartUserCertainParams(CATDocument * ipDoc,CATListValCATUnicodeString  iListStrName,CATListValCATUnicodeString  &ioListStrNameValue);
 
+  // 功能：获得Instance PRD 用户自定义参数
+  static 
+  bool GetPrdUserCertainParams(CATIProduct_var spPrd,CATListValCATUnicodeString  iListStrName,CATListValCATUnicodeString  &ioListStrNameValue);
+
+  //功能：修改Instance PRD 中的某些用户自定义参数
+  static 
+  bool ModifyPrdUserCertainParams(CATIProduct_var spPrd,CATListValCATUnicodeString  iListStrName,CATListValCATUnicodeString  iListStrNameValue);
+
   //在用户自定义属性中添加枚举类型参数
   static 
   void SetUserPropertyParamEnum(CATDocument *piDocument,CATListValCATUnicodeString listStrParamName,CATListOfInt countNode,CATListValCATUnicodeString listStrParamValue);
