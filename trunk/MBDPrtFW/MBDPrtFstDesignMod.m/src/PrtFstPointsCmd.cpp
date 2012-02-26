@@ -301,6 +301,51 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	else
 	{
 		//如果选择 间距模式
+		double odGapValue = 0;
+		odGapValue = m_pDlg->_PointDistSpinner->GetValue();
+		odGapValue *= 1000.0;
+		//
+		if (odGapValue == 0)
+		{
+			PrtService::ShowDlgNotify("错误提示","所设置点间隙值不能为0!");
+			return;	
+		}
+		//获得长度值
+		CATIMeasurableCurve_var spMeasCurve = NULL_var;
+		spMeasCurve = spCurvePar;
+		if (spMeasCurve != NULL_var)
+		{
+			double dCrvLength = 0;
+			spMeasCurve->GetLength(dCrvLength);
+			//
+			double odNumValue = (int)(dCrvLength/odGapValue)-1;
+			//
+			CATBoolean pointErrFlag = FALSE;
+			//
+			for (int i=1; i <= odNumValue; i ++)
+			{
+				double dDistValues = i*odGapValue;
+				CATICkeParm_var spCkedDistanceV = NULL_var;
+				spCkedDistanceV = PrtService::LocalInstLitteral(&dDistValues,1,"Length","Length");
+				//
+				CATISpecObject_var spPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedDistanceV,CATGSMSameOrientation);
+				PrtService::CAAGsiInsertInProceduralView(spPoint,spPointGSMTool);
+				//
+				rc = PrtService::ObjectUpdate(spPoint);
+				if (FAILED(rc))
+				{
+					spPoint->GetFather()->Remove(spPoint);
+					pointErrFlag = TRUE;
+				}
+			}
+			//
+			if (pointErrFlag == TRUE)
+			{
+				PrtService::ShowDlgNotify("错误提示","所选线不能为闭合曲线，无法生存安装点，请重新选择!");
+				return;
+			}
+		}
+
 	}
 	PrtService::ObjectUpdate(spPart);
 

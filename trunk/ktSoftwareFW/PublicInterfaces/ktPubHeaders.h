@@ -58,6 +58,8 @@
 // KnowledgeInterfaces framework
 #include "CATICkeParm.h"
 #include "CATICkeParmFactory.h"
+#include "CATICkeParameterSet.h"
+#include "CATICkeRelationFactory.h"
 
 //#include "CATICkeParameterSet.h"
 #include "CATIDescendants.h"
@@ -169,6 +171,10 @@
 
 // MecModInterfaces Framework
 #include "CATIPartRequest.h"
+
+// GSM POINT AND LINE
+#include "CATIGSMLinePtPt.h"
+#include "CATIGSMLinePtDir.h"
 
 
 // MechanicalModeler
