@@ -101,6 +101,10 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static
   HRESULT SearchGSMToolByName(CATISpecObject_var spGSMToolRoot,CATUnicodeString strSearchName,CATISpecObject_var &spFoundResult);
 
+  //按照名称以某个父节点开始从CATIA结构树上检索所有几何图形集，仅限指定节点下一层
+  static
+  HRESULT SearchALLSonFromRootGSMTool(CATISpecObject_var spGSMToolRoot,CATListValCATISpecObject_var &iolstspFoundResult);
+
   //VBA方式 向单个几何图形集设置参数
   static 
   void AddMBDGSMToolParameters(CATDocument * ipDoc,CATListValCATUnicodeString  ListStrName,CATListValCATUnicodeString  ListStrNameValue,CATISpecObject_var spSearchedGSMTool);
@@ -376,7 +380,13 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static 
   void SetGSMToolParamEnum(CATDocument *piDocument,CATISpecObject_var spGSMTool,CATListValCATUnicodeString listStrParamName,CATListOfInt countNode,CATListValCATUnicodeString listStrParamValue);
 
+  //从特征获取其中包含的Paraset
+  static
+  void GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATListValCATISpecObject_var &iolstspParmSet);
 
+  //在特征身上创建Paraset
+  static
+  void CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &iospObjt, CATUnicodeString istrParmSetName);
 
   
 

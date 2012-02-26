@@ -484,6 +484,24 @@ HRESULT PrtService::SearchGSMToolByName(CATISpecObject_var spGSMToolRoot,CATUnic
 	return hr;
 }
 
+//按照名称以某个父节点开始从CATIA结构树上检索所有几何图形集，仅限指定节点下一层
+HRESULT PrtService::SearchALLSonFromRootGSMTool(CATISpecObject_var spGSMToolRoot,CATListValCATISpecObject_var &iolstspFoundResult)
+{
+	HRESULT hr = S_OK;
+
+	// 
+	if (spGSMToolRoot == NULL_var)
+	{
+		hr = E_FAIL;
+		return hr;
+	}
+
+	CATIDescendants_var spDescendants=  spGSMToolRoot;
+	spDescendants->GetDirectChildren("CATIGSMTool",iolstspFoundResult);
+
+	return hr;
+}
+
 //功能：VBA方式 向单个几何图形集设置参数
 void PrtService::AddMBDGSMToolParameters(CATDocument * ipDoc,CATListValCATUnicodeString  ListStrName,CATListValCATUnicodeString  ListStrNameValue,CATISpecObject_var spSearchedGSMTool)
 {
@@ -3802,6 +3820,28 @@ void PrtService::SetGSMToolParamEnum(CATDocument *piDocument,CATISpecObject_var 
 		}
 	}
 
+}
+
+//
+//从特征获取其中包含的Paraset
+void PrtService::GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATListValCATISpecObject_var &iolstspParmSet)
+{
+	CATIDescendants_var spDescend = ispObjt;
+	spDescend->GetDirectChildren("CATICkeParameterSet",iolstspParmSet);	
+}
+
+//在特征身上创建Paraset
+void PrtService::CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &iospObjt, CATUnicodeString istrParmSetName)
+{
+	CATIPrtContainer *opiRootContainer = NULL;
+	PrtService::ObtainRootContainer(piDoc,opiRootContainer);
+	//
+	CATICkeRelationFactory_var spCkeRela(opiRootContainer);
+	//
+	CATIParmPublisher_var spParmPub = iospObjt;
+	//
+	CATISpecObject_var spParamSet = spCkeRela->CreateParameterSet(istrParmSetName);
+	spParmPub->Append(spParamSet);	
 }
 
 

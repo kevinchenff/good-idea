@@ -95,6 +95,12 @@ class PrtFstDesignCmd: public CATStateCommand
   HRESULT GetInitialArrow(CATISpecObject_var ispPoint, CATListValCATISpecObject_var ilstFirstSurf,CATListValCATISpecObject_var ilstSecSurf);
   //箭头的回调函数
   void CBManipulator(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  //根据输入条件创建点线模型
+  void CreateFstLineAndCircle();
+  //获取放置点线模型的零件几何图形集
+  void GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName);
+  //按照参数信息创建点线模型
+  void CreateFstPointAndLines(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength);
 
 
 private:
