@@ -1573,34 +1573,68 @@ void PrtFstDesignCmd::GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,
 
 void PrtFstDesignCmd::CalculateJoinThickInCGM(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints)
 {
-	//获得输入曲面的拓扑
-	ListPOfCATBody  iBodiesToAssemble01,iBodiesToAssemble02;
-	for (int i=1; i<=ilstspSurf01.Size(); i++)
-	{
-		CATIGeometricalElement_var spGeomEle01 = ilstspSurf01[i];
-		CATBody_var spBody = spGeomEle01->GetBodyResult();
-		//
-		iBodiesToAssemble01.Append(spBody);
-	}
-	for (int i=1; i<=ilstspSurf02.Size(); i++)
-	{
-		CATIGeometricalElement_var spGeomEle02 = ilstspSurf02[i];
-		CATBody_var spBody = spGeomEle02->GetBodyResult();
-		//
-		iBodiesToAssemble02.Append(spBody);
-	}
+	//
+	CATBody* piSurfBody01;
+	CATBody* piSurfBody02;
+	//
 	// defines an open configuration for the operator
 	CATSoftwareConfiguration * pConfig = new CATSoftwareConfiguration();
 	// defines the data of the operator: configuration + journal
 	CATTopData topdata(pConfig,NULL);
 	//
-	CATGeoFactory* iFactory1 = (iBodiesToAssemble01[1])->GetFactory();
-	CATHybAssemble* piHybAss01 = CATCreateNewTopAssemble(iFactory1,&topdata,&iBodiesToAssemble01);
-	CATGeoFactory* iFactory2 = (iBodiesToAssemble02[1])->GetFactory();
-	CATHybAssemble* piHybAss02 = CATCreateNewTopAssemble(iFactory2,&topdata,&iBodiesToAssemble02);
-	//获取BODY结果
-	CATBody* piSurfBody01 = piHybAss01->GetResult();
-	CATBody* piSurfBody02 = piHybAss02->GetResult();
+	if (ilstspSurf01.Size() >= 2)
+	{
+		//获得输入曲面的拓扑
+		ListPOfCATBody  iBodiesToAssemble01;
+		for (int i=1; i<=ilstspSurf01.Size(); i++)
+		{
+			CATIGeometricalElement_var spGeomEle01 = ilstspSurf01[i];
+			CATBody_var spBody = spGeomEle01->GetBodyResult();
+			//
+			iBodiesToAssemble01.Append(spBody);
+		}
+		//
+		CATGeoFactory* iFactory1 = (iBodiesToAssemble01[1])->GetFactory();
+		CATHybAssemble* piHybAss01 = CATCreateNewTopAssemble(iFactory1,&topdata,&iBodiesToAssemble01);
+		//
+		piHybAss01->Run();
+		//获取BODY结果
+		piSurfBody01 = piHybAss01->GetResult();
+		delete piHybAss01;
+		piHybAss01 = NULL;
+	} 
+	else
+	{
+		CATIGeometricalElement_var spGeomEle01 = ilstspSurf01[1];
+		piSurfBody01 = spGeomEle01->GetBodyResult();
+	}
+	//
+	if (ilstspSurf02.Size() >= 2)
+	{
+		//获得输入曲面的拓扑
+		ListPOfCATBody iBodiesToAssemble02;
+		for (int i=1; i<=ilstspSurf02.Size(); i++)
+		{
+			CATIGeometricalElement_var spGeomEle02 = ilstspSurf02[i];
+			CATBody_var spBody = spGeomEle02->GetBodyResult();
+			//
+			iBodiesToAssemble02.Append(spBody);
+		}
+		//
+		CATGeoFactory* iFactory2 = (iBodiesToAssemble02[1])->GetFactory();
+		CATHybAssemble* piHybAss02 = CATCreateNewTopAssemble(iFactory2,&topdata,&iBodiesToAssemble02);
+		//
+		piHybAss02->Run();
+		//获取BODY结果
+		piSurfBody02 = piHybAss02->GetResult();
+		delete piHybAss02;
+		piHybAss02 = NULL;
+	} 
+	else
+	{
+		CATIGeometricalElement_var spGeomEle02 = ilstspSurf02[1];
+		piSurfBody02 = spGeomEle02->GetBodyResult();
+	}
 	//
 
 	//采用循环
@@ -1616,10 +1650,18 @@ void PrtFstDesignCmd::CalculateJoinThickInCGM(CATListValCATISpecObject_var ilsts
 		CATHybProject* iPjtSurf02 = NULL;
 		iPjtSurf02 = CATCreateTopProject(iFactory,&topdata,spBody,piSurfBody02);
 		//
+		iPjtSurf01->Run();
+		iPjtSurf02->Run();
+		//
 		if (iPjtSurf01 != NULL && iPjtSurf02!= NULL)
 		{
 			CATBody* piPjtBody01 = iPjtSurf01->GetResult();
 			CATBody* piPjtBody02 = iPjtSurf02->GetResult();
+			//
+			delete iPjtSurf01;
+			iPjtSurf01 = NULL;
+			delete iPjtSurf02;
+			iPjtSurf02 = NULL;
 			//
 			CATIMeasurablePoint_var spMeasurePoint1=piPjtBody01;
 			CATIMeasurablePoint_var spMeasurePoint2=piPjtBody02;
