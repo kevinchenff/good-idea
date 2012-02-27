@@ -40,6 +40,11 @@ CATCreateClass( PrtFstDesignCmd);
 #include "CAT4x4Matrix.h"
 //#include "CATIMmiInternalCopyWithLink.h"
 #include "CATIGSMAssemble.h"
+// TOP层接口
+#include "CATCreateTopAssemble.h"
+#include "CATSoftwareConfiguration.h"
+#include "CATTopData.h"
+
 
 
 
@@ -51,7 +56,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
-  ,m_piPointGSMAgt(NULL),m_pi3DBagRep(NULL),m_piManipulator(NULL),m_piISO(NULL)
+  ,m_piPointGSMAgt(NULL),m_pi3DBagRep(NULL),m_piISO(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -148,12 +153,6 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 	{
 		m_pi3DBagRep->Release();
 		m_pi3DBagRep=NULL;
-	}
-
-	if (m_piManipulator != NULL)
-	{
-		m_piManipulator->Release();
-		m_piManipulator=NULL;
 	}
 
 	//高亮点清空
@@ -1218,7 +1217,7 @@ HRESULT PrtFstDesignCmd::GetInitialArrow(CATISpecObject_var ispPoint, CATListVal
 
 		// This block is specific for Update Errors
 		CATCatch( CATMfErrUpdate, pError ){	
-			// 			cerr << " Update Error: " << (pError-> GetDiagnostic()).ConvertToChar() << endl; 
+			// cerr << " Update Error: " << (pError-> GetDiagnostic()).ConvertToChar() << endl; 
 			Flush(pError) ; 
 			// When error happens, what to do 
 			spIntersect01->GetFather()->Remove(spIntersect01);
@@ -1233,7 +1232,7 @@ HRESULT PrtFstDesignCmd::GetInitialArrow(CATISpecObject_var ispPoint, CATListVal
 
 		// This block is specific for Update Errors
 		CATCatch( CATMfErrUpdate, pError ){	
-			// 			cerr << " Update Error: " << (pError-> GetDiagnostic()).ConvertToChar() << endl; 
+			// cerr << " Update Error: " << (pError-> GetDiagnostic()).ConvertToChar() << endl; 
 			Flush(pError) ; 
 			// When error happens, what to do 
 			spIntersect02->GetFather()->Remove(spIntersect02);
@@ -1281,39 +1280,10 @@ HRESULT PrtFstDesignCmd::GetInitialArrow(CATISpecObject_var ispPoint, CATListVal
 			CATFrmWindow *pFrmWindow = pFrmLayout->GetCurrentWindow();
 			CATViewer *pViewer = pFrmWindow->GetViewer();
 			pViewer->AddRep(m_pi3DBagRep);pViewer->Draw();
-			//pISO->AddElement(piRepPtAlias);
-
-			//
-			if (m_piManipulator!=NULL)
-			{
-				m_piManipulator->Release();
-				m_piManipulator=NULL;
-			}
-			m_piManipulator = new CAT3DManipulator(this,"Manip",m_pi3DBagRep,CAT3DManipulator::DirectionTranslation);
-			//CATMathPoint P(0,0,0);
-			CATMathVector I(1,0,0),J(0,1,0),K(0,0,1);
-			CATMathAxis Axis(mathPoint1,I,J,K);
-			m_piManipulator->SetPosition(Axis);
-			CATMathDirection D(0,1,0);
-			m_piManipulator->SetTranslationDirection(D);
 		}
 	}
 
 	return rc;	
-}
-
-//箭头的回调函数
-void PrtFstDesignCmd::CBManipulator(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
-{
-	cout<<"CBManipulator(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)!"<<endl;
-	CATMathAxis Position=((CAT3DManipulator *)cmd)->GetPosition();
-	CAT4x4Matrix initialisationMatrix(Position);
-	m_pi3DBagRep->SetMatrix(initialisationMatrix);
-	//
-	CATFrmLayout *pFrmLayout = CATFrmLayout::GetCurrentLayout();
-	CATFrmWindow *pFrmWindow = pFrmLayout->GetCurrentWindow();
-	CATViewer *pViewer = pFrmWindow->GetViewer();
-	pViewer->Draw();
 }
 
 // [2/26/2012 xyuser]
@@ -1492,6 +1462,7 @@ void PrtFstDesignCmd::CreateFstPointAndLines(CATISpecObject_var ispPoint01,CATIS
 	//创建点在连接线上
 	CATICkeParm_var spCkeParmDis = PrtService::LocalInstLitteral(&iDistance, 1, "Length","iDistance");
 	CATISpecObject_var spStartPoint = spGSMFac->CreatePoint(spIntersectLine,NULL_var,spCkeParmDis,CATGSMOrientation::CATGSMSameOrientation);
+	PrtService::SetAlias(spStartPoint,"顶点");
 	//创建点线模型中的线
 	double dstart = 0;
 	CATICkeParm_var spCkeParmStart = PrtService::LocalInstLitteral(&dstart, 1, "Length","Start");
@@ -1597,4 +1568,48 @@ void PrtFstDesignCmd::GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,
 		PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述");
 
 	}
+}
+
+void PrtFstDesignCmd::CalculateJoinThickInCGM(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints)
+{
+	//获得输入曲面的拓扑
+	ListPOfCATBody  iBodiesToAssemble01,iBodiesToAssemble02;
+	for (int i=1; i<=ilstspSurf01.Size(); i++)
+	{
+		CATIGeometricalElement_var spGeomEle01 = ilstspSurf01[i];
+		CATBody_var spBody = spGeomEle01->GetBodyResult();
+		//
+		iBodiesToAssemble01.Append(spBody);
+	}
+	for (int i=1; i<=ilstspSurf02.Size(); i++)
+	{
+		CATIGeometricalElement_var spGeomEle02 = ilstspSurf02[i];
+		CATBody_var spBody = spGeomEle02->GetBodyResult();
+		//
+		iBodiesToAssemble02.Append(spBody);
+	}
+	// defines an open configuration for the operator
+	CATSoftwareConfiguration * pConfig = new CATSoftwareConfiguration();
+	// defines the data of the operator: configuration + journal
+	CATTopData topdata(pConfig,NULL);
+	//
+	CATGeoFactory* iFactory1 = (iBodiesToAssemble01[1])->GetFactory();
+	CATHybAssemble* piHybAss01 = CATCreateNewTopAssemble(iFactory1,&topdata,&iBodiesToAssemble01);
+	CATGeoFactory* iFactory2 = (iBodiesToAssemble02[1])->GetFactory();
+	CATHybAssemble* piHybAss02 = CATCreateNewTopAssemble(iFactory2,&topdata,&iBodiesToAssemble02);
+	//获取BODY结果
+	CATBody* piSurfBody01 = piHybAss01->GetSuppressBody();
+	CATBody* piSurfBody02 = piHybAss02->GetSuppressBody();
+
+	//采用循环
+	for (int i = 1; i <= ilstspPoints.Size(); i ++)
+	{
+		//
+		CATIGeometricalElement_var spGeomElePoint = ilstspPoints[i];
+		CATBody_var spBody = spGeomElePoint->GetBodyResult();
+		//计算投影
+	}
+
+	// Releases the configuration
+	pConfig->Release();
 }

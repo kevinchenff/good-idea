@@ -44,3 +44,4 @@ AddPrereqComponent("MeasureGeometryInterfaces",Public);
 AddPrereqComponent("ComponentsCatalogsInterfaces",Public);
 AddPrereqComponent("NewTopologicalObjects",Public);
 AddPrereqComponent("GeometricObjects",Public);
+AddPrereqComponent("TopologicalOperators",Public);
