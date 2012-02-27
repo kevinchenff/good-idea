@@ -101,6 +101,8 @@ class PrtFstDesignCmd: public CATStateCommand
   void GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName);
   //按照参数信息创建点线模型
   void CreateFstPointAndLines(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength);
+  //
+  void CalculateJoinThickInCGM(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints);
 
 
 private:
@@ -124,7 +126,7 @@ private:
 
 	//箭头临时变量
 	CAT3DBagRep *m_pi3DBagRep;
-	CAT3DManipulator *m_piManipulator;
+	//CAT3DManipulator *m_piManipulator;
 };
 
 //----------------------------------------------------------------------
