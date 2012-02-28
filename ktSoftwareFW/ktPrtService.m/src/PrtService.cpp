@@ -3432,6 +3432,8 @@ void PrtService::AddSpecObjParams(CATDocument * ipDoc,CATISpecObject_var const &
 		if (iType == 0)
 		{
 			spParm->SetUserAccess(CATICkeParm::User);
+			spParm->SetConst(CATCke::True);
+			spParm->SetUserAccess(CATICkeParm::ReadOnly);
 		}
 		else if (iType == 1)
 		{
