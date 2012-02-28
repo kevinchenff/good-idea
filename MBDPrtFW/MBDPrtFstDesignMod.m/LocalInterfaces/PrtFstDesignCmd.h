@@ -103,7 +103,7 @@ class PrtFstDesignCmd: public CATStateCommand
   //按照参数信息创建点线模型
   void CreateFstPointAndLines(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth);
   //计算安装方向及夹持厚度，为紧固件选择提供依据
-  void CalculateJoinThickInCGM(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints);
+  void CalculateJoinThickInTop(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints);
   //转变OK APPLY按钮的显示状态
   void ChangeOKApplyState();
 
@@ -125,6 +125,9 @@ private:
 	//存储中间数据变量
 	CATListValCATISpecObject_var m_lstSpecPoints,m_lstSpecPrds;
 	CATListValCATISpecObject_var m_lstSpecFirstSurfs,m_lstSpecSecSurfs;
+
+	//夹持厚度最大值及最小值
+	double m_dJstThickMax,m_dJstThickMin;
 };
 
 //----------------------------------------------------------------------

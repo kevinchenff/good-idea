@@ -17,6 +17,7 @@
 #include "CATMathPlane.h"
 #include "CATFace.h"
 #include "CATSurface.h"
+#include "CATTopLineOperator.h"
 
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstDesignCmd);
@@ -29,7 +30,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
-  ,m_piPointGSMAgt(NULL),m_piISO(NULL)
+  ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -758,7 +759,7 @@ CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 			}
 
 			//显示安装方向
-			CalculateJoinThickInCGM(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
+			CalculateJoinThickInTop(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
 		}
 	}
 
@@ -867,7 +868,7 @@ CATBoolean PrtFstDesignCmd::ChooseSecSurfs( void *UsefulData)
 			}
 
 			//显示安装方向
-			CalculateJoinThickInCGM(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
+			CalculateJoinThickInTop(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
 		}
 	}
 
@@ -993,7 +994,7 @@ CATBoolean PrtFstDesignCmd::ActiveFirstSurfSL( void *UsefulData)
 	PrtService::HighLightObjLst(m_lstSpecFirstSurfs);
 	//
 	//显示安装方向
-	CalculateJoinThickInCGM(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
+	CalculateJoinThickInTop(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
 	//
 	m_piFirstSurfAgt->InitializeAcquisition();
 	return TRUE;
@@ -1010,7 +1011,7 @@ CATBoolean PrtFstDesignCmd::ActiveSecSurfSL( void *UsefulData)
 	PrtService::HighLightObjLst(m_lstSpecSecSurfs);
 	//
 	//显示安装方向
-	CalculateJoinThickInCGM(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
+	CalculateJoinThickInTop(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
 	//
 	m_piSecSurfAgt->InitializeAcquisition();
 	return TRUE;
@@ -1180,7 +1181,7 @@ void PrtFstDesignCmd::ReverseDirCB(CATCommand* cmd, CATNotification* evt, CATCom
 		}
 
 		//显示安装方向
-		CalculateJoinThickInCGM(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
+		CalculateJoinThickInTop(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
 	}
 	
 }
@@ -1296,6 +1297,8 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 	//创建几何图形集放置点集合
 	CATIPrtContainer *opiRootContainer = NULL;
 	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
+	//获取PART
+	CATISpecObject_var spPart = opiRootContainer->GetPart();
 	//
 	CATISpecObject_var spFSTAssGSMTool = NULL_var;
 	int oDiag = 0 ;
@@ -1437,9 +1440,10 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 				CreateFstPointAndLines(spIntersect01,spIntersect02,spFstTypeGSMTool,strChooseFstType,iDistance,iLength,iPointSym,iLineWidth);
 			}
 		}
-
 	}
-	
+
+	//更新整个PART
+	PrtService::ObjectUpdate(spPart);	
 }
 
 
@@ -1579,7 +1583,7 @@ void PrtFstDesignCmd::GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,
 	}
 }
 
-void PrtFstDesignCmd::CalculateJoinThickInCGM(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints)
+void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints)
 {
 	//
 	if (ilstspSurf01.Size()==0 || ilstspSurf02.Size()==0 || ilstspPoints.Size()==0)
@@ -1663,43 +1667,93 @@ void PrtFstDesignCmd::CalculateJoinThickInCGM(CATListValCATISpecObject_var ilsts
 			//
 			if (piPjtBody01 != NULL && piPjtBody02 != NULL)
 			{
-				CATLISTP(CATCell) ioResult01,ioResult02; 
+				//创建TOP线,与SURF02求交点
+				CATTopLineOperator*  pLineOpera = CATCreateTopLineOperatorNormalToShell(iFactory, &topdata, piPjtBody01,piSurfBody01,100.0);
+				pLineOpera->Run();
+				CATBody* pBodyDirLine = pLineOpera->GetResult();
 				//
-				piPjtBody01->GetAllCells(ioResult01,0);
-				piPjtBody02->GetAllCells(ioResult02,0);
-				//
-				CATMathPoint mathPoint1,mathPoint2;
-				//
-				CATVertex* pVertex01 = (CATVertex*)ioResult01[1];
-				CATVertex* pVertex02 = (CATVertex*)ioResult02[1];
-				//
-				CATPoint* pPoint01=pVertex01->GetPoint();
-				CATPoint* pPoint02=pVertex02->GetPoint();
-				//
-				pPoint01->GetMathPoint(mathPoint1);
-				pPoint02->GetMathPoint(mathPoint2);
-				//获取坐标点，显示箭头
-				CATMathDirectionf oArrowVector(mathPoint1,mathPoint2);
-				//在OriginPoint处创建3D fixed arrow.
-				CAT3DFixedArrowGP *pArrowGP = new CAT3DFixedArrowGP(mathPoint1,oArrowVector,20,5);
-				//创建图形属性，包括Color和Thickness
-				CATGraphicAttributeSet AttributsDir;
-				AttributsDir.SetColor(GREEN);
-				AttributsDir.SetThickness(2);
-				//
-				CAT3DCustomRep * pRepForArrow= new CAT3DCustomRep(pArrowGP,AttributsDir);
-				//
-				CATModelForRep3D *piRepPtAlias = new CATModelForRep3D();
-				piRepPtAlias->SetRep(pRepForArrow);		
-				//
-				m_piISO->AddElement(piRepPtAlias);
-				//箭头临时变量
-				CAT3DBagRep *pi3DBagRep = new CAT3DBagRep();pi3DBagRep->AddChild(*pRepForArrow);
-				//
-				CATFrmLayout *pFrmLayout = CATFrmLayout::GetCurrentLayout();
-				CATFrmWindow *pFrmWindow = pFrmLayout->GetCurrentWindow();
-				CATViewer *pViewer = pFrmWindow->GetViewer();
-				pViewer->AddRep(pi3DBagRep);pViewer->Draw();
+				if (pBodyDirLine !=NULL)
+				{
+					CATHybIntersect* pIntersect = CATCreateTopIntersect(iFactory, &topdata, pBodyDirLine,piSurfBody02);
+					pIntersect->Run();
+					CATBody* pBodyInters = pIntersect->GetResult();
+					//
+					CATLISTP(CATCell) ioResult01,ioResult02;
+					//
+					piPjtBody01->GetAllCells(ioResult01,0);
+					pBodyInters->GetAllCells(ioResult02,0);
+					//
+					CATMathPoint mathPoint1,mathPoint2;
+					//
+					CATVertex* pVertex01 = (CATVertex*)ioResult01[1];
+					CATVertex* pVertex02 = (CATVertex*)ioResult02[1];
+					//
+					CATPoint* pPoint01=pVertex01->GetPoint();
+					CATPoint* pPoint02=pVertex02->GetPoint();
+					//
+					pPoint01->GetMathPoint(mathPoint1);
+					pPoint02->GetMathPoint(mathPoint2);
+					//获取坐标点，显示箭头
+					CATMathDirectionf oArrowVector(mathPoint1,mathPoint2);
+					//在OriginPoint处创建3D fixed arrow.
+					CAT3DFixedArrowGP *pArrowGP = new CAT3DFixedArrowGP(mathPoint1,oArrowVector,20,5);
+					//创建图形属性，包括Color和Thickness
+					CATGraphicAttributeSet AttributsDir;
+					AttributsDir.SetColor(GREEN);
+					AttributsDir.SetThickness(2);
+					//
+					CAT3DCustomRep * pRepForArrow= new CAT3DCustomRep(pArrowGP,AttributsDir);
+					//
+					CATModelForRep3D *piRepPtAlias = new CATModelForRep3D();
+					piRepPtAlias->SetRep(pRepForArrow);		
+					//
+					m_piISO->AddElement(piRepPtAlias);
+					//箭头临时变量
+					CAT3DBagRep *pi3DBagRep = new CAT3DBagRep();pi3DBagRep->AddChild(*pRepForArrow);
+					//
+					CATFrmLayout *pFrmLayout = CATFrmLayout::GetCurrentLayout();
+					CATFrmWindow *pFrmWindow = pFrmLayout->GetCurrentWindow();
+					CATViewer *pViewer = pFrmWindow->GetViewer();
+					pViewer->AddRep(pi3DBagRep);pViewer->Draw();
+				}				
+				////
+				//CATLISTP(CATCell) ioResult01,ioResult02;
+				////
+				//piPjtBody01->GetAllCells(ioResult01,0);
+				//piPjtBody02->GetAllCells(ioResult02,0);
+				////
+				//CATMathPoint mathPoint1,mathPoint2;
+				////
+				//CATVertex* pVertex01 = (CATVertex*)ioResult01[1];
+				//CATVertex* pVertex02 = (CATVertex*)ioResult02[1];
+				////
+				//CATPoint* pPoint01=pVertex01->GetPoint();
+				//CATPoint* pPoint02=pVertex02->GetPoint();
+				////
+				//pPoint01->GetMathPoint(mathPoint1);
+				//pPoint02->GetMathPoint(mathPoint2);
+				////获取坐标点，显示箭头
+				//CATMathDirectionf oArrowVector(mathPoint1,mathPoint2);
+				////在OriginPoint处创建3D fixed arrow.
+				//CAT3DFixedArrowGP *pArrowGP = new CAT3DFixedArrowGP(mathPoint1,oArrowVector,20,5);
+				////创建图形属性，包括Color和Thickness
+				//CATGraphicAttributeSet AttributsDir;
+				//AttributsDir.SetColor(GREEN);
+				//AttributsDir.SetThickness(2);
+				////
+				//CAT3DCustomRep * pRepForArrow= new CAT3DCustomRep(pArrowGP,AttributsDir);
+				////
+				//CATModelForRep3D *piRepPtAlias = new CATModelForRep3D();
+				//piRepPtAlias->SetRep(pRepForArrow);		
+				////
+				//m_piISO->AddElement(piRepPtAlias);
+				////箭头临时变量
+				//CAT3DBagRep *pi3DBagRep = new CAT3DBagRep();pi3DBagRep->AddChild(*pRepForArrow);
+				////
+				//CATFrmLayout *pFrmLayout = CATFrmLayout::GetCurrentLayout();
+				//CATFrmWindow *pFrmWindow = pFrmLayout->GetCurrentWindow();
+				//CATViewer *pViewer = pFrmWindow->GetViewer();
+				//pViewer->AddRep(pi3DBagRep);pViewer->Draw();
 			}
 		}
 	}

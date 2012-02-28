@@ -45,3 +45,4 @@ AddPrereqComponent("ComponentsCatalogsInterfaces",Public);
 AddPrereqComponent("NewTopologicalObjects",Public);
 AddPrereqComponent("GeometricObjects",Public);
 AddPrereqComponent("TopologicalOperators",Public);
+AddPrereqComponent("BasicTopologicalOpe",Public);
