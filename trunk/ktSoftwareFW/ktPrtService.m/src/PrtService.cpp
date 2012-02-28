@@ -1310,6 +1310,68 @@ HRESULT PrtService::SetSpecObjColor(CATISpecObject_var iSpecObj,int iColor)
 	return rc;
 }
 
+HRESULT PrtService::SetSpecObjColor(CATISpecObject_var iSpecObj,int iColor,int iWidthOrSymbol, int iType)
+{
+	CATIVisProperties *piGraphProp=NULL;
+	HRESULT rc = iSpecObj->QueryInterface(IID_CATIVisProperties,(void**)&piGraphProp);
+	if( FAILED(rc) || piGraphProp == NULL ) return rc;
+
+	CATVisPropertiesValues Attribut;
+	switch(iColor)
+	{
+	case 0:	{Attribut.SetColor(255, 0, 0); break;}    //红
+	case 1: {Attribut.SetColor(0, 255, 0); break;}    //绿
+	case 2: {Attribut.SetColor(0, 0, 255); break;}    //蓝
+	case 3: {Attribut.SetColor(255, 255, 0); break;}  //黄
+	case 4: {Attribut.SetColor(255,0, 255); break;}   //紫
+	case 5: {Attribut.SetColor(0, 255, 255);break;}   //青
+	case 6: {Attribut.SetColor(100, 100, 255); break;}//
+	case 7:	{Attribut.SetColor(0, 0, 0); break;}      //黑
+	case 8: {Attribut.SetColor(255, 255, 255); break;}//白
+	default:{Attribut.SetColor(255, 255, 0); break;}  //黄
+	}
+
+    //
+	if (iType == 0) //为点时
+	{
+		//
+		Attribut.SetSymbol(iWidthOrSymbol);
+		//
+		piGraphProp->SetPropertiesAtt(Attribut,CATVPColor,CATVPPoint,0,0);
+		piGraphProp->SetPropertiesAtt(Attribut,CATVPSymbol,CATVPPoint,0,0);
+		piGraphProp->Release();
+		piGraphProp=NULL;
+
+	} 
+	else if (iType == 1) //为线时
+	{
+		//
+		if (iWidthOrSymbol>=1 && iWidthOrSymbol <= 63)
+		{
+			Attribut.SetWidth(iWidthOrSymbol);
+		}
+		else
+		{
+			Attribut.SetWidth(3);
+		}
+		//
+		piGraphProp->SetPropertiesAtt(Attribut,CATVPColor,CATVPLine,0,0);
+		piGraphProp->SetPropertiesAtt(Attribut,CATVPWidth,CATVPLine,0,0);
+		piGraphProp->Release();
+		piGraphProp=NULL;
+	}
+
+	CATIModelEvents *piME = NULL;
+	rc = iSpecObj->QueryInterface( IID_CATIModelEvents,(void **) &piME);
+	if( FAILED(rc) || piME == NULL ) return rc;
+	CATModifyVisProperties notif(iSpecObj, CATPathElement(iSpecObj), CATVPGlobalType,CATVPColor,Attribut);
+	piME->Dispatch(notif);
+	piME->Release();
+	piME= NULL ;
+
+	return rc;
+}
+
 HRESULT PrtService::SetSpecObjOpacityAttr(CATISpecObject_var iSpecObj,CATUnicodeString iOpacityOrNoOpacity)
 {
 	CATIVisProperties *piVisP=NULL;
@@ -2429,9 +2491,12 @@ BOOL PrtService::CopyFeatureToPartDocument(CATISpecObject_var &spSpecCopyResult,
 	ptCATMmrInterPartCopy->SetLinkMode(LinkMode);
 	ptCATMmrInterPartCopy->SetAttributeMode(iAttributeMode);
 	//
-	ptCATMmrInterPartCopy->SetSourceInstance(piSourceInst);
-	ptCATMmrInterPartCopy->SetTargetInstance(piTargetInst);
-
+	if (piSourceInst!=NULL && piTargetInst!=NULL)
+	{
+		ptCATMmrInterPartCopy->SetSourceInstance(piSourceInst);
+		ptCATMmrInterPartCopy->SetTargetInstance(piTargetInst);
+	}
+	
 	//
 	CATUnicodeString ErrorMsg ;
 	HRESULT hr = ptCATMmrInterPartCopy->Run(&ErrorMsg);

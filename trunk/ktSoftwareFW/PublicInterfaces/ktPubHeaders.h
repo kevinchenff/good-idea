@@ -175,6 +175,35 @@
 // GSM POINT AND LINE
 #include "CATIGSMLinePtPt.h"
 #include "CATIGSMLinePtDir.h"
+#include "CATIGSMAssemble.h"
+
+//
+#include "CATIMfZeroDimResult.h"
+#include "CATIMfBiDimResult.h"
+#include "CATISO.h"
+#include "CAT3DAnnotationTextGP.h"
+#include "CATIMeasurablePoint.h"
+#include "CATModelForRep3D.h"
+#include "CAT3DCustomRep.h"
+#include "CATGraphicAttributeSet.h"
+#include "CATIStructureAnalyse.h"
+#include "CATIMmiMechanicalImportApplicative.h"
+#include "CATIGSMIntersect.h"
+#include "CATIGSMLineNormal.h"
+#include "CAT3DMarkerGP.h"
+#include "CAT3DFixedArrowGP.h"
+#include "CATIMfBRep.h"
+#include "CAT4x4Matrix.h"
+//#include "CATIMmiInternalCopyWithLink.h"
+
+// ÍØÆË²ã²Ù×÷½Ó¿Ú
+#include "CATCreateTopAssemble.h"
+#include "CATSoftwareConfiguration.h"
+#include "CATTopData.h"
+#include "CATCreateTopProject.h"
+#include "CATHybProject.h"
+#include "CATVertex.h"
+#include "CATPoint.h"
 
 
 // MechanicalModeler

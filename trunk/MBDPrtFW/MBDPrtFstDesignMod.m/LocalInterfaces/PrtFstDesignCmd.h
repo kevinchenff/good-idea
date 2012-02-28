@@ -60,6 +60,7 @@ class PrtFstDesignCmd: public CATStateCommand
 
   //消息框响应函数
   void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void ApplyDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
   void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
   //判断是否为ZP模型
@@ -85,14 +86,14 @@ class PrtFstDesignCmd: public CATStateCommand
   void ShowSeletedLine(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
   //删除所有点
   void DeleteAllPointsCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  //反向安装方向
+  void ReverseDirCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
   //在IOS中显示标记点
   void ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
   //判断一个曲面特征是否在另一个数组中
   BOOL IsTheSpecInLstSpec(CATISpecObject_var iSpec, CATListValCATISpecObject_var iLstSpec);
   //获得传入特征的的父级节点
   HRESULT GetLinkImportPrd(CATISpecObject_var& ispFeature,CATIProduct_var &ospSourcePrd);
-  //获得初始化的法线方向
-  HRESULT GetInitialArrow(CATISpecObject_var ispPoint, CATListValCATISpecObject_var ilstFirstSurf,CATListValCATISpecObject_var ilstSecSurf);
   //箭头的回调函数
   void CBManipulator(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //根据输入条件创建点线模型
@@ -100,10 +101,11 @@ class PrtFstDesignCmd: public CATStateCommand
   //获取放置点线模型的零件几何图形集
   void GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName);
   //按照参数信息创建点线模型
-  void CreateFstPointAndLines(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength);
-  //
+  void CreateFstPointAndLines(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth);
+  //计算安装方向及夹持厚度，为紧固件选择提供依据
   void CalculateJoinThickInCGM(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints);
-
+  //转变OK APPLY按钮的显示状态
+  void ChangeOKApplyState();
 
 private:
 	PrtFstDesignDlg *m_pDlg;
@@ -123,10 +125,6 @@ private:
 	//存储中间数据变量
 	CATListValCATISpecObject_var m_lstSpecPoints,m_lstSpecPrds;
 	CATListValCATISpecObject_var m_lstSpecFirstSurfs,m_lstSpecSecSurfs;
-
-	//箭头临时变量
-	CAT3DBagRep *m_pi3DBagRep;
-	//CAT3DManipulator *m_piManipulator;
 };
 
 //----------------------------------------------------------------------
