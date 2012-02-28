@@ -162,6 +162,7 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   //设置颜色及透明度
   static HRESULT SetSpecObjColor(CATISpecObject_var iSpecObj,int iColor);
+  static HRESULT SetSpecObjColor(CATISpecObject_var iSpecObj,int iColor,int iWidthOrSymbol, int iType);
   static HRESULT SetSpecObjOpacityAttr(CATISpecObject_var iSpecObj,CATUnicodeString iOpacityOrNoOpacity);
 
   //从文档指针获得PrdNumber

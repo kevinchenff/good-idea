@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PrtFstDesignDlg
 {
-  STYLE = CATDlgGridLayout;
+  STYLE = CATDlgWndBtnOKApplyClose|CATDlgGridLayout;
   ROWRES = { 0, 1, 5 };
   COLRES = { 0 };
 }

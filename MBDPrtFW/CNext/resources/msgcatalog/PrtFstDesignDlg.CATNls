@@ -1,6 +1,6 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "Define Fastener";
-Frame001.Title = "Points";
+Frame001.Title = "Choose Points";
 Frame002.Title = "Fastener Surf And Direction";
 Frame002.Label008.Title = "First Fastener Surf";
 Frame002.Label009.Title = "Second Fastener Surf";
@@ -10,7 +10,7 @@ Frame003.Title = "Fastener Style";
 Frame003.ChooseFstPB.Title = "Choose Fastener STD...";
 Frame004.Title = "Specific Info";
 Frame015.ShowDetailInfoPB.Title = "Show Fastener STD Info...";
-Frame016.Title = "Fastener Contextual";
+Frame016.Title = "Choose Fastener Contextual";
 Frame017.DeletePointPB.Title = "Delete All Points";
 Frame017.ChoosePointGSMToolPB.Title = "Choose Points GSMTool";
 Frame017.SeleDeleteCheckB.Title = "Remove mode";

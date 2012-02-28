@@ -1,6 +1,6 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "定义紧固件";
-Frame001.Title = "安装点";
+Frame001.Title = "选择安装点";
 Frame002.Title = "安装表面和方向";
 Frame002.Label008.Title = "第一安装表面";
 Frame002.Label009.Title = "第二安装表面";
@@ -10,7 +10,7 @@ Frame003.Title = "定义方式";
 Frame003.ChooseFstPB.Title = "选择紧固件...";
 Frame004.Title = "规范";
 Frame015.ShowDetailInfoPB.Title = "显示紧固件详细信息...";
-Frame016.Title = "设计上下文";
+Frame016.Title = "选择设计上下文";
 Frame017.DeletePointPB.Title = "删除所有安装点";
 Frame017.ChoosePointGSMToolPB.Title = "选择几何图形集";
 Frame017.SeleDeleteCheckB.Title = "移除选择模式";

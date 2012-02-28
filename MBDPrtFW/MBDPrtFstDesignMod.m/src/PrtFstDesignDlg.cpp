@@ -31,7 +31,7 @@
 PrtFstDesignDlg::PrtFstDesignDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstDesignDlg",CATDlgGridLayout
+"PrtFstDesignDlg",CATDlgWndBtnOKApplyClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -171,6 +171,9 @@ _SecondSurfSL->SetLine("未选择");
 _PointsSL->SetLine("请选择安装点");
 _PrdSL->SetLine("请选择连接零件");
 _PointCountEditor->SetText("0 个");
+//
+this->SetOKSensitivity(CATDlgDisable);
+this->SetAPPLYSensitivity(CATDlgDisable);
 
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
