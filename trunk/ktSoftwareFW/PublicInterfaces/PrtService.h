@@ -393,7 +393,9 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static
   void CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &iospObjt, CATUnicodeString istrParmSetName, CATISpecObject_var iospParamSet);
 
-  
+  //向参数集中添加参数
+  //static 
+  //void ModifyParmSetParamsInfo(CATDocument * piDoc,CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue);
 
 
 //**********************************************************************************************************************************************************************************************************************************************************

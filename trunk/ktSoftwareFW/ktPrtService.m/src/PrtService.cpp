@@ -3527,6 +3527,93 @@ void PrtService::ModifySpecObjCertainParams(CATDocument * piDoc,CATISpecObject_v
 	ObjectUpdate(spPrtPart);
 }
 
+/*
+//
+//功能：向参数集中添加参数
+void PrtService::ModifyParmSetParamsInfo(CATDocument * piDoc,CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue)
+{
+	// 获得容器
+	CATInit_var spInitOnDoc = piDoc;
+	if (NULL_var == spInitOnDoc)
+	{
+		cout << "Could not get init on doc.\n";
+		return;
+	}
+	if (NULL_var == spSpecObj)
+	{
+		cout << "spSpecObj is NULL_Var \n";
+		return;
+	}
+
+	CATIContainer * piContainer = (CATIContainer*) spInitOnDoc->GetRootContainer("CATIContainer");
+
+	//从文档容器中获取零件CATIPrtContainer容器
+	CATIPrtContainer *piPrtCont = NULL;
+	HRESULT rc = piContainer->QueryInterface(IID_CATIPrtContainer, (void **)&piPrtCont);
+	if(FAILED(rc))return;
+	CATIPrtPart_var spPrtPart = piPrtCont->GetPart();
+	CATICkeParmFactory_var spParmFact = piContainer;
+	//释放无用的接口
+	piContainer->Release();
+	piContainer = NULL;
+	piPrtCont->Release();
+	piPrtCont = NULL;
+
+	//取得direct children parameters
+	CATIParmPublisher_var spParmPublisherGS(spSpecObj);	
+	CATListValCATISpecObject_var  iListFound;
+	spParmPublisherGS->GetDirectChildren("CATICkeParm",	iListFound);
+
+	//遍历所有参数项，与传入参数名称比较，并把对应名称的参数值修改掉
+	CATICkeParm_var spCkeParm = NULL_var;
+	//
+	int i,j;
+	CATListValCATUnicodeString  ListNewStrName,ListNewStrNameValue;
+	CATBoolean existFlag = FALSE;
+	for (i = 1; i <= ListStrName.Size(); i++)
+	{
+
+		for (j = 1;j <= iListFound.Size(); j++)
+		{
+			spCkeParm = iListFound[j];
+			if (NULL_var == spCkeParm)
+			{
+				cout <<"Can't get CATICkeParm interface from iListFound[j]"<<endl;
+				break;
+			}
+			CATUnicodeString StrCkeParmName = spCkeParm->Name();
+
+			int BenginNum = StrCkeParmName.SearchSubString("\\",0,CATUnicodeString::CATSearchModeBackward); 
+			int StrLength = StrCkeParmName.GetLengthInChar();
+			CATUnicodeString StrParaName = StrCkeParmName.SubString(BenginNum+1,StrLength-BenginNum-1);
+			if (StrParaName == ListStrName[i])
+			{
+				spCkeParm->Valuate(ListStrNameValue[i]);
+				existFlag = TRUE;
+				continue;
+			}
+
+		}
+
+		// 如果未找到该参数项，将自动添加
+		if (existFlag == FALSE)
+		{
+			ListNewStrName.Append(ListStrName[i]);
+			ListNewStrNameValue.Append(ListStrNameValue[i]);
+		}
+
+	}
+
+	//添加未找到参数
+	AddSpecObjParams(piDoc,spSpecObj,ListNewStrName,ListNewStrNameValue);
+
+	//更新文件
+	ObjectUpdate(spPrtPart);
+}
+
+*/
+
+
 //功能：修改特征下某些参数状态
 void PrtService::ModifySpecObjCertainParamsStatus(CATDocument * piDoc,CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  ListStrName)
 {

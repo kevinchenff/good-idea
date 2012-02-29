@@ -1386,7 +1386,7 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 		if (spJstTypeInfoSet!=NULL_var)
 		{
 			//π“‘ÿ≤‚ ‘≤Œ ˝
-			PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
 		}
 		else
 		{
