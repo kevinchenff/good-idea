@@ -381,13 +381,17 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static 
   void SetGSMToolParamEnum(CATDocument *piDocument,CATISpecObject_var spGSMTool,CATListValCATUnicodeString listStrParamName,CATListOfInt countNode,CATListValCATUnicodeString listStrParamValue);
 
-  //从特征获取其中包含的Paraset
+  //从特征获取其中包含的所有Paramset
   static
   void GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATListValCATISpecObject_var &iolstspParmSet);
 
-  //在特征身上创建Paraset
+  //从特征获取其中包含的特定名称的Paramset
   static
-  void CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &iospObjt, CATUnicodeString istrParmSetName);
+  void GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATISpecObject_var &iospParmSet, CATUnicodeString istrParmName);
+
+  //在特征身上创建Paramset
+  static
+  void CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &iospObjt, CATUnicodeString istrParmSetName, CATISpecObject_var iospParamSet);
 
   
 
@@ -409,10 +413,6 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static HRESULT ObtainRootContainer(CATDocument* iDoc,CATIPrtContainer *&oRootContainer);
 
 
-
-
-
-
 //**********************************************************************************************************************************************************************************************************************************************************
 //窗口操作分类
 //**********************************************************************************************************************************************************************************************************************************************************
@@ -430,12 +430,13 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   //警告信息
   static void ktWarningMsgBox(const char* pMsg);
+  static void ktWarningMsgBox(const int iNum);
+  static void ktWarningMsgBox(const double dValue);
 
   //提示信息
   static void ktInfoMsgBox(const char* pMsg);
-
-
-
+  static void ktInfoMsgBox(const int iNum);
+  static void ktInfoMsgBox(const double dValue);
 
 
 //**********************************************************************************************************************************************************************************************************************************************************
