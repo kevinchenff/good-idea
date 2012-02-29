@@ -1292,6 +1292,12 @@ HRESULT PrtFstDesignCmd::GetLinkImportPrd(CATISpecObject_var& ispFeature,CATIPro
 // [2/26/2012 xyuser]
 void PrtFstDesignCmd::CreateFstLineAndCircle()
 {
+	//测试输入条件
+	CATUnicodeString strChooseFstType("HB6309-2X8");
+	CATListValCATUnicodeString lststrJstTypeInfoName,lststrJstTypeInfoValue;
+	lststrJstTypeInfoName.Append("名称");
+	lststrJstTypeInfoValue.Append("90°沉头铆钉");
+
 	//---------------------------------------------
 	//1 合并选择的第一第二曲面片
 	//---------------------------------------------
@@ -1350,9 +1356,48 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 
 	//找到正确的几何图形集放置点线模型
 	GetPartsJointGSMTool(iospJointGSMTool,ilstStrPartsInstName);
+	//获得“紧固件描述”参数集
+	CATISpecObject_var spJstDescripParmSet=NULL_var;
+	PrtService::GetParmSetFromSpeObjt(iospJointGSMTool,spJstDescripParmSet,"紧固件描述");
+	if (NULL_var != spJstDescripParmSet)
+	{
+		CATISpecObject_var spJstTypeInfoSet = NULL_var;
+		//检查是否存在
+		PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,spJstTypeInfoSet,strChooseFstType);
+		if (spJstTypeInfoSet!=NULL_var)
+		{
+			//挂载测试参数
+			PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+		}
+		else
+		{
+			PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strChooseFstType,spJstTypeInfoSet);
+			//挂载测试参数
+			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+		}		
+	}
+	else
+	{
+		//
+		PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
+		CATISpecObject_var spJstTypeInfoSet = NULL_var;
+		//检查是否存在
+		PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,spJstTypeInfoSet,strChooseFstType);
+		if (spJstTypeInfoSet!=NULL_var)
+		{
+			//挂载测试参数
+			PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+		}
+		else
+		{
+			PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strChooseFstType,spJstTypeInfoSet);
+			//挂载测试参数
+			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+		}
+	}
 
 	//记录是否有点未能创建成功
-	double dsucessPoint = 0;
+	double dCountResult = 0;
 	CATBoolean flagwarning = FALSE;
 
 	//采用循环模式，对每个点创建点线模型
@@ -1442,7 +1487,6 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 				PrtService::SetSpecObjShowAttr(m_lstSpecPoints[i],"Hide");
 
 				//创建点线模型
-				CATUnicodeString strChooseFstType("HB6309-2X8");
 				CATISpecObject_var spFstTypeGSMTool=NULL_var;
 				CATBoolean Fstflag = FALSE;
 
@@ -1476,6 +1520,8 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 					PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,strChooseFstType+"集合",iospJointGSMTool,spFstTypeGSMTool,oDiag,0,0);
 				}
 
+				//计数创建成功的点线模型数量
+				dCountResult++;
 				//调用函数，按照参数信息创建点线模型
 				double iDistance=0,iLength=4.8, iLineWidth=3 ,iPointSym=7;
 				CreateFstPointAndLines(spIntersect01,spIntersect02,spFstTypeGSMTool,strChooseFstType,iDistance,iLength,iPointSym,iLineWidth);
@@ -1538,10 +1584,15 @@ void PrtFstDesignCmd::CreateFstPointAndLines(CATISpecObject_var ispPoint01,CATIS
 	spMeasLine->GetLength(dJstLength);
 	CATUnicodeString strdJstLength;
 	strdJstLength.BuildFromNum(dJstLength,"%lf");
-	//挂载参数
+	//挂载夹层厚度参数
 	CATListValCATUnicodeString lststrParmName,lststrParmValue;
 	lststrParmName.Append("夹层厚度");
 	lststrParmValue.Append(strdJstLength);
+	//挂载更改时间参数
+	char str[20];
+	CHandleString::myGetTime(str);
+	lststrParmName.Append("更改时间");
+	lststrParmValue.Append(str);
 	PrtService::AddSpecObjParams(m_piDoc,spResultLine,lststrParmName,lststrParmValue);
 	//
 	PrtService::ObjectUpdate(spResultLine);
@@ -1639,7 +1690,8 @@ void PrtFstDesignCmd::GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,
 		int oDiag = 0 ;
 		PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,strPartsJointName,spLineDefGSMTool,iospJointGSMTool,oDiag,0,0);
 		//
-		PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述");
+		CATISpecObject_var spJstDescripParmSet=NULL_var;
+		PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
 	}
 }
 
@@ -1727,13 +1779,17 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 			{
 				//创建TOP线,与SURF02求交点
 				CATTopLineOperator*  pLineOpera = CATCreateTopLineOperatorNormalToShell(iFactory, &topdata, piPjtBody01,piSurfBody01,100.0);
+				pLineOpera->SetFirstLimit(-100.0);
+				pLineOpera->SetSecondLimit(100.0);
 				pLineOpera->Run();
 				CATBody* pBodyDirLine = pLineOpera->GetResult();
 				delete pLineOpera;
 				pLineOpera = NULL;
+				
 				//
 				if (pBodyDirLine !=NULL)
 				{
+					//
 					CATHybIntersect* pIntersect = CATCreateTopIntersect(iFactory, &topdata, pBodyDirLine,piSurfBody02);
 					pIntersect->Run();
 					CATBody* pBodyInters = pIntersect->GetResult();

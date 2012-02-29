@@ -3895,10 +3895,31 @@ void PrtService::GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATListValCAT
 {
 	CATIDescendants_var spDescend = ispObjt;
 	spDescend->GetDirectChildren("CATICkeParameterSet",iolstspParmSet);	
+	
+}
+
+//从特征获取其中包含的所有Paramset
+void PrtService::GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATISpecObject_var &iospParmSet, CATUnicodeString istrParmName)
+{
+	iospParmSet = NULL_var;
+	//
+	CATListValCATISpecObject_var lstspParmSet;
+	CATIDescendants_var spDescend = ispObjt;
+	spDescend->GetDirectChildren("CATICkeParameterSet",lstspParmSet);
+	//
+	for (int i=1; i<= lstspParmSet.Size(); i++)
+	{
+		CATUnicodeString strExistName = PrtService::GetAlias(lstspParmSet[i]);
+		if (strExistName == istrParmName)
+		{
+			iospParmSet = lstspParmSet[i];
+			break;
+		}
+	}
 }
 
 //在特征身上创建Paraset
-void PrtService::CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &iospObjt, CATUnicodeString istrParmSetName)
+void PrtService::CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &iospObjt, CATUnicodeString istrParmSetName, CATISpecObject_var iospParamSet)
 {
 	CATIPrtContainer *opiRootContainer = NULL;
 	PrtService::ObtainRootContainer(piDoc,opiRootContainer);
@@ -3907,8 +3928,8 @@ void PrtService::CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &i
 	//
 	CATIParmPublisher_var spParmPub = iospObjt;
 	//
-	CATISpecObject_var spParamSet = spCkeRela->CreateParameterSet(istrParmSetName);
-	spParmPub->Append(spParamSet);	
+	iospParamSet = spCkeRela->CreateParameterSet(istrParmSetName);
+	spParmPub->Append(iospParamSet);	
 }
 
 
@@ -4075,6 +4096,34 @@ void PrtService::ktWarningMsgBox(const char* pMsg)
 	pNotifyDlg=NULL;
 }
 
+void PrtService::ktWarningMsgBox(const int iNum)
+{
+	CATUnicodeString Str;
+	Str.BuildFromNum(iNum);
+	//
+	CATDlgNotify  *pNotifyDlg = new CATDlgNotify( CATApplicationFrame::GetApplicationFrame()->GetMainWindow(),
+		"警告",
+		CATDlgNfyWarning);	
+	pNotifyDlg->DisplayBlocked(Str,"警告");
+	pNotifyDlg->RequestDelayedDestruction();
+	pNotifyDlg=NULL;
+}
+
+
+void PrtService::ktWarningMsgBox(const double dValue)
+{
+	CATUnicodeString Str;
+	Str.BuildFromNum(dValue);
+	//
+	CATDlgNotify  *pNotifyDlg = new CATDlgNotify( CATApplicationFrame::GetApplicationFrame()->GetMainWindow(),
+		"警告",
+		CATDlgNfyWarning);	
+	pNotifyDlg->DisplayBlocked(Str,"警告");
+	pNotifyDlg->RequestDelayedDestruction();
+	pNotifyDlg=NULL;
+}
+
+
 //消息
 void PrtService::ktInfoMsgBox(const char* pMsg)
 {
@@ -4082,6 +4131,35 @@ void PrtService::ktInfoMsgBox(const char* pMsg)
 		"提示",
 		CATDlgNfyInformation);	
 	pNotifyDlg->DisplayBlocked(pMsg,"提示");
+	pNotifyDlg->RequestDelayedDestruction();
+	pNotifyDlg=NULL;
+}
+
+//消息
+void PrtService::ktInfoMsgBox(const int iNum)
+{
+	//
+	CATUnicodeString Str;
+	Str.BuildFromNum(iNum);
+	//
+	CATDlgNotify  *pNotifyDlg = new CATDlgNotify( CATApplicationFrame::GetApplicationFrame()->GetMainWindow(),
+		"提示",
+		CATDlgNfyInformation);	
+	pNotifyDlg->DisplayBlocked(Str,"提示");
+	pNotifyDlg->RequestDelayedDestruction();
+	pNotifyDlg=NULL;
+}
+
+//消息
+void PrtService::ktInfoMsgBox(const double dValue)
+{
+	CATUnicodeString Str;
+	Str.BuildFromNum(dValue);
+	//
+	CATDlgNotify  *pNotifyDlg = new CATDlgNotify( CATApplicationFrame::GetApplicationFrame()->GetMainWindow(),
+		"提示",
+		CATDlgNfyInformation);	
+	pNotifyDlg->DisplayBlocked(Str,"提示");
 	pNotifyDlg->RequestDelayedDestruction();
 	pNotifyDlg=NULL;
 }
