@@ -33,7 +33,7 @@ JS0GROUP JS0FM JS0CORBA \
 		CATGeometricObjects   \
 		CATCGMGeoMath \
 		CATBasicTopologicalOpe \
-		CATTopologicalOperators CATTopologicalObjects \ 
+		CATTopologicalOperators CATTopologicalObjects ktStrLogService \ 
 # END WIZARD EDITION ZONE
 
 LINK_WITH = $(WIZARD_LINK_MODULES)
