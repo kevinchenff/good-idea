@@ -387,16 +387,11 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   //从特征获取其中包含的特定名称的Paramset
   static
-  void GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATISpecObject_var &iospParmSet, CATUnicodeString istrParmName);
+  void GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATISpecObject_var &iospParmSet, CATUnicodeString istrParmName,int iType=0);
 
   //在特征身上创建Paramset
   static
-  void CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &iospObjt, CATUnicodeString istrParmSetName, CATISpecObject_var iospParamSet);
-
-  //向参数集中添加参数
-  //static 
-  //void ModifyParmSetParamsInfo(CATDocument * piDoc,CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue);
-
+  void CreateParmSetOnSpeObjt(CATDocument *piDoc,CATISpecObject_var &iospObjt, CATUnicodeString istrParmSetName, CATISpecObject_var &iospParamSet);
 
 //**********************************************************************************************************************************************************************************************************************************************************
 //各容器操作分类

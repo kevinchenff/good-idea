@@ -101,11 +101,13 @@ class PrtFstDesignCmd: public CATStateCommand
   //获取放置点线模型的零件几何图形集
   void GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName);
   //按照参数信息创建点线模型
-  void CreateFstPointAndLines(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth);
+  void CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth);
   //计算安装方向及夹持厚度，为紧固件选择提供依据
   void CalculateJoinThickInTop(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints);
   //转变OK APPLY按钮的显示状态
   void ChangeOKApplyState();
+  //设置或者修改 紧固件描述 中的类型信息
+  void SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool,CATUnicodeString strChooseFstType,double idCount,CATListValCATUnicodeString ilststrJstTypeInfoName, CATListValCATUnicodeString ilststrJstTypeInfoValue);
 
 private:
 	PrtFstDesignDlg *m_pDlg;

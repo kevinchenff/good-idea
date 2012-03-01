@@ -1356,45 +1356,7 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 
 	//找到正确的几何图形集放置点线模型
 	GetPartsJointGSMTool(iospJointGSMTool,ilstStrPartsInstName);
-	//获得“紧固件描述”参数集
-	CATISpecObject_var spJstDescripParmSet=NULL_var;
-	PrtService::GetParmSetFromSpeObjt(iospJointGSMTool,spJstDescripParmSet,"紧固件描述");
-	if (NULL_var != spJstDescripParmSet)
-	{
-		CATISpecObject_var spJstTypeInfoSet = NULL_var;
-		//检查是否存在
-		PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,spJstTypeInfoSet,strChooseFstType);
-		if (spJstTypeInfoSet!=NULL_var)
-		{
-			//挂载测试参数
-			PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
-		}
-		else
-		{
-			PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strChooseFstType,spJstTypeInfoSet);
-			//挂载测试参数
-			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
-		}		
-	}
-	else
-	{
-		//
-		PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
-		CATISpecObject_var spJstTypeInfoSet = NULL_var;
-		//检查是否存在
-		PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,spJstTypeInfoSet,strChooseFstType);
-		if (spJstTypeInfoSet!=NULL_var)
-		{
-			//挂载测试参数
-			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
-		}
-		else
-		{
-			PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strChooseFstType,spJstTypeInfoSet);
-			//挂载测试参数
-			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
-		}
-	}
+	//
 
 	//记录是否有点未能创建成功
 	double dCountResult = 0;
@@ -1524,10 +1486,13 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 				dCountResult++;
 				//调用函数，按照参数信息创建点线模型
 				double iDistance=0,iLength=4.8, iLineWidth=3 ,iPointSym=7;
-				CreateFstPointAndLines(spIntersect01,spIntersect02,spFstTypeGSMTool,strChooseFstType,iDistance,iLength,iPointSym,iLineWidth);
+				CreateFstLinesAndCircles(spIntersect01,spIntersect02,spFstTypeGSMTool,strChooseFstType,iDistance,iLength,iPointSym,iLineWidth);
 			}
 		}
 	}
+
+	//设置计数及紧固件信息属性
+	SetOrChangeJstTypeInfo(iospJointGSMTool,strChooseFstType,dCountResult, lststrJstTypeInfoName, lststrJstTypeInfoValue);
 
 	//提示信息
 	if (flagwarning == TRUE)
@@ -1539,9 +1504,92 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 	PrtService::ObjectUpdate(spPart);	
 }
 
+//设置或者修改 紧固件描述 中的类型信息
+void PrtFstDesignCmd::SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool,CATUnicodeString strChooseFstType,double idCount, CATListValCATUnicodeString lststrJstTypeInfoName, CATListValCATUnicodeString lststrJstTypeInfoValue)
+{
+	//
+	//获得“紧固件描述”参数集
+	CATISpecObject_var spJstDescripParmSet=NULL_var;
+	PrtService::GetParmSetFromSpeObjt(iospJointGSMTool,spJstDescripParmSet,"紧固件描述");
+	if (NULL_var != spJstDescripParmSet)
+	{
+		CATISpecObject_var spJstTypeInfoSet = NULL_var;
+		//检查是否存在
+		PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,spJstTypeInfoSet,strChooseFstType,1);
+		if (spJstTypeInfoSet!=NULL_var)
+		{
+			//挂载测试参数
+			PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+			//修改个数
+			CATListValCATUnicodeString lststrResult;
+			CATUnicodeString strExistName = PrtService::GetAlias(spJstTypeInfoSet);
+			CHandleString::StringToVector(strExistName,"|",lststrResult);
+			//
+			double dExistCount=0;
+			if (lststrResult.Size() >= 2)
+			{
+				lststrResult[2].ConvertToNum(&dExistCount);
+			}
+			//创建名字
+			CATUnicodeString stridCount;stridCount.BuildFromNum(idCount+dExistCount);
+			CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
+			//
+			PrtService::SetAlias(spJstTypeInfoSet,strJstSetName);			
+		}
+		else
+		{
+			//创建名字
+			CATUnicodeString stridCount;stridCount.BuildFromNum(idCount);
+			CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
+			//
+			PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strJstSetName,spJstTypeInfoSet);
+			//挂载测试参数
+			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+		}
+	}
+	else
+	{
+		//
+		PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
+		CATISpecObject_var spJstTypeInfoSet = NULL_var;
+		//检查是否存在
+		PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,spJstTypeInfoSet,strChooseFstType,1);
+		if (spJstTypeInfoSet!=NULL_var)
+		{
+			//挂载测试参数
+			PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+			//修改个数
+			CATListValCATUnicodeString lststrResult;
+			CATUnicodeString strExistName = PrtService::GetAlias(spJstTypeInfoSet);
+			CHandleString::StringToVector(strExistName,"|",lststrResult);
+			//
+			double dExistCount=0;
+			if (lststrResult.Size() >= 2)
+			{
+				lststrResult[2].ConvertToNum(&dExistCount);
+			}
+			//创建名字
+			CATUnicodeString stridCount;stridCount.BuildFromNum(idCount+dExistCount);
+			CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
+			//
+			PrtService::SetAlias(spJstTypeInfoSet,strJstSetName);
+		}
+		else
+		{
+			//创建名字
+			CATUnicodeString stridCount;stridCount.BuildFromNum(idCount);
+			CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
+			//
+			PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strJstSetName,spJstTypeInfoSet);
+			//挂载测试参数
+			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+		}
+	}	
+}
+
 
 //按照参数信息创建点线模型
-void PrtFstDesignCmd::CreateFstPointAndLines(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth)
+void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth)
 {
 	//
 	//获得文档指针
@@ -1793,6 +1841,8 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 					CATHybIntersect* pIntersect = CATCreateTopIntersect(iFactory, &topdata, pBodyDirLine,piSurfBody02);
 					pIntersect->Run();
 					CATBody* pBodyInters = pIntersect->GetResult();
+					delete pIntersect;
+					pIntersect = NULL;
 					//
 					if (pBodyInters != NULL)
 					{
@@ -1801,6 +1851,11 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 						//
 						piPjtBody01->GetAllCells(ioResult01,0);
 						pBodyInters->GetAllCells(ioResult02,0);
+						//如果发现交点超过两个，跳过该层循环
+						if (ioResult01.Size()!=1 || ioResult02.Size()!=1)
+						{
+							continue;
+						}
 						//
 						CATMathPoint mathPoint1,mathPoint2;
 						//
