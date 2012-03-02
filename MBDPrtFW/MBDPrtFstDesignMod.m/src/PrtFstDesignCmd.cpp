@@ -1504,6 +1504,67 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 	PrtService::ObjectUpdate(spPart);	
 }
 
+//按照参数信息创建点线模型
+void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth,
+											   CATListValCATUnicodeString ilststrCircleNames,CATListValCATUnicodeString ilststrCirclePositions,CATListOfDouble ilstCircleValues)
+{
+	//
+	//获得文档指针
+	CATIPrtContainer *opiRootContainer = NULL;
+	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
+	//创建
+	CATISpecObject_var spFstGSMTool=NULL_var;
+	int oDiag = 0 ;
+	PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,strFstType,ispJointTypeGSMTool,spFstGSMTool,oDiag,0,0);
+	//
+	//创建连接线
+	CATIGSMFactory_var spGSMFac = NULL_var;
+	PrtService::GetGSMFactory(m_piDoc,spGSMFac);
+	CATISpecObject_var spIntersectLine = spGSMFac->CreateLine(ispPoint01,ispPoint02);
+	PrtService::SetAlias(spIntersectLine,"夹持线");
+	//
+	//创建点在连接线上
+	CATICkeParm_var spCkeParmDis = PrtService::LocalInstLitteral(&iDistance, 1, "Length","iDistance");
+	CATISpecObject_var spStartPoint = spGSMFac->CreatePoint(spIntersectLine,NULL_var,spCkeParmDis,CATGSMOrientation::CATGSMSameOrientation);
+	PrtService::SetAlias(spStartPoint,"顶点");
+	//拷贝链接顶点模型
+	CATISpecObject_var spSpecCopyResult=NULL_var;
+	PrtService::CopyFeatureToPartDocument(spSpecCopyResult,spStartPoint,spFstGSMTool,NULL,NULL, TRUE,3);
+	//设置颜色及类型
+	PrtService::SetAlias(spSpecCopyResult,"顶点");
+	PrtService::ObjectUpdate(spSpecCopyResult);
+	PrtService::SetSpecObjColor(spSpecCopyResult,3,iPointSym,0);
+
+	//创建点线模型中的线
+	double dstart = 0;
+	CATICkeParm_var spCkeParmStart = PrtService::LocalInstLitteral(&dstart, 1, "Length","Start");
+	CATICkeParm_var spCkeParmLength = PrtService::LocalInstLitteral(&iLength, 1, "Length","Length");
+	CATIGSMDirection_var spDirection = spGSMFac->CreateDirection(spIntersectLine);
+	CATISpecObject_var spResultLine = spGSMFac->CreateLine(spStartPoint,spDirection,spCkeParmStart,spCkeParmLength,CATGSMOrientation::CATGSMSameOrientation);
+	PrtService::CAAGsiInsertInProceduralView(spResultLine,spFstGSMTool);
+	PrtService::SetAlias(spResultLine,strFstType);
+	//计算夹层厚度
+	double dJstLength = 0;
+	CATIMeasurableLine_var spMeasLine = spIntersectLine;
+	spMeasLine->GetLength(dJstLength);
+	CATUnicodeString strdJstLength;
+	strdJstLength.BuildFromNum(dJstLength,"%lf");
+	//挂载夹层厚度参数
+	CATListValCATUnicodeString lststrParmName,lststrParmValue;
+	lststrParmName.Append("夹层厚度");
+	lststrParmValue.Append(strdJstLength);
+	//挂载更改时间参数
+	char str[20];
+	CHandleString::myGetTime(str);
+	lststrParmName.Append("更改时间");
+	lststrParmValue.Append(str);
+	PrtService::AddSpecObjParams(m_piDoc,spResultLine,lststrParmName,lststrParmValue);
+	//
+	PrtService::ObjectUpdate(spResultLine);
+	PrtService::SetSpecObjColor(spResultLine,8,iLineWidth,1);
+}
+
+
 //设置或者修改 紧固件描述 中的类型信息
 void PrtFstDesignCmd::SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool,CATUnicodeString strChooseFstType,double idCount, CATListValCATUnicodeString lststrJstTypeInfoName, CATListValCATUnicodeString lststrJstTypeInfoValue)
 {
@@ -1585,66 +1646,6 @@ void PrtFstDesignCmd::SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool
 			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
 		}
 	}	
-}
-
-
-//按照参数信息创建点线模型
-void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth)
-{
-	//
-	//获得文档指针
-	CATIPrtContainer *opiRootContainer = NULL;
-	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
-	//创建
-	CATISpecObject_var spFstGSMTool=NULL_var;
-	int oDiag = 0 ;
-	PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,strFstType,ispJointTypeGSMTool,spFstGSMTool,oDiag,0,0);
-	//
-	//创建连接线
-	CATIGSMFactory_var spGSMFac = NULL_var;
-	PrtService::GetGSMFactory(m_piDoc,spGSMFac);
-	CATISpecObject_var spIntersectLine = spGSMFac->CreateLine(ispPoint01,ispPoint02);
-	PrtService::SetAlias(spIntersectLine,"夹持线");
-	//
-	//创建点在连接线上
-	CATICkeParm_var spCkeParmDis = PrtService::LocalInstLitteral(&iDistance, 1, "Length","iDistance");
-	CATISpecObject_var spStartPoint = spGSMFac->CreatePoint(spIntersectLine,NULL_var,spCkeParmDis,CATGSMOrientation::CATGSMSameOrientation);
-	PrtService::SetAlias(spStartPoint,"顶点");
-	//拷贝链接顶点模型
-	CATISpecObject_var spSpecCopyResult=NULL_var;
-	PrtService::CopyFeatureToPartDocument(spSpecCopyResult,spStartPoint,spFstGSMTool,NULL,NULL, TRUE,3);
-	//设置颜色及类型
-	PrtService::SetAlias(spSpecCopyResult,"顶点");
-	PrtService::ObjectUpdate(spSpecCopyResult);
-	PrtService::SetSpecObjColor(spSpecCopyResult,3,iPointSym,0);
-
-	//创建点线模型中的线
-	double dstart = 0;
-	CATICkeParm_var spCkeParmStart = PrtService::LocalInstLitteral(&dstart, 1, "Length","Start");
-	CATICkeParm_var spCkeParmLength = PrtService::LocalInstLitteral(&iLength, 1, "Length","Length");
-	CATIGSMDirection_var spDirection = spGSMFac->CreateDirection(spIntersectLine);
-	CATISpecObject_var spResultLine = spGSMFac->CreateLine(spStartPoint,spDirection,spCkeParmStart,spCkeParmLength,CATGSMOrientation::CATGSMSameOrientation);
-	PrtService::CAAGsiInsertInProceduralView(spResultLine,spFstGSMTool);
-	PrtService::SetAlias(spResultLine,strFstType);
-	//计算夹层厚度
-	double dJstLength = 0;
-	CATIMeasurableLine_var spMeasLine = spIntersectLine;
-	spMeasLine->GetLength(dJstLength);
-	CATUnicodeString strdJstLength;
-	strdJstLength.BuildFromNum(dJstLength,"%lf");
-	//挂载夹层厚度参数
-	CATListValCATUnicodeString lststrParmName,lststrParmValue;
-	lststrParmName.Append("夹层厚度");
-	lststrParmValue.Append(strdJstLength);
-	//挂载更改时间参数
-	char str[20];
-	CHandleString::myGetTime(str);
-	lststrParmName.Append("更改时间");
-	lststrParmValue.Append(str);
-	PrtService::AddSpecObjParams(m_piDoc,spResultLine,lststrParmName,lststrParmValue);
-	//
-	PrtService::ObjectUpdate(spResultLine);
-	PrtService::SetSpecObjColor(spResultLine,8,iLineWidth,1);
 }
 
 //获取放置点线模型的零件几何图形集
