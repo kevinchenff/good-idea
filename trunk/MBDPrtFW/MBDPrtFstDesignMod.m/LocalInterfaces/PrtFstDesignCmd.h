@@ -102,7 +102,7 @@ class PrtFstDesignCmd: public CATStateCommand
   void GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName);
   //按照参数信息创建点线模型
   void CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth,
-								CATListValCATUnicodeString ilststrCircleNames,CATListValCATUnicodeString ilststrCirclePositions,CATListOfDouble ilstCircleValues);
+								CATListValCATUnicodeString ilststrCircleNames,CATListValCATUnicodeString ilststrCirclePositions,CATListOfDouble ilstCircleValues,CATListOfDouble ilstCircleThicks);
   //计算安装方向及夹持厚度，为紧固件选择提供依据
   void CalculateJoinThickInTop(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints);
   //转变OK APPLY按钮的显示状态
