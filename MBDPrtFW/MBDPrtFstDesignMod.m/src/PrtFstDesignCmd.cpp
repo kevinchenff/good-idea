@@ -19,6 +19,7 @@
 #include "CATSurface.h"
 #include "CATTopLineOperator.h"
 #include "CATIMeasurableLine.h"
+#include "CATIGSMCircleCenterAxis.h"
 
 
 #include "CATCreateExternalObject.h"
@@ -1297,6 +1298,19 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 	CATListValCATUnicodeString lststrJstTypeInfoName,lststrJstTypeInfoValue;
 	lststrJstTypeInfoName.Append("名称");
 	lststrJstTypeInfoValue.Append("90°沉头铆钉");
+	//测试输入条件
+	double iDistance=0,iLength=8.8, iLineWidth=3 ,iPointSym=7;
+	//测试输入条件
+	CATListValCATUnicodeString ilststrCircleNames,ilststrCirclePositions;
+	CATListOfDouble ilstCircleValues,ilstCircleThicks;
+	ilststrCircleNames.Append("NAS1252-10H");
+	ilststrCircleNames.Append("MS21042-3");
+	ilststrCirclePositions.Append("END");
+	ilststrCirclePositions.Append("END");
+	ilstCircleValues.Append(2.381);
+	ilstCircleValues.Append(2.381);
+	ilstCircleThicks.Append(1.6);
+	ilstCircleThicks.Append(1.6);
 
 	//---------------------------------------------
 	//1 合并选择的第一第二曲面片
@@ -1485,14 +1499,19 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 				//计数创建成功的点线模型数量
 				dCountResult++;
 				//调用函数，按照参数信息创建点线模型
-				double iDistance=0,iLength=4.8, iLineWidth=3 ,iPointSym=7;
-				CreateFstLinesAndCircles(spIntersect01,spIntersect02,spFstTypeGSMTool,strChooseFstType,iDistance,iLength,iPointSym,iLineWidth);
+				CreateFstLinesAndCircles(spIntersect01,spIntersect02,spFstTypeGSMTool,strChooseFstType,iDistance,iLength,iPointSym,iLineWidth,
+										ilststrCircleNames,ilststrCirclePositions,ilstCircleValues,ilstCircleThicks);
 			}
 		}
 	}
 
-	//设置计数及紧固件信息属性
+	//设置主紧固件计数及信息属性
 	SetOrChangeJstTypeInfo(iospJointGSMTool,strChooseFstType,dCountResult, lststrJstTypeInfoName, lststrJstTypeInfoValue);
+	//设置垫圈螺母计数及信息属性
+	for (int i=1; i <= ilststrCircleNames.Size(); i++)
+	{
+		SetOrChangeJstTypeInfo(iospJointGSMTool,ilststrCircleNames[i],dCountResult, lststrJstTypeInfoName, lststrJstTypeInfoValue);
+	}
 
 	//提示信息
 	if (flagwarning == TRUE)
@@ -1506,7 +1525,7 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 
 //按照参数信息创建点线模型
 void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth,
-											   CATListValCATUnicodeString ilststrCircleNames,CATListValCATUnicodeString ilststrCirclePositions,CATListOfDouble ilstCircleValues)
+											   CATListValCATUnicodeString ilststrCircleNames,CATListValCATUnicodeString ilststrCirclePositions,CATListOfDouble ilstCircleValues,CATListOfDouble ilstCircleThicks)
 {
 	//
 	//获得文档指针
@@ -1548,7 +1567,7 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 	CATIMeasurableLine_var spMeasLine = spIntersectLine;
 	spMeasLine->GetLength(dJstLength);
 	CATUnicodeString strdJstLength;
-	strdJstLength.BuildFromNum(dJstLength,"%lf");
+	strdJstLength.BuildFromNum(dJstLength);
 	//挂载夹层厚度参数
 	CATListValCATUnicodeString lststrParmName,lststrParmValue;
 	lststrParmName.Append("夹层厚度");
@@ -1562,6 +1581,65 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 	//
 	PrtService::ObjectUpdate(spResultLine);
 	PrtService::SetSpecObjColor(spResultLine,8,iLineWidth,1);
+
+	//根据输入条件确定是否创建圈信息
+	//定义两个变量，叠加厚度信息
+	double dStartThick=0,dEndThick=0;
+	//
+	for (int i=1; i<=ilststrCircleNames.Size(); i++)
+	{
+		//
+		//挂载夹层厚度参数
+		lststrParmName.RemoveAll();
+		lststrParmValue.RemoveAll();
+		lststrParmName.Append("更改时间");
+		lststrParmValue.Append(str);
+		CATUnicodeString strdCirlceThick;
+		strdCirlceThick.BuildFromNum(ilstCircleThicks[i]);
+		lststrParmName.Append("厚度值");
+		lststrParmValue.Append(strdCirlceThick);
+		//
+		if (ilststrCirclePositions[i] == "START")
+		{
+			//创建位置点,圈
+			CATICkeParm_var  iDistance = PrtService::LocalInstLitteral(&dStartThick, 1, "Length","iDistance");
+			CATISpecObject_var spPosPoint = spGSMFac->CreatePoint(spResultLine,ispPoint01,iDistance,CATGSMOrientation::CATGSMSameOrientation);
+			PrtService::SetAlias(spPosPoint,"安装位置点");
+			CATICkeParm_var  idCircleValue = PrtService::LocalInstLitteral(&(ilstCircleValues[i]), 1, "Length","半径");
+			CATISpecObject_var spCircle = spGSMFac->CreateCircle(spResultLine,spPosPoint,idCircleValue,FALSE);
+			//挂载，改名
+			PrtService::CAAGsiInsertInProceduralView(spCircle,spFstGSMTool);
+			PrtService::SetAlias(spCircle,ilststrCircleNames[i]);
+			PrtService::AddSpecObjParams(m_piDoc,spCircle,lststrParmName,lststrParmValue);
+			PrtService::ObjectUpdate(spCircle);
+			//最后叠加，让下个位置值发生变化
+			dStartThick -= ilstCircleThicks[i];
+			//更改顶头安装点上移位置值
+			spCkeParmDis->Valuate(dStartThick/1000.0);
+			CATIGSMPointOnCurve_var spGSMPointOnCurve = spStartPoint;
+			spGSMPointOnCurve->SetLength(spCkeParmDis);
+			//更新
+			PrtService::ObjectUpdate(spFstGSMTool);
+		}
+		else if (ilststrCirclePositions[i] == "END")
+		{
+			//创建位置点,圈
+			CATICkeParm_var  iDistance = PrtService::LocalInstLitteral(&dEndThick, 1, "Length","iDistance");
+			CATISpecObject_var spPosPoint = spGSMFac->CreatePoint(spResultLine,ispPoint02,iDistance,CATGSMOrientation::CATGSMSameOrientation);
+			PrtService::SetAlias(spPosPoint,"安装位置点");
+			CATICkeParm_var  idCircleValue = PrtService::LocalInstLitteral(&(ilstCircleValues[i]), 1, "Length","半径");
+			CATISpecObject_var spCircle = spGSMFac->CreateCircle(spResultLine,spPosPoint,idCircleValue,FALSE);
+			//挂载，改名
+			PrtService::CAAGsiInsertInProceduralView(spCircle,spFstGSMTool);
+			PrtService::SetAlias(spCircle,ilststrCircleNames[i]);
+			PrtService::AddSpecObjParams(m_piDoc,spCircle,lststrParmName,lststrParmValue);
+			PrtService::ObjectUpdate(spCircle);
+			//最后叠加，让下个位置值发生变化
+			dEndThick += ilstCircleThicks[i];
+			//更新
+			PrtService::ObjectUpdate(spFstGSMTool);
+		}
+	}
 }
 
 
