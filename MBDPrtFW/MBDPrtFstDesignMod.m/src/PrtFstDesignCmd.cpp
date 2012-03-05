@@ -174,7 +174,12 @@ void PrtFstDesignCmd::BuildGraph()
 		m_pDlg->_DirectionPB->GetPushBActivateNotification(),
 		(CATCommandMethod)&PrtFstDesignCmd::ReverseDirCB,
 		NULL);
-
+	//选择紧固件类型，调用DLL
+	AddAnalyseNotificationCB (m_pDlg->_ChooseFstPB, 
+		m_pDlg->_ChooseFstPB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::ChooseFstCB,
+		NULL);
+	
 	//创建安装点代理
 	m_piPointsAgt = new CATFeatureImportAgent("选择安装点");
 	m_piPointsAgt->SetBehavior( CATDlgEngWithPSOHSO | CATDlgEngWithPrevaluation | CATDlgEngMultiAcquisitionUserCtrl | CATDlgEngRepeat);
@@ -1994,4 +1999,54 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 
 	// Releases the configuration
 	pConfig->Release();
+}
+
+//选择紧固件类型
+void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	HINSTANCE hDll= NULL;//DLL句柄 	
+	typedef void (*lpFun)(std::string&,std::string&,float&); 
+	hDll = LoadLibrary(_T("MaterialSelection.dll"));
+	if(NULL == hDll)
+	{
+		LPVOID lpMsgBuf;
+		FormatMessage( 
+			FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+			FORMAT_MESSAGE_FROM_SYSTEM | 
+			FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL,
+			GetLastError(),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+			(LPTSTR) &lpMsgBuf,
+			0,
+			NULL 
+			);
+
+		LocalFree( lpMsgBuf );
+		return;
+	}
+
+	if (NULL!=hDll)
+	{
+		lpFun pShowDlg = (lpFun)GetProcAddress(hDll,"ShowMaterialSelectionDlg");
+		if (NULL==pShowDlg)
+		{
+			PrtService::ShowDlgNotify("错误提示！","选择紧固件类型DLL中函数寻找失败");
+		}
+
+		float thickness=0;
+		std::string pFilePath;
+		std::string pFileName;
+		pShowDlg(pFilePath,pFileName,thickness);
+
+		const char *p1=pFilePath.data();
+		const char *p2= pFileName.data();
+
+		/*m_materialFilePath = p1;
+		m_materialFileName = p2;
+		m_RaFMShellThickness = (double)thickness;*/
+		::FreeLibrary(hDll);
+
+	}
 }
