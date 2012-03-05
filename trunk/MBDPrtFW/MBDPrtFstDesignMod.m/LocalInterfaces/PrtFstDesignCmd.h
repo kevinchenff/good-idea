@@ -87,7 +87,9 @@ class PrtFstDesignCmd: public CATStateCommand
   //删除所有点
   void DeleteAllPointsCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //反向安装方向
-  void ReverseDirCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  void ReverseDirCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data); 
+  //选择紧固件类型
+  void ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data); 
   //在IOS中显示标记点
   void ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
   //判断一个曲面特征是否在另一个数组中
