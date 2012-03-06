@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FstKnowledgeBasedDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FstTypeMainDlg.cpp"
 				>
 			</File>
@@ -236,6 +240,10 @@
 			</File>
 			<File
 				RelativePath=".\ClxDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FstKnowledgeBasedDlg.h"
 				>
 			</File>
 			<File

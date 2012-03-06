@@ -5,6 +5,8 @@
 #include "Resource.h"
 #include "afxwin.h"
 #include "ClxDialog.h"
+#include "FstKnowledgeBasedDlg.h"
+
 
 // FstTypeMainDlg dialog
 
@@ -29,8 +31,14 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnSize(UINT nType, int cx, int cy);
 	// 定义选择结果列表
 	CListCtrl m_listCtrl;
+public:
+	afx_msg void OnBnClickedChoosefstpb();
+public:
+	CButton m_BackDataBaseCheck;
+	CButton m_KnowRadio, m_FreeRadio;
+	FstKnowledgeBasedDlg m_pKnowDlg;
+public:
+	afx_msg void OnBnClickedOk();
 };

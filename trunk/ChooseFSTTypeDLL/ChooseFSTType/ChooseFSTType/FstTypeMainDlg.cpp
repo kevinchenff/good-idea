@@ -7,6 +7,7 @@
 #include "afxdlgs.h"
 #include <afx.h>
 
+
 // FstTypeMainDlg dialog
 
 IMPLEMENT_DYNAMIC(FstTypeMainDlg, CDialog)
@@ -25,13 +26,17 @@ void FstTypeMainDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LISTJstResult, m_listCtrl);
+	DDX_Control(pDX, IDC_SaveBackKnowCHECK, m_BackDataBaseCheck);
+	DDX_Control(pDX, IDC_KnowledgeRADIO, m_KnowRadio);
+	DDX_Control(pDX, IDC_FreeRADIO, m_FreeRadio);
 }
 
 
 BEGIN_MESSAGE_MAP(FstTypeMainDlg, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
-	ON_WM_SIZE()
+	ON_BN_CLICKED(IDC_ChooseFstPB, &FstTypeMainDlg::OnBnClickedChoosefstpb)
+	ON_BN_CLICKED(IDOK, &FstTypeMainDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
 // FstTypeMainDlg message handlers
@@ -127,12 +132,29 @@ CString  FstTypeMainDlg::GetEXEPath()
 	int    nPos;   
 	nPos=sPath.ReverseFind('\\');   
 	sPath=sPath.Left(nPos);   
-	return    sPath;   
+	return    sPath; 
 }
 
-void FstTypeMainDlg::OnSize(UINT nType, int cx, int cy)
+
+void FstTypeMainDlg::OnBnClickedChoosefstpb()
 {
-	ClxDialog::OnSize(nType, cx, cy);
+	// TODO: Add your control notification handler code here
+	// 开始选择紧固件按钮响应，首先提示选择类型
+	if (m_KnowRadio.GetCheck())
+	{
+		m_pKnowDlg.DoModal();
+	}
+	else if (m_FreeRadio.GetCheck())
+	{
+		//显示自由选择模式
+	}
+	else
+	{
+		//给予提示信息
+		MessageBox(_T("请选择紧固件选择方式！"),_T("错误提示"));
+	}
 }
-
-
+void FstTypeMainDlg::OnBnClickedOk()
+{
+	// TODO: Add your control notification handler code here
+}
