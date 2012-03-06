@@ -1,0 +1,6 @@
+; ChooseFSTType.def : Declares the module parameters for the DLL.
+
+LIBRARY      "ChooseFSTType"
+
+EXPORTS
+    ; Explicit exports can go here
