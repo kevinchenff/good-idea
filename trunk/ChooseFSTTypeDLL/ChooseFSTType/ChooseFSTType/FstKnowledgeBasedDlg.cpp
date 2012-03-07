@@ -29,6 +29,8 @@ void FstKnowledgeBasedDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(FstKnowledgeBasedDlg, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_UpStepPB, &FstKnowledgeBasedDlg::OnBnClickedUpsteppb)
+	ON_BN_CLICKED(IDC_DownStepPB, &FstKnowledgeBasedDlg::OnBnClickedDownsteppb)
 END_MESSAGE_MAP()
 
 
@@ -99,4 +101,18 @@ void FstKnowledgeBasedDlg::OnPaint()
 
 	CBitmap *pbmpOld=dcMem.SelectObject(&m_bitmap);  
 	dc.StretchBlt(0,(rect1.Height()-bitMap.bmHeight),bitMap.bmWidth,bitMap.bmHeight,&dcMem,0,0,bitMap.bmWidth,bitMap.bmHeight,SRCCOPY); 
+}
+
+void FstKnowledgeBasedDlg::OnBnClickedUpsteppb()
+{
+	// TODO: Add your control notification handler code here
+	//关闭该对话框
+	this->OnOK();
+}
+
+void FstKnowledgeBasedDlg::OnBnClickedDownsteppb()
+{
+	// TODO: Add your control notification handler code here
+	//传入必要参数，并关闭对话框
+	this->OnOK();
 }

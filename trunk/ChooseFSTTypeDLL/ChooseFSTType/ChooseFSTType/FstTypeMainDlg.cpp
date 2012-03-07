@@ -151,10 +151,11 @@ void FstTypeMainDlg::OnBnClickedChoosefstpb()
 	else
 	{
 		//给予提示信息
-		MessageBox(_T("请选择紧固件选择方式！"),_T("错误提示"));
+		MessageBox(_T("请选择紧固件选择方式！"),_T("错误提示"),MB_ICONWARNING|MB_OK);
 	}
 }
 void FstTypeMainDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
+	this->OnOK();
 }
