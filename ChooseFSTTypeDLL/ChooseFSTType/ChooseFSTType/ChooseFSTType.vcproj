@@ -205,6 +205,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FstKnowMainFstDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FstKnowNutFstDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FstTypeMainDlg.cpp"
 				>
 			</File>
@@ -244,6 +252,14 @@
 			</File>
 			<File
 				RelativePath=".\FstKnowledgeBasedDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FstKnowMainFstDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FstKnowNutFstDlg.h"
 				>
 			</File>
 			<File

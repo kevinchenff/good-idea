@@ -6,6 +6,7 @@
 #include "afxwin.h"
 #include "ClxDialog.h"
 #include "FstKnowledgeBasedDlg.h"
+#include "FstKnowMainFstDlg.h"
 
 
 // FstTypeMainDlg dialog
@@ -26,8 +27,6 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	DECLARE_MESSAGE_MAP()
-	// 定义选择结果列表
-	CListCtrl m_listCtrl;
 
 public:
 	//定义刷屏颜色变量
@@ -38,8 +37,9 @@ public:
 	CString  GetEXEPath();//得到当前exe路径
 
 public:
+	// 定义选择结果列表
+	CListCtrl m_listCtrl;
 	CButton m_BackDataBaseCheck;
 	CButton m_KnowRadio, m_FreeRadio;
 	FstKnowledgeBasedDlg m_pKnowDlg;
-	
 };
