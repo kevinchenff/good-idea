@@ -1,4 +1,7 @@
 #pragma once
+#include "afxwin.h"
+#include "FstKnowMainFstDlg.h"
+
 
 
 // FstKnowledgeBasedDlg dialog
@@ -24,6 +27,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedUpsteppb();
-public:
 	afx_msg void OnBnClickedDownsteppb();
+
+public:
+	CEdit m_SearchInfo;
+	FstKnowMainFstDlg* m_piKnowMainFstDlg;
 };

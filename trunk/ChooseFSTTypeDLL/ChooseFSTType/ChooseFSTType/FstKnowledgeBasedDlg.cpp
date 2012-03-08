@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "ChooseFSTType.h"
 #include "FstKnowledgeBasedDlg.h"
+#include "FstKnowMainFstDlg.h"
+
 
 
 // FstKnowledgeBasedDlg dialog
@@ -11,18 +13,23 @@
 IMPLEMENT_DYNAMIC(FstKnowledgeBasedDlg, CDialog)
 
 FstKnowledgeBasedDlg::FstKnowledgeBasedDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(FstKnowledgeBasedDlg::IDD, pParent)
+	: CDialog(FstKnowledgeBasedDlg::IDD, pParent),m_piKnowMainFstDlg(NULL)
 {
 
 }
 
 FstKnowledgeBasedDlg::~FstKnowledgeBasedDlg()
 {
+	if (m_piKnowMainFstDlg != NULL)
+	{
+		m_piKnowMainFstDlg->DestroyWindow();
+	}
 }
 
 void FstKnowledgeBasedDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_MainFstNameEDIT, m_SearchInfo);
 }
 
 
@@ -108,11 +115,16 @@ void FstKnowledgeBasedDlg::OnBnClickedUpsteppb()
 	// TODO: Add your control notification handler code here
 	//关闭该对话框
 	this->OnOK();
+	
 }
 
 void FstKnowledgeBasedDlg::OnBnClickedDownsteppb()
 {
 	// TODO: Add your control notification handler code here
 	//传入必要参数，并关闭对话框
-	this->OnOK();
+	m_piKnowMainFstDlg = new FstKnowMainFstDlg(this);
+	m_piKnowMainFstDlg->Create(IDD_KnowMainFstDlg,this);
+	m_piKnowMainFstDlg->ShowWindow(SW_SHOW);
+	//
+	this->ShowWindow(SW_HIDE);
 }
