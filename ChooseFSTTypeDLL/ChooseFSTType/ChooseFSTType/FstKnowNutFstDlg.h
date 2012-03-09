@@ -1,5 +1,8 @@
 #pragma once
 
+#include "FstKnowMainFstLengthDlg.h"
+#include "FstKnowMainFstDlg.h"
+class FstKnowMainFstDlg;
 
 // FstKnowNutFstDlg dialog
 
@@ -25,7 +28,10 @@ public:
 
 public:
 	afx_msg void OnBnClickedUpnutfststeppb();
-	CWnd* m_piKnowMainFstDlg;
-public:
 	afx_msg void OnBnClickedDownnutfststeppb();
+	afx_msg void OnBnClickedCancel();
+
+	//
+	FstKnowMainFstDlg* m_piKnowMainFstDlg;
+	FstKnowMainFstLengthDlg* m_piKnowMainFstLengthDlg;
 };

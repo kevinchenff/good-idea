@@ -1,8 +1,9 @@
 #pragma once
 #include "afxcmn.h"
 #include "FstKnowNutFstDlg.h"
+#include "FstKnowledgeBasedDlg.h"
 
-
+class FstKnowledgeBasedDlg;
 // FstKnowMainFstDlg dialog
 
 class FstKnowMainFstDlg : public CDialog
@@ -29,7 +30,7 @@ public:
 
 	//
 public:
-	CWnd* m_piKnowledgeBaseddlg;
+	FstKnowledgeBasedDlg* m_piKnowledgeBaseddlg;
 	CListCtrl m_ResultList;
 	FstKnowNutFstDlg* m_piKnowNutFstDlg;
 };

@@ -41,5 +41,5 @@ public:
 	CListCtrl m_listCtrl;
 	CButton m_BackDataBaseCheck;
 	CButton m_KnowRadio, m_FreeRadio;
-	FstKnowledgeBasedDlg m_pKnowDlg;
+	FstKnowledgeBasedDlg* m_piKnowDlg;
 };

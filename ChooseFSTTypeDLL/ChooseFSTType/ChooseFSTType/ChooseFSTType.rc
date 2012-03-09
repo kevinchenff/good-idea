@@ -158,6 +158,19 @@ BEGIN
     CONTROL         "",IDC_NutFstLIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,7,17,403,170,WS_EX_CLIENTEDGE
 END
 
+IDD_KnowMainFstLengthDlg DIALOGEX 0, 0, 478, 322
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "选择主紧固件长度规格"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "取消",IDCANCEL,421,300,50,14
+    GROUPBOX        "Static",IDC_STATIC,7,7,464,53
+    GROUPBOX        "Static",IDC_STATIC,7,71,464,76
+    GROUPBOX        "Static",IDC_STATIC,7,162,464,125
+    PUSHBUTTON      "上一步",IDC_UpMainFstLengthStepPB,297,300,50,14
+    PUSHBUTTON      "下一步",IDC_DownMainFstLengthStepPB,357,300,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -197,6 +210,14 @@ BEGIN
         RIGHTMARGIN, 410
         TOPMARGIN, 7
         BOTTOMMARGIN, 218
+    END
+
+    IDD_KnowMainFstLengthDlg, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 471
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 314
     END
 END
 #endif    // APSTUDIO_INVOKED

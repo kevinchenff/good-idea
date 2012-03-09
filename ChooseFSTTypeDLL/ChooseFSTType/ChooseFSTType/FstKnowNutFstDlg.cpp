@@ -4,7 +4,8 @@
 #include "stdafx.h"
 #include "ChooseFSTType.h"
 #include "FstKnowNutFstDlg.h"
-#include "FstKnowMainFstDlg.h"
+#include "FstKnowMainFstLengthDlg.h"
+
 
 
 
@@ -13,13 +14,17 @@
 IMPLEMENT_DYNAMIC(FstKnowNutFstDlg, CDialog)
 
 FstKnowNutFstDlg::FstKnowNutFstDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(FstKnowNutFstDlg::IDD, pParent)
+	: CDialog(FstKnowNutFstDlg::IDD, pParent),m_piKnowMainFstLengthDlg(NULL)
 {
-	m_piKnowMainFstDlg = pParent;
+	m_piKnowMainFstDlg = (FstKnowMainFstDlg*)pParent;
 }
 
 FstKnowNutFstDlg::~FstKnowNutFstDlg()
 {
+	if (m_piKnowMainFstLengthDlg != NULL)
+	{
+		m_piKnowMainFstLengthDlg->DestroyWindow();
+	}
 }
 
 void FstKnowNutFstDlg::DoDataExchange(CDataExchange* pDX)
@@ -33,6 +38,7 @@ BEGIN_MESSAGE_MAP(FstKnowNutFstDlg, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_UpNutFstStepPB, &FstKnowNutFstDlg::OnBnClickedUpnutfststeppb)
 	ON_BN_CLICKED(IDC_DownNutFstStepPB, &FstKnowNutFstDlg::OnBnClickedDownnutfststeppb)
+	ON_BN_CLICKED(IDCANCEL, &FstKnowNutFstDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -117,7 +123,19 @@ void FstKnowNutFstDlg::OnBnClickedDownnutfststeppb()
 {
 	// TODO: Add your control notification handler code here
 	//根据所选主紧固件类型及参数情况，判断是否需要添加垫圈
+	MessageBox(_T("需要添加调节垫圈，使紧固件满足安装要求！"),_T("提示"),MB_ICONINFORMATION|MB_OK);
 
-	MessageBox(_T("请选择紧固件选择方式！"),_T("提示"),MB_ICONWARNING|MB_OK);
-	
+	m_piKnowMainFstLengthDlg = new FstKnowMainFstLengthDlg(this);
+	m_piKnowMainFstLengthDlg->Create(IDD_KnowMainFstLengthDlg,this);
+	m_piKnowMainFstLengthDlg->CenterWindow();
+	m_piKnowMainFstLengthDlg->ShowWindow(SW_SHOW);
+	//
+	this->ShowWindow(SW_HIDE);
+}
+
+void FstKnowNutFstDlg::OnBnClickedCancel()
+{
+	// TODO: Add your control notification handler code here
+	m_piKnowMainFstDlg->ShowWindow(SW_SHOW);
+	OnCancel();
 }

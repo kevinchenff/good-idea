@@ -13,13 +13,17 @@
 IMPLEMENT_DYNAMIC(FstTypeMainDlg, CDialog)
 
 FstTypeMainDlg::FstTypeMainDlg(CWnd* pParent /*=NULL*/)
-	:ClxDialog(FstTypeMainDlg::IDD, pParent)
+	:ClxDialog(FstTypeMainDlg::IDD, pParent),m_piKnowDlg(NULL)
 {
 
 }
 
 FstTypeMainDlg::~FstTypeMainDlg()
 {
+	if (m_piKnowDlg != NULL)
+	{
+		m_piKnowDlg->DestroyWindow();
+	}
 }
 
 void FstTypeMainDlg::DoDataExchange(CDataExchange* pDX)
@@ -142,7 +146,12 @@ void FstTypeMainDlg::OnBnClickedChoosefstpb()
 	// 开始选择紧固件按钮响应，首先提示选择类型
 	if (m_KnowRadio.GetCheck())
 	{
-		m_pKnowDlg.DoModal();
+		m_piKnowDlg = new FstKnowledgeBasedDlg(this);
+		m_piKnowDlg->Create(IDD_KnowledgeChooseDlg,this);
+		m_piKnowDlg->CenterWindow();
+		m_piKnowDlg->ShowWindow(SW_SHOW);
+		//
+		this->ShowWindow(SW_HIDE);
 	}
 	else if (m_FreeRadio.GetCheck())
 	{

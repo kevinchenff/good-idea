@@ -5,7 +5,7 @@
 #include "ChooseFSTType.h"
 #include "FstKnowledgeBasedDlg.h"
 #include "FstKnowMainFstDlg.h"
-
+#include "FstTypeMainDlg.h"
 
 
 // FstKnowledgeBasedDlg dialog
@@ -15,7 +15,7 @@ IMPLEMENT_DYNAMIC(FstKnowledgeBasedDlg, CDialog)
 FstKnowledgeBasedDlg::FstKnowledgeBasedDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(FstKnowledgeBasedDlg::IDD, pParent),m_piKnowMainFstDlg(NULL)
 {
-
+	m_piFstTypeMainDlg = (FstTypeMainDlg*)pParent;
 }
 
 FstKnowledgeBasedDlg::~FstKnowledgeBasedDlg()
@@ -114,8 +114,8 @@ void FstKnowledgeBasedDlg::OnBnClickedUpsteppb()
 {
 	// TODO: Add your control notification handler code here
 	//关闭该对话框
-	this->OnOK();
-	
+	m_piFstTypeMainDlg->ShowWindow(SW_SHOW);
+	DestroyWindow();	
 }
 
 void FstKnowledgeBasedDlg::OnBnClickedDownsteppb()
@@ -124,6 +124,7 @@ void FstKnowledgeBasedDlg::OnBnClickedDownsteppb()
 	//传入必要参数，并关闭对话框
 	m_piKnowMainFstDlg = new FstKnowMainFstDlg(this);
 	m_piKnowMainFstDlg->Create(IDD_KnowMainFstDlg,this);
+	m_piKnowMainFstDlg->CenterWindow();
 	m_piKnowMainFstDlg->ShowWindow(SW_SHOW);
 	//
 	this->ShowWindow(SW_HIDE);
