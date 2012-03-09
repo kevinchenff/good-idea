@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "ChooseFSTType.h"
 #include "FstKnowMainFstDlg.h"
-#include "FstKnowledgeBasedDlg.h"
 
 
 // FstKnowMainFstDlg dialog
@@ -14,7 +13,7 @@ IMPLEMENT_DYNAMIC(FstKnowMainFstDlg, CDialog)
 FstKnowMainFstDlg::FstKnowMainFstDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(FstKnowMainFstDlg::IDD, pParent),m_piKnowNutFstDlg(NULL)
 {
-	m_piKnowledgeBaseddlg = pParent;
+	m_piKnowledgeBaseddlg = (FstKnowledgeBasedDlg*)pParent;
 }
 
 FstKnowMainFstDlg::~FstKnowMainFstDlg()
@@ -114,16 +113,16 @@ HBRUSH FstKnowMainFstDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void FstKnowMainFstDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
-	((FstKnowledgeBasedDlg*)m_piKnowledgeBaseddlg)->m_SearchInfo.SetReadOnly();
-	((FstKnowledgeBasedDlg*)m_piKnowledgeBaseddlg)->ShowWindow(SW_SHOW);
+	m_piKnowledgeBaseddlg->m_SearchInfo.SetReadOnly();
+	m_piKnowledgeBaseddlg->ShowWindow(SW_SHOW);
 	OnCancel();
 }
 
 void FstKnowMainFstDlg::OnBnClickedUpsteppb()
 {
 	// TODO: Add your control notification handler code here
-	((FstKnowledgeBasedDlg*)m_piKnowledgeBaseddlg)->m_SearchInfo.SetReadOnly();
-	((FstKnowledgeBasedDlg*)m_piKnowledgeBaseddlg)->ShowWindow(SW_SHOW);
+	m_piKnowledgeBaseddlg->m_SearchInfo.SetReadOnly();
+	m_piKnowledgeBaseddlg->ShowWindow(SW_SHOW);
 	OnCancel();
 }
 void FstKnowMainFstDlg::OnBnClickedDownmainfststeppb()
@@ -131,6 +130,7 @@ void FstKnowMainFstDlg::OnBnClickedDownmainfststeppb()
 	// TODO: Add your control notification handler code here
 	m_piKnowNutFstDlg = new FstKnowNutFstDlg(this);
 	m_piKnowNutFstDlg->Create(IDD_KnowNutFstDlg,this);
+	m_piKnowNutFstDlg->CenterWindow();
 	m_piKnowNutFstDlg->ShowWindow(SW_SHOW);
 	//
 	this->ShowWindow(SW_HIDE);

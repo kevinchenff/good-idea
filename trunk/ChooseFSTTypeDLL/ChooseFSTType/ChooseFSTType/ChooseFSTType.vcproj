@@ -209,6 +209,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FstKnowMainFstLengthDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FstKnowNutFstDlg.cpp"
 				>
 			</File>
@@ -256,6 +260,10 @@
 			</File>
 			<File
 				RelativePath=".\FstKnowMainFstDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FstKnowMainFstLengthDlg.h"
 				>
 			</File>
 			<File
