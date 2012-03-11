@@ -13,6 +13,7 @@ class FstKnowMainFstDlg : public CDialog
 public:
 	FstKnowMainFstDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~FstKnowMainFstDlg();
+	virtual BOOL OnInitDialog();
 
 // Dialog Data
 	enum { IDD = IDD_KnowMainFstDlg };
@@ -31,6 +32,7 @@ public:
 	//
 public:
 	FstKnowledgeBasedDlg* m_piKnowledgeBaseddlg;
-	CListCtrl m_ResultList;
 	FstKnowNutFstDlg* m_piKnowNutFstDlg;
+	CListCtrl m_ResultList;
 };
+

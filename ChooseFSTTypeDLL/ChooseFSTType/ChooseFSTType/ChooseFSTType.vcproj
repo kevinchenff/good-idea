@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FstKnowGasketFstDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FstKnowledgeBasedDlg.cpp"
 				>
 			</File>
@@ -252,6 +256,10 @@
 			</File>
 			<File
 				RelativePath=".\ClxDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FstKnowGasketFstDlg.h"
 				>
 			</File>
 			<File

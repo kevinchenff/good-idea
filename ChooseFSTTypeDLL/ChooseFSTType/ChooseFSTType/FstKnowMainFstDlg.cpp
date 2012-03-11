@@ -3,8 +3,13 @@
 
 #include "stdafx.h"
 #include "ChooseFSTType.h"
+//头文件
+#include "FstKnowMainFstLengthDlg.h"
 #include "FstKnowMainFstDlg.h"
-
+#include "FstTypeMainDlg.h"
+#include "FstKnowGasketFstDlg.h"
+#include "FstKnowNutFstDlg.h"
+#include "FstKnowledgeBasedDlg.h"
 
 // FstKnowMainFstDlg dialog
 
@@ -113,16 +118,16 @@ HBRUSH FstKnowMainFstDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void FstKnowMainFstDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
-	m_piKnowledgeBaseddlg->m_SearchInfo.SetReadOnly();
-	m_piKnowledgeBaseddlg->ShowWindow(SW_SHOW);
-	OnCancel();
+	m_piKnowledgeBaseddlg->DestroyWindow();
+	m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->ShowWindow(SW_SHOW);
+	m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->CenterWindow();
 }
 
 void FstKnowMainFstDlg::OnBnClickedUpsteppb()
 {
 	// TODO: Add your control notification handler code here
-	m_piKnowledgeBaseddlg->m_SearchInfo.SetReadOnly();
 	m_piKnowledgeBaseddlg->ShowWindow(SW_SHOW);
+	m_piKnowledgeBaseddlg->CenterWindow();
 	OnCancel();
 }
 void FstKnowMainFstDlg::OnBnClickedDownmainfststeppb()
@@ -134,4 +139,20 @@ void FstKnowMainFstDlg::OnBnClickedDownmainfststeppb()
 	m_piKnowNutFstDlg->ShowWindow(SW_SHOW);
 	//
 	this->ShowWindow(SW_HIDE);
+}
+
+BOOL FstKnowMainFstDlg::OnInitDialog()
+{
+
+	CDialog::OnInitDialog();
+	//
+	m_ResultList.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
+	m_ResultList.InsertColumn(0,_T("序号"),LVCFMT_LEFT,50);
+	m_ResultList.InsertColumn(1,_T("标准号"),LVCFMT_LEFT,120);
+	m_ResultList.InsertColumn(2,_T("名称"),LVCFMT_LEFT,150);
+	m_ResultList.InsertColumn(3,_T("类型"),LVCFMT_LEFT,100);
+	m_ResultList.InsertColumn(4,_T("公称直径"),LVCFMT_LEFT,100);
+	//
+	return TRUE;
+
 }

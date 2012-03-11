@@ -38,7 +38,7 @@ public:
 
 public:
 	// 定义选择结果列表
-	CListCtrl m_listCtrl;
+	CListCtrl m_ResultList;
 	CButton m_BackDataBaseCheck;
 	CButton m_KnowRadio, m_FreeRadio;
 	FstKnowledgeBasedDlg* m_piKnowDlg;
