@@ -29,7 +29,7 @@ FstTypeMainDlg::~FstTypeMainDlg()
 void FstTypeMainDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_LISTJstResult, m_listCtrl);
+	DDX_Control(pDX, IDC_LISTJstResult, m_ResultList);
 	DDX_Control(pDX, IDC_SaveBackKnowCHECK, m_BackDataBaseCheck);
 	DDX_Control(pDX, IDC_KnowledgeRADIO, m_KnowRadio);
 	DDX_Control(pDX, IDC_FreeRADIO, m_FreeRadio);
@@ -50,12 +50,12 @@ BOOL FstTypeMainDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	//
-	m_listCtrl.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
-	m_listCtrl.InsertColumn(0,_T("序号"),LVCFMT_LEFT,50);
-	m_listCtrl.InsertColumn(1,_T("规格号"),LVCFMT_LEFT,120);
-	m_listCtrl.InsertColumn(2,_T("名称"),LVCFMT_LEFT,150);
-	m_listCtrl.InsertColumn(3,_T("类型"),LVCFMT_LEFT,100);
-	m_listCtrl.InsertColumn(4,_T("安装部位"),LVCFMT_LEFT,100);
+	m_ResultList.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
+	m_ResultList.InsertColumn(0,_T("序号"),LVCFMT_LEFT,50);
+	m_ResultList.InsertColumn(1,_T("规格号"),LVCFMT_LEFT,120);
+	m_ResultList.InsertColumn(2,_T("名称"),LVCFMT_LEFT,150);
+	m_ResultList.InsertColumn(3,_T("类型"),LVCFMT_LEFT,100);
+	m_ResultList.InsertColumn(4,_T("安装部位"),LVCFMT_LEFT,100);
 	//
 	return TRUE;
 }

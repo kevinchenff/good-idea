@@ -2007,7 +2007,7 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 	//
 	HINSTANCE hDll= NULL;//DLL句柄 	
 	typedef void (*lpFun)(std::string&,std::string&,float&); 
-	hDll = LoadLibrary(_T("MaterialSelection.dll"));
+	hDll = LoadLibrary(_T("ChooseFSTType.dll"));
 	if(NULL == hDll)
 	{
 		LPVOID lpMsgBuf;
@@ -2029,7 +2029,7 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 
 	if (NULL!=hDll)
 	{
-		lpFun pShowDlg = (lpFun)GetProcAddress(hDll,"ShowMaterialSelectionDlg");
+		lpFun pShowDlg = (lpFun)GetProcAddress(hDll,"ShowFstTypeSelectionDlg");
 		if (NULL==pShowDlg)
 		{
 			PrtService::ShowDlgNotify("错误提示！","选择紧固件类型DLL中函数寻找失败");

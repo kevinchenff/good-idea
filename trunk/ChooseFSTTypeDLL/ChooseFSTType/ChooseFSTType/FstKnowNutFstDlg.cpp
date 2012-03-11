@@ -5,9 +5,9 @@
 #include "ChooseFSTType.h"
 #include "FstKnowNutFstDlg.h"
 #include "FstKnowMainFstLengthDlg.h"
-
-
-
+#include "FstKnowMainFstDlg.h"
+#include "FstTypeMainDlg.h"
+#include "FstKnowGasketFstDlg.h"
 
 // FstKnowNutFstDlg dialog
 
@@ -30,6 +30,7 @@ FstKnowNutFstDlg::~FstKnowNutFstDlg()
 void FstKnowNutFstDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_NutFstLIST, m_ResultList);
 }
 
 
@@ -115,7 +116,8 @@ HBRUSH FstKnowNutFstDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 void FstKnowNutFstDlg::OnBnClickedUpnutfststeppb()
 {
 	// TODO: Add your control notification handler code here
-	((FstKnowMainFstDlg*)m_piKnowMainFstDlg)->ShowWindow(SW_SHOW);
+	m_piKnowMainFstDlg->ShowWindow(SW_SHOW);
+	m_piKnowMainFstDlg->CenterWindow();
 	OnCancel();
 }
 
@@ -136,6 +138,23 @@ void FstKnowNutFstDlg::OnBnClickedDownnutfststeppb()
 void FstKnowNutFstDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
-	m_piKnowMainFstDlg->ShowWindow(SW_SHOW);
-	OnCancel();
+	m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->DestroyWindow();
+	m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->ShowWindow(SW_SHOW);
+	m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->CenterWindow();
+}
+
+BOOL FstKnowNutFstDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+	//
+	m_ResultList.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
+	m_ResultList.InsertColumn(0,_T("规格号"),LVCFMT_LEFT,50);
+	m_ResultList.InsertColumn(1,_T("名称"),LVCFMT_LEFT,120);
+	m_ResultList.InsertColumn(2,_T("类型"),LVCFMT_LEFT,120);
+	m_ResultList.InsertColumn(3,_T("安装部位"),LVCFMT_LEFT,100);
+	m_ResultList.InsertColumn(4,_T("公称直径"),LVCFMT_LEFT,100);
+	m_ResultList.InsertColumn(5,_T("厚度"),LVCFMT_LEFT,100);
+	//
+	return TRUE;
+
 }

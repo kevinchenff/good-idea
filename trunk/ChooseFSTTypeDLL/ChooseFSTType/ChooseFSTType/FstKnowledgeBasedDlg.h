@@ -13,6 +13,7 @@ class FstKnowledgeBasedDlg : public CDialog
 public:
 	FstKnowledgeBasedDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~FstKnowledgeBasedDlg();
+	virtual BOOL OnInitDialog();
 
 	//定义刷屏颜色变量
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
@@ -28,6 +29,7 @@ protected:
 public:
 	afx_msg void OnBnClickedUpsteppb();
 	afx_msg void OnBnClickedDownsteppb();
+	afx_msg void OnBnClickedCancel();
 	
 public:
 	CEdit m_SearchInfo;
