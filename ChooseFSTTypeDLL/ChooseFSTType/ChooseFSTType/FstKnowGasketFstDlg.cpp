@@ -109,7 +109,7 @@ void FstKnowGasketFstDlg::OnBnClickedOk()
 {
 	// TODO: Add your control notification handler code here
 	m_piParent->ShowWindow(SW_SHOW);
-	m_piParent->CenterWindow();
+	//m_piParent->CenterWindow();
 	OnOK();
 }
 
@@ -117,7 +117,7 @@ void FstKnowGasketFstDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
 	m_piParent->ShowWindow(SW_SHOW);
-	m_piParent->CenterWindow();
+	//m_piParent->CenterWindow();
 	OnCancel();
 }
 

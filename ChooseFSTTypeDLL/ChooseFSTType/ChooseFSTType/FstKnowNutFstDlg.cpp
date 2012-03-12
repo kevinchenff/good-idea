@@ -117,7 +117,7 @@ void FstKnowNutFstDlg::OnBnClickedUpnutfststeppb()
 {
 	// TODO: Add your control notification handler code here
 	m_piKnowMainFstDlg->ShowWindow(SW_SHOW);
-	m_piKnowMainFstDlg->CenterWindow();
+	//m_piKnowMainFstDlg->CenterWindow();
 	OnCancel();
 }
 
@@ -140,7 +140,7 @@ void FstKnowNutFstDlg::OnBnClickedCancel()
 	// TODO: Add your control notification handler code here
 	m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->DestroyWindow();
 	m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->ShowWindow(SW_SHOW);
-	m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->CenterWindow();
+	//m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->CenterWindow();
 }
 
 BOOL FstKnowNutFstDlg::OnInitDialog()
