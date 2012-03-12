@@ -1,44 +1,49 @@
-// FstKnowGasketFstDlg.cpp : implementation file
+// FstFreeMainFstDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
 #include "ChooseFSTType.h"
-#include "FstKnowGasketFstDlg.h"
-#include "FstKnowMainFstLengthDlg.h"
+#include "FstFreeMainFstDlg.h"
+#include "FstTypeMainDlg.h"
+#include "FstFreeMainSpecFstDlg.h"
 
 
-// FstKnowGasketFstDlg dialog
+// FstFreeMainFstDlg dialog
 
-IMPLEMENT_DYNAMIC(FstKnowGasketFstDlg, CDialog)
+IMPLEMENT_DYNAMIC(FstFreeMainFstDlg, CDialog)
 
-FstKnowGasketFstDlg::FstKnowGasketFstDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(FstKnowGasketFstDlg::IDD, pParent)
+FstFreeMainFstDlg::FstFreeMainFstDlg(CWnd* pParent /*=NULL*/)
+	: CDialog(FstFreeMainFstDlg::IDD, pParent),m_piSon(NULL)
 {
-	m_piParent = (FstKnowMainFstLengthDlg *)pParent;
+	m_piParent = (FstTypeMainDlg*)pParent;
 }
 
-FstKnowGasketFstDlg::~FstKnowGasketFstDlg()
+FstFreeMainFstDlg::~FstFreeMainFstDlg()
 {
+	if (m_piSon != NULL)
+	{
+		m_piSon->DestroyWindow();
+	}
 }
 
-void FstKnowGasketFstDlg::DoDataExchange(CDataExchange* pDX)
+void FstFreeMainFstDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_GasketFstLIST, m_ResultList);
 }
 
 
-BEGIN_MESSAGE_MAP(FstKnowGasketFstDlg, CDialog)
+BEGIN_MESSAGE_MAP(FstFreeMainFstDlg, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
-	ON_BN_CLICKED(IDOK, &FstKnowGasketFstDlg::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &FstKnowGasketFstDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDC_FreeMainFstUpPB, &FstFreeMainFstDlg::OnBnClickedFreemainfstuppb)
+	ON_BN_CLICKED(IDC_FreeMainFstDownPB, &FstFreeMainFstDlg::OnBnClickedFreemainfstdownpb)
+	ON_BN_CLICKED(IDCANCEL, &FstFreeMainFstDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
-// FstKnowGasketFstDlg message handlers
+// FstFreeMainFstDlg message handlers
 
-HBRUSH FstKnowGasketFstDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH FstFreeMainFstDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 	if(nCtlColor==CTLCOLOR_BTN)  
@@ -87,7 +92,7 @@ HBRUSH FstKnowGasketFstDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return hbr;
 }
 
-void FstKnowGasketFstDlg::OnPaint()
+void FstFreeMainFstDlg::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	CDC dcMem; 
@@ -105,32 +110,28 @@ void FstKnowGasketFstDlg::OnPaint()
 	CBitmap *pbmpOld=dcMem.SelectObject(&m_bitmap);  
 	dc.StretchBlt(0,(rect1.Height()-bitMap.bmHeight),bitMap.bmWidth,bitMap.bmHeight,&dcMem,0,0,bitMap.bmWidth,bitMap.bmHeight,SRCCOPY); 
 }
-void FstKnowGasketFstDlg::OnBnClickedOk()
-{
-	// TODO: Add your control notification handler code here
-	m_piParent->ShowWindow(SW_SHOW);
-	OnOK();
-}
 
-void FstKnowGasketFstDlg::OnBnClickedCancel()
+void FstFreeMainFstDlg::OnBnClickedFreemainfstuppb()
 {
 	// TODO: Add your control notification handler code here
 	m_piParent->ShowWindow(SW_SHOW);
 	OnCancel();
 }
 
-
-BOOL FstKnowGasketFstDlg::OnInitDialog()
+void FstFreeMainFstDlg::OnBnClickedFreemainfstdownpb()
 {
+	// TODO: Add your control notification handler code here
+	m_piSon = new FstFreeMainSpecFstDlg(this);
+	m_piSon->Create(IDD_FreeMainSpecFstDlg,this);
+	m_piSon->CenterWindow();
+	m_piSon->ShowWindow(SW_SHOW);
+	//
+	this->ShowWindow(SW_HIDE);
+}
 
-	CDialog::OnInitDialog();
-	//
-	m_ResultList.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
-	m_ResultList.InsertColumn(0,_T("序号"),LVCFMT_LEFT,50);
-	m_ResultList.InsertColumn(1,_T("规格号"),LVCFMT_LEFT,120);
-	m_ResultList.InsertColumn(2,_T("名称"),LVCFMT_LEFT,150);
-	m_ResultList.InsertColumn(3,_T("公称直径"),LVCFMT_LEFT,100);
-	m_ResultList.InsertColumn(4,_T("厚度"),LVCFMT_LEFT,100);
-	//
-	return TRUE;
+void FstFreeMainFstDlg::OnBnClickedCancel()
+{
+	// TODO: Add your control notification handler code here
+	m_piParent->ShowWindow(SW_SHOW);
+	OnCancel();
 }

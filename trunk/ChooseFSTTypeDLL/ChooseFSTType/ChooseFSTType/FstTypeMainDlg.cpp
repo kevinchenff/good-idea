@@ -13,7 +13,7 @@
 IMPLEMENT_DYNAMIC(FstTypeMainDlg, CDialog)
 
 FstTypeMainDlg::FstTypeMainDlg(CWnd* pParent /*=NULL*/)
-	:ClxDialog(FstTypeMainDlg::IDD, pParent),m_piKnowDlg(NULL)
+	:ClxDialog(FstTypeMainDlg::IDD, pParent),m_piKnowDlg(NULL),m_piFreeMainDlg(NULL)
 {
 
 }
@@ -23,6 +23,11 @@ FstTypeMainDlg::~FstTypeMainDlg()
 	if (m_piKnowDlg != NULL)
 	{
 		m_piKnowDlg->DestroyWindow();
+	}
+	//
+	if (m_piFreeMainDlg != NULL)
+	{
+		m_piFreeMainDlg->DestroyWindow();
 	}
 }
 
@@ -156,6 +161,12 @@ void FstTypeMainDlg::OnBnClickedChoosefstpb()
 	else if (m_FreeRadio.GetCheck())
 	{
 		//显示自由选择模式
+		m_piFreeMainDlg = new FstFreeMainFstDlg(this);
+		m_piFreeMainDlg->Create(IDD_FreeMainFstDlg,this);
+		m_piFreeMainDlg->CenterWindow();
+		m_piFreeMainDlg->ShowWindow(SW_SHOW);
+		//
+		this->ShowWindow(SW_HIDE);
 	}
 	else
 	{

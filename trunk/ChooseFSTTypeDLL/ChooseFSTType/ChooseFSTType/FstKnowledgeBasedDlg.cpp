@@ -134,7 +134,6 @@ void FstKnowledgeBasedDlg::OnBnClickedCancel()
 {
 	// TODO: Add your control notification handler code here
 	m_piFstTypeMainDlg->ShowWindow(SW_SHOW);
-	//m_piFstTypeMainDlg->CenterWindow();
 	OnCancel();
 }
 

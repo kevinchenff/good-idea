@@ -370,6 +370,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\FstFreeGasketFstDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FstFreeMainFstDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FstFreeMainSpecFstDlg.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FstFreeNutFstDlg.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FstKnowGasketFstDlg.cpp"
 				>
 			</File>
@@ -441,6 +457,22 @@
 			</File>
 			<File
 				RelativePath=".\ClxDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FstFreeGasketFstDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FstFreeMainFstDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FstFreeMainSpecFstDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\FstFreeNutFstDlg.h"
 				>
 			</File>
 			<File

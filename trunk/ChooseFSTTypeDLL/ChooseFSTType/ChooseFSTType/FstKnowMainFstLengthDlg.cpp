@@ -119,14 +119,12 @@ void FstKnowMainFstLengthDlg::OnBnClickedCancel()
 {
 	m_piKnowNutFstDlg->m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->DestroyWindow();
 	m_piKnowNutFstDlg->m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->ShowWindow(SW_SHOW);
-	//m_piKnowNutFstDlg->m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->CenterWindow();
 }
 
 void FstKnowMainFstLengthDlg::OnBnClickedUpmainfstlengthsteppb()
 {
 	// TODO: Add your control notification handler code here
 	m_piKnowNutFstDlg->ShowWindow(SW_SHOW);
-	//m_piKnowNutFstDlg->CenterWindow();
 	OnCancel();
 }
 
@@ -135,7 +133,6 @@ void FstKnowMainFstLengthDlg::OnBnClickedDownmainfstlengthsteppb()
 	// TODO: Add your control notification handler code here
 	m_piKnowNutFstDlg->m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->DestroyWindow();
 	m_piKnowNutFstDlg->m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->ShowWindow(SW_SHOW);
-	//m_piKnowNutFstDlg->m_piKnowMainFstDlg->m_piKnowledgeBaseddlg->m_piFstTypeMainDlg->CenterWindow();
 }
 
 void FstKnowMainFstLengthDlg::OnBnClickedAddpb()
