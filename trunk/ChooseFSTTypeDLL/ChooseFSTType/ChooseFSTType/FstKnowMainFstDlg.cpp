@@ -127,7 +127,7 @@ void FstKnowMainFstDlg::OnBnClickedUpsteppb()
 {
 	// TODO: Add your control notification handler code here
 	m_piKnowledgeBaseddlg->ShowWindow(SW_SHOW);
-	m_piKnowledgeBaseddlg->CenterWindow();
+	//m_piKnowledgeBaseddlg->CenterWindow();
 	OnCancel();
 }
 void FstKnowMainFstDlg::OnBnClickedDownmainfststeppb()

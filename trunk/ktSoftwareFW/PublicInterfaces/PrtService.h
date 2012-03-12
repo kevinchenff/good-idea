@@ -187,6 +187,10 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static 
   HRESULT ObjectUpdate(const CATISpecObject_var & ispSpec);
 
+  //刷新结构树上的特征
+  static 
+  HRESULT RedrawSpecNode(CATISpecObject_var spiObjNode);
+
   //设置特征属性，颜色，显示状态等
   static
   HRESULT SetSpecGraphProperty(CATISpecObject_var spSpecOnObject,CATVisPropertiesValues Attribut,CATVisPropertyType VisPropertyType, CATVisGeomType VisGeomType);

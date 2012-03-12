@@ -1547,6 +1547,26 @@ HRESULT PrtService::ObjectUpdate(const CATISpecObject_var & ispSpec)
 	return rc ;
 }
 
+HRESULT PrtService::RedrawSpecNode(CATISpecObject_var spiObjNode)
+{
+	//Update the 3D view
+	CATIModelEvents_var spEvents = spiObjNode;
+	CATModify ModifyEvent(spiObjNode);
+	if (spEvents != NULL_var)
+	{
+		spEvents -> Dispatch (ModifyEvent);
+	}
+
+	//Update the graph view
+	CATIRedrawEvent_var spRedraw = spiObjNode;
+	if (NULL_var != spRedraw)
+	{
+		spRedraw -> Redraw();
+	}
+
+	return S_OK;
+}
+
 
 //set Graphical property for the features
 HRESULT PrtService::SetSpecGraphProperty(CATISpecObject_var spSpecOnObject,CATVisPropertiesValues Attribut,CATVisPropertyType VisPropertyType, CATVisGeomType VisGeomType)

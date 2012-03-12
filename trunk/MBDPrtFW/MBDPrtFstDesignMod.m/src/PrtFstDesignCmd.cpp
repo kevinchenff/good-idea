@@ -1728,7 +1728,10 @@ void PrtFstDesignCmd::SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool
 			//挂载测试参数
 			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
 		}
-	}	
+	}
+
+	//更新“紧固件描述”节点
+	PrtService::RedrawSpecNode(spJstDescripParmSet);
 }
 
 //获取放置点线模型的零件几何图形集
