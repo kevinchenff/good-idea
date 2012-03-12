@@ -7,7 +7,7 @@
 #include "ClxDialog.h"
 #include "FstKnowledgeBasedDlg.h"
 #include "FstKnowMainFstDlg.h"
-
+#include "FstFreeMainFstDlg.h"
 
 // FstTypeMainDlg dialog
 
@@ -42,4 +42,5 @@ public:
 	CButton m_BackDataBaseCheck;
 	CButton m_KnowRadio, m_FreeRadio;
 	FstKnowledgeBasedDlg* m_piKnowDlg;
+	FstFreeMainFstDlg* m_piFreeMainDlg;
 };
