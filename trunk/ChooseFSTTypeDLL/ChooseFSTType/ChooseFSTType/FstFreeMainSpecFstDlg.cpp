@@ -13,7 +13,7 @@
 IMPLEMENT_DYNAMIC(FstFreeMainSpecFstDlg, CDialog)
 
 FstFreeMainSpecFstDlg::FstFreeMainSpecFstDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(FstFreeMainSpecFstDlg::IDD, pParent),m_piParent(NULL),m_piSon(NULL)
+	: CDialog(FstFreeMainSpecFstDlg::IDD, pParent),m_piSon(NULL)
 {
 	m_piParent = (FstFreeMainFstDlg*)pParent;
 }
@@ -37,7 +37,7 @@ BEGIN_MESSAGE_MAP(FstFreeMainSpecFstDlg, CDialog)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_FreeMainSpecFstUpPB, &FstFreeMainSpecFstDlg::OnBnClickedFreemainspecfstuppb)
 	ON_BN_CLICKED(IDC_FreeMainSpecFstDownPB, &FstFreeMainSpecFstDlg::OnBnClickedFreemainspecfstdownpb)
-	ON_BN_CLICKED(IDCANCEL, &FstFreeMainSpecFstDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDMainSpecCANCEL, &FstFreeMainSpecFstDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -121,7 +121,7 @@ void FstFreeMainSpecFstDlg::OnBnClickedFreemainspecfstuppb()
 void FstFreeMainSpecFstDlg::OnBnClickedFreemainspecfstdownpb()
 {
 	// TODO: Add your control notification handler code here
-	m_piSon = new FstFreeNutFstDlg();
+	m_piSon = new FstFreeNutFstDlg(this);
 	m_piSon->Create(IDD_FreeNutFstDlg,this);
 	m_piSon->CenterWindow();
 	m_piSon->ShowWindow(SW_SHOW);

@@ -37,9 +37,9 @@ void FstFreeNutFstDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(FstFreeNutFstDlg, CDialog)
 	ON_WM_CTLCOLOR()
 	ON_WM_PAINT()
-	ON_BN_CLICKED(IDC_FreeNutFstUpPB, &FstFreeNutFstDlg::OnBnClickedFreemainfstuppb)
-	ON_BN_CLICKED(IDC_FreeNutFstDownPB, &FstFreeNutFstDlg::OnBnClickedFreemainfstdownpb)
-	ON_BN_CLICKED(IDCANCEL, &FstFreeNutFstDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDC_FreeNutFstUpPB, &FstFreeNutFstDlg::OnBnClickedFreenutfstuppb)
+	ON_BN_CLICKED(IDC_FreeNutFstDownPB, &FstFreeNutFstDlg::OnBnClickedFreenutfstdownpb)
+	ON_BN_CLICKED(IDNutCANCEL, &FstFreeNutFstDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
@@ -113,17 +113,17 @@ void FstFreeNutFstDlg::OnPaint()
 	dc.StretchBlt(0,(rect1.Height()-bitMap.bmHeight),bitMap.bmWidth,bitMap.bmHeight,&dcMem,0,0,bitMap.bmWidth,bitMap.bmHeight,SRCCOPY); 
 }
 
-void FstFreeNutFstDlg::OnBnClickedFreemainfstuppb()
+void FstFreeNutFstDlg::OnBnClickedFreenutfstuppb()
 {
 	// TODO: Add your control notification handler code here
 	m_piParent->ShowWindow(SW_SHOW);
 	OnCancel();
 }
 
-void FstFreeNutFstDlg::OnBnClickedFreemainfstdownpb()
+void FstFreeNutFstDlg::OnBnClickedFreenutfstdownpb()
 {
 	// TODO: Add your control notification handler code here
-	m_piSon = new FstFreeGasketFstDlg();
+	m_piSon = new FstFreeGasketFstDlg(this);
 	m_piSon->Create(IDD_FreeGasketFstDlg,this);
 	m_piSon->CenterWindow();
 	m_piSon->ShowWindow(SW_SHOW);

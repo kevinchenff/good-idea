@@ -37,7 +37,7 @@ BEGIN_MESSAGE_MAP(FstFreeGasketFstDlg, CDialog)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_FreeMainFstUpPB, &FstFreeGasketFstDlg::OnBnClickedFreemainfstuppb)
 	ON_BN_CLICKED(IDC_FreeMainFstDownPB, &FstFreeGasketFstDlg::OnBnClickedFreemainfstdownpb)
-	ON_BN_CLICKED(IDCANCEL, &FstFreeGasketFstDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDGasketCANCEL, &FstFreeGasketFstDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 
