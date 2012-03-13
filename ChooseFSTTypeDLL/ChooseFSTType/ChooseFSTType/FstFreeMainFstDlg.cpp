@@ -37,7 +37,7 @@ BEGIN_MESSAGE_MAP(FstFreeMainFstDlg, CDialog)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_FreeMainFstUpPB, &FstFreeMainFstDlg::OnBnClickedFreemainfstuppb)
 	ON_BN_CLICKED(IDC_FreeMainFstDownPB, &FstFreeMainFstDlg::OnBnClickedFreemainfstdownpb)
-	ON_BN_CLICKED(IDCANCEL, &FstFreeMainFstDlg::OnBnClickedCancel)
+	ON_BN_CLICKED(IDMainCANCEL, &FstFreeMainFstDlg::OnBnClickedCancel)
 END_MESSAGE_MAP()
 
 

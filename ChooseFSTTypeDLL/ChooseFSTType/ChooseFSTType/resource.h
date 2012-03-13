@@ -87,6 +87,10 @@
 #define IDC_FreeGasketCombineSearchPB   1051
 #define IDC_FreeNutFstUpPB              1052
 #define IDC_FreeNutFstDownPB            1053
+#define IDMainCANCEL                    1054
+#define IDMainSpecCANCEL                1055
+#define IDNutCANCEL                     1056
+#define IDGasketCANCEL                  1057
 
 // Next default values for new objects
 // 
@@ -94,7 +98,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1008
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1054
+#define _APS_NEXT_CONTROL_VALUE         1058
 #define _APS_NEXT_SYMED_VALUE           1000
 #endif
 #endif
