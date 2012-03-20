@@ -1,0 +1,6 @@
+; ChooseMaterialInfo.def : Declares the module parameters for the DLL.
+
+LIBRARY      "ChooseMaterialInfo"
+
+EXPORTS
+    ; Explicit exports can go here
