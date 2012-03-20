@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChooseFSTType", "ChooseFSTT
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CallDLL", "CallDLL\CallDLL.vcproj", "{378979CA-B185-40B8-A3B7-44D111E926A7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChooseMaterialInfo", "ChooseMaterialInfo\ChooseMaterialInfo.vcproj", "{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -28,6 +30,12 @@ Global
 		{378979CA-B185-40B8-A3B7-44D111E926A7}.Release|Win32.Build.0 = Debug|Win32
 		{378979CA-B185-40B8-A3B7-44D111E926A7}.Release|x64.ActiveCfg = Debug|Win32
 		{378979CA-B185-40B8-A3B7-44D111E926A7}.Release|x64.Build.0 = Debug|Win32
+		{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}.Debug|Win32.Build.0 = Debug|Win32
+		{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}.Debug|x64.ActiveCfg = Debug|Win32
+		{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}.Release|Win32.ActiveCfg = Release|Win32
+		{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}.Release|Win32.Build.0 = Release|Win32
+		{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
