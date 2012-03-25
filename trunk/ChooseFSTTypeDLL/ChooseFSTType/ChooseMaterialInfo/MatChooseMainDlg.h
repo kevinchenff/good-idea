@@ -1,5 +1,7 @@
 #pragma once
-
+#include "Resource.h"
+#include "MatOtherInfoDlg.h"
+class MatOtherInfoDlg;
 
 // MatChooseMainDlg dialog
 
@@ -20,6 +22,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnPaint();
-public:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg void OnBnClickedNextsteppb();
+
+public:
+	MatOtherInfoDlg* m_piSon;
 };

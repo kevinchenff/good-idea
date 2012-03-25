@@ -34,6 +34,7 @@ BEGIN_MESSAGE_MAP(CCallDLLDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_CallBUTTON, &CCallDLLDlg::OnBnClickedCallbutton)
+	ON_BN_CLICKED(IDC_BUTTON2, &CCallDLLDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -140,5 +141,55 @@ void CCallDLLDlg::OnBnClickedCallbutton()
 		AfxMessageBox(str1);
 		::FreeLibrary(hDll);
 
+	}
+}
+
+void CCallDLLDlg::OnBnClickedButton2()
+{	
+	HINSTANCE hDll= NULL;//DLL¾ä±ú 	
+	typedef void (*lpFun)(string&,string&,float&); 
+	hDll = LoadLibrary(_T("ChooseMaterialInfo.dll"));
+	if(NULL == hDll)
+	{
+		LPVOID lpMsgBuf;
+		FormatMessage( 
+			FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+			FORMAT_MESSAGE_FROM_SYSTEM | 
+			FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL,
+			GetLastError(),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+			(LPTSTR) &lpMsgBuf,
+			0,
+			NULL 
+			);
+
+		LocalFree( lpMsgBuf );
+		return;
+	}
+
+	if (NULL!=hDll)
+	{
+		lpFun pShowDlg = (lpFun)GetProcAddress(hDll,"ShowMaterialSelectionDlg");
+		if (NULL==pShowDlg)
+		{
+			AfxMessageBox(_T("DLLÖÐº¯ÊýÑ°ÕÒÊ§°Ü"));
+		}
+
+		// 		char* pFilePath= new char[] ;
+		// 		char* pFileName= new char[] ;
+		string pFilePath;
+		string pFileName;
+		float thickness=0;
+		pShowDlg(pFilePath,pFileName,thickness);
+		CString s1,s2;
+		s1=pFilePath.c_str();
+		s2=pFileName.c_str(); 
+		AfxMessageBox(s1);
+		AfxMessageBox(s2);
+		CString str1;
+		str1.Format(_T("%f"),thickness);
+		AfxMessageBox(str1);
+		::FreeLibrary(hDll);
 	}
 }
