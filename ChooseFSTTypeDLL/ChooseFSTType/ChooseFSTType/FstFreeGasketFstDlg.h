@@ -1,5 +1,6 @@
 #pragma once
 #include "FstFreeNutFstDlg.h"
+#include "afxcmn.h"
 class FstFreeNutFstDlg;
 
 // FstFreeGasketFstDlg dialog
@@ -11,6 +12,7 @@ class FstFreeGasketFstDlg : public CDialog
 public:
 	FstFreeGasketFstDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~FstFreeGasketFstDlg();
+	virtual BOOL OnInitDialog();
 
 // Dialog Data
 	enum { IDD = IDD_FreeGasketFstDlg };
@@ -28,4 +30,8 @@ public:
 public:
 	FstFreeNutFstDlg* m_piParent;
 	
+public:
+	CListCtrl m_SearchResultList;
+public:
+	CListCtrl m_ChooseResultList;
 };

@@ -142,7 +142,6 @@ void FstKnowMainFstDlg::OnBnClickedDownmainfststeppb()
 
 BOOL FstKnowMainFstDlg::OnInitDialog()
 {
-
 	CDialog::OnInitDialog();
 	//
 	m_ResultList.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
@@ -153,5 +152,4 @@ BOOL FstKnowMainFstDlg::OnInitDialog()
 	m_ResultList.InsertColumn(4,_T("¹«³ÆÖ±¾¶"),LVCFMT_LEFT,100);
 	//
 	return TRUE;
-
 }

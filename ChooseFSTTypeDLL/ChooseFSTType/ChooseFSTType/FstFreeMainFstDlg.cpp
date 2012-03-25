@@ -29,6 +29,7 @@ FstFreeMainFstDlg::~FstFreeMainFstDlg()
 void FstFreeMainFstDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_FreeMainFstLIST, m_ResultList);
 }
 
 
@@ -134,4 +135,18 @@ void FstFreeMainFstDlg::OnBnClickedCancel()
 	// TODO: Add your control notification handler code here
 	m_piParent->ShowWindow(SW_SHOW);
 	OnCancel();
+}
+
+BOOL FstFreeMainFstDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+	//
+	m_ResultList.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
+	m_ResultList.InsertColumn(0,_T("序号"),LVCFMT_LEFT,50);
+	m_ResultList.InsertColumn(1,_T("标准号"),LVCFMT_LEFT,120);
+	m_ResultList.InsertColumn(2,_T("名称"),LVCFMT_LEFT,150);
+	m_ResultList.InsertColumn(3,_T("类型"),LVCFMT_LEFT,100);
+	m_ResultList.InsertColumn(4,_T("公称直径"),LVCFMT_LEFT,100);
+	//
+	return TRUE;
 }
