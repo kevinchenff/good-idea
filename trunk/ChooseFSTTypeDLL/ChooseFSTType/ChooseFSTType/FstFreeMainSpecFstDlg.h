@@ -2,6 +2,7 @@
 
 #include "FstFreeMainFstDlg.h"
 #include "FstFreeNutFstDlg.h"
+#include "afxcmn.h"
 class FstFreeNutFstDlg;
 // FstFreeMainSpecFstDlg dialog
 
@@ -12,6 +13,7 @@ class FstFreeMainSpecFstDlg : public CDialog
 public:
 	FstFreeMainSpecFstDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~FstFreeMainSpecFstDlg();
+	virtual BOOL OnInitDialog();
 
 // Dialog Data
 	enum { IDD = IDD_FreeMainSpecFstDlg };
@@ -30,4 +32,6 @@ public:
 public:
 	FstFreeMainFstDlg* m_piParent;
 	FstFreeNutFstDlg* m_piSon;
+public:
+	CListCtrl m_ResultList;
 };

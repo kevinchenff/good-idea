@@ -1,4 +1,5 @@
 #pragma once
+#include "afxcmn.h"
 
 class FstTypeMainDlg;
 class FstFreeMainSpecFstDlg;
@@ -11,6 +12,7 @@ class FstFreeMainFstDlg : public CDialog
 public:
 	FstFreeMainFstDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~FstFreeMainFstDlg();
+	virtual BOOL OnInitDialog();
 
 // Dialog Data
 	enum { IDD = IDD_FreeMainFstDlg };
@@ -30,4 +32,6 @@ public:
 	FstTypeMainDlg* m_piParent;
 	FstFreeMainSpecFstDlg* m_piSon;
 
+public:
+	CListCtrl m_ResultList;
 };

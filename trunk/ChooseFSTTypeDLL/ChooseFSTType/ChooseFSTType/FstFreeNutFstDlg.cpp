@@ -31,6 +31,8 @@ FstFreeNutFstDlg::~FstFreeNutFstDlg()
 void FstFreeNutFstDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_FreeNutFstLIST, m_SearchResultList);
+	DDX_Control(pDX, IDC_FreeNutFstResultLIST, m_ChooseResultList);
 }
 
 
@@ -137,4 +139,26 @@ void FstFreeNutFstDlg::OnBnClickedCancel()
 	m_piParent->m_piParent->DestroyWindow();
 	m_piParent->m_piParent->m_piParent->ShowWindow(SW_SHOW);
 	m_piParent->m_piParent->m_piParent->CenterWindow();
+}
+
+BOOL FstFreeNutFstDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+	//
+	m_SearchResultList.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
+	m_SearchResultList.InsertColumn(0,_T("序号"),LVCFMT_LEFT,50);
+	m_SearchResultList.InsertColumn(1,_T("规格号"),LVCFMT_LEFT,120);
+	m_SearchResultList.InsertColumn(2,_T("名称"),LVCFMT_LEFT,150);
+	m_SearchResultList.InsertColumn(3,_T("公称直径"),LVCFMT_LEFT,100);
+	m_SearchResultList.InsertColumn(4,_T("厚度"),LVCFMT_LEFT,100);
+	//
+	m_ChooseResultList.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
+	m_ChooseResultList.InsertColumn(0,_T("规格号"),LVCFMT_LEFT,100);
+	m_ChooseResultList.InsertColumn(1,_T("名称"),LVCFMT_LEFT,120);
+	m_ChooseResultList.InsertColumn(2,_T("类型"),LVCFMT_LEFT,100);
+	m_ChooseResultList.InsertColumn(3,_T("安装部位"),LVCFMT_LEFT,80);
+	m_ChooseResultList.InsertColumn(4,_T("公称直径"),LVCFMT_LEFT,80);
+	m_ChooseResultList.InsertColumn(5,_T("厚度"),LVCFMT_LEFT,100);
+
+	return TRUE;
 }
