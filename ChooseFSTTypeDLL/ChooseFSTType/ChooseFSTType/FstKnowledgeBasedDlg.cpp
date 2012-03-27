@@ -30,6 +30,9 @@ void FstKnowledgeBasedDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_MainFstNameEDIT, m_SearchInfo);
+	DDX_Control(pDX, IDC_KnowFstResultTREE, m_ResultTree);
+	DDX_Control(pDX, IDC_SearchTypeCOMB, m_SearchComb);
+	DDX_Control(pDX, IDC_FstValueEDIT, m_SearchValue);
 }
 
 
@@ -39,6 +42,7 @@ BEGIN_MESSAGE_MAP(FstKnowledgeBasedDlg, CDialog)
 	ON_BN_CLICKED(IDC_UpStepPB, &FstKnowledgeBasedDlg::OnBnClickedUpsteppb)
 	ON_BN_CLICKED(IDC_DownStepPB, &FstKnowledgeBasedDlg::OnBnClickedDownsteppb)
 	ON_BN_CLICKED(IDCANCEL, &FstKnowledgeBasedDlg::OnBnClickedCancel)
+	ON_CBN_SELCHANGE(IDC_SearchTypeCOMB, &FstKnowledgeBasedDlg::OnCbnSelchangeSearchtypecomb)
 END_MESSAGE_MAP()
 
 
@@ -142,13 +146,31 @@ BOOL FstKnowledgeBasedDlg::OnInitDialog()
 
 	CDialog::OnInitDialog();
 	//
-	/*m_listCtrl.SetExtendedStyle(LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |LVS_EX_GRIDLINES );
-	m_listCtrl.InsertColumn(0,_T("序号"),LVCFMT_LEFT,50);
-	m_listCtrl.InsertColumn(1,_T("规格号"),LVCFMT_LEFT,120);
-	m_listCtrl.InsertColumn(2,_T("名称"),LVCFMT_LEFT,150);
-	m_listCtrl.InsertColumn(3,_T("类型"),LVCFMT_LEFT,100);
-	m_listCtrl.InsertColumn(4,_T("安装部位"),LVCFMT_LEFT,100);*/
+	//m_ResultTree.
+	//
+	m_SearchInfo.SetWindowText(_T("紧固件标准号"));
+	m_SearchInfo.SetReadOnly();
+	//
+	m_SearchValue.SetReadOnly();
+	//
+	m_SearchComb.InsertString(0,_T("全部"));
+	m_SearchComb.InsertString(1,_T("等于"));
+	m_SearchComb.InsertString(2,_T("包含"));
+	m_SearchComb.SetCurSel(0);
 	//
 	return TRUE;
+}
+void FstKnowledgeBasedDlg::OnCbnSelchangeSearchtypecomb()
+{
+	// TODO: Add your control notification handler code here
+	if (m_SearchComb.GetCurSel() == 0)
+	{
+		m_SearchValue.SetWindowText(_T(""));
+		m_SearchValue.SetReadOnly();
+	}
+	else
+	{
+		m_SearchValue.SetReadOnly(FALSE);
+	}
 
 }

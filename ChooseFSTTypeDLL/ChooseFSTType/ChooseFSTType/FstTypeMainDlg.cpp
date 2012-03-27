@@ -62,6 +62,14 @@ BOOL FstTypeMainDlg::OnInitDialog()
 	m_ResultList.InsertColumn(3,_T("类型"),LVCFMT_LEFT,100);
 	m_ResultList.InsertColumn(4,_T("安装部位"),LVCFMT_LEFT,100);
 	//
+	m_ResultList.InsertItem(0,_T("1"));
+	m_ResultList.SetItemText(0,1,_T("主紧固件"));
+	m_ResultList.SetItemText(0,2,_T("主紧固件"));
+	m_ResultList.SetItemText(0,3,_T("主紧固件"));
+	m_ResultList.SetItemText(0,4,_T("主紧固件"));
+	//
+	UpdateData(FALSE);
+	//
 	return TRUE;
 }
 

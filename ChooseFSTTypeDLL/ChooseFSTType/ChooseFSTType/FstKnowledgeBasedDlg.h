@@ -1,6 +1,7 @@
 #pragma once
 #include "afxwin.h"
 #include "FstKnowMainFstDlg.h"
+#include "afxcmn.h"
 class FstTypeMainDlg;
 class FstKnowMainFstDlg;
 
@@ -35,4 +36,12 @@ public:
 	CEdit m_SearchInfo;
 	FstKnowMainFstDlg* m_piKnowMainFstDlg;
 	FstTypeMainDlg* m_piFstTypeMainDlg;
+public:
+	CTreeCtrl m_ResultTree;
+public:
+	CComboBox m_SearchComb;
+public:
+	CEdit m_SearchValue;
+public:
+	afx_msg void OnCbnSelchangeSearchtypecomb();
 };
