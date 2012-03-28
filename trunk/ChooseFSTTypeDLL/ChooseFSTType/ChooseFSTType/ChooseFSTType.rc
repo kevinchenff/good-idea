@@ -393,6 +393,7 @@ END
 //
 
 IDB_BITBackground       BITMAP                  "res\\catiaBackground.bmp"
+IDB_BITFst              BITMAP                  "res\\FstPic.bmp"
 #endif    // Chinese (P.R.C.) resources
 /////////////////////////////////////////////////////////////////////////////
 

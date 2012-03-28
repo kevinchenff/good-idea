@@ -146,7 +146,10 @@ BOOL FstKnowledgeBasedDlg::OnInitDialog()
 
 	CDialog::OnInitDialog();
 	//
-	//m_ResultTree.
+	HTREEITEM ptreeItem01 = m_ResultTree.InsertItem(_T("主紧固件标准号01"),TVI_ROOT);//根结点
+	m_ResultTree.InsertItem(_T("螺母标准号01"),0,0,ptreeItem01); 
+	HTREEITEM ptreeItem02 = m_ResultTree.InsertItem(_T("主紧固件标准号02"),TVI_ROOT);//根结点
+	m_ResultTree.InsertItem(_T("螺母标准号02"),0,0,ptreeItem02); 
 	//
 	m_SearchInfo.SetWindowText(_T("紧固件标准号"));
 	m_SearchInfo.SetReadOnly();
@@ -172,5 +175,4 @@ void FstKnowledgeBasedDlg::OnCbnSelchangeSearchtypecomb()
 	{
 		m_SearchValue.SetReadOnly(FALSE);
 	}
-
 }
