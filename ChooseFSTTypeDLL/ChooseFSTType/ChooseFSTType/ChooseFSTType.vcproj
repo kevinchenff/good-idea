@@ -525,6 +525,10 @@
 				RelativePath=".\res\ChooseFSTType.rc2"
 				>
 			</File>
+			<File
+				RelativePath=".\res\FstPic.bmp"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
