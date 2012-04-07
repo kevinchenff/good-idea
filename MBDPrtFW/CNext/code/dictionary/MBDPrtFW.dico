@@ -15,6 +15,6 @@
 
 CATApplicationFrame	IMBDPrtWbWorkbenchFactory	libMBDPrtWb
 MBDPrtWb	CATIPrtWksConfiguration	libMBDPrtWb
-
-
+MBDPrtWb	CATIPrtCfgAddin	libMBDPrtWb
+MBDPrtWb	CATIShapeDesignWorkshopAddin libMBDPrtWb
 # END WIZARD EDITION ZONE

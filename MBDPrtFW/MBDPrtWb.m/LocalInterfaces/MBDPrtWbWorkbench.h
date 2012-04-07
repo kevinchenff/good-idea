@@ -23,6 +23,7 @@
 
 
 class CATCmdWorkbench;
+class CATCmdContainer;
 
 //--------------------------------------------------------------------
 
@@ -37,6 +38,8 @@ public:
   
   void CreateCommands();
   CATCmdWorkbench * CreateWorkbench();
+  CATCmdContainer * CreateToolbars();
+
   CATClassId GetAddinInterface();
   void GetCustomInterfaces(CATListPV* defaultIIDList,
                            CATListPV* customIIDList);

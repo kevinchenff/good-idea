@@ -40,8 +40,58 @@ MBDPrtAddMaterialCmd::~MBDPrtAddMaterialCmd()
 //-------------------------------------------------------------------------
 void MBDPrtAddMaterialCmd::BuildGraph()
 {
+	SearchMaterialInfo();
 	CreateMaterialCatalog();
 	RequestDelayedDestruction();
+}
+
+
+void MBDPrtAddMaterialCmd::SearchMaterialInfo()
+{
+	//
+	HINSTANCE hDll= NULL;//DLLæ‰±˙ 	
+	typedef void (*lpFun)(std::string&,std::string&,float&); 
+	hDll = LoadLibrary(_T("ChooseMaterialInfo.dll"));
+	if(NULL == hDll)
+	{
+		LPVOID lpMsgBuf;
+		FormatMessage( 
+			FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+			FORMAT_MESSAGE_FROM_SYSTEM | 
+			FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL,
+			GetLastError(),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+			(LPTSTR) &lpMsgBuf,
+			0,
+			NULL 
+			);
+
+		LocalFree( lpMsgBuf );
+		return;
+	}
+
+	if (NULL!=hDll)
+	{
+		lpFun pShowDlg = (lpFun)GetProcAddress(hDll,"ShowMaterialSelectionDlg");
+		if (NULL==pShowDlg)
+		{
+			PrtService::ShowDlgNotify("¥ÌŒÛÃ· æ£°","≤È—Ø≤ƒ¡œDLL÷–∫Ø ˝—∞’“ ß∞‹");
+		}
+
+		float thickness=0;
+		std::string pFilePath;
+		std::string pFileName;
+		pShowDlg(pFilePath,pFileName,thickness);
+
+		const char *p1=pFilePath.data();
+		const char *p2= pFileName.data();
+
+		/*m_materialFilePath = p1;
+		m_materialFileName = p2;
+		m_RaFMShellThickness = (double)thickness;*/
+		::FreeLibrary(hDll);
+	}
 }
 
 HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog()
