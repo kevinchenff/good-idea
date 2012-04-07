@@ -1237,8 +1237,7 @@ void PrtFstDesignCmd::ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCAT
 
 		CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
 		CATGraphicAttributeSet   TextGaNode ;
-		TextGaNode.SetColor(RED);
-		TextGaNode.SetHighlightMode (0);
+		TextGaNode.SetColor(BLUE);
 		CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
 		pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
 		CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
@@ -1717,6 +1716,7 @@ void PrtFstDesignCmd::SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool
 			CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
 			//
 			PrtService::SetAlias(spJstTypeInfoSet,strJstSetName);
+			PrtService::ObjectUpdate(spJstTypeInfoSet);
 		}
 		else
 		{
@@ -1728,6 +1728,8 @@ void PrtFstDesignCmd::SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool
 			//挂载测试参数
 			PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
 		}
+
+		PrtService::RedrawSpecNode(spJstTypeInfoSet);
 	}
 
 	//更新“紧固件描述”节点

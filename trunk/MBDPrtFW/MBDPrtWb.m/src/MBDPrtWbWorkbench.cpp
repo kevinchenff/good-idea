@@ -10,6 +10,12 @@
 CATImplementClass(MBDPrtWb, Implementation, CATBaseUnknown, CATNull);
 TIE_CATIPrtWksConfiguration(MBDPrtWb);
 
+#include "TIE_CATIPrtCfgAddin.h"
+TIE_CATIPrtCfgAddin(MBDPrtWb);
+
+#include "TIE_CATIShapeDesignWorkshopAddin.h"
+TIE_CATIShapeDesignWorkshopAddin(MBDPrtWb);
+
 MBDPrtWb::MBDPrtWb()
 {}
 MBDPrtWb::~MBDPrtWb()
@@ -50,3 +56,8 @@ CATClassId MBDPrtWb::GetAddinInterface()
 void MBDPrtWb::GetCustomInterfaces(CATListPV* defaultIIDList,
                                        CATListPV* customIIDList)
 {}
+
+CATCmdContainer* MBDPrtWb::CreateToolbars()
+{
+#include <AddinWorkshop.h>
+}

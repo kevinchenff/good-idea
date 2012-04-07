@@ -1564,6 +1564,7 @@ HRESULT PrtService::RedrawSpecNode(CATISpecObject_var spiObjNode)
 		spRedraw -> Redraw();
 	}
 
+	//
 	return S_OK;
 }
 

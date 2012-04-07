@@ -63,6 +63,8 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
   virtual void     BuildGraph();
 
 
+  //查询材料信息FROM DATABASE
+  void SearchMaterialInfo();
   //获取材料catalog文件
   HRESULT CreateMaterialCatalog();
 
