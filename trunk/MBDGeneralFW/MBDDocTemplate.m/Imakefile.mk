@@ -17,7 +17,7 @@ CATApplicationFrame CATViz \
 CATInteractiveInterfaces CATObjectModelerBase \
 CATAutoItf CATObjectSpecsModeler CATMecModInterfaces CATProductStructure1 \
 CATObjectSpecsModeler CATVisualization KnowledgeItf \
-ktWebservice ktBasicService ktDirFileService ktExcelService ktPrdService ktPrtService ktStrLogService ktXMLService\
+ktBasicService ktDirFileService ktExcelService ktPrdService ktPrtService ktStrLogService ktXMLService\
 
 
 # END WIZARD EDITION ZONE
