@@ -551,7 +551,7 @@ BOOL PrtFstDesignCmd::IsThisZPPrt(CATUnicodeString istrDocName)
 	if (istrDocName != "")
 	{
 		int istart=istrDocName.SearchSubString("-ZP",0,CATUnicodeString::CATSearchModeBackward);
-		if (istart == (istrDocName.GetLengthInChar()-3) || istart == (istrDocName.GetLengthInChar()-4))
+		if (istart != -1)
 		{
 			return TRUE;
 		}

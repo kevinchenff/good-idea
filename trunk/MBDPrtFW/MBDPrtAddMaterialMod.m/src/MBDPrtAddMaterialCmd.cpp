@@ -24,7 +24,18 @@ CATCreateClass( MBDPrtAddMaterialCmd);
 MBDPrtAddMaterialCmd::MBDPrtAddMaterialCmd() :
   CATStateCommand ("MBDPrtAddMaterialCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
+,m_piDoc(NULL)
 {
+	//初始化获得当前文档及名称
+	m_piDoc = PrtService::GetPrtDocument();
+	PrtService::GetPrdNumberFormDoc(m_piDoc,m_strDocName);
+
+	//判断是否为ZP模型;
+	if (IsThisZPPrt(m_strDocName))
+	{
+		PrtService::ShowDlgNotify("提示","该功能仅能在零件模型中操作，不能在ZP模型中操作，点击关闭！");
+		RequestDelayedDestruction();
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -34,6 +45,21 @@ MBDPrtAddMaterialCmd::~MBDPrtAddMaterialCmd()
 {
 }
 
+
+//判断是否为ZP模型
+BOOL MBDPrtAddMaterialCmd::IsThisZPPrt(CATUnicodeString istrDocName)
+{
+	if (istrDocName != "")
+	{
+		int istart=istrDocName.SearchSubString("-ZP",0,CATUnicodeString::CATSearchModeBackward);
+		if (istart != -1)
+		{
+			return TRUE;
+		}
+		else return FALSE;
+	}
+	else return FALSE;
+}
 
 //-------------------------------------------------------------------------
 // BuildGraph()

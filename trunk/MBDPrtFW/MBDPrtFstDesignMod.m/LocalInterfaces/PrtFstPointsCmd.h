@@ -62,13 +62,16 @@ class PrtFstPointsCmd: public CATStateCommand
   //
   CATBoolean ActiveCurveSL( void *UsefulData);
   CATBoolean ActiveSurfSL( void *UsefulData);
-
-
-
+  //
+  BOOL IsThisZPPrt(CATUnicodeString istrDocName);
   
   private:
 
 	  PrtFstPointsDlg *m_pDlg;
+
+	  //文档指针
+	  CATDocument *m_piDoc;
+	  CATUnicodeString m_strDocName;
 
 	  //定义代理
 	  CATFeatureImportAgent *m_pCurveAgt,*m_pSurfAgt;
