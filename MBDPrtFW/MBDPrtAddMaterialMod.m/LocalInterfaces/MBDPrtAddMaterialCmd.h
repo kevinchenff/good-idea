@@ -61,8 +61,8 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
      * <i>(states, transitions and agents)</i>
      */
   virtual void     BuildGraph();
-
-
+  //判断是否为ZP模型
+  BOOL IsThisZPPrt(CATUnicodeString istrDocName);
   //查询材料信息FROM DATABASE
   void SearchMaterialInfo();
   //获取材料catalog文件
@@ -75,6 +75,10 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
   HRESULT SetMaterialProperty(CATIMaterialFeature * &pIMaterialFeature);
 
   private:
+
+	  //文档指针
+	  CATDocument *m_piDoc;
+	  CATUnicodeString m_strDocName;
 
 };
 

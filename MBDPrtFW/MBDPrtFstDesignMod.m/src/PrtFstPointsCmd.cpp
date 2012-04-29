@@ -42,8 +42,33 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
   CATStateCommand ("PrtFstPointsCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL)
-  ,m_SpecSurfs(NULL_var)
+  ,m_SpecSurfs(NULL_var),m_piDoc(NULL)
 {
+	//初始化获得当前文档及名称
+	m_piDoc = PrtService::GetPrtDocument();
+	PrtService::GetPrdNumberFormDoc(m_piDoc,m_strDocName);
+
+	//判断是否为ZP模型;
+	if ((!IsThisZPPrt(m_strDocName))||(!PrdService::IsContextualPrd()))
+	{
+		PrtService::ShowDlgNotify("提示","该功能仅在装配上下文环境且ZP模型中操作，点击关闭！");
+		RequestDelayedDestruction();
+	}
+}
+
+//判断是否为ZP模型
+BOOL PrtFstPointsCmd::IsThisZPPrt(CATUnicodeString istrDocName)
+{
+	  if (istrDocName != "")
+	  {
+		  int istart=istrDocName.SearchSubString("-ZP",0,CATUnicodeString::CATSearchModeBackward);
+		  if (istart != -1)
+		  {
+			  return TRUE;
+		  }
+		  else return FALSE;
+	  }
+	  else return FALSE;
 }
 
 //-------------------------------------------------------------------------

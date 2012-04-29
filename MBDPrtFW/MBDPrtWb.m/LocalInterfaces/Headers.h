@@ -9,9 +9,9 @@
 //						  "MBDPrtXXXXXCmd",		    //MBDPrtXXXMod module下，对应的Command类名称
 //						  (void *)NULL);
 
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr01", "MBDPrtFastenerInfoXMLMod","MBDPrtFastenerInfoToXMLCmd",(void *)NULL);
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr02", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL);
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr03", "MBDPrtAnnotateXMLMod","MBDPrtAnnotateToXMLCmd",(void *)NULL);
+//new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr01", "MBDPrtFastenerInfoXMLMod","MBDPrtFastenerInfoToXMLCmd",(void *)NULL);
+//new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr02", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL);
+//new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr03", "MBDPrtAnnotateXMLMod","MBDPrtAnnotateToXMLCmd",(void *)NULL);
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr04", "MBDPrtAddMaterialMod","MBDPrtAddMaterialCmd",(void *)NULL);
 
 //紧固件选用

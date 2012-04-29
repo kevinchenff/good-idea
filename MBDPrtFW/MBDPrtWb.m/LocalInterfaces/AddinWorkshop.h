@@ -18,32 +18,32 @@
 /************************************************************************/
 //*************************************************************************************
 //  [12/17/2010 ev5adm]
-//************************************************************************************
-//创建工具条 紧固件信息处理
-//************************************************************************************
-NewAccess(CATCmdContainer,pMBDPrtWbFastenerTktTlb,MBDPrtWbFastenerTktTlb);
-
-//创建紧固件信息处理对应的toolbar command starter功能
-NewAccess(CATCmdStarter,pMBDPrtWbFastenerTktTlbStr01,MBDPrtWbFastenerTktTlbStr01); // toolbar command 子按钮1: XXXX功能
-SetAccessCommand(pMBDPrtWbFastenerTktTlbStr01, "MBDPrtWbCmdHdr01");
-SetAccessChild(pMBDPrtWbFastenerTktTlb,pMBDPrtWbFastenerTktTlbStr01);
-
-//NewAccess(CATCmdStarter,pMBDPrtWbFastenerTktTlbStr02,MBDPrtWbFastenerTktTlbStr02); // toolbar command 子按钮2: XXXX功能
-//SetAccessCommand(pMBDPrtWbFastenerTktTlbStr02, "MBDPrtWbCmdHdr02");
-//SetAccessNext(pMBDPrtWbFastenerTktTlbStr01,pMBDPrtWbFastenerTktTlbStr02);
-//  [12/17/2010 ev5adm]
-//*************************************************************************************
-
-//************************************************************************************
-//创建工具条 CATIA MBD附注信息
-//************************************************************************************
-NewAccess(CATCmdContainer,pMBDPrtWbMBDAnnotateTktTlb,MBDPrtWbMBDAnnotateTktTlb);
-SetAccessNext(pMBDPrtWbFastenerTktTlb,pMBDPrtWbMBDAnnotateTktTlb);
-
-//创建 导出MBD附注信息 toolbar command starter功能
-NewAccess(CATCmdStarter,pMBDPrtWbMBDAnnotateTktTlbStr01,MBDPrtWbMBDAnnotateTktTlbStr01); // toolbar command 子按钮1: XXXX功能
-SetAccessCommand(pMBDPrtWbMBDAnnotateTktTlbStr01, "MBDPrtWbCmdHdr03");
-SetAccessChild(pMBDPrtWbMBDAnnotateTktTlb,pMBDPrtWbMBDAnnotateTktTlbStr01);
+////************************************************************************************
+////创建工具条 紧固件信息处理
+////************************************************************************************
+//NewAccess(CATCmdContainer,pMBDPrtWbFastenerTktTlb,MBDPrtWbFastenerTktTlb);
+//
+////创建紧固件信息处理对应的toolbar command starter功能
+//NewAccess(CATCmdStarter,pMBDPrtWbFastenerTktTlbStr01,MBDPrtWbFastenerTktTlbStr01); // toolbar command 子按钮1: XXXX功能
+//SetAccessCommand(pMBDPrtWbFastenerTktTlbStr01, "MBDPrtWbCmdHdr01");
+//SetAccessChild(pMBDPrtWbFastenerTktTlb,pMBDPrtWbFastenerTktTlbStr01);
+//
+////NewAccess(CATCmdStarter,pMBDPrtWbFastenerTktTlbStr02,MBDPrtWbFastenerTktTlbStr02); // toolbar command 子按钮2: XXXX功能
+////SetAccessCommand(pMBDPrtWbFastenerTktTlbStr02, "MBDPrtWbCmdHdr02");
+////SetAccessNext(pMBDPrtWbFastenerTktTlbStr01,pMBDPrtWbFastenerTktTlbStr02);
+////  [12/17/2010 ev5adm]
+////*************************************************************************************
+//
+////************************************************************************************
+////创建工具条 CATIA MBD附注信息
+////************************************************************************************
+//NewAccess(CATCmdContainer,pMBDPrtWbMBDAnnotateTktTlb,MBDPrtWbMBDAnnotateTktTlb);
+//SetAccessNext(pMBDPrtWbFastenerTktTlb,pMBDPrtWbMBDAnnotateTktTlb);
+//
+////创建 导出MBD附注信息 toolbar command starter功能
+//NewAccess(CATCmdStarter,pMBDPrtWbMBDAnnotateTktTlbStr01,MBDPrtWbMBDAnnotateTktTlbStr01); // toolbar command 子按钮1: XXXX功能
+//SetAccessCommand(pMBDPrtWbMBDAnnotateTktTlbStr01, "MBDPrtWbCmdHdr03");
+//SetAccessChild(pMBDPrtWbMBDAnnotateTktTlb,pMBDPrtWbMBDAnnotateTktTlbStr01);
 
 
 
@@ -51,7 +51,7 @@ SetAccessChild(pMBDPrtWbMBDAnnotateTktTlb,pMBDPrtWbMBDAnnotateTktTlbStr01);
 //创建工具条 添加材料信息
 //************************************************************************************
 NewAccess(CATCmdContainer,pMBDPrtWbMBDMaterialTktTlb,MBDPrtWbMBDMaterialTktTlb);
-SetAccessNext(pMBDPrtWbMBDAnnotateTktTlb,pMBDPrtWbMBDMaterialTktTlb);
+//SetAccessNext(pMBDPrtWbMBDAnnotateTktTlb,pMBDPrtWbMBDMaterialTktTlb);
 
 //创建 添加材料信息 toolbar command starter功能
 NewAccess(CATCmdStarter,pMBDPrtWbMBDMaterialTktTlbStr01,MBDPrtWbMBDMaterialTktTlbStr01); // toolbar command 子按钮1: XXXX功能
@@ -108,8 +108,8 @@ SetAccessNext(pMBDPrtWbFDATransformTktTlbStr04,pMBDPrtWbFDATransformTktTlbStr05)
 
 
 //放置工具条位置
-AddToolbarView(pMBDPrtWbFastenerTktTlb,1,Right);
-AddToolbarView(pMBDPrtWbMBDAnnotateTktTlb,1,Right);
+//AddToolbarView(pMBDPrtWbFastenerTktTlb,1,Right);
+//AddToolbarView(pMBDPrtWbMBDAnnotateTktTlb,1,Right);
 AddToolbarView(pMBDPrtWbMBDMaterialTktTlb,1,Right);
 
 AddToolbarView(pMBDPrtWbFDADesignTktTlb,1,Right);
@@ -125,7 +125,6 @@ NewAccess(CATCmdContainer,pMBDPrtWbTktMbr,MBDPrtWbTktMbr); // 主空menu ,No Sourc
 NewAccess(CATCmdContainer,pCATAfrInsertMnu,CATAfrInsertMnu);
 SetAccessChild(pMBDPrtWbTktMbr,pCATAfrInsertMnu);
 
-
 //=======================================================================
 //主菜单工具箱1
 //=======================================================================
@@ -133,26 +132,26 @@ NewAccess(CATCmdContainer,pMBDPrtWbTktMnu,MBDPrtWbTktMnu); //Menu Title
 SetAccessNext(pCATAfrInsertMnu,pMBDPrtWbTktMnu);  // 主菜单工具箱1
 
 	//创建二级子菜单: 紧固件信息处理
-	NewAccess(CATCmdContainer,pMBDPrtWbFastenerTktMbr,MBDPrtWbFastenerTktMbr); 
-	SetAccessChild(pMBDPrtWbTktMnu,pMBDPrtWbFastenerTktMbr); // 二级菜单1:紧固件信息处理
+	//NewAccess(CATCmdContainer,pMBDPrtWbFastenerTktMbr,MBDPrtWbFastenerTktMbr); 
+	//SetAccessChild(pMBDPrtWbTktMnu,pMBDPrtWbFastenerTktMbr); // 二级菜单1:紧固件信息处理
 
-	//创建对应的MenuBar command starter功能 紧固件信息导出
-	NewAccess(CATCmdStarter,pMBDPrtWbFastenerTktMbrStr01,MBDPrtWbFastenerTktMbrStr01); // MenuBar command 子按钮1: XXXX功能
-	SetAccessCommand(pMBDPrtWbFastenerTktMbrStr01, "MBDPrtWbCmdHdr01");
-	SetAccessChild(pMBDPrtWbFastenerTktMbr,pMBDPrtWbFastenerTktMbrStr01);
+	////创建对应的MenuBar command starter功能 紧固件信息导出
+	//NewAccess(CATCmdStarter,pMBDPrtWbFastenerTktMbrStr01,MBDPrtWbFastenerTktMbrStr01); // MenuBar command 子按钮1: XXXX功能
+	//SetAccessCommand(pMBDPrtWbFastenerTktMbrStr01, "MBDPrtWbCmdHdr01");
+	//SetAccessChild(pMBDPrtWbFastenerTktMbr,pMBDPrtWbFastenerTktMbrStr01);
 
-	//创建二级子菜单: CATIA MBD 附注信息
-	NewAccess(CATCmdContainer,pMBDPrtWbMBDAnnotateTktMbr,MBDPrtWbMBDAnnotateTktMbr); 
-	SetAccessNext(pMBDPrtWbFastenerTktMbr,pMBDPrtWbMBDAnnotateTktMbr); // 二级菜单2:CATIA MBD 附注信息
+	////创建二级子菜单: CATIA MBD 附注信息
+	//NewAccess(CATCmdContainer,pMBDPrtWbMBDAnnotateTktMbr,MBDPrtWbMBDAnnotateTktMbr); 
+	//SetAccessNext(pMBDPrtWbFastenerTktMbr,pMBDPrtWbMBDAnnotateTktMbr); // 二级菜单2:CATIA MBD 附注信息
 
-	//创建对应的MenuBar command starter功能 导出MBD附注信息
-	NewAccess(CATCmdStarter,pMBDPrtWbMBDAnnotateTktMbrStr01,MBDPrtWbMBDAnnotateTktMbrStr01); // MenuBar command 子按钮1: XXXX功能
-	SetAccessCommand(pMBDPrtWbMBDAnnotateTktMbrStr01, "MBDPrtWbCmdHdr03");
-	SetAccessChild(pMBDPrtWbMBDAnnotateTktMbr,pMBDPrtWbMBDAnnotateTktMbrStr01);
+	////创建对应的MenuBar command starter功能 导出MBD附注信息
+	//NewAccess(CATCmdStarter,pMBDPrtWbMBDAnnotateTktMbrStr01,MBDPrtWbMBDAnnotateTktMbrStr01); // MenuBar command 子按钮1: XXXX功能
+	//SetAccessCommand(pMBDPrtWbMBDAnnotateTktMbrStr01, "MBDPrtWbCmdHdr03");
+	//SetAccessChild(pMBDPrtWbMBDAnnotateTktMbr,pMBDPrtWbMBDAnnotateTktMbrStr01);
 
 	//创建二级子菜单: 添加材料信息
 	NewAccess(CATCmdContainer,pMBDPrtWbMBDMaterialTktMbr,MBDPrtWbMBDMaterialTktMbr); 
-	SetAccessNext(pMBDPrtWbMBDAnnotateTktMbr,pMBDPrtWbMBDMaterialTktMbr); // 二级菜单3: 添加材料信息
+	SetAccessChild(pMBDPrtWbTktMnu,pMBDPrtWbMBDMaterialTktMbr); // 二级菜单3: 添加材料信息
 
 	//创建对应的MenuBar command starter功能 添加材料信息
 	NewAccess(CATCmdStarter,pMBDPrtWbMBDMaterialTktMbrStr01,MBDPrtWbMBDMaterialTktMbrStr01); // MenuBar command 子按钮1: XXXX功能
@@ -199,6 +198,6 @@ SetAccessNext(pCATAfrInsertMnu,pMBDPrtWbTktMnu);  // 主菜单工具箱1
 
 
 // Menu bar to be merged with the workshop menu bar
-SetAddinMenu(pMBDPrtWbFastenerTktTlb,pMBDPrtWbTktMbr);
+SetAddinMenu(pMBDPrtWbMBDMaterialTktTlb,pMBDPrtWbTktMbr);
 
-return pMBDPrtWbFastenerTktTlb;
+return pMBDPrtWbMBDMaterialTktTlb;

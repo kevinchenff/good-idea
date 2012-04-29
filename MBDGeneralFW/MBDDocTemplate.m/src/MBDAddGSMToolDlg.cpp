@@ -83,7 +83,7 @@ _PartNameEditor->SetText("New_Part");
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
 _MBDTemplateTypeCombo->SetLine("设计零件MBD模板",0);
-_MBDTemplateTypeCombo->SetLine("ARM零件MBD模板",1);
+_MBDTemplateTypeCombo->SetLine("ZP零件MBD模板",1);
 
 
 }
