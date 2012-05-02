@@ -17,6 +17,8 @@
 #define IDD_KnowMainFstDlg              1003
 #define IDC_STARTRADIO                  1003
 #define IDC_FreeMainCombineSearchPB     1003
+#define IDC_StartRAD                    1003
+#define IDC_StartRADI                   1003
 #define IDC_RADIO2                      1004
 #define IDC_FreeRADIO                   1004
 #define IDD_KnowNutFstDlg               1004
@@ -93,6 +95,7 @@
 #define IDMainSpecCANCEL                1055
 #define IDNutCANCEL                     1056
 #define IDGasketCANCEL                  1057
+#define IDC_EndRADI                     1058
 
 // Next default values for new objects
 // 
@@ -100,7 +103,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        1009
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1058
+#define _APS_NEXT_CONTROL_VALUE         1059
 #define _APS_NEXT_SYMED_VALUE           1000
 #endif
 #endif
