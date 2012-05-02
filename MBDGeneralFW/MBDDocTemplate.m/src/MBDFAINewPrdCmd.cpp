@@ -262,31 +262,33 @@ void MBDFAINewPrdCmd::InitialMBDInfo()
 				//------------------------------------------------------------------
 				// 3 自动创建MBD装配模板文档
 				//------------------------------------------------------------------
-				//
 				CATUnicodeString strNum("1");
 				int Num = m_listARMInstancePrd.Size();
+				cout<<"ZP个数："<<Num<<endl;
 				if (Num >= 1)
 				{
 					//获取ARM编号最大值
 					for (int i = 1; i <= Num; i ++)
 					{
-						CATIAlias_var spAlias = m_listARMInstancePrd[i];
-						CATUnicodeString strAlias = spAlias->GetAlias();
-						CATUnicodeString strTempNum = strAlias.SubString(strAlias.GetLengthInChar()-1,1);
-						//cout<<"ARM编号："<<strTempNum<<endl;
 
+						CATIProduct_var spPrdAlias = ((CATIProduct_var)m_listARMInstancePrd[i])->GetReferenceProduct();
+						CATUnicodeString strAlias = spPrdAlias->GetPartNumber();
+						CATUnicodeString strTempNum = strAlias.SubString(strAlias.GetLengthInChar()-1,1);
+						
 						if (strNum < strTempNum)
 						{
-							strNum = strTempNum;
+							strNum = strTempNum;					
 						}
 					}
 
 					//转换成数字
 					int NumTemp;
 					strNum.ConvertToNum(&NumTemp);
+					cout<<"ZP编号："<<strNum<<endl;
 
 					NumTemp ++;
 					strNum.BuildFromNum(NumTemp);
+					cout<<"下一个ZP编号："<<strNum<<endl;
 				}
 				//
 				CATUnicodeString strChangeARMName = _strDocName + "-ZP" + strNum;
@@ -314,7 +316,7 @@ void MBDFAINewPrdCmd::InitialMBDInfo()
 				// 输出自动创建MBD装配信息的模型提示
 				if (SUCCEEDED(hr))
 				{
-					PrtService::ShowDlgNotify("添加MBD装配模板提示","在该装配节点下添加零件装配ARM信息模型！");
+					PrtService::ShowDlgNotify("添加MBD装配模板提示","在该装配节点下添加零件装配ZP信息模型！");
 				}
 							
 			} // else if
