@@ -19,8 +19,8 @@ new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr05", "MBDPrtFstDesignMod","PrtFstPointsCmd"
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr06", "MBDPrtFstDesignMod","PrtFstDesignCmd",(void *)NULL); //紧固件选用
 
 //紧固件变换
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr07", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //阵列紧固件
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr08", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //对称紧固件
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr09", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //编辑紧固件
+//new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr07", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //阵列紧固件
+//new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr08", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //对称紧固件
+//new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr09", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //编辑紧固件
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr10", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //删除紧固件
 new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr11", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //更新紧固件
