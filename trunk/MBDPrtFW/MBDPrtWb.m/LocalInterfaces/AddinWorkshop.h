@@ -85,21 +85,21 @@ NewAccess(CATCmdContainer,pMBDPrtWbFDATransformTktTlb,MBDPrtWbFDATransformTktTlb
 SetAccessNext(pMBDPrtWbFDADesignTktTlb,pMBDPrtWbFDATransformTktTlb);
 
 //创建 紧固件变换模块 toolbar command starter功能
-NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr01,MBDPrtWbFDATransformTktTlbStr01); // toolbar command 子按钮1: XXXX功能
-SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr01, "MBDPrtWbCmdHdr07");
-SetAccessChild(pMBDPrtWbFDATransformTktTlb,pMBDPrtWbFDATransformTktTlbStr01);
-
-NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr02,MBDPrtWbFDATransformTktTlbStr02); // toolbar command 子按钮1: XXXX功能
-SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr02, "MBDPrtWbCmdHdr08");
-SetAccessNext(pMBDPrtWbFDATransformTktTlbStr01,pMBDPrtWbFDATransformTktTlbStr02);
-
-NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr03,MBDPrtWbFDATransformTktTlbStr03); // toolbar command 子按钮1: XXXX功能
-SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr03, "MBDPrtWbCmdHdr09");
-SetAccessNext(pMBDPrtWbFDATransformTktTlbStr02,pMBDPrtWbFDATransformTktTlbStr03);
+//NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr01,MBDPrtWbFDATransformTktTlbStr01); // toolbar command 子按钮1: XXXX功能
+//SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr01, "MBDPrtWbCmdHdr07");
+//SetAccessChild(pMBDPrtWbFDATransformTktTlb,pMBDPrtWbFDATransformTktTlbStr01);
+//
+//NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr02,MBDPrtWbFDATransformTktTlbStr02); // toolbar command 子按钮1: XXXX功能
+//SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr02, "MBDPrtWbCmdHdr08");
+//SetAccessNext(pMBDPrtWbFDATransformTktTlbStr01,pMBDPrtWbFDATransformTktTlbStr02);
+//
+//NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr03,MBDPrtWbFDATransformTktTlbStr03); // toolbar command 子按钮1: XXXX功能
+//SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr03, "MBDPrtWbCmdHdr09");
+//SetAccessNext(pMBDPrtWbFDATransformTktTlbStr02,pMBDPrtWbFDATransformTktTlbStr03);
 
 NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr04,MBDPrtWbFDATransformTktTlbStr04); // toolbar command 子按钮1: XXXX功能
 SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr04, "MBDPrtWbCmdHdr10");
-SetAccessNext(pMBDPrtWbFDATransformTktTlbStr03,pMBDPrtWbFDATransformTktTlbStr04);
+SetAccessChild(pMBDPrtWbFDATransformTktTlb,pMBDPrtWbFDATransformTktTlbStr04);
 
 NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktTlbStr05,MBDPrtWbFDATransformTktTlbStr05); // toolbar command 子按钮1: XXXX功能
 SetAccessCommand(pMBDPrtWbFDATransformTktTlbStr05, "MBDPrtWbCmdHdr11");
@@ -176,21 +176,21 @@ SetAccessNext(pCATAfrInsertMnu,pMBDPrtWbTktMnu);  // 主菜单工具箱1
 	SetAccessNext(pMBDPrtWbFDADesignTktMbr,pMBDPrtWbFDATransformTktMbr); // 二级菜单5: 紧固件变换
 
 	//创建对应的MenuBar command starter功能 添加材料信息
-	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr01,MBDPrtWbFDATransformTktMbrStr01); // MenuBar command 子按钮1: XXXX功能
-	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr01, "MBDPrtWbCmdHdr07");
-	SetAccessChild(pMBDPrtWbFDATransformTktMbr,pMBDPrtWbFDATransformTktMbrStr01);
+	//NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr01,MBDPrtWbFDATransformTktMbrStr01); // MenuBar command 子按钮1: XXXX功能
+	//SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr01, "MBDPrtWbCmdHdr07");
+	//SetAccessChild(pMBDPrtWbFDATransformTktMbr,pMBDPrtWbFDATransformTktMbrStr01);
 
-	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr02,MBDPrtWbFDATransformTktMbrStr02); // MenuBar command 子按钮1: XXXX功能
-	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr02, "MBDPrtWbCmdHdr08");
-	SetAccessNext(pMBDPrtWbFDATransformTktMbrStr01,pMBDPrtWbFDATransformTktMbrStr02);
+	//NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr02,MBDPrtWbFDATransformTktMbrStr02); // MenuBar command 子按钮1: XXXX功能
+	//SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr02, "MBDPrtWbCmdHdr08");
+	//SetAccessNext(pMBDPrtWbFDATransformTktMbrStr01,pMBDPrtWbFDATransformTktMbrStr02);
 
-	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr03,MBDPrtWbFDATransformTktMbrStr03); // MenuBar command 子按钮1: XXXX功能
-	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr03, "MBDPrtWbCmdHdr09");
-	SetAccessNext(pMBDPrtWbFDATransformTktMbrStr02,pMBDPrtWbFDATransformTktMbrStr03);
+	//NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr03,MBDPrtWbFDATransformTktMbrStr03); // MenuBar command 子按钮1: XXXX功能
+	//SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr03, "MBDPrtWbCmdHdr09");
+	//SetAccessNext(pMBDPrtWbFDATransformTktMbrStr02,pMBDPrtWbFDATransformTktMbrStr03);
 
 	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr04,MBDPrtWbFDATransformTktMbrStr04); // MenuBar command 子按钮1: XXXX功能
 	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr04, "MBDPrtWbCmdHdr10");
-	SetAccessNext(pMBDPrtWbFDATransformTktMbrStr03,pMBDPrtWbFDATransformTktMbrStr04);
+	SetAccessChild(pMBDPrtWbFDATransformTktMbr,pMBDPrtWbFDATransformTktMbrStr04);
 
 	NewAccess(CATCmdStarter,pMBDPrtWbFDATransformTktMbrStr05,MBDPrtWbFDATransformTktMbrStr05); // MenuBar command 子按钮1: XXXX功能
 	SetAccessCommand(pMBDPrtWbFDATransformTktMbrStr05, "MBDPrtWbCmdHdr11");
