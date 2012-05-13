@@ -18,10 +18,13 @@
 #ifndef PrtFstDeleteCmd_H
 #define PrtFstDeleteCmd_H
 
+#include "ktPubHeaders.h"
 #include "CATStateCommand.h"
 #include "CATBoolean.h"
+#include "PrtFstDeleteDlg.h"
 
 class CATIndicationAgent;
+class PrtFstDeleteDlg;
 
 //----------------------------------------------------------------------
 
@@ -51,14 +54,26 @@ class PrtFstDeleteCmd: public CATStateCommand
      */
   virtual void     BuildGraph();
 
-    /**
-     * Action associated to state transitions.
-     */
-  virtual CATBoolean  ActionOne(void * data);
+  //消息框响应函数
+  void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+  //
+  BOOL IsThisZPPrt(CATUnicodeString istrDocName);
+
 
   private:
 
-  CATIndicationAgent	* _Indication;
+  //对话框指针
+  PrtFstDeleteDlg *m_pDlg;
+
+  //文档指针
+  CATDocument *m_piDoc;
+  CATUnicodeString m_strDocName;
+  CATFrmEditor *m_piEditor;
+  CATHSO *m_piHSO;
+  CATISO *m_piISO;
+
 };
 
 //----------------------------------------------------------------------

@@ -18,10 +18,12 @@
 #ifndef PrtFstUpdateCmd_H
 #define PrtFstUpdateCmd_H
 
+#include "ktPubHeaders.h"
 #include "CATStateCommand.h"
 #include "CATBoolean.h"
+#include "PrtFstUpdateDlg.h"
 
-class CATIndicationAgent;
+class PrtFstUpdateDlg;
 
 //----------------------------------------------------------------------
 
@@ -44,21 +46,32 @@ class PrtFstUpdateCmd: public CATStateCommand
   PrtFstUpdateCmd();
   virtual ~PrtFstUpdateCmd();
 
-    /**
-     * Defines the command automata.
-     * <br>
-     * <i>(states, transitions and agents)</i>
-     */
+ /**
+ * Defines the command automata.
+ * <br>
+ * <i>(states, transitions and agents)</i>
+ */
   virtual void     BuildGraph();
 
-    /**
-     * Action associated to state transitions.
-     */
-  virtual CATBoolean  ActionOne(void * data);
+  //消息框响应函数
+  void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
-  private:
+  //
+  BOOL IsThisZPPrt(CATUnicodeString istrDocName);
 
-  CATIndicationAgent	* _Indication;
+
+private:
+
+	//对话框指针
+	PrtFstUpdateDlg *m_pDlg;
+
+	//文档指针
+	CATDocument *m_piDoc;
+	CATUnicodeString m_strDocName;
+	CATFrmEditor *m_piEditor;
+	CATHSO *m_piHSO;
+	CATISO *m_piISO;   
 };
 
 //----------------------------------------------------------------------

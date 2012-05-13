@@ -26,8 +26,28 @@ CATCreateClass( PrtFstDeleteCmd);
 PrtFstDeleteCmd::PrtFstDeleteCmd() :
   CATStateCommand ("PrtFstDeleteCmd", CATDlgEngOneShot, CATCommandModeExclusive) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-  ,_Indication(NULL)
+ ,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL)
 {
+	//初始化获得当前文档及名称
+	m_piDoc = PrtService::GetPrtDocument();
+	PrtService::GetPrdNumberFormDoc(m_piDoc,m_strDocName);
+
+	m_piEditor = CATFrmEditor::GetCurrentEditor();
+	if (NULL != m_piEditor)
+	{
+		m_piHSO = m_piEditor->GetHSO();
+		m_piHSO->Empty();
+
+		m_piISO = m_piEditor->GetISO();
+		m_piISO->Empty();
+	}
+
+	//判断是否为ZP模型;
+	if (!IsThisZPPrt(m_strDocName))
+	{
+		PrtService::ShowDlgNotify("提示","该功能仅在装配ZP模型中操作，点击关闭！");
+		RequestDelayedDestruction();
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -35,8 +55,15 @@ PrtFstDeleteCmd::PrtFstDeleteCmd() :
 //-------------------------------------------------------------------------
 PrtFstDeleteCmd::~PrtFstDeleteCmd()
 {
-   if (_Indication != NULL) 
-      _Indication->RequestDelayedDestruction();
+   if (m_pDlg != NULL) 
+   {
+      m_pDlg->RequestDelayedDestruction();
+	  m_pDlg=NULL;
+   }
+
+   //高亮点清空
+   m_piHSO->Empty();
+   m_piISO->Empty();
 }
 
 
@@ -45,29 +72,52 @@ PrtFstDeleteCmd::~PrtFstDeleteCmd()
 //-------------------------------------------------------------------------
 void PrtFstDeleteCmd::BuildGraph()
 {
+	//
+	m_pDlg = new PrtFstDeleteDlg();
+	m_pDlg->Build();
+	m_pDlg->SetVisibility(CATDlgShow); 
 
+	// 主对话框的消息响应
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetDiaOKNotification(),
+		(CATCommandMethod)&PrtFstDeleteCmd::OkDlgCB,
+		NULL);
 
-  // TODO: Define the StateChart 
-  // ---------------------------
-  _Indication = new CATIndicationAgent ("Indication");
-  CATMathPlane PlaneXY;
-  _Indication -> SetMathPlane (PlaneXY);
-  CATDialogState * initialState = GetInitialState("initialState");
-  initialState -> AddDialogAgent (_Indication);
-  
-  AddTransition( initialState, NULL, 
-                 IsOutputSetCondition (_Indication),
-                 Action ((ActionMethod) &PrtFstDeleteCmd::ActionOne));
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetWindCloseNotification(),
+		(CATCommandMethod)&PrtFstDeleteCmd::CloseDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetDiaCANCELNotification(),
+		(CATCommandMethod)&PrtFstDeleteCmd::CloseDlgCB,
+		NULL);
+
 }
 
-
-//-------------------------------------------------------------------------
-// ActionOne ()
-//-------------------------------------------------------------------------
-CATBoolean PrtFstDeleteCmd::ActionOne( void *data )
+//判断是否为ZP模型
+BOOL PrtFstDeleteCmd::IsThisZPPrt(CATUnicodeString istrDocName)
 {
-  // TODO: Define the action associated with the transition 
-  // ------------------------------------------------------
+	if (istrDocName != "")
+	{
+		int istart=istrDocName.SearchSubString("-ZP",0,CATUnicodeString::CATSearchModeBackward);
+		if (istart != -1)
+		{
+			return TRUE;
+		}
+		else return FALSE;
+	}
+	else return FALSE;
+}
 
-  return TRUE;
+void PrtFstDeleteCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	RequestDelayedDestruction();
+}
+
+void PrtFstDeleteCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	RequestDelayedDestruction();
 }
