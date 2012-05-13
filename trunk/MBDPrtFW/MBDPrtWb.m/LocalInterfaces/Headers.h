@@ -22,5 +22,5 @@ new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr06", "MBDPrtFstDesignMod","PrtFstDesignCmd"
 //new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr07", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //ÕóÁÐ½ô¹Ì¼þ
 //new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr08", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //¶Ô³Æ½ô¹Ì¼þ
 //new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr09", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //±à¼­½ô¹Ì¼þ
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr10", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //É¾³ý½ô¹Ì¼þ
-new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr11", "MBDPrtXXXMod","MBDPrtXXXXXCmd",(void *)NULL); //¸üÐÂ½ô¹Ì¼þ
+new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr10", "MBDPrtFstTransformMod","PrtFstDeleteCmd",(void *)NULL); //É¾³ý½ô¹Ì¼þ
+new MBDPrtWbCmdHeader("MBDPrtWbCmdHdr11", "MBDPrtFstTransformMod","PrtFstUpdateCmd",(void *)NULL); //¸üÐÂ½ô¹Ì¼þ

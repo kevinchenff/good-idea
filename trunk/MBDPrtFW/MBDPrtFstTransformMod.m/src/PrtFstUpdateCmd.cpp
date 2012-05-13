@@ -26,7 +26,7 @@ CATCreateClass( PrtFstUpdateCmd);
 PrtFstUpdateCmd::PrtFstUpdateCmd() :
   CATStateCommand ("PrtFstUpdateCmd", CATDlgEngOneShot, CATCommandModeExclusive) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-  ,_Indication(NULL)
+,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL)
 {
 }
 
@@ -35,8 +35,11 @@ PrtFstUpdateCmd::PrtFstUpdateCmd() :
 //-------------------------------------------------------------------------
 PrtFstUpdateCmd::~PrtFstUpdateCmd()
 {
-   if (_Indication != NULL) 
-      _Indication->RequestDelayedDestruction();
+   if (m_pDlg != NULL) 
+   {
+      m_pDlg->RequestDelayedDestruction();
+	  m_pDlg=NULL;
+   }
 }
 
 
@@ -45,29 +48,52 @@ PrtFstUpdateCmd::~PrtFstUpdateCmd()
 //-------------------------------------------------------------------------
 void PrtFstUpdateCmd::BuildGraph()
 {
+	//
+	m_pDlg = new PrtFstUpdateDlg();
+	m_pDlg->Build();
+	m_pDlg->SetVisibility(CATDlgShow); 
 
+	// 主对话框的消息响应
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetDiaOKNotification(),
+		(CATCommandMethod)&PrtFstUpdateCmd::OkDlgCB,
+		NULL);
 
-  // TODO: Define the StateChart 
-  // ---------------------------
-  _Indication = new CATIndicationAgent ("Indication");
-  CATMathPlane PlaneXY;
-  _Indication -> SetMathPlane (PlaneXY);
-  CATDialogState * initialState = GetInitialState("initialState");
-  initialState -> AddDialogAgent (_Indication);
-  
-  AddTransition( initialState, NULL, 
-                 IsOutputSetCondition (_Indication),
-                 Action ((ActionMethod) &PrtFstUpdateCmd::ActionOne));
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetWindCloseNotification(),
+		(CATCommandMethod)&PrtFstUpdateCmd::CloseDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetDiaCANCELNotification(),
+		(CATCommandMethod)&PrtFstUpdateCmd::CloseDlgCB,
+		NULL);
 }
 
 
-//-------------------------------------------------------------------------
-// ActionOne ()
-//-------------------------------------------------------------------------
-CATBoolean PrtFstUpdateCmd::ActionOne( void *data )
+//判断是否为ZP模型
+BOOL PrtFstUpdateCmd::IsThisZPPrt(CATUnicodeString istrDocName)
 {
-  // TODO: Define the action associated with the transition 
-  // ------------------------------------------------------
+	if (istrDocName != "")
+	{
+		int istart=istrDocName.SearchSubString("-ZP",0,CATUnicodeString::CATSearchModeBackward);
+		if (istart != -1)
+		{
+			return TRUE;
+		}
+		else return FALSE;
+	}
+	else return FALSE;
+}
 
-  return TRUE;
+void PrtFstUpdateCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	RequestDelayedDestruction();
+}
+
+void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	RequestDelayedDestruction();
 }
