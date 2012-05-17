@@ -2,6 +2,78 @@
 CATDlgDialog PrtFstUpdateDlg
 {
   STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
+  ROWRES = { 0, 1, 2 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame Frame001
+{
+  FATHER = PrtFstUpdateDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgSelectorList SelectorList004
+{
+  FATHER = Frame001;
+  TH = 10;
+  TW = 60;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame007
+{
+  FATHER = Frame001;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton PushButton005
+{
+  FATHER = Frame007;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton PushButton006
+{
+  FATHER = Frame007;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame002
+{
+  FATHER = PrtFstUpdateDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList MultiList008
+{
+  FATHER = Frame002;
+  CC = 3;
+  VCC = 3;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame003
+{
+  FATHER = PrtFstUpdateDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList MultiList009
+{
+  FATHER = Frame003;
+  CC = 3;
+  VCC = 3;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

@@ -36,6 +36,20 @@ PrtFstUpdateDlg::PrtFstUpdateDlg() :
                                )
 {
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+ _Frame001 = NULL;
+ _SelectorList004 = NULL;
+ _Frame007 = NULL;
+ _PushButton005 = NULL;
+ _PushButton006 = NULL;
+ _Frame002 = NULL;
+ _MultiList008 = NULL;
+ _Frame003 = NULL;
+ _MultiList009 = NULL;
+//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+
+
+//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+
 
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 
@@ -58,6 +72,20 @@ PrtFstUpdateDlg::~PrtFstUpdateDlg()
 //     this is done automatically
 //  --------------------------------------------------
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+ _Frame001 = NULL;
+ _SelectorList004 = NULL;
+ _Frame007 = NULL;
+ _PushButton005 = NULL;
+ _PushButton006 = NULL;
+ _Frame002 = NULL;
+ _MultiList008 = NULL;
+ _Frame003 = NULL;
+ _MultiList009 = NULL;
+//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+
+
+//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+
 
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 
@@ -79,6 +107,53 @@ void PrtFstUpdateDlg::Build()
 //  -------------------------------------------------------------------
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+ SetGridRowResizable(0,1);
+ SetGridRowResizable(1,1);
+ SetGridRowResizable(2,1);
+ SetGridColumnResizable(0,1);
+ _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
+_Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame001 -> SetGridRowResizable(0,1);
+ _Frame001 -> SetGridColumnResizable(0,1);
+ _SelectorList004 = new CATDlgSelectorList(_Frame001, "SelectorList004");
+ _SelectorList004 -> SetVisibleTextHeight(10);
+ _SelectorList004 -> SetVisibleTextWidth(60);
+_SelectorList004 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame007 = new CATDlgFrame(_Frame001, "Frame007", CATDlgFraNoFrame|CATDlgGridLayout);
+_Frame007 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _PushButton005 = new CATDlgPushButton(_Frame007, "PushButton005");
+_PushButton005 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _PushButton006 = new CATDlgPushButton(_Frame007, "PushButton006");
+_PushButton006 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
+_Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame002 -> SetGridRowResizable(0,1);
+ _Frame002 -> SetGridColumnResizable(0,1);
+ _MultiList008 = new CATDlgMultiList(_Frame002, "MultiList008");
+ CATUnicodeString MultiList008Titles [ 3 ];
+ MultiList008Titles[0] = CATMsgCatalog::BuildMessage("PrtFstUpdateDlg", "Frame002.MultiList008.ColumnTitle1");
+ MultiList008Titles[1] = CATMsgCatalog::BuildMessage("PrtFstUpdateDlg", "Frame002.MultiList008.ColumnTitle2");
+ MultiList008Titles[2] = CATMsgCatalog::BuildMessage("PrtFstUpdateDlg", "Frame002.MultiList008.ColumnTitle3");
+ _MultiList008 -> SetColumnTitles(3, MultiList008Titles);
+ _MultiList008 -> SetVisibleColumnCount( 3 );
+_MultiList008 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgGridLayout);
+_Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Frame003 -> SetGridRowResizable(0,1);
+ _Frame003 -> SetGridColumnResizable(0,1);
+ _MultiList009 = new CATDlgMultiList(_Frame003, "MultiList009");
+ CATUnicodeString MultiList009Titles [ 3 ];
+ MultiList009Titles[0] = CATMsgCatalog::BuildMessage("PrtFstUpdateDlg", "Frame003.MultiList009.ColumnTitle1");
+ MultiList009Titles[1] = CATMsgCatalog::BuildMessage("PrtFstUpdateDlg", "Frame003.MultiList009.ColumnTitle2");
+ MultiList009Titles[2] = CATMsgCatalog::BuildMessage("PrtFstUpdateDlg", "Frame003.MultiList009.ColumnTitle3");
+ _MultiList009 -> SetColumnTitles(3, MultiList009Titles);
+ _MultiList009 -> SetVisibleColumnCount( 3 );
+_MultiList009 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+
+
+//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+
 
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
