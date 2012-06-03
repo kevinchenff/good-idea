@@ -1,3 +1,14 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "Fastener Delete";
+BOK = "Delete";
+Frame001.Title = "Choosed Fasteners";
+Frame001.Frame008.Frame010.PushButton006.Title = "Delete Seleted";
+Frame001.Frame008.Frame010.PushButton007.Title = "Delete All";
+Frame002.Title = "Fastener Property";
+Frame002.Frame003.Title = "Instance Info";
+ Frame002.Frame003.MultiList011.ColumnTitle1 = "Property Name";
+ Frame002.Frame003.MultiList011.ColumnTitle2 = "Property Value";
+Frame002.Frame004.Title = "External Info";
+ Frame002.Frame004.MultiList012.ColumnTitle1 = "Property Name";
+ Frame002.Frame004.MultiList012.ColumnTitle2 = "Property Value";
 // END WIZARD REPLACEMENT ZONE

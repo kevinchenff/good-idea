@@ -51,6 +51,19 @@ class PrtFstDeleteDlg: public CATDlgDialog
 
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
+ CATDlgFrame*      _Frame001;
+ CATDlgFrame*      _Frame008;
+ CATDlgSelectorList*      _SelectorList005;
+ CATDlgFrame*      _Frame010;
+ CATDlgPushButton*      _PushButton006;
+ CATDlgPushButton*      _PushButton007;
+ CATDlgFrame*      _Frame002;
+ CATDlgFrame*      _Frame003;
+ CATDlgMultiList*      _MultiList011;
+ CATDlgFrame*      _Frame004;
+ CATDlgMultiList*      _MultiList012;
+//END CAA2 WIZARD WIDGET DECLARATION SECTION
+
 
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
