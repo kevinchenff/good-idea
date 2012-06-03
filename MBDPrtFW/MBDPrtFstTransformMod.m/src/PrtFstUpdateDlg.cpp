@@ -115,7 +115,7 @@ void PrtFstUpdateDlg::Build()
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame001 -> SetGridRowResizable(0,1);
  _Frame001 -> SetGridColumnResizable(0,1);
- _SelectorList004 = new CATDlgSelectorList(_Frame001, "SelectorList004");
+ _SelectorList004 = new CATDlgSelectorList(_Frame001, "SelectorList004", CATDlgLstMultisel);
  _SelectorList004 -> SetVisibleTextHeight(10);
  _SelectorList004 -> SetVisibleTextWidth(60);
 _SelectorList004 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);

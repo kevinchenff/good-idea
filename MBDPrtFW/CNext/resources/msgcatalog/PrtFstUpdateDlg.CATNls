@@ -1,3 +1,15 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "Fastener Update";
+BOK = "Update";
+Frame001.Title = "Choose Fastener";
+Frame001.Frame007.PushButton005.Title = "Remove All";
+Frame001.Frame007.PushButton006.Title = "Choose All";
+Frame002.Title = "Update Successful";
+ Frame002.MultiList008.ColumnTitle1 = "Serial Number";
+ Frame002.MultiList008.ColumnTitle2 = "Trademark";
+ Frame002.MultiList008.ColumnTitle3 = "Update Content";
+Frame003.Title = "Update Error";
+ Frame003.MultiList009.ColumnTitle1 = "Serial Number";
+ Frame003.MultiList009.ColumnTitle2 = "Trademark";
+ Frame003.MultiList009.ColumnTitle3 = "Error Reason";
 // END WIZARD REPLACEMENT ZONE
