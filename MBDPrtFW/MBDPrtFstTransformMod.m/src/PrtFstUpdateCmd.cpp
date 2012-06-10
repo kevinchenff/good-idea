@@ -94,6 +94,11 @@ void PrtFstUpdateCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 
 void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-	//
-	RequestDelayedDestruction();
+	// 获取当前“紧固件连接”几何图形集，获得所有紧固件
+	//1 获取几何图形集
+
+
+	//2 
+
+	//RequestDelayedDestruction();
 }
