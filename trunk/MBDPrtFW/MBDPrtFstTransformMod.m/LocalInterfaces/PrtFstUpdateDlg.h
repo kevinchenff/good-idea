@@ -51,15 +51,10 @@ class PrtFstUpdateDlg: public CATDlgDialog
 
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
- CATDlgFrame*      _Frame001;
- CATDlgSelectorList*      _SelectorList004;
- CATDlgFrame*      _Frame007;
- CATDlgPushButton*      _PushButton005;
- CATDlgPushButton*      _PushButton006;
  CATDlgFrame*      _Frame002;
- CATDlgMultiList*      _MultiList008;
+ CATDlgMultiList*      _SuccessMultiList;
  CATDlgFrame*      _Frame003;
- CATDlgMultiList*      _MultiList009;
+ CATDlgMultiList*      _ErrorMultiList;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 

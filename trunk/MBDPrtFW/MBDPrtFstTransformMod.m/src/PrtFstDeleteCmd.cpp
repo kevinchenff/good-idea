@@ -118,6 +118,7 @@ void PrtFstDeleteCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 
 void PrtFstDeleteCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-	//
-	RequestDelayedDestruction();
+	// 删除紧固件几何，并更新参数信息，所选列表
+
+	//RequestDelayedDestruction();
 }
