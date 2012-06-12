@@ -95,7 +95,19 @@ void PrtFstUpdateCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	// 获取当前“紧固件连接”几何图形集，获得所有紧固件
-	//1 获取几何图形集
+	// 获取所有该几何集下面所有的二级子集
+	CATISpecObject_var spLineDefGSMTool = NULL_var;
+	PrtService::ObtainGSMTool(m_piDoc,"连接定义",spLineDefGSMTool);
+	if (spLineDefGSMTool == NULL_var)
+	{
+		//输出错误信息
+		PrtService::ShowDlgNotify("错误提示","未能找到“连接定义”几何图形集！");
+		return;
+	}
+
+	// 找到里面包含的所有线圈模型
+
+
 
 
 	//2 
