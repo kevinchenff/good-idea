@@ -106,6 +106,19 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	}
 
 	// 找到里面包含的所有线圈模型
+	CATListValCATISpecObject_var iolstspFoundResult;
+	PrtService::SearchALLSonFromRootGSMTool(spLineDefGSMTool,iolstspFoundResult);
+	//
+	for (int i = 1; i <= iolstspFoundResult.Size(); i++)
+	{
+		//1 获得“紧固件描述”参数集
+		CATISpecObject_var spJstDescripParmSet=NULL_var;
+		PrtService::GetParmSetFromSpeObjt(iolstspFoundResult[i],spJstDescripParmSet,"紧固件描述");
+
+		//2 获得 紧固件集合 几何图形集
+
+		//2.1 逐个获取内部信息参数 
+	}
 
 
 
