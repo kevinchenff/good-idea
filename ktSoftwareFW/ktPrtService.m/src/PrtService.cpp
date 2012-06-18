@@ -3912,7 +3912,7 @@ void PrtService::SetGSMToolParamEnum(CATDocument *piDocument,CATISpecObject_var 
 }
 
 //
-//从特征获取其中包含的Paraset
+//从特征获取其中包含的所有Paraset
 void PrtService::GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATListValCATISpecObject_var &iolstspParmSet)
 {
 	CATIDescendants_var spDescend = ispObjt;
@@ -3920,7 +3920,7 @@ void PrtService::GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATListValCAT
 	
 }
 
-//从特征获取其中包含的所有Paramset
+//从特征获取其中包含的特有Paramset
 void PrtService::GetParmSetFromSpeObjt(CATISpecObject_var ispObjt, CATISpecObject_var &iospParmSet, CATUnicodeString istrParmName,int iType)
 {
 	iospParmSet = NULL_var;

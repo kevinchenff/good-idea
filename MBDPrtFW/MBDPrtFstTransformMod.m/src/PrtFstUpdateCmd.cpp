@@ -105,19 +105,70 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		return;
 	}
 
-	// 找到里面包含的所有线圈模型
-	CATListValCATISpecObject_var iolstspFoundResult;
-	PrtService::SearchALLSonFromRootGSMTool(spLineDefGSMTool,iolstspFoundResult);
+	//获取第二层 连接组件定义 Prd01|Prd02|Prd03
+	CATListValCATISpecObject_var iolstspFoundResult02;
+	PrtService::SearchALLSonFromRootGSMTool(spLineDefGSMTool,iolstspFoundResult02);
+	
 	//
-	for (int i = 1; i <= iolstspFoundResult.Size(); i++)
+	for (int i = 1; i <= iolstspFoundResult02.Size(); i++)
 	{
 		//1 获得“紧固件描述”参数集
 		CATISpecObject_var spJstDescripParmSet=NULL_var;
-		PrtService::GetParmSetFromSpeObjt(iolstspFoundResult[i],spJstDescripParmSet,"紧固件描述");
+		PrtService::GetParmSetFromSpeObjt(iolstspFoundResult02[i],spJstDescripParmSet,"紧固件描述");
+		//1.1 获得紧固件描述
+		if (NULL_var != spJstDescripParmSet)
+		{
+			CATISpecObject_var spJstTypeInfoSet = NULL_var;
+			//检查是否存在
+			PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,spJstTypeInfoSet,strChooseFstType,1);
+			if (spJstTypeInfoSet!=NULL_var)
+			{
+				//挂载测试参数
+				PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+				//修改个数
+				CATListValCATUnicodeString lststrResult;
+				CATUnicodeString strExistName = PrtService::GetAlias(spJstTypeInfoSet);
+				CHandleString::StringToVector(strExistName,"|",lststrResult);
+				//
+				double dExistCount=0;
+				if (lststrResult.Size() >= 2)
+				{
+					lststrResult[2].ConvertToNum(&dExistCount);
+				}
+				//创建名字
+				CATUnicodeString stridCount;stridCount.BuildFromNum(idCount+dExistCount);
+				CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
+				//
+				PrtService::SetAlias(spJstTypeInfoSet,strJstSetName);			
+			}
+			else
+			{
+				//创建名字
+				CATUnicodeString stridCount;stridCount.BuildFromNum(idCount);
+				CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
+				//
+				PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strJstSetName,spJstTypeInfoSet);
+				//挂载测试参数
+				PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+			}
+		}
 
-		//2 获得 紧固件集合 几何图形集
+		//2 获得 紧固件集合 第三层 XXX紧固件集合
+		CATListValCATISpecObject_var iolstspFoundResult03;
+		PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult02[i],iolstspFoundResult03);
+		// 
+		for (int j = 1; j <= iolstspFoundResult03.Size(); j++)
+		{
+			//2.1 获得单个紧固件几何图形集，内部可能包含 一条线，多个圈模型
+			CATListValCATISpecObject_var iolstspFoundResult04;
+			PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult03[j],iolstspFoundResult04);
 
-		//2.1 逐个获取内部信息参数 
+			//2.2 获得内部含有的线圈模型，得到其数量信息
+			for (int m = 1; m <= iolstspFoundResult04.Size(); m++)
+			{
+				
+			}
+		}
 	}
 
 
