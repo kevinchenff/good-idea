@@ -162,6 +162,9 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		//2 获得 紧固件集合 第三层 XXX紧固件集合
 		CATListValCATISpecObject_var iolstspFoundResult03;
 		PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult02[i],iolstspFoundResult03);
+		//
+		CATListValCATUnicodeString alistStrFstName;
+
 		// 
 		for (int j = 1; j <= iolstspFoundResult03.Size(); j++)
 		{
