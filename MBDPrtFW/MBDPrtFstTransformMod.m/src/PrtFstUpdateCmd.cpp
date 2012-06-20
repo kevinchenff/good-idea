@@ -118,39 +118,45 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		//1.1 获得紧固件描述
 		if (NULL_var != spJstDescripParmSet)
 		{
-			CATISpecObject_var spJstTypeInfoSet = NULL_var;
+			CATListValCATISpecObject_var iolstspParmSet;
 			//检查是否存在
-			PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,spJstTypeInfoSet,strChooseFstType,1);
-			if (spJstTypeInfoSet!=NULL_var)
-			{
-				//挂载测试参数
-				PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
-				//修改个数
-				CATListValCATUnicodeString lststrResult;
-				CATUnicodeString strExistName = PrtService::GetAlias(spJstTypeInfoSet);
-				CHandleString::StringToVector(strExistName,"|",lststrResult);
-				//
-				double dExistCount=0;
-				if (lststrResult.Size() >= 2)
-				{
-					lststrResult[2].ConvertToNum(&dExistCount);
-				}
-				//创建名字
-				CATUnicodeString stridCount;stridCount.BuildFromNum(idCount+dExistCount);
-				CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
-				//
-				PrtService::SetAlias(spJstTypeInfoSet,strJstSetName);			
-			}
-			else
-			{
-				//创建名字
-				CATUnicodeString stridCount;stridCount.BuildFromNum(idCount);
-				CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
-				//
-				PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strJstSetName,spJstTypeInfoSet);
-				//挂载测试参数
-				PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
-			}
+			PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,iolstspParmSet);
+
+			//for (int j = 1; j <= iolstspParmSet.Size(); j++)
+			//{
+			//	
+			//}
+
+			//if (iolstspParmSet!=NULL_var)
+			//{
+			//	//挂载测试参数
+			//	PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+			//	//修改个数
+			//	CATListValCATUnicodeString lststrResult;
+			//	CATUnicodeString strExistName = PrtService::GetAlias(spJstTypeInfoSet);
+			//	CHandleString::StringToVector(strExistName,"|",lststrResult);
+			//	//
+			//	double dExistCount=0;
+			//	if (lststrResult.Size() >= 2)
+			//	{
+			//		lststrResult[2].ConvertToNum(&dExistCount);
+			//	}
+			//	//创建名字
+			//	CATUnicodeString stridCount;stridCount.BuildFromNum(idCount+dExistCount);
+			//	CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
+			//	//
+			//	PrtService::SetAlias(spJstTypeInfoSet,strJstSetName);			
+			//}
+			//else
+			//{
+			//	//创建名字
+			//	CATUnicodeString stridCount;stridCount.BuildFromNum(idCount);
+			//	CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
+			//	//
+			//	PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strJstSetName,spJstTypeInfoSet);
+			//	//挂载测试参数
+			//	PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+			//}
 		}
 
 		//2 获得 紧固件集合 第三层 XXX紧固件集合
