@@ -16,6 +16,11 @@
 #include "CATIndicationAgent.h"
 #include "CATMathPlane.h"
 
+//
+#include "CATListOfDouble.h"
+#include "CATIMfMonoDimResult.h"
+//
+
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstUpdateCmd);
 
@@ -94,6 +99,13 @@ void PrtFstUpdateCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 
 void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//更新ZP模型
+	CATIPrtContainer *opiRootContainer = NULL;
+	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
+	//获得part
+	CATISpecObject_var spPart = opiRootContainer->GetPart();
+	PrtService::ObjectUpdate(spPart);
+
 	// 获取当前“紧固件连接”几何图形集，获得所有紧固件
 	// 获取所有该几何集下面所有的二级子集
 	CATISpecObject_var spLineDefGSMTool = NULL_var;
@@ -116,47 +128,11 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		CATISpecObject_var spJstDescripParmSet=NULL_var;
 		PrtService::GetParmSetFromSpeObjt(iolstspFoundResult02[i],spJstDescripParmSet,"紧固件描述");
 		//1.1 获得紧固件描述
+		CATListValCATISpecObject_var iolstspParmSet;
 		if (NULL_var != spJstDescripParmSet)
 		{
-			CATListValCATISpecObject_var iolstspParmSet;
 			//检查是否存在
 			PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,iolstspParmSet);
-
-			//for (int j = 1; j <= iolstspParmSet.Size(); j++)
-			//{
-			//	
-			//}
-
-			//if (iolstspParmSet!=NULL_var)
-			//{
-			//	//挂载测试参数
-			//	PrtService::ModifySpecObjCertainParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
-			//	//修改个数
-			//	CATListValCATUnicodeString lststrResult;
-			//	CATUnicodeString strExistName = PrtService::GetAlias(spJstTypeInfoSet);
-			//	CHandleString::StringToVector(strExistName,"|",lststrResult);
-			//	//
-			//	double dExistCount=0;
-			//	if (lststrResult.Size() >= 2)
-			//	{
-			//		lststrResult[2].ConvertToNum(&dExistCount);
-			//	}
-			//	//创建名字
-			//	CATUnicodeString stridCount;stridCount.BuildFromNum(idCount+dExistCount);
-			//	CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
-			//	//
-			//	PrtService::SetAlias(spJstTypeInfoSet,strJstSetName);			
-			//}
-			//else
-			//{
-			//	//创建名字
-			//	CATUnicodeString stridCount;stridCount.BuildFromNum(idCount);
-			//	CATUnicodeString strJstSetName = strChooseFstType + "|" + stridCount;
-			//	//
-			//	PrtService::CreateParmSetOnSpeObjt(m_piDoc,spJstDescripParmSet,strJstSetName,spJstTypeInfoSet);
-			//	//挂载测试参数
-			//	PrtService::AddSpecObjParams(m_piDoc,spJstTypeInfoSet,lststrJstTypeInfoName,lststrJstTypeInfoValue);
-			//}
 		}
 
 		//2 获得 紧固件集合 第三层 XXX紧固件集合
@@ -164,7 +140,8 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult02[i],iolstspFoundResult03);
 		//
 		CATListValCATUnicodeString alistStrFstName;
-
+		CATListOfDouble alistDFstCount;
+		
 		// 
 		for (int j = 1; j <= iolstspFoundResult03.Size(); j++)
 		{
@@ -173,17 +150,100 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult03[j],iolstspFoundResult04);
 
 			//2.2 获得内部含有的线圈模型，得到其数量信息
+			CATListValCATISpecObject_var iolstspFoundResult05;
 			for (int m = 1; m <= iolstspFoundResult04.Size(); m++)
 			{
-				
+				PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult04[m],iolstspFoundResult05,"CATISpecObject");
+				//
+				//判断模型类型：线圈？对其进行处理，获得名称
+				for (int n=1; n <= iolstspFoundResult05.Size(); n++)
+				{
+					//
+					CATIMfMonoDimResult *piMonoDim = NULL;
+					HRESULT rc = iolstspFoundResult05[n]->QueryInterface(IID_CATIMfMonoDimResult, (void**)&piMonoDim);
+
+					//成功获取其为一维线圈信息，第一对个数进行重新统计，第二对线的长度信息进行重新计算统计
+					if (SUCCEEDED(rc))
+					{
+						//
+						CATIAlias_var spAlias = iolstspFoundResult05[n];
+						CATUnicodeString strFstName = spAlias->GetAlias();
+						//
+						CATBoolean existFlag = FALSE;
+						int dCount;
+						for (int k=1; k<=alistStrFstName.Size(); k++)
+						{
+							//
+							if (alistStrFstName[k] == strFstName)
+							{
+								dCount = k;
+								existFlag = TRUE;
+								//
+								break;
+							}							
+						}
+
+						//如果存在
+						if (existFlag == TRUE)
+						{
+							alistDFstCount[dCount]++;
+						}
+						else
+						{
+							alistStrFstName.Append(strFstName);
+							alistDFstCount.Append(1.0);
+						}
+
+						//				
+						piMonoDim->Release();
+						piMonoDim = NULL;
+					}
+					
+				}
 			}
+		}
+
+		//对比参数列表中的内容 和 重新统计后的内容
+		CATListValCATISpecObject_var alistDeleteFstParam;
+		for (int m=1; m<=iolstspParmSet.Size(); m++)
+		{	
+			//
+			CATListValCATUnicodeString lststrResult;
+			CATUnicodeString strExistName = PrtService::GetAlias(iolstspParmSet[m]);
+			CHandleString::StringToVector(strExistName,"|",lststrResult);
+			//
+			CATBoolean existFlag = FALSE;
+			//
+			for (int n=1; n<=alistStrFstName.Size(); n++)
+			{
+				if (lststrResult[1] == alistStrFstName[n])
+				{
+					//更改名字
+					CATUnicodeString stridCount;stridCount.BuildFromNum(alistDFstCount[n]);
+					CATUnicodeString strJstSetName = alistStrFstName[n] + "|" + stridCount;
+					//
+					PrtService::SetAlias(iolstspParmSet[m],strJstSetName);
+					existFlag = TRUE;
+				}
+			}
+
+			//如果更新后已经不存在，则放入删除列表
+			if (existFlag == FALSE)
+			{
+				alistDeleteFstParam.Append(iolstspParmSet[m]);
+			}
+
+		}
+
+		//删除已经不存在紧固件的属性描述
+		for (int m=1; m <= alistDeleteFstParam.Size(); m++)
+		{
+			alistDeleteFstParam[m]->GetFather()->Remove(alistDeleteFstParam[m]);
 		}
 	}
 
-
-
-
-	//2 
+	//更新ZP模型
+	PrtService::ObjectUpdate(spPart);
 
 	//RequestDelayedDestruction();
 }

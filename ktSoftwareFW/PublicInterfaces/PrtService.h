@@ -103,7 +103,7 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   //按照名称以某个父节点开始从CATIA结构树上检索所有几何图形集，仅限指定节点下一层
   static
-  HRESULT SearchALLSonFromRootGSMTool(CATISpecObject_var spGSMToolRoot,CATListValCATISpecObject_var &iolstspFoundResult);
+  HRESULT SearchALLSonFromRootGSMTool(CATISpecObject_var spGSMToolRoot,CATListValCATISpecObject_var &iolstspFoundResult,CATUnicodeString strSpecType = "CATIGSMTool");
 
   //VBA方式 向单个几何图形集设置参数
   static 
