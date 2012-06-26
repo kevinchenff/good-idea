@@ -485,7 +485,7 @@ HRESULT PrtService::SearchGSMToolByName(CATISpecObject_var spGSMToolRoot,CATUnic
 }
 
 //按照名称以某个父节点开始从CATIA结构树上检索所有几何图形集，仅限指定节点下一层
-HRESULT PrtService::SearchALLSonFromRootGSMTool(CATISpecObject_var spGSMToolRoot,CATListValCATISpecObject_var &iolstspFoundResult)
+HRESULT PrtService::SearchALLSonFromRootGSMTool(CATISpecObject_var spGSMToolRoot,CATListValCATISpecObject_var &iolstspFoundResult,CATUnicodeString strSpecType)
 {
 	HRESULT hr = S_OK;
 
@@ -497,7 +497,7 @@ HRESULT PrtService::SearchALLSonFromRootGSMTool(CATISpecObject_var spGSMToolRoot
 	}
 
 	CATIDescendants_var spDescendants=  spGSMToolRoot;
-	spDescendants->GetDirectChildren("CATIGSMTool",iolstspFoundResult);
+	spDescendants->GetDirectChildren(strSpecType,iolstspFoundResult);
 
 	return hr;
 }
