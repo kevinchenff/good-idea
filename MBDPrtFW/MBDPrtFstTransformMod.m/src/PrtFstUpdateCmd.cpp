@@ -33,6 +33,26 @@ PrtFstUpdateCmd::PrtFstUpdateCmd() :
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
 ,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL)
 {
+	//初始化获得当前文档及名称
+	m_piDoc = PrtService::GetPrtDocument();
+	PrtService::GetPrdNumberFormDoc(m_piDoc,m_strDocName);
+
+	m_piEditor = CATFrmEditor::GetCurrentEditor();
+	if (NULL != m_piEditor)
+	{
+		m_piHSO = m_piEditor->GetHSO();
+		m_piHSO->Empty();
+
+		m_piISO = m_piEditor->GetISO();
+		m_piISO->Empty();
+	}
+
+	//判断是否为ZP模型;
+	if (!IsThisZPPrt(m_strDocName))
+	{
+		PrtService::ShowDlgNotify("提示","该功能仅在装配ZP模型中操作，点击关闭！");
+		RequestDelayedDestruction();
+	}
 }
 
 //-------------------------------------------------------------------------
@@ -150,9 +170,9 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult03[j],iolstspFoundResult04);
 
 			//2.2 获得内部含有的线圈模型，得到其数量信息
-			CATListValCATISpecObject_var iolstspFoundResult05;
 			for (int m = 1; m <= iolstspFoundResult04.Size(); m++)
 			{
+				CATListValCATISpecObject_var iolstspFoundResult05;
 				PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult04[m],iolstspFoundResult05,"CATISpecObject");
 				//
 				//判断模型类型：线圈？对其进行处理，获得名称
@@ -187,6 +207,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 						if (existFlag == TRUE)
 						{
 							alistDFstCount[dCount]++;
+							cout<<"数量为："<<alistDFstCount[dCount]<<endl;
 						}
 						else
 						{

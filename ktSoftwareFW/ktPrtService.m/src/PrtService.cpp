@@ -16,6 +16,11 @@
 #include "CATSupport.h"
 #include "CATIBodyRequest.h"
 
+//
+#include "CATNavigController.h"
+#include "CATINavigElement.h"
+#include "CATNavigBox.h"
+
 
 
 const CATUnicodeString StrDivisionName = "########";
@@ -1592,6 +1597,142 @@ HRESULT PrtService::SetSpecGraphProperty(CATISpecObject_var spSpecOnObject,CATVi
 
 	return rc;
 }
+
+
+//Expand/Collapse Specification Tree Nodes
+HRESULT PrtService::GetNavigController(CATNavigController * pNavigController)
+{
+	HRESULT	rc = S_OK;	
+	// Retrieves the current window 
+	CATFrmLayout * pLayout = CATFrmLayout::GetCurrentLayout();
+	if ( NULL != pLayout )
+	{
+		CATFrmWindow * pCurrentWindow = pLayout->GetCurrentWindow();
+
+		if ( NULL != pCurrentWindow )
+		{
+			// If it is a CATFrmNavigGraphicWindow, it is possible to
+			// retrieve a CATNavigController pointer
+			//
+			if ( 1 == pCurrentWindow->IsAKindOf("CATFrmNavigGraphicWindow") )
+			{
+				CATFrmNavigGraphicWindow * pFrmNavigGraphicWindow = 
+					(CATFrmNavigGraphicWindow*) pCurrentWindow ;
+
+				CATNavigBox * pNavigBox = NULL ;
+				pNavigBox = pFrmNavigGraphicWindow->GetNavigBox();
+
+				if ( NULL != pNavigBox )
+				{
+					pNavigController = pNavigBox->GetController();
+				}
+			}
+		}
+	}
+		
+	//
+	return rc;
+}
+
+
+void PrtService::ExpandCollapseNode(CATBaseUnknown_var iObject)
+{
+	//
+	CATNavigController * pNavigController = NULL;
+	PrtService::GetNavigController(pNavigController);
+
+	// Expands or collapses the selected object
+	//
+	if ( NULL_var != iObject )
+	{
+		CATListValCATBaseUnknown_var * pNodeList = NULL ;
+		pNodeList = pNavigController->GetAssociatedElements(iObject);
+
+		if ( NULL != pNodeList )
+		{
+			int nbNodes = pNodeList->Size();
+			for ( int i= 1 ; i <= nbNodes ; i++ )
+			{
+				CATBaseUnknown_var spNode = (*pNodeList)[i];
+
+				if ( NULL_var != spNode )
+				{
+					CATINavigElement_var spNavigElement = spNode ;
+
+					if ( NULL_var != spNavigElement )
+					{
+						spNavigElement->ProcessAfterExpand();          
+					}
+				}
+			}
+			delete pNodeList ;
+			pNodeList = NULL ;
+		}
+	}
+}
+
+
+void PrtService::ExpandAllNode(CATBaseUnknown_var iObject)
+{
+	//
+	CATNavigController * pNavigController = NULL;
+	PrtService::GetNavigController(pNavigController);
+
+	// Expands all from the selected object
+	//
+	if ( NULL_var != iObject )
+	{
+		CATListValCATBaseUnknown_var * pNodeList = NULL ;
+		pNodeList = pNavigController->GetAssociatedElements(iObject);
+
+		if ( NULL != pNodeList )
+		{
+			int nbNodes = pNodeList->Size();
+			for ( int i= 1 ; i <= nbNodes ; i++ )
+			{
+				CATIGraphNode_var graphNode = (*pNodeList)[i];
+				if ( NULL_var != graphNode )
+				{
+					// To be expanded
+					if ( 0 == graphNode->IsExpanded() )
+					{
+						CATINavigElement_var spNavigElement = graphNode ;
+
+						if ( NULL_var != spNavigElement )
+						{
+							spNavigElement->ProcessAfterExpand();
+						}
+					}
+				}
+			}
+			delete pNodeList ;
+			pNodeList = NULL ;
+		}
+
+		// Processes the children
+		CATINavigateObject_var spNavigateObject = iObject ;
+		if ( NULL_var != spNavigateObject )
+		{
+			CATListValCATBaseUnknown_var* pListChild = NULL ;
+			pListChild = spNavigateObject->GetChildren();
+
+			if ( NULL != pListChild )
+			{
+				for ( int t = 1 ; t <= pListChild->Size() ; t++)
+				{
+					CATBaseUnknown_var spOnChild = (*pListChild)[t];
+					ExpandAllNode(spOnChild);
+				}
+
+				delete pListChild ;
+				pListChild = NULL ;
+			}
+		}
+
+	}
+}
+
+
 
 // -----------------------------------------------------------------------------
 // Litteral 
