@@ -22,6 +22,8 @@
 #include "CATMathDirectionf.h"
 #include "CATMathPoint.h"
 #include "CATLISTV_CATMathPoint.h"
+#include "CATNavigController.h"
+
 
 
 //-----------------------------------------------------------------------
@@ -194,6 +196,17 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   //设置特征属性，颜色，显示状态等
   static
   HRESULT SetSpecGraphProperty(CATISpecObject_var spSpecOnObject,CATVisPropertiesValues Attribut,CATVisPropertyType VisPropertyType, CATVisGeomType VisGeomType);
+
+  //获得NavigController
+  static
+  HRESULT GetNavigController(CATNavigController * pNavigController);
+
+  //Expand/Collapse Specification Tree Nodes
+  static
+  void ExpandCollapseNode(CATBaseUnknown_var iObject);
+
+  static
+  void ExpandAllNode(CATBaseUnknown_var iObject);
 
   // -------------------------------------------------------------
   // Manage Litteral 
