@@ -49,5 +49,4 @@ AddPrereqComponent("ProductStructureInterfaces",Public);
 AddPrereqComponent("CATArrangementInterfaces",Public);
 AddPrereqComponent("CATIAApplicationFrame",Public);
 AddPrereqComponent("SpaceAnalysisInterfaces",Public);
-AddPrereqComponent("ObjectModelerNavigator",Public); 
 // END WIZARD EDITION ZONE

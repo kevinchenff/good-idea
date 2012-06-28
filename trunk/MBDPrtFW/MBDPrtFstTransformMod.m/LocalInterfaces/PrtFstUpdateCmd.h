@@ -71,7 +71,10 @@ private:
 	CATUnicodeString m_strDocName;
 	CATFrmEditor *m_piEditor;
 	CATHSO *m_piHSO;
-	CATISO *m_piISO;   
+	CATISO *m_piISO; 
+
+	//数据列表
+	CATListValCATISpecObject_var m_alistSuccessfulSpec, m_alistErrorSpec;
 };
 
 //----------------------------------------------------------------------

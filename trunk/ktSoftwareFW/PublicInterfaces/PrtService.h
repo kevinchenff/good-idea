@@ -199,7 +199,7 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   //»ñµÃNavigController
   static
-  HRESULT GetNavigController(CATNavigController * pNavigController);
+  HRESULT GetNavigController(CATNavigController *& pNavigController);
 
   //Expand/Collapse Specification Tree Nodes
   static
