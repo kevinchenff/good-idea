@@ -20,6 +20,8 @@
 #include "CATNavigController.h"
 #include "CATINavigElement.h"
 #include "CATNavigBox.h"
+#include "CATIGraphNode.h"
+#include "CATINavigateObject.h"
 
 
 
@@ -1600,7 +1602,7 @@ HRESULT PrtService::SetSpecGraphProperty(CATISpecObject_var spSpecOnObject,CATVi
 
 
 //Expand/Collapse Specification Tree Nodes
-HRESULT PrtService::GetNavigController(CATNavigController * pNavigController)
+HRESULT PrtService::GetNavigController(CATNavigController *& pNavigController)
 {
 	HRESULT	rc = S_OK;	
 	// Retrieves the current window 

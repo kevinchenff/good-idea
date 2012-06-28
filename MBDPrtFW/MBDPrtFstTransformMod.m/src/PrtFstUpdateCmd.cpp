@@ -119,6 +119,9 @@ void PrtFstUpdateCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 
 void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//清除数据列表
+	m_alistSuccessfulSpec.RemoveAll();
+	m_alistErrorSpec.RemoveAll();
 	//更新ZP模型
 	CATIPrtContainer *opiRootContainer = NULL;
 	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
@@ -207,7 +210,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 						if (existFlag == TRUE)
 						{
 							alistDFstCount[dCount]++;
-							cout<<"数量为："<<alistDFstCount[dCount]<<endl;
+							//cout<<"数量为："<<alistDFstCount[dCount]<<endl;
 						}
 						else
 						{
@@ -261,6 +264,9 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		{
 			alistDeleteFstParam[m]->GetFather()->Remove(alistDeleteFstParam[m]);
 		}
+
+		//收起参数几何集
+		PrtService::ExpandCollapseNode(spJstDescripParmSet);
 	}
 
 	//更新ZP模型
