@@ -19,6 +19,7 @@
 //
 #include "CATListOfDouble.h"
 #include "CATIMfMonoDimResult.h"
+#include "CATIGSMCircleCenterAxis.h"
 //
 
 #include "CATCreateExternalObject.h"
@@ -184,6 +185,9 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 					//
 					CATIMfMonoDimResult *piMonoDim = NULL;
 					HRESULT rc = iolstspFoundResult05[n]->QueryInterface(IID_CATIMfMonoDimResult, (void**)&piMonoDim);
+					
+					//每个几何图形集下面的线圈分类列表
+					CATListValCATISpecObject_var alistSpecLine,alistSpecCircle;					
 
 					//成功获取其为一维线圈信息，第一对个数进行重新统计，第二对线的长度信息进行重新计算统计
 					if (SUCCEEDED(rc))
@@ -217,12 +221,34 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 							alistStrFstName.Append(strFstName);
 							alistDFstCount.Append(1.0);
 						}
+						//-------------------------------
+						//判断是线还是圈，放入不同列表中
+						//-------------------------------
+						CATIGSMLine *piGSMLine = NULL;
+						CATIGSMCircleCenterAxis *piCenterCircle = NULL;
+						rc = iolstspFoundResult05[n]->QueryInterface(IID_CATIGSMLine, (void**)&piGSMLine);
+						if (SUCCEEDED(rc))
+						{
+							alistSpecLine.Append(iolstspFoundResult05[n]);
+							piGSMLine->Release();
+							piGSMLine=NULL;
+						}
+						rc = iolstspFoundResult05[n]->QueryInterface(IID_CATIGSMCircleCenterAxis, (void**)&piCenterCircle);
+						if (SUCCEEDED(rc))
+						{
+							alistSpecCircle.Append(iolstspFoundResult05[n]);
+							piCenterCircle->Release();
+							piCenterCircle=NULL;
+						}
 
 						//				
 						piMonoDim->Release();
 						piMonoDim = NULL;
 					}
-					
+
+					//调用更新函数，计算业务层次，线模型更新后是否失效
+					double dAllowance = 0;
+					CheckFstLineLengthInfo(alistSpecLine,alistSpecCircle,dAllowance);					
 				}
 			}
 		}
@@ -267,10 +293,26 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 
 		//收起参数几何集
 		PrtService::ExpandCollapseNode(spJstDescripParmSet);
+		PrtService::ExpandCollapseNode(spJstDescripParmSet);
 	}
 
 	//更新ZP模型
 	PrtService::ObjectUpdate(spPart);
 
 	//RequestDelayedDestruction();
+}
+
+
+//检查线模型的更新情况，是否超出安装长度要求，检验规则：长度-夹层厚度-n垫圈厚度-n螺母厚度
+HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var alistSpecLine,CATListValCATISpecObject_var alistSpecCircle,double dAllowance)
+{
+
+	HRESULT rc = S_OK;
+	//1 获取线模型特征的“夹持线”，得到其长度，如果发生变化更新“夹层厚度”，同时更新“更改时间”
+
+	//2 获取垫圈及螺母的“厚度值”
+
+	//3 计算并与余量信息做对比
+
+	return rc;
 }
