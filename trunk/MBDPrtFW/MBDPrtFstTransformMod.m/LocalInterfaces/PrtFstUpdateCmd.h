@@ -62,7 +62,7 @@ class PrtFstUpdateCmd: public CATStateCommand
 
   //
   //检查线模型的更新情况，是否超出安装长度要求，检验规则：长度-夹层
-  HRESULT CheckFstLineLengthInfo(CATListValCATISpecObject_var alistSpecLine,CATListValCATISpecObject_var alistSpecCircle,double dAllowance);
+  HRESULT CheckFstLineLengthInfo(CATListValCATISpecObject_var &alistSpecLine,CATListValCATISpecObject_var &alistSpecCircle,double dAllowance);
 
 
 private:
@@ -79,6 +79,8 @@ private:
 
 	//数据列表
 	CATListValCATISpecObject_var m_alistSuccessfulSpec, m_alistErrorSpec;
+	//失效类型
+	CATListValCATUnicodeString m_alistErrorType;
 };
 
 //----------------------------------------------------------------------

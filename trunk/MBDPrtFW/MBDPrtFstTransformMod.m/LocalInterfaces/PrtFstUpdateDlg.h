@@ -44,12 +44,6 @@ class PrtFstUpdateDlg: public CATDlgDialog
 
   void Build ();
 
-
-  protected:
-
-  private:
-
-
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame002;
  CATDlgMultiList*      _SuccessMultiList;
@@ -57,20 +51,6 @@ class PrtFstUpdateDlg: public CATDlgDialog
  CATDlgMultiList*      _ErrorMultiList;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
 
 //----------------------------------------------------------------------

@@ -208,6 +208,9 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static
   void ExpandAllNode(CATBaseUnknown_var iObject);
 
+  static
+  void CollapseAllNode(CATBaseUnknown_var iObject);
+
   // -------------------------------------------------------------
   // Manage Litteral 
   // -------------------------------------------------------------
@@ -388,11 +391,11 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   // 查询得到某特征下面所有参数，含类型选择条件
   static 
-  void GetSpecObjAllParams(CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue,int iType=0);
+  void GetSpecObjAllParams(CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue);
 
   // 查询得到某特征下面某些参数，含类型选择条件
   static 
-  void GetSpecObjCertainParams(CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &iListStrName,CATListValCATUnicodeString  &ioListStrNameValue,int iType=0);
+  void GetSpecObjCertainParams(CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &iListStrName,CATListValCATUnicodeString  &ioListStrNameValue);
 
   //在几何图形集中设置枚举类型，同样适用于在特征下创建
   static 

@@ -103,14 +103,16 @@ class PrtFstDesignCmd: public CATStateCommand
   //获取放置点线模型的零件几何图形集
   void GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName);
   //按照参数信息创建点线模型
-  void CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth,
-								CATListValCATUnicodeString ilststrCircleNames,CATListValCATUnicodeString ilststrCirclePositions,CATListOfDouble ilstCircleValues,CATListOfDouble ilstCircleThicks);
+  void CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool);
   //计算安装方向及夹持厚度，为紧固件选择提供依据
   void CalculateJoinThickInTop(CATListValCATISpecObject_var ilstspSurf01,CATListValCATISpecObject_var ilstspSurf02, CATListValCATISpecObject_var ilstspPoints);
   //转变OK APPLY按钮的显示状态
   void ChangeOKApplyState();
   //设置或者修改 紧固件描述 中的类型信息
   void SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool,CATUnicodeString strChooseFstType,double idCount,CATListValCATUnicodeString ilststrJstTypeInfoName, CATListValCATUnicodeString ilststrJstTypeInfoValue);
+
+  //从PV列表中获得指定的字符串
+  void GetStrlistFromListPV(int iCount,CATListPV ipListStrName,CATListValCATUnicodeString &ioalstName);
 
 private:
 	PrtFstDesignDlg *m_pDlg;
@@ -133,6 +135,20 @@ private:
 
 	//夹持厚度最大值及最小值
 	double m_dJstThickMax,m_dJstThickMin;
+
+	//定义字符串列表指针，从动态DLL中获取这些信息，此值将直接写入特征属性中
+	//---------------------------------------------------------
+	CATListPV  m_pListStrPropertyName,m_pListStrPropertyValue;
+	CATListPV  m_pListStrSpecialName,m_pListStrSpecialValue;
+	CATListValCATUnicodeString m_alistStrFSTType; //存储紧固件类型：螺栓，螺钉，铆钉，螺母，垫片
+	CATListValCATUnicodeString m_lststrCirclePositions; //螺母、垫片的安装位置，需要写入特征属性中
+
+	//
+	//从交互选择中获取如下信息
+	CATListValCATUnicodeString m_alistStrFSTName; //存储紧固件规格号
+	double m_dMainFstLength, m_dMainFstThickLimit;
+	CATListOfDouble m_lstCircleRadiusValues,m_lstCircleThicks;
+
 };
 
 //----------------------------------------------------------------------
