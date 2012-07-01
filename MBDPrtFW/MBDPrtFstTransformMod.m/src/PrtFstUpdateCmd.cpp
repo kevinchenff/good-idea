@@ -20,6 +20,7 @@
 #include "CATListOfDouble.h"
 #include "CATIMfMonoDimResult.h"
 #include "CATIGSMCircleCenterAxis.h"
+#include "CATIMeasurableLine.h"
 //
 
 #include "CATCreateExternalObject.h"
@@ -148,6 +149,40 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	//
 	for (int i = 1; i <= iolstspFoundResult02.Size(); i++)
 	{
+		//获取每一个此层次的几何图形集内部的KEY，按照内容更新名称
+		CATListValCATISpecObject_var alstSpecPrds;
+		CATUnicodeString strKey("F_ATTEX_LINK_PRT");
+		BOOL bIsExistKey = false; 
+		PrtService::GetSepcObjectAttrEx(bIsExistKey,alstSpecPrds,strKey,iolstspFoundResult02[i]);
+		//
+		if (bIsExistKey)
+		{
+			CATListValCATUnicodeString ilstStrPartsInstName;
+			for (int i1 =1; i1 <= alstSpecPrds.Size(); i1++)
+			{
+				CATIProduct_var spInsPrd = alstSpecPrds[i1];
+				CATIProduct_var spRefPrd = spInsPrd->GetReferenceProduct();
+
+				CATUnicodeString strPrtName;
+				strPrtName = spRefPrd->GetPartNumber();
+				ilstStrPartsInstName.Append(strPrtName);
+			}
+
+			//
+			CATUnicodeString strPartsJointName;
+			for (int i1=1; i1 <= ilstStrPartsInstName.Size(); i1++)
+			{
+				strPartsJointName += ilstStrPartsInstName[i1];
+				if (i1 != ilstStrPartsInstName.Size())
+				{
+					strPartsJointName += "|";
+				}
+			}
+
+			//
+			PrtService::SetAlias(iolstspFoundResult02[i],strPartsJointName);
+		}		
+
 		//1 获得“紧固件描述”参数集
 		CATISpecObject_var spJstDescripParmSet=NULL_var;
 		PrtService::GetParmSetFromSpeObjt(iolstspFoundResult02[i],spJstDescripParmSet,"紧固件描述");
@@ -179,6 +214,9 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 				CATListValCATISpecObject_var iolstspFoundResult05;
 				PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult04[m],iolstspFoundResult05,"CATISpecObject");
 				//
+				//每个几何图形集下面的线圈分类列表
+				CATListValCATISpecObject_var alistSpecLine,alistSpecCircle;	
+
 				//判断模型类型：线圈？对其进行处理，获得名称
 				for (int n=1; n <= iolstspFoundResult05.Size(); n++)
 				{
@@ -186,9 +224,6 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 					CATIMfMonoDimResult *piMonoDim = NULL;
 					HRESULT rc = iolstspFoundResult05[n]->QueryInterface(IID_CATIMfMonoDimResult, (void**)&piMonoDim);
 					
-					//每个几何图形集下面的线圈分类列表
-					CATListValCATISpecObject_var alistSpecLine,alistSpecCircle;					
-
 					//成功获取其为一维线圈信息，第一对个数进行重新统计，第二对线的长度信息进行重新计算统计
 					if (SUCCEEDED(rc))
 					{
@@ -221,12 +256,13 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 							alistStrFstName.Append(strFstName);
 							alistDFstCount.Append(1.0);
 						}
+
 						//-------------------------------
 						//判断是线还是圈，放入不同列表中
 						//-------------------------------
-						CATIGSMLine *piGSMLine = NULL;
+						CATIGSMLinePtDir *piGSMLine = NULL;
 						CATIGSMCircleCenterAxis *piCenterCircle = NULL;
-						rc = iolstspFoundResult05[n]->QueryInterface(IID_CATIGSMLine, (void**)&piGSMLine);
+						rc = iolstspFoundResult05[n]->QueryInterface(IID_CATIGSMLinePtDir, (void**)&piGSMLine);
 						if (SUCCEEDED(rc))
 						{
 							alistSpecLine.Append(iolstspFoundResult05[n]);
@@ -239,18 +275,21 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 							alistSpecCircle.Append(iolstspFoundResult05[n]);
 							piCenterCircle->Release();
 							piCenterCircle=NULL;
-						}
-
+						}				
+						
 						//				
 						piMonoDim->Release();
 						piMonoDim = NULL;
-					}
-
-					//调用更新函数，计算业务层次，线模型更新后是否失效
-					double dAllowance = 0;
-					CheckFstLineLengthInfo(alistSpecLine,alistSpecCircle,dAllowance);					
+					}					
 				}
+
+				//调用更新函数，计算业务层次，线模型更新后是否失效
+				double dAllowance = 0;
+				CheckFstLineLengthInfo(alistSpecLine,alistSpecCircle,dAllowance);	
 			}
+
+			//收起该层所有的几何图形结构树节点
+			PrtService::CollapseAllNode(iolstspFoundResult03[j]);
 		}
 
 		//对比参数列表中的内容 和 重新统计后的内容
@@ -299,20 +338,119 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	//更新ZP模型
 	PrtService::ObjectUpdate(spPart);
 
-	//RequestDelayedDestruction();
+	//显示信息到列表框中
+	m_pDlg->_SuccessMultiList->ClearLine();
+	m_pDlg->_ErrorMultiList->ClearLine();
+
+	//
+	for (int i=1; i <= m_alistSuccessfulSpec.Size(); i ++)
+	{
+		CATUnicodeString IndexNum;
+		IndexNum.BuildFromNum(i);
+		m_pDlg->_SuccessMultiList->SetColumnItem(0,IndexNum);
+		m_pDlg->_SuccessMultiList->SetColumnItem(1,PrtService::GetAlias(m_alistSuccessfulSpec[i]));
+		m_pDlg->_SuccessMultiList->SetColumnItem(2,"夹持长度更新成功");
+
+	}
+	
+
+	//
+	for (int i=1; i <= m_alistErrorSpec.Size(); i ++)
+	{
+		CATUnicodeString IndexNum;
+		IndexNum.BuildFromNum(i);
+		m_pDlg->_ErrorMultiList->SetColumnItem(0,IndexNum);
+		m_pDlg->_ErrorMultiList->SetColumnItem(1,PrtService::GetAlias(m_alistErrorSpec[i]));
+		m_pDlg->_ErrorMultiList->SetColumnItem(2,"更新后紧固件夹持厚度失效");
+	}	
 }
 
 
 //检查线模型的更新情况，是否超出安装长度要求，检验规则：长度-夹层厚度-n垫圈厚度-n螺母厚度
-HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var alistSpecLine,CATListValCATISpecObject_var alistSpecCircle,double dAllowance)
+HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &alistSpecLine,CATListValCATISpecObject_var &alistSpecCircle,double dAllowance)
 {
 
 	HRESULT rc = S_OK;
 	//1 获取线模型特征的“夹持线”，得到其长度，如果发生变化更新“夹层厚度”，同时更新“更改时间”
+	CATIGSMLinePtDir_var spLine = alistSpecLine[1];
+	CATIGSMDirection_var spDirection = NULL_var;
+	spLine->GetDirection(spDirection);
+	CATISpecObject_var spIntersectionLine = spDirection->GetDirectionElement();
+	
+	//获得参数“夹层厚度”
+	CATListValCATUnicodeString iListStrName;
+	//iListStrName.Append("Start");
+	iListStrName.Append("总长度");
+	iListStrName.Append("夹持厚度");
+	iListStrName.Append("夹层厚度");
+	iListStrName.Append("更改时间");
+	CATListValCATUnicodeString ioListStrNameValue;
+	PrtService::GetSpecObjCertainParams(spLine,iListStrName,ioListStrNameValue);
 
+	//计算夹层厚度
+	double dJstLength = 0;
+	CATIMeasurableLine_var spMeasLine = spIntersectionLine;
+	spMeasLine->GetLength(dJstLength);
+
+	//
+	double dLength = 0, dThickLimit = 0,dThick = 0;
+	//
+	ioListStrNameValue[1].ConvertToNum(&dLength,"%lf");
+	ioListStrNameValue[2].ConvertToNum(&dThickLimit,"%lf");
+	ioListStrNameValue[3].ConvertToNum(&dThick,"%lf");
+
+	iListStrName.RemovePosition(1);
+	ioListStrNameValue.RemovePosition(1);
+	iListStrName.RemovePosition(1);
+	ioListStrNameValue.RemovePosition(1);
+
+	//比较
+	if (dJstLength != dThick)
+	{
+		//如果夹持厚度已经发生变化，更新信息
+		//
+		CATUnicodeString strTemp;
+		strTemp.BuildFromNum(dJstLength);
+		ioListStrNameValue[1]=strTemp;
+		//
+		char str[20];
+		CHandleString::myGetTime(str);
+		ioListStrNameValue[2]=CATUnicodeString(str);		
+		//
+		PrtService::ModifySpecObjCertainParams(m_piDoc,spLine,iListStrName,ioListStrNameValue);
+	}
+
+	
 	//2 获取垫圈及螺母的“厚度值”
-
+	iListStrName.RemoveAll(); ioListStrNameValue.RemoveAll();
+	iListStrName.Append("厚度值");
+	//
+	CATListOfDouble alistDNutThick;
+	//
+	for (int i=1; i <= alistSpecCircle.Size(); i ++)
+	{
+		PrtService::GetSpecObjCertainParams(alistSpecCircle[i],iListStrName,ioListStrNameValue);
+		double dTemp=0;
+		ioListStrNameValue[1].ConvertToNum(&dTemp,"%lf");
+		alistDNutThick.Append(dTemp);
+	}
+	
 	//3 计算并与余量信息做对比
+	//需要按照主紧固件类型 螺栓 螺钉 铆钉不同进行不同的处理
+	double dCompareValue = dThickLimit-dThick;
+	for (int i = 1; i <= alistDNutThick.Size(); i ++)
+	{
+		dCompareValue -= alistDNutThick[i];
+	}
+
+	if (dCompareValue >= dAllowance)
+	{
+		m_alistSuccessfulSpec.Append(alistSpecLine);
+	}
+	else
+	{
+		m_alistErrorSpec.Append(alistSpecLine);
+	}
 
 	return rc;
 }

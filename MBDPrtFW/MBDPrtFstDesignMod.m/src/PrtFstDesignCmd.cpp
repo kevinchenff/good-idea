@@ -25,6 +25,10 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstDesignCmd);
 
+//全局变量，定义线形 和 点形状
+const double LINEWIDTH=3;
+const double POINTSYMBOL=7;
+
 //-------------------------------------------------------------------------
 // Constructor
 //-------------------------------------------------------------------------
@@ -125,6 +129,29 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 		m_piPrdAgt->RequestDelayedDestruction();
 		m_piPrdAgt=NULL;
 	}
+
+	//清除紧固件属性信息参数内存
+	for (int k=1;k<=m_pListStrPropertyName.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrPropertyName[k];
+		delete TempLstStr;
+	}
+	for (int k=1;k<=m_pListStrSpecialName.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrSpecialName[k];
+		delete TempLstStr;
+	}
+	for (int k=1;k<=m_pListStrPropertyValue.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrPropertyValue[k];
+		delete TempLstStr;
+	}
+	for (int k=1;k<=m_pListStrSpecialValue.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrSpecialValue[k];
+		delete TempLstStr;
+	}
+
 
 	//高亮点清空
 	m_piHSO->Empty();
@@ -1297,8 +1324,16 @@ HRESULT PrtFstDesignCmd::GetLinkImportPrd(CATISpecObject_var& ispFeature,CATIPro
 // [2/26/2012 xyuser]
 void PrtFstDesignCmd::CreateFstLineAndCircle()
 {
-	//测试输入条件
-	CATUnicodeString strChooseFstType("HB6309-2X8");
+	if (m_alistStrFSTName.Size()==0)
+	{
+		return;
+	}
+	
+	/*
+	//增加输入条件 夹持厚度
+	double dFstThickLimit = 8;
+	//
+	CATUnicodeString strChooseFstType("HHHHHHH");
 	CATListValCATUnicodeString lststrJstTypeInfoName,lststrJstTypeInfoValue;
 	lststrJstTypeInfoName.Append("名称");
 	lststrJstTypeInfoValue.Append("90°沉头铆钉");
@@ -1308,13 +1343,14 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 	CATListValCATUnicodeString ilststrCircleNames,ilststrCirclePositions;
 	CATListOfDouble ilstCircleValues,ilstCircleThicks;
 	ilststrCircleNames.Append("NAS1252-10H");
-	ilststrCircleNames.Append("MS21042-3");
-	ilststrCirclePositions.Append("END");
-	ilststrCirclePositions.Append("END");
+	//ilststrCircleNames.Append("MS21042-3");
+	ilststrCirclePositions.Append("START");
+	//ilststrCirclePositions.Append("END");
 	ilstCircleValues.Append(2.381);
-	ilstCircleValues.Append(2.381);
+	//ilstCircleValues.Append(2.381);
 	ilstCircleThicks.Append(1.6);
-	ilstCircleThicks.Append(1.6);
+	//ilstCircleThicks.Append(1.6);
+	*/
 
 	//---------------------------------------------
 	//1 合并选择的第一第二曲面片
@@ -1366,16 +1402,24 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 	CATListValCATUnicodeString ilstStrPartsInstName;
 	for (int i =1; i <= m_lstSpecPrds.Size(); i++)
 	{
-		CATIProduct_var spPrd = m_lstSpecPrds[i];
+		CATIProduct_var spInsPrd = m_lstSpecPrds[i];
+		CATIProduct_var spRefPrd = spInsPrd->GetReferenceProduct();
+
 		CATUnicodeString strPrtName;
-		spPrd->GetPrdInstanceName(strPrtName);
+		strPrtName = spRefPrd->GetPartNumber();
 		ilstStrPartsInstName.Append(strPrtName);
 	}
-
+	
 	//找到正确的几何图形集放置点线模型
 	GetPartsJointGSMTool(iospJointGSMTool,ilstStrPartsInstName);
 	//
-
+	//把连接零件的PRD指针数组放入该几何图形集，确保关联性
+	CATUnicodeString strKey("F_ATTEX_LINK_PRT");
+	if (!PrtService::IsExistSpecObjectAttEx(strKey,iospJointGSMTool))
+	{
+		PrtService::SetSepcObjectAttrEx(m_lstSpecPrds,strKey,iospJointGSMTool);
+	}
+	
 	//记录是否有点未能创建成功
 	double dCountResult = 0;
 	CATBoolean flagwarning = FALSE;
@@ -1480,7 +1524,7 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 					if (strEnd == "集合")
 					{
 						CATUnicodeString strFstType = strAlias.SubString(0,strAlias.GetLengthInChar()-2);
-						if (strFstType == strChooseFstType)
+						if (strFstType == m_alistStrFSTName[1])
 						{
 							spFstTypeGSMTool = iolstspFoundResult[j];
 							Fstflag = TRUE;
@@ -1497,24 +1541,33 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 					PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
 					//不存在则创建
 					int oDiag = 0;
-					PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,strChooseFstType+"集合",iospJointGSMTool,spFstTypeGSMTool,oDiag,0,0);
+					PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,m_alistStrFSTName[1]+"集合",iospJointGSMTool,spFstTypeGSMTool,oDiag,0,0);
 				}
 
 				//计数创建成功的点线模型数量
 				dCountResult++;
 				//调用函数，按照参数信息创建点线模型
-				CreateFstLinesAndCircles(spIntersect01,spIntersect02,spFstTypeGSMTool,strChooseFstType,iDistance,iLength,iPointSym,iLineWidth,
-										ilststrCircleNames,ilststrCirclePositions,ilstCircleValues,ilstCircleThicks);
+				CreateFstLinesAndCircles(spIntersect01,spIntersect02,spFstTypeGSMTool);
+
+				//收起几何图形集节点结构树显示
+				PrtService::CollapseAllNode(spFstTypeGSMTool);
 			}
 		}
 	}
 
 	//设置主紧固件计数及信息属性
-	SetOrChangeJstTypeInfo(iospJointGSMTool,strChooseFstType,dCountResult, lststrJstTypeInfoName, lststrJstTypeInfoValue);
-	//设置垫圈螺母计数及信息属性
-	for (int i=1; i <= ilststrCircleNames.Size(); i++)
+	for (int i=1; i <= m_pListStrPropertyName.Size(); i++)
 	{
-		SetOrChangeJstTypeInfo(iospJointGSMTool,ilststrCircleNames[i],dCountResult, lststrJstTypeInfoName, lststrJstTypeInfoValue);
+		//
+		CATListValCATUnicodeString lststrJstTypeInfoName,lststrJstTypeInfoValue;
+		//属性信息
+		GetStrlistFromListPV(i,m_pListStrPropertyName,lststrJstTypeInfoName);
+		GetStrlistFromListPV(i,m_pListStrPropertyValue,lststrJstTypeInfoValue);
+		//参数信息
+		GetStrlistFromListPV(i,m_pListStrSpecialName,lststrJstTypeInfoName);
+		GetStrlistFromListPV(i,m_pListStrSpecialValue,lststrJstTypeInfoValue);
+		//
+		SetOrChangeJstTypeInfo(iospJointGSMTool,m_alistStrFSTName[i],dCountResult, lststrJstTypeInfoName, lststrJstTypeInfoValue);
 	}
 
 	//提示信息
@@ -1524,21 +1577,20 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 	}
 
 	//更新整个PART
-	PrtService::ObjectUpdate(spPart);	
+	PrtService::ObjectUpdate(spPart);
 }
 
 //按照参数信息创建点线模型
-void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATUnicodeString strFstType,double iDistance,double iLength,double iPointSym,double iLineWidth,
-											   CATListValCATUnicodeString ilststrCircleNames,CATListValCATUnicodeString ilststrCirclePositions,CATListOfDouble ilstCircleValues,CATListOfDouble ilstCircleThicks)
+void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool)
 {
 	//
 	//获得文档指针
 	CATIPrtContainer *opiRootContainer = NULL;
 	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
-	//创建
+	//创建几何图形集，以紧固件名称命名
 	CATISpecObject_var spFstGSMTool=NULL_var;
 	int oDiag = 0 ;
-	PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,strFstType,ispJointTypeGSMTool,spFstGSMTool,oDiag,0,0);
+	PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,m_alistStrFSTName[1],ispJointTypeGSMTool,spFstGSMTool,oDiag,0,0);
 	//
 	//创建连接线
 	CATIGSMFactory_var spGSMFac = NULL_var;
@@ -1547,7 +1599,9 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 	PrtService::SetAlias(spIntersectLine,"夹持线");
 	//
 	//创建点在连接线上
+	double iDistance=0;
 	CATICkeParm_var spCkeParmDis = PrtService::LocalInstLitteral(&iDistance, 1, "Length","iDistance");
+	spCkeParmDis->SetUserAccess(CATICkeParm::ReadOnly);
 	CATISpecObject_var spStartPoint = spGSMFac->CreatePoint(spIntersectLine,NULL_var,spCkeParmDis,CATGSMOrientation::CATGSMSameOrientation);
 	PrtService::SetAlias(spStartPoint,"顶点");
 	//拷贝链接顶点模型
@@ -1556,16 +1610,18 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 	//设置颜色及类型
 	PrtService::SetAlias(spSpecCopyResult,"顶点");
 	PrtService::ObjectUpdate(spSpecCopyResult);
-	PrtService::SetSpecObjColor(spSpecCopyResult,3,iPointSym,0);
+	PrtService::SetSpecObjColor(spSpecCopyResult,3,POINTSYMBOL,0);
 
 	//创建点线模型中的线
 	double dstart = 0;
 	CATICkeParm_var spCkeParmStart = PrtService::LocalInstLitteral(&dstart, 1, "Length","Start");
-	CATICkeParm_var spCkeParmLength = PrtService::LocalInstLitteral(&iLength, 1, "Length","Length");
+	CATICkeParm_var spCkeParmLength = PrtService::LocalInstLitteral(&m_dMainFstLength, 1, "Length","总长度");
+	spCkeParmStart->SetUserAccess(CATICkeParm::ReadOnly);
+	spCkeParmLength->SetUserAccess(CATICkeParm::ReadOnly);
 	CATIGSMDirection_var spDirection = spGSMFac->CreateDirection(spIntersectLine);
 	CATISpecObject_var spResultLine = spGSMFac->CreateLine(spStartPoint,spDirection,spCkeParmStart,spCkeParmLength,CATGSMOrientation::CATGSMSameOrientation);
 	PrtService::CAAGsiInsertInProceduralView(spResultLine,spFstGSMTool);
-	PrtService::SetAlias(spResultLine,strFstType);
+	PrtService::SetAlias(spResultLine,m_alistStrFSTName[1]);
 	//计算夹层厚度
 	double dJstLength = 0;
 	CATIMeasurableLine_var spMeasLine = spIntersectLine;
@@ -1574,6 +1630,11 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 	strdJstLength.BuildFromNum(dJstLength);
 	//挂载夹层厚度参数
 	CATListValCATUnicodeString lststrParmName,lststrParmValue;
+	lststrParmName.Append("夹持厚度");
+	CATUnicodeString strdJstThickLimit;
+	strdJstThickLimit.BuildFromNum(m_dMainFstThickLimit);
+	lststrParmValue.Append(strdJstThickLimit);
+
 	lststrParmName.Append("夹层厚度");
 	lststrParmValue.Append(strdJstLength);
 	//挂载更改时间参数
@@ -1582,66 +1643,146 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 	lststrParmName.Append("更改时间");
 	lststrParmValue.Append(str);
 	PrtService::AddSpecObjParams(m_piDoc,spResultLine,lststrParmName,lststrParmValue);
+	//----------------------------------------------------------------------------------------------
+	//写入属性信息
+	//
+	//标准号信息
+	CATListValCATUnicodeString lststrJstPropertyName,lststrJstPropertyValue;
+	GetStrlistFromListPV(1,m_pListStrPropertyName,lststrJstPropertyName);
+	GetStrlistFromListPV(1,m_pListStrPropertyValue,lststrJstPropertyValue);
+	CATUnicodeString strProNameKey("F_ATTEX_PropertyNameList");
+	CATUnicodeString strProValueKey("F_ATTEX_PropertyValueList");
+	PrtService::SetSepcObjectAttrEx(lststrJstPropertyName,strProNameKey,spResultLine);
+	PrtService::SetSepcObjectAttrEx(lststrJstPropertyValue,strProValueKey,spResultLine);
+
+	//规格信息
+	CATListValCATUnicodeString lststrJstSpecialName,lststrJstSpecialValue;
+	GetStrlistFromListPV(1,m_pListStrSpecialName,lststrJstSpecialName);
+	GetStrlistFromListPV(1,m_pListStrSpecialValue,lststrJstSpecialValue);
+	CATUnicodeString strSpecialNameKey("F_ATTEX_SpecialNameList");
+	CATUnicodeString strSpecialValueKey("F_ATTEX_SpecialValueList");
+	PrtService::SetSepcObjectAttrEx(lststrJstSpecialName,strSpecialNameKey,spResultLine);
+	PrtService::SetSepcObjectAttrEx(lststrJstSpecialValue,strSpecialValueKey,spResultLine);
+
+	//写入紧固件类型：螺栓、螺钉、铆钉，将在判断失效计算方法是用
+	CATUnicodeString strFSTTypeKey("F_ATTEX_SIGN");
+	PrtService::SetSepcObjectAttrEx(m_alistStrFSTType[1],strFSTTypeKey,spResultLine);
+
+	//写入坐标位置值XYZ及向量，可直接获取，暂时不写入
+
 	//
 	PrtService::ObjectUpdate(spResultLine);
-	PrtService::SetSpecObjColor(spResultLine,8,iLineWidth,1);
+	PrtService::SetSpecObjColor(spResultLine,8,LINEWIDTH,1);
 
-	//根据输入条件确定是否创建圈信息
-	//定义两个变量，叠加厚度信息
-	double dStartThick=0,dEndThick=0;
-	//
-	for (int i=1; i<=ilststrCircleNames.Size(); i++)
+	if (m_alistStrFSTName.Size() >= 2)
 	{
+		//根据输入条件确定是否创建圈信息
+		//定义两个变量，叠加厚度信息
+		double dStartThick=0,dEndThick=0;
 		//
-		//挂载夹层厚度参数
-		lststrParmName.RemoveAll();
-		lststrParmValue.RemoveAll();
-		lststrParmName.Append("更改时间");
-		lststrParmValue.Append(str);
-		CATUnicodeString strdCirlceThick;
-		strdCirlceThick.BuildFromNum(ilstCircleThicks[i]);
-		lststrParmName.Append("厚度值");
-		lststrParmValue.Append(strdCirlceThick);
-		//
-		if (ilststrCirclePositions[i] == "START")
+		for (int i=1; i<=m_alistStrFSTName.Size()-1; i++)
 		{
-			//创建位置点,圈
-			CATICkeParm_var  iDistance = PrtService::LocalInstLitteral(&dStartThick, 1, "Length","iDistance");
-			CATISpecObject_var spPosPoint = spGSMFac->CreatePoint(spResultLine,ispPoint01,iDistance,CATGSMOrientation::CATGSMSameOrientation);
-			PrtService::SetAlias(spPosPoint,"安装位置点");
-			CATICkeParm_var  idCircleValue = PrtService::LocalInstLitteral(&(ilstCircleValues[i]), 1, "Length","半径");
-			CATISpecObject_var spCircle = spGSMFac->CreateCircle(spResultLine,spPosPoint,idCircleValue,FALSE);
-			//挂载，改名
-			PrtService::CAAGsiInsertInProceduralView(spCircle,spFstGSMTool);
-			PrtService::SetAlias(spCircle,ilststrCircleNames[i]);
-			PrtService::AddSpecObjParams(m_piDoc,spCircle,lststrParmName,lststrParmValue);
-			PrtService::ObjectUpdate(spCircle);
-			//最后叠加，让下个位置值发生变化
-			dStartThick -= ilstCircleThicks[i];
-			//更改顶头安装点上移位置值
-			spCkeParmDis->Valuate(dStartThick/1000.0);
-			CATIGSMPointOnCurve_var spGSMPointOnCurve = spStartPoint;
-			spGSMPointOnCurve->SetLength(spCkeParmDis);
-			//更新
-			PrtService::ObjectUpdate(spFstGSMTool);
-		}
-		else if (ilststrCirclePositions[i] == "END")
-		{
-			//创建位置点,圈
-			CATICkeParm_var  iDistance = PrtService::LocalInstLitteral(&dEndThick, 1, "Length","iDistance");
-			CATISpecObject_var spPosPoint = spGSMFac->CreatePoint(spResultLine,ispPoint02,iDistance,CATGSMOrientation::CATGSMSameOrientation);
-			PrtService::SetAlias(spPosPoint,"安装位置点");
-			CATICkeParm_var  idCircleValue = PrtService::LocalInstLitteral(&(ilstCircleValues[i]), 1, "Length","半径");
-			CATISpecObject_var spCircle = spGSMFac->CreateCircle(spResultLine,spPosPoint,idCircleValue,FALSE);
-			//挂载，改名
-			PrtService::CAAGsiInsertInProceduralView(spCircle,spFstGSMTool);
-			PrtService::SetAlias(spCircle,ilststrCircleNames[i]);
-			PrtService::AddSpecObjParams(m_piDoc,spCircle,lststrParmName,lststrParmValue);
-			PrtService::ObjectUpdate(spCircle);
-			//最后叠加，让下个位置值发生变化
-			dEndThick += ilstCircleThicks[i];
-			//更新
-			PrtService::ObjectUpdate(spFstGSMTool);
+			//
+			//挂载夹层厚度参数
+			lststrParmName.RemoveAll();
+			lststrParmValue.RemoveAll();
+			CATUnicodeString strdCirlceThick;
+			strdCirlceThick.BuildFromNum(m_lstCircleThicks[i]);
+			lststrParmName.Append("厚度值");
+			lststrParmValue.Append(strdCirlceThick);
+			lststrParmName.Append("更改时间");
+			lststrParmValue.Append(str);
+			//
+			if (m_lststrCirclePositions[i] == "START")
+			{
+				//创建位置点,圈
+				CATICkeParm_var  spiDistance = PrtService::LocalInstLitteral(&dStartThick, 1, "Length","iDistance");
+				spiDistance->SetUserAccess(CATICkeParm::ReadOnly);
+				CATISpecObject_var spPosPoint = spGSMFac->CreatePoint(spResultLine,ispPoint01,spiDistance,CATGSMOrientation::CATGSMSameOrientation);
+				PrtService::SetAlias(spPosPoint,"安装位置点");
+				CATICkeParm_var  spidCircleValue = PrtService::LocalInstLitteral(&(m_lstCircleRadiusValues[i]), 1, "Length","半径");
+				spidCircleValue->SetUserAccess(CATICkeParm::ReadOnly);
+				CATISpecObject_var spCircle = spGSMFac->CreateCircle(spResultLine,spPosPoint,spidCircleValue,FALSE);
+				//挂载，改名
+				PrtService::CAAGsiInsertInProceduralView(spCircle,spFstGSMTool);
+				PrtService::SetAlias(spCircle,m_alistStrFSTName[i+1]);
+				PrtService::AddSpecObjParams(m_piDoc,spCircle,lststrParmName,lststrParmValue);
+				//-----------------------
+				//标准号信息
+				CATListValCATUnicodeString lststrJstPropertyName,lststrJstPropertyValue;
+				GetStrlistFromListPV(i+1,m_pListStrPropertyName,lststrJstPropertyName);
+				GetStrlistFromListPV(i+1,m_pListStrPropertyValue,lststrJstPropertyValue);
+				CATUnicodeString strProNameKey("F_ATTEX_PropertyNameList");
+				CATUnicodeString strProValueKey("F_ATTEX_PropertyValueList");
+				PrtService::SetSepcObjectAttrEx(lststrJstPropertyName,strProNameKey,spCircle);
+				PrtService::SetSepcObjectAttrEx(lststrJstPropertyValue,strProValueKey,spCircle);
+
+				//规格信息
+				CATListValCATUnicodeString lststrJstSpecialName,lststrJstSpecialValue;
+				GetStrlistFromListPV(i+1,m_pListStrSpecialName,lststrJstSpecialName);
+				GetStrlistFromListPV(i+1,m_pListStrSpecialValue,lststrJstSpecialValue);
+				CATUnicodeString strSpecialNameKey("F_ATTEX_SpecialNameList");
+				CATUnicodeString strSpecialValueKey("F_ATTEX_SpecialValueList");
+				PrtService::SetSepcObjectAttrEx(lststrJstSpecialName,strSpecialNameKey,spCircle);
+				PrtService::SetSepcObjectAttrEx(lststrJstSpecialValue,strSpecialValueKey,spCircle);
+
+				//写入位置信息，出安装BOM时用
+				CATUnicodeString strFSTTypeKey("F_ATTEX_POS");
+				PrtService::SetSepcObjectAttrEx(m_lststrCirclePositions[i],strFSTTypeKey,spCircle);
+				//-----------------------
+				PrtService::ObjectUpdate(spCircle);
+				//最后叠加，让下个位置值发生变化
+				dStartThick -= m_lstCircleThicks[i];
+				//更改顶头安装点上移位置值
+				spCkeParmDis->Valuate(dStartThick/1000.0);
+				CATIGSMPointOnCurve_var spGSMPointOnCurve = spStartPoint;
+				spGSMPointOnCurve->SetLength(spCkeParmDis);
+				//更新
+				PrtService::ObjectUpdate(spFstGSMTool);
+			}
+			else if (m_lststrCirclePositions[i] == "END")
+			{
+				//创建位置点,圈
+				CATICkeParm_var  spiDistance = PrtService::LocalInstLitteral(&dEndThick, 1, "Length","iDistance");
+				spiDistance->SetUserAccess(CATICkeParm::ReadOnly);
+				CATISpecObject_var spPosPoint = spGSMFac->CreatePoint(spResultLine,ispPoint02,spiDistance,CATGSMOrientation::CATGSMSameOrientation);
+				PrtService::SetAlias(spPosPoint,"安装位置点");
+				CATICkeParm_var  spidCircleValue = PrtService::LocalInstLitteral(&(m_lstCircleRadiusValues[i]), 1, "Length","半径");
+				spidCircleValue->SetUserAccess(CATICkeParm::ReadOnly);
+				CATISpecObject_var spCircle = spGSMFac->CreateCircle(spResultLine,spPosPoint,spidCircleValue,FALSE);
+				//挂载，改名
+				PrtService::CAAGsiInsertInProceduralView(spCircle,spFstGSMTool);
+				PrtService::SetAlias(spCircle,m_alistStrFSTName[i+1]);
+				PrtService::AddSpecObjParams(m_piDoc,spCircle,lststrParmName,lststrParmValue);
+				//-----------------------
+				//标准号信息
+				CATListValCATUnicodeString lststrJstPropertyName,lststrJstPropertyValue;
+				GetStrlistFromListPV(i+1,m_pListStrPropertyName,lststrJstPropertyName);
+				GetStrlistFromListPV(i+1,m_pListStrPropertyValue,lststrJstPropertyValue);
+				CATUnicodeString strProNameKey("F_ATTEX_PropertyNameList");
+				CATUnicodeString strProValueKey("F_ATTEX_PropertyValueList");
+				PrtService::SetSepcObjectAttrEx(lststrJstPropertyName,strProNameKey,spCircle);
+				PrtService::SetSepcObjectAttrEx(lststrJstPropertyValue,strProValueKey,spCircle);
+
+				//规格信息
+				CATListValCATUnicodeString lststrJstSpecialName,lststrJstSpecialValue;
+				GetStrlistFromListPV(i+1,m_pListStrSpecialName,lststrJstSpecialName);
+				GetStrlistFromListPV(i+1,m_pListStrSpecialValue,lststrJstSpecialValue);
+				CATUnicodeString strSpecialNameKey("F_ATTEX_SpecialNameList");
+				CATUnicodeString strSpecialValueKey("F_ATTEX_SpecialValueList");
+				PrtService::SetSepcObjectAttrEx(lststrJstSpecialName,strSpecialNameKey,spCircle);
+				PrtService::SetSepcObjectAttrEx(lststrJstSpecialValue,strSpecialValueKey,spCircle);
+
+				//写入位置信息，出安装BOM时用
+				CATUnicodeString strFSTTypeKey("F_ATTEX_POS");
+				PrtService::SetSepcObjectAttrEx(m_lststrCirclePositions[i],strFSTTypeKey,spCircle);
+				//-----------------------
+				PrtService::ObjectUpdate(spCircle);
+				//最后叠加，让下个位置值发生变化
+				dEndThick += m_lstCircleThicks[i];
+				//更新
+				PrtService::ObjectUpdate(spFstGSMTool);
+			}
 		}
 	}
 }
@@ -1734,6 +1875,8 @@ void PrtFstDesignCmd::SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool
 
 	//更新“紧固件描述”节点
 	PrtService::RedrawSpecNode(spJstDescripParmSet);
+	PrtService::ExpandCollapseNode(spJstDescripParmSet);
+	PrtService::ExpandCollapseNode(spJstDescripParmSet);
 }
 
 //获取放置点线模型的零件几何图形集
@@ -2010,6 +2153,29 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
+	//清除紧固件属性信息参数内存
+	for (int k=1;k<=m_pListStrPropertyName.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrPropertyName[k];
+		delete TempLstStr;
+	}
+	for (int k=1;k<=m_pListStrSpecialName.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrSpecialName[k];
+		delete TempLstStr;
+	}
+	for (int k=1;k<=m_pListStrPropertyValue.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrPropertyValue[k];
+		delete TempLstStr;
+	}
+	for (int k=1;k<=m_pListStrSpecialValue.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrSpecialValue[k];
+		delete TempLstStr;
+	}
+
+	//
 	HINSTANCE hDll= NULL;//DLL句柄 	
 	typedef void (*lpFun)(std::string&,std::string&,float&); 
 	hDll = LoadLibrary(_T("ChooseFSTType.dll"));
@@ -2053,5 +2219,55 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 		m_RaFMShellThickness = (double)thickness;*/
 		::FreeLibrary(hDll);
 
+	}
+
+	//初始化测试数据
+	//
+	m_alistStrFSTType.Append("螺栓");
+	m_alistStrFSTType.Append("螺母");
+
+	//
+	m_lststrCirclePositions.Append("END");
+	m_alistStrFSTName.Append("HB0001");
+	m_alistStrFSTName.Append("NAS1252-10H");
+
+	m_dMainFstLength = 8.8;
+	m_dMainFstThickLimit = 8;
+	m_lstCircleRadiusValues.Append(6.1);
+	m_lstCircleThicks.Append(2.6);
+
+	//增加输入条件 夹持厚度
+	for (int j=1;j<=2;j++)
+	{
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+		(*LstStrAtrrValue01).Append("AAA");
+		m_pListStrPropertyName.Append(LstStrAtrrValue01);
+
+		//
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
+		(*LstStrAtrrValue02).Append("111");
+		m_pListStrPropertyValue.Append(LstStrAtrrValue02);
+
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
+		(*LstStrAtrrValue03).Append("BBB");
+		m_pListStrSpecialName.Append(LstStrAtrrValue03);
+
+		//
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
+		(*LstStrAtrrValue04).Append("222");
+		m_pListStrSpecialValue.Append(LstStrAtrrValue04);
+	}
+
+}
+
+
+//从PV列表中获得指定的字符串
+void PrtFstDesignCmd::GetStrlistFromListPV(int iCount,CATListPV ipListStrName,CATListValCATUnicodeString &ioalstName)
+{
+	CATLISTV(CATUnicodeString) *TempLstStr = (CATLISTV(CATUnicodeString) *) ipListStrName[iCount];
+	for (int j=1;j<=TempLstStr->Size();j++)
+	{
+		CATUnicodeString StrHeadName = (*TempLstStr)[j];
+		ioalstName.Append(StrHeadName);
 	}
 }

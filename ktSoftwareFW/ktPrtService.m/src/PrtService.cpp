@@ -1735,6 +1735,67 @@ void PrtService::ExpandAllNode(CATBaseUnknown_var iObject)
 }
 
 
+void PrtService::CollapseAllNode(CATBaseUnknown_var iObject)
+{
+	//
+	CATNavigController * pNavigController = NULL;
+	PrtService::GetNavigController(pNavigController);
+
+	// Expands all from the selected object
+	//
+	if ( NULL_var != iObject )
+	{
+		CATListValCATBaseUnknown_var * pNodeList = NULL ;
+		pNodeList = pNavigController->GetAssociatedElements(iObject);
+
+		if ( NULL != pNodeList )
+		{
+			int nbNodes = pNodeList->Size();
+			for ( int i= 1 ; i <= nbNodes ; i++ )
+			{
+				CATIGraphNode_var graphNode = (*pNodeList)[i];
+				if ( NULL_var != graphNode )
+				{
+					// To be expanded
+					if ( 1 == graphNode->IsExpanded() )
+					{
+						CATINavigElement_var spNavigElement = graphNode ;
+
+						if ( NULL_var != spNavigElement )
+						{
+							spNavigElement->ProcessAfterExpand();
+						}
+					}
+				}
+			}
+			delete pNodeList ;
+			pNodeList = NULL ;
+		}
+
+		// Processes the children
+		CATINavigateObject_var spNavigateObject = iObject ;
+		if ( NULL_var != spNavigateObject )
+		{
+			CATListValCATBaseUnknown_var* pListChild = NULL ;
+			pListChild = spNavigateObject->GetChildren();
+
+			if ( NULL != pListChild )
+			{
+				for ( int t = 1 ; t <= pListChild->Size() ; t++)
+				{
+					CATBaseUnknown_var spOnChild = (*pListChild)[t];
+					CollapseAllNode(spOnChild);
+				}
+
+				delete pListChild ;
+				pListChild = NULL ;
+			}
+		}
+
+	}
+}
+
+
 
 // -----------------------------------------------------------------------------
 // Litteral 
@@ -3804,10 +3865,7 @@ void PrtService::ClearAndAddSpecObjParams(CATDocument * ipDoc,CATISpecObject_var
 		if (iType == 0)
 		{
 			CATICkeParm_var spParm = iListFound[n];
-			if (CATICkeParm::User == spParm->UserAccess())
-			{
-				spParmPublisherGS->RemoveChild(iListFound[n]);
-			}
+			spParmPublisherGS->RemoveChild(iListFound[n]);
 		}
 
 		if (iType == 1)
@@ -3826,11 +3884,11 @@ void PrtService::ClearAndAddSpecObjParams(CATDocument * ipDoc,CATISpecObject_var
 		CATICkeParm_var spParm = spParmFact->CreateString(ListStrName[i],ListStrNameValue[i]);
 		spParmPublisherGS->Append(spParm);
 
-		if (iType == 0)
+		/*if (iType == 0)
 		{
 			spParm->SetUserAccess(CATICkeParm::User);
-		}
-		else if (iType == 1)
+		}*/
+		if (iType == 1)
 		{
 			spParm->SetUserAccess(CATICkeParm::NotSeen);
 		}
@@ -3841,7 +3899,7 @@ void PrtService::ClearAndAddSpecObjParams(CATDocument * ipDoc,CATISpecObject_var
 }
 
 //查询得到某特征下面所有参数
-void PrtService::GetSpecObjAllParams(CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue,int iType)
+void PrtService::GetSpecObjAllParams(CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue)
 {
 	// 获得容器
 	if (NULL_var == spSpecObj)
@@ -3856,42 +3914,20 @@ void PrtService::GetSpecObjAllParams(CATISpecObject_var const &spSpecObj,CATList
 	spParmPublisherGS->GetDirectChildren("CATICkeParm",	iListFound);
 
 	for (int i = 1;i <= iListFound.Size(); i++)
-	{
-
-		if (iType == 0)
-		{
-			CATICkeParm_var spParm = iListFound[i];
-			if (CATICkeParm::User == spParm->UserAccess())
-			{
-				CATICkeParm_var spCkeParm = iListFound[i];
-				CATUnicodeString StrCkeParmName = spCkeParm->Name();
-				int BenginNum = StrCkeParmName.SearchSubString("\\",0,CATUnicodeString::CATSearchModeBackward); 
-				int StrLength = StrCkeParmName.GetLengthInChar();
-				CATUnicodeString StrParaName = StrCkeParmName.SubString(BenginNum+1,StrLength-BenginNum-1);
-				ListStrName.Append(StrParaName);
-				ListStrNameValue.Append(spCkeParm->Show()); 
-			}
-		}
-
-		if (iType == 1)
-		{
-			CATICkeParm_var spParm = iListFound[i];
-			if (CATICkeParm::NotSeen == spParm->UserAccess())
-			{
-				CATICkeParm_var spCkeParm = iListFound[i];
-				CATUnicodeString StrCkeParmName = spCkeParm->Name();
-				int BenginNum = StrCkeParmName.SearchSubString("\\",0,CATUnicodeString::CATSearchModeBackward); 
-				int StrLength = StrCkeParmName.GetLengthInChar();
-				CATUnicodeString StrParaName = StrCkeParmName.SubString(BenginNum+1,StrLength-BenginNum-1);
-				ListStrName.Append(StrParaName);
-				ListStrNameValue.Append(spCkeParm->Show()); 
-			}
-		}			
+	{	
+		CATICkeParm_var spParm = iListFound[i];
+		CATICkeParm_var spCkeParm = iListFound[i];
+		CATUnicodeString StrCkeParmName = spCkeParm->Name();
+		int BenginNum = StrCkeParmName.SearchSubString("\\",0,CATUnicodeString::CATSearchModeBackward); 
+		int StrLength = StrCkeParmName.GetLengthInChar();
+		CATUnicodeString StrParaName = StrCkeParmName.SubString(BenginNum+1,StrLength-BenginNum-1);
+		ListStrName.Append(StrParaName);
+		ListStrNameValue.Append(spCkeParm->Show()); 
 	}
 }
 
 // 查询得到某特征下面某些参数
-void PrtService::GetSpecObjCertainParams(CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &iListStrName,CATListValCATUnicodeString  &ioListStrNameValue,int iType)
+void PrtService::GetSpecObjCertainParams(CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &iListStrName,CATListValCATUnicodeString  &ioListStrNameValue)
 {
 
 	// 获得容器
@@ -3909,36 +3945,15 @@ void PrtService::GetSpecObjCertainParams(CATISpecObject_var const &spSpecObj,CAT
 	CATListValCATUnicodeString ListFoundStrName,ListFoundStrValue;
 	for (int i = 1;i <= iListFound.Size(); i++)
 	{
-
-		if (iType == 0)
-		{
-			CATICkeParm_var spParm = iListFound[i];
-			if (CATICkeParm::User == spParm->UserAccess())
-			{
-				CATICkeParm_var spCkeParm = iListFound[i];
-				CATUnicodeString StrCkeParmName = spCkeParm->Name();
-				int BenginNum = StrCkeParmName.SearchSubString("\\",0,CATUnicodeString::CATSearchModeBackward); 
-				int StrLength = StrCkeParmName.GetLengthInChar();
-				CATUnicodeString StrParaName = StrCkeParmName.SubString(BenginNum+1,StrLength-BenginNum-1);
-				ListFoundStrName.Append(StrParaName);
-				ListFoundStrValue.Append(spCkeParm->Show()); 
-			}
-		}
-
-		if (iType == 1)
-		{
-			CATICkeParm_var spParm = iListFound[i];
-			if (CATICkeParm::NotSeen == spParm->UserAccess())
-			{
-				CATICkeParm_var spCkeParm = iListFound[i];
-				CATUnicodeString StrCkeParmName = spCkeParm->Name();
-				int BenginNum = StrCkeParmName.SearchSubString("\\",0,CATUnicodeString::CATSearchModeBackward); 
-				int StrLength = StrCkeParmName.GetLengthInChar();
-				CATUnicodeString StrParaName = StrCkeParmName.SubString(BenginNum+1,StrLength-BenginNum-1);
-				ListFoundStrName.Append(StrParaName);
-				ListFoundStrValue.Append(spCkeParm->Show()); 
-			}
-		}			
+		CATICkeParm_var spParm = iListFound[i];
+		
+		CATICkeParm_var spCkeParm = iListFound[i];
+		CATUnicodeString StrCkeParmName = spCkeParm->Name();
+		int BenginNum = StrCkeParmName.SearchSubString("\\",0,CATUnicodeString::CATSearchModeBackward); 
+		int StrLength = StrCkeParmName.GetLengthInChar();
+		CATUnicodeString StrParaName = StrCkeParmName.SubString(BenginNum+1,StrLength-BenginNum-1);
+		ListFoundStrName.Append(StrParaName);
+		ListFoundStrValue.Append(spCkeParm->Content()); 		
 	}
 
 	CATBoolean existflag = FALSE;
