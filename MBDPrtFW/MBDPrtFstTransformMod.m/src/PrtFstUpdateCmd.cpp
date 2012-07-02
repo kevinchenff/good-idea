@@ -26,6 +26,8 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstUpdateCmd);
 
+const double cdBoltAllowence = 2;
+
 
 //-------------------------------------------------------------------------
 // Constructor

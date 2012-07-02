@@ -26,7 +26,7 @@ CATCreateClass( PrtFstDeleteCmd);
 PrtFstDeleteCmd::PrtFstDeleteCmd() :
   CATStateCommand ("PrtFstDeleteCmd", CATDlgEngOneShot, CATCommandModeExclusive) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
- ,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL)
+ ,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL),m_piFstLineAgt(NULL),m_piLineSLAgt(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -61,6 +61,18 @@ PrtFstDeleteCmd::~PrtFstDeleteCmd()
 	  m_pDlg=NULL;
    }
 
+   if (NULL!=m_piFstLineAgt)
+   {
+	   m_piFstLineAgt->RequestDelayedDestruction();
+	   m_piFstLineAgt=NULL;
+   }
+
+   if (NULL!=m_piLineSLAgt)
+   {
+	   m_piLineSLAgt->RequestDelayedDestruction();
+	   m_piLineSLAgt=NULL;
+   }
+
    //高亮点清空
    m_piHSO->Empty();
    m_piISO->Empty();
@@ -93,6 +105,33 @@ void PrtFstDeleteCmd::BuildGraph()
 		(CATCommandMethod)&PrtFstDeleteCmd::CloseDlgCB,
 		NULL);
 
+	//
+	//定义代理选择机制
+	//创建安装点代理
+	m_piFstLineAgt = new CATFeatureImportAgent("选择紧固件线");
+	m_piFstLineAgt->SetBehavior( CATDlgEngWithPSOHSO | CATDlgEngWithPrevaluation | CATDlgEngMultiAcquisitionUserCtrl | CATDlgEngRepeat);
+	m_piFstLineAgt->SetAgentBehavior(MfRelimitedFeaturization|MfPermanentBody); 
+	m_piFstLineAgt->AddElementType(IID_CATIGSMLinePtDir);
+	CATAcquisitionFilter * pFilterForFSTLine = Filter((FilterMethod) & PrtFstDeleteCmd::SeletedIsFSTLine,(void*)NULL);
+	m_piFstLineAgt->SetFilter(pFilterForFSTLine);
+
+	//
+	m_piLineSLAgt = new CATDialogAgent("选择线列表");
+	m_piLineSLAgt->SetBehavior(CATDlgEngRepeat);
+	m_piLineSLAgt->AcceptOnNotify(m_pDlg->_FSTLineSL,m_pDlg->_FSTLineSL->GetListSelectNotification());
+
+	//
+	//Define the StateChart
+	CATDialogState * StSelectFSTLine = GetInitialState("选择紧固件线");
+	StSelectFSTLine -> AddDialogAgent (m_piFstLineAgt);
+	StSelectFSTLine -> AddDialogAgent (m_piLineSLAgt);
+
+	//
+	//转换关系 点到点
+	AddTransition(StSelectFSTLine, StSelectFSTLine, 
+		IsLastModifiedAgentCondition(m_piLineSLAgt),
+		Action ((ActionMethod) &PrtFstDeleteCmd::ActiveFSTLineSL));
+
 }
 
 //判断是否为ZP模型
@@ -121,4 +160,22 @@ void PrtFstDeleteCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	// 删除紧固件几何，并更新参数信息，所选列表
 
 	//RequestDelayedDestruction();
+}
+
+//
+//过滤函数
+CATBoolean PrtFstDeleteCmd::SeletedIsFSTLine(CATDialogAgent * iAgent, void * iUsefulData)
+{
+	return TRUE;
+}
+
+//各种转换消息响应函数
+CATBoolean PrtFstDeleteCmd::ActiveFSTLineSL( void *UsefulData)
+{
+	return TRUE;
+}
+
+CATBoolean PrtFstDeleteCmd::ChooseFSTLines( void *UsefulData)
+{
+	return TRUE;
 }

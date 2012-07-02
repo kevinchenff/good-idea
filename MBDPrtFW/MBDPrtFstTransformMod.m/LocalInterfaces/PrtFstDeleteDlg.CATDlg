@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PrtFstDeleteDlg
 {
-  STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
+  STYLE = CATDlgWndBtnClose|CATDlgGridLayout;
   ROWRES = { 0, 1 };
   COLRES = { 0 };
 }
@@ -24,7 +24,7 @@ CATDlgFrame Frame008
   COLRES = { 0 };
 }
 
-CATDlgSelectorList SelectorList005
+CATDlgSelectorList FSTLineSL
 {
   FATHER = Frame008;
   TH = 15;
@@ -39,13 +39,13 @@ CATDlgFrame Frame010
   GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgPushButton PushButton006
+CATDlgPushButton DeleteSelPB
 {
   FATHER = Frame010;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgPushButton PushButton007
+CATDlgPushButton DeleteAllPB
 {
   FATHER = Frame010;
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
@@ -69,7 +69,7 @@ CATDlgFrame Frame003
   COLRES = { 0 };
 }
 
-CATDlgMultiList MultiList011
+CATDlgMultiList InstanceInfoML
 {
   FATHER = Frame003;
   CC = 2;
@@ -86,7 +86,7 @@ CATDlgFrame Frame004
   COLRES = { 0 };
 }
 
-CATDlgMultiList MultiList012
+CATDlgMultiList ExternalInfoML
 {
   FATHER = Frame004;
   CC = 2;
