@@ -45,33 +45,21 @@ class PrtFstDeleteDlg: public CATDlgDialog
   void Build ();
 
 
-  protected:
-
-  private:
-
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
  CATDlgFrame*      _Frame008;
- CATDlgSelectorList*      _SelectorList005;
+ CATDlgSelectorList*      _FSTLineSL;
  CATDlgFrame*      _Frame010;
- CATDlgPushButton*      _PushButton006;
- CATDlgPushButton*      _PushButton007;
+ CATDlgPushButton*      _DeleteSelPB;
+ CATDlgPushButton*      _DeleteAllPB;
  CATDlgFrame*      _Frame002;
  CATDlgFrame*      _Frame003;
- CATDlgMultiList*      _MultiList011;
+ CATDlgMultiList*      _InstanceInfoML;
  CATDlgFrame*      _Frame004;
- CATDlgMultiList*      _MultiList012;
+ CATDlgMultiList*      _ExternalInfoML;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
 
 //----------------------------------------------------------------------

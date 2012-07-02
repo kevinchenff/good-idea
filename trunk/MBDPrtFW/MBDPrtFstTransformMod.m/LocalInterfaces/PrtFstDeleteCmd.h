@@ -22,6 +22,9 @@
 #include "CATStateCommand.h"
 #include "CATBoolean.h"
 #include "PrtFstDeleteDlg.h"
+#include "CATFeatureImportAgent.h"
+#include "CATDialogAgent.h"
+
 
 class CATIndicationAgent;
 class PrtFstDeleteDlg;
@@ -60,12 +63,23 @@ class PrtFstDeleteCmd: public CATStateCommand
 
   //
   BOOL IsThisZPPrt(CATUnicodeString istrDocName);
+  
+  //过滤函数
+  CATBoolean SeletedIsFSTLine(CATDialogAgent * iAgent, void * iUsefulData);
+
+  //各种转换消息响应函数
+  CATBoolean ActiveFSTLineSL( void *UsefulData);
+  CATBoolean ChooseFSTLines( void *UsefulData);  
 
 
   private:
 
   //对话框指针
   PrtFstDeleteDlg *m_pDlg;
+
+  //定义代理
+  CATFeatureImportAgent *m_piFstLineAgt;
+  CATDialogAgent *m_piLineSLAgt;
 
   //文档指针
   CATDocument *m_piDoc;
