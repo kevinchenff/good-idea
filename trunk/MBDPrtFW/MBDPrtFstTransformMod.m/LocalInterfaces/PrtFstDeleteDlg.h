@@ -51,8 +51,8 @@ class PrtFstDeleteDlg: public CATDlgDialog
  CATDlgFrame*      _Frame008;
  CATDlgSelectorList*      _FSTLineSL;
  CATDlgFrame*      _Frame010;
- CATDlgPushButton*      _DeleteSelPB;
- CATDlgPushButton*      _DeleteAllPB;
+ CATDlgPushButton*      _RemoveSelPB;
+ CATDlgPushButton*      _RemoveAllPB;
  CATDlgFrame*      _Frame002;
  CATDlgFrame*      _Frame003;
  CATDlgMultiList*      _InstanceInfoML;
