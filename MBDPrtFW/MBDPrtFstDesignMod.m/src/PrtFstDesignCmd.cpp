@@ -1665,8 +1665,12 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 	PrtService::SetSepcObjectAttrEx(lststrJstSpecialValue,strSpecialValueKey,spResultLine);
 
 	//写入紧固件类型：螺栓、螺钉、铆钉，将在判断失效计算方法是用
-	CATUnicodeString strFSTTypeKey("F_ATTEX_SIGN");
+	CATUnicodeString strFSTTypeKey("F_ATTEX_FSTTYPE");
 	PrtService::SetSepcObjectAttrEx(m_alistStrFSTType[1],strFSTTypeKey,spResultLine);
+
+	//写入是否为 主紧固件
+	CATUnicodeString strFSTMainKey("F_ATTEX_SIGN");
+	PrtService::SetSepcObjectAttrEx("YES",strFSTMainKey,spResultLine);
 
 	//写入坐标位置值XYZ及向量，可直接获取，暂时不写入
 

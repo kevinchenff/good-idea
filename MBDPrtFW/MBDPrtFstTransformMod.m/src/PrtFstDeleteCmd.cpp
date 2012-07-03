@@ -15,6 +15,7 @@
 #include "PrtFstDeleteCmd.h"
 #include "CATIndicationAgent.h"
 #include "CATMathPlane.h"
+#include "CATSO.h"
 
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstDeleteCmd);
@@ -26,7 +27,7 @@ CATCreateClass( PrtFstDeleteCmd);
 PrtFstDeleteCmd::PrtFstDeleteCmd() :
   CATStateCommand ("PrtFstDeleteCmd", CATDlgEngOneShot, CATCommandModeExclusive) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
- ,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL),m_piFstLineAgt(NULL),m_piLineSLAgt(NULL)
+ ,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL),m_piFstLineAgt(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -67,12 +68,6 @@ PrtFstDeleteCmd::~PrtFstDeleteCmd()
 	   m_piFstLineAgt=NULL;
    }
 
-   if (NULL!=m_piLineSLAgt)
-   {
-	   m_piLineSLAgt->RequestDelayedDestruction();
-	   m_piLineSLAgt=NULL;
-   }
-
    //高亮点清空
    m_piHSO->Empty();
    m_piISO->Empty();
@@ -105,33 +100,31 @@ void PrtFstDeleteCmd::BuildGraph()
 		(CATCommandMethod)&PrtFstDeleteCmd::CloseDlgCB,
 		NULL);
 
+	//增加对 紧固件线列表的响应控制
+	AddAnalyseNotificationCB (m_pDlg->_FSTLineSL, 
+		m_pDlg->_FSTLineSL->GetListSelectNotification(),
+		(CATCommandMethod)&PrtFstDeleteCmd::GetSeletedFSTLine,
+		NULL);
+
 	//
 	//定义代理选择机制
 	//创建安装点代理
-	m_piFstLineAgt = new CATFeatureImportAgent("选择紧固件线");
+	m_piFstLineAgt = new CATPathElementAgent("选择紧固件线");
 	m_piFstLineAgt->SetBehavior( CATDlgEngWithPSOHSO | CATDlgEngWithPrevaluation | CATDlgEngMultiAcquisitionUserCtrl | CATDlgEngRepeat);
-	m_piFstLineAgt->SetAgentBehavior(MfRelimitedFeaturization|MfPermanentBody); 
-	m_piFstLineAgt->AddElementType(IID_CATIGSMLinePtDir);
+	m_piFstLineAgt->AddElementType(IID_CATIGSMLine);
 	CATAcquisitionFilter * pFilterForFSTLine = Filter((FilterMethod) & PrtFstDeleteCmd::SeletedIsFSTLine,(void*)NULL);
 	m_piFstLineAgt->SetFilter(pFilterForFSTLine);
-
-	//
-	m_piLineSLAgt = new CATDialogAgent("选择线列表");
-	m_piLineSLAgt->SetBehavior(CATDlgEngRepeat);
-	m_piLineSLAgt->AcceptOnNotify(m_pDlg->_FSTLineSL,m_pDlg->_FSTLineSL->GetListSelectNotification());
 
 	//
 	//Define the StateChart
 	CATDialogState * StSelectFSTLine = GetInitialState("选择紧固件线");
 	StSelectFSTLine -> AddDialogAgent (m_piFstLineAgt);
-	StSelectFSTLine -> AddDialogAgent (m_piLineSLAgt);
 
 	//
 	//转换关系 点到点
 	AddTransition(StSelectFSTLine, StSelectFSTLine, 
-		IsLastModifiedAgentCondition(m_piLineSLAgt),
+		IsLastModifiedAgentCondition(m_piFstLineAgt),
 		Action ((ActionMethod) &PrtFstDeleteCmd::ActiveFSTLineSL));
-
 }
 
 //判断是否为ZP模型
@@ -166,7 +159,48 @@ void PrtFstDeleteCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 //过滤函数
 CATBoolean PrtFstDeleteCmd::SeletedIsFSTLine(CATDialogAgent * iAgent, void * iUsefulData)
 {
-	return TRUE;
+	CATBoolean rc = FALSE ;
+	if ( NULL == iAgent ) return rc ;
+
+	//定义集群
+	CATSO * pSO = NULL ;
+	pSO = m_piFstLineAgt->GetListOfValues();
+	if ( NULL != pSO )
+	{
+		int lg = pSO->GetSize();
+		for ( int i=0 ; i < lg ; i++)
+		{
+			CATPathElement * pPath = (CATPathElement*) (*pSO)[i];
+			CATPathElement * pSubPath = NULL;
+
+			CATBaseUnknown * pLeaf =NULL ;
+			if ( NULL != pPath )
+				pSubPath = pPath->GetSubPath("CATISpecObject");
+			pLeaf = (*pSubPath)[pSubPath->GetSize()-1];
+
+			CATISpecObject_var spLeaf = pLeaf;
+
+			if (spLeaf != NULL_var)
+			{
+				CATISpecObject_var spChoosedLine = spLeaf;
+				//校验是否为 主紧固件
+				BOOL bIsExistKey = false;
+				CATUnicodeString strFSTMainKey("F_ATTEX_SIGN");
+				CATUnicodeString strFSTMainKeyValue;
+				PrtService::GetSepcObjectAttrEx(bIsExistKey,strFSTMainKeyValue,strFSTMainKey,spChoosedLine);
+				//
+
+				if (bIsExistKey && strFSTMainKeyValue=="YES")
+				{
+					return TRUE;
+				}
+
+			}
+		}
+	}
+	
+
+	return rc;
 }
 
 //各种转换消息响应函数
@@ -178,4 +212,10 @@ CATBoolean PrtFstDeleteCmd::ActiveFSTLineSL( void *UsefulData)
 CATBoolean PrtFstDeleteCmd::ChooseFSTLines( void *UsefulData)
 {
 	return TRUE;
+}
+
+//
+void PrtFstDeleteCmd::GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	
 }

@@ -39,13 +39,13 @@ CATDlgFrame Frame010
   GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgPushButton DeleteSelPB
+CATDlgPushButton RemoveSelPB
 {
   FATHER = Frame010;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgPushButton DeleteAllPB
+CATDlgPushButton RemoveAllPB
 {
   FATHER = Frame010;
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
