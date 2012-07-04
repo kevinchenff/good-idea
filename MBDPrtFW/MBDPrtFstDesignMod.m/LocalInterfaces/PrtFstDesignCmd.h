@@ -149,6 +149,10 @@ private:
 	double m_dMainFstLength, m_dMainFstThickLimit;
 	CATListOfDouble m_lstCircleRadiusValues,m_lstCircleThicks;
 
+	//定义标识，确认是否已经选择了紧固件
+	CATBoolean m_userChoosedFlag;
+
+
 };
 
 //----------------------------------------------------------------------

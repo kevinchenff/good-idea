@@ -37,7 +37,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
-  ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0)
+  ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0),m_userChoosedFlag(FALSE)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -458,7 +458,7 @@ void PrtFstDesignCmd::BuildGraph()
 //转变OK APPLY按钮的显示状态
 void PrtFstDesignCmd::ChangeOKApplyState()
 {
-	if (m_lstSpecPoints.Size()!=0 && m_lstSpecPrds.Size()!=0 && m_lstSpecFirstSurfs.Size()!=0 && m_lstSpecSecSurfs.Size()!=0)
+	if (m_lstSpecPoints.Size()!=0 && m_lstSpecPrds.Size()!=0 && m_lstSpecFirstSurfs.Size()!=0 && m_lstSpecSecSurfs.Size()!=0 && m_userChoosedFlag!=FALSE)
 	{
 		m_pDlg->SetOKSensitivity(CATDlgEnable);
 		m_pDlg->SetAPPLYSensitivity(CATDlgEnable);
@@ -1329,29 +1329,6 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 		return;
 	}
 	
-	/*
-	//增加输入条件 夹持厚度
-	double dFstThickLimit = 8;
-	//
-	CATUnicodeString strChooseFstType("HHHHHHH");
-	CATListValCATUnicodeString lststrJstTypeInfoName,lststrJstTypeInfoValue;
-	lststrJstTypeInfoName.Append("名称");
-	lststrJstTypeInfoValue.Append("90°沉头铆钉");
-	//测试输入条件
-	double iDistance=0,iLength=8.8, iLineWidth=3 ,iPointSym=7;
-	//测试输入条件
-	CATListValCATUnicodeString ilststrCircleNames,ilststrCirclePositions;
-	CATListOfDouble ilstCircleValues,ilstCircleThicks;
-	ilststrCircleNames.Append("NAS1252-10H");
-	//ilststrCircleNames.Append("MS21042-3");
-	ilststrCirclePositions.Append("START");
-	//ilststrCirclePositions.Append("END");
-	ilstCircleValues.Append(2.381);
-	//ilstCircleValues.Append(2.381);
-	ilstCircleThicks.Append(1.6);
-	//ilstCircleThicks.Append(1.6);
-	*/
-
 	//---------------------------------------------
 	//1 合并选择的第一第二曲面片
 	//---------------------------------------------
@@ -2180,6 +2157,46 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 	}
 
 	//
+	//初始化测试数据
+	//
+	m_alistStrFSTType.Append("螺栓");
+	m_alistStrFSTType.Append("螺母");
+
+	//
+	m_lststrCirclePositions.Append("END");
+	m_alistStrFSTName.Append("HB0001");
+	m_alistStrFSTName.Append("NAS1252-10H");
+
+	m_dMainFstLength = 8.8;
+	m_dMainFstThickLimit = 8;
+	m_lstCircleRadiusValues.Append(6.1);
+	m_lstCircleThicks.Append(2.6);
+
+	//增加输入条件 夹持厚度
+	for (int j=1;j<=2;j++)
+	{
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+		(*LstStrAtrrValue01).Append("AAA");
+		m_pListStrPropertyName.Append(LstStrAtrrValue01);
+
+		//
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
+		(*LstStrAtrrValue02).Append("111");
+		m_pListStrPropertyValue.Append(LstStrAtrrValue02);
+
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
+		(*LstStrAtrrValue03).Append("BBB");
+		m_pListStrSpecialName.Append(LstStrAtrrValue03);
+
+		//
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
+		(*LstStrAtrrValue04).Append("222");
+		m_pListStrSpecialValue.Append(LstStrAtrrValue04);
+	}
+
+	ChangeOKApplyState();
+
+	//
 	HINSTANCE hDll= NULL;//DLL句柄 	
 	typedef void (*lpFun)(std::string&,std::string&,float&); 
 	hDll = LoadLibrary(_T("ChooseFSTType.dll"));
@@ -2224,44 +2241,6 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 		::FreeLibrary(hDll);
 
 	}
-
-	//初始化测试数据
-	//
-	m_alistStrFSTType.Append("螺栓");
-	m_alistStrFSTType.Append("螺母");
-
-	//
-	m_lststrCirclePositions.Append("END");
-	m_alistStrFSTName.Append("HB0001");
-	m_alistStrFSTName.Append("NAS1252-10H");
-
-	m_dMainFstLength = 8.8;
-	m_dMainFstThickLimit = 8;
-	m_lstCircleRadiusValues.Append(6.1);
-	m_lstCircleThicks.Append(2.6);
-
-	//增加输入条件 夹持厚度
-	for (int j=1;j<=2;j++)
-	{
-		CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue01).Append("AAA");
-		m_pListStrPropertyName.Append(LstStrAtrrValue01);
-
-		//
-		CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue02).Append("111");
-		m_pListStrPropertyValue.Append(LstStrAtrrValue02);
-
-		CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue03).Append("BBB");
-		m_pListStrSpecialName.Append(LstStrAtrrValue03);
-
-		//
-		CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue04).Append("222");
-		m_pListStrSpecialValue.Append(LstStrAtrrValue04);
-	}
-
 }
 
 

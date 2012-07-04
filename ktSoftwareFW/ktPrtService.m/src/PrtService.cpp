@@ -4925,7 +4925,7 @@ void PrtService::CenterSpecGraph(CATPathElement* piPathEle)
 //----------------------------------------------------------------------
 //视图居中给定点对象
 //----------------------------------------------------------------------
-BOOL PrtService::CenterViewPoints(const CATLISTV(CATMathPoint) lstMathPoints)
+BOOL PrtService::CenterViewPoints(const CATLISTV(CATMathPoint) lstMathPoints,double dIniRadius)
 {
 	if(lstMathPoints.Size()<=0)
 		return TRUE;
@@ -4982,7 +4982,7 @@ BOOL PrtService::CenterViewPoints(const CATLISTV(CATMathPoint) lstMathPoints)
 	double dbLength=0.0;
 	if(lstMathPoints.Size()==1)
 	{
-		dbLength=5.;
+		dbLength=dIniRadius;
 	}
 	else
 	{

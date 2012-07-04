@@ -67,7 +67,6 @@ class PrtFstDeleteCmd: public CATStateCommand
   CATBoolean SeletedIsFSTLine(CATDialogAgent * iAgent, void * iUsefulData);
 
   //各种转换消息响应函数
-  CATBoolean ActiveFSTLineSL( void *UsefulData);
   CATBoolean ChooseFSTLines( void *UsefulData);  
 
 
@@ -85,6 +84,9 @@ class PrtFstDeleteCmd: public CATStateCommand
   CATFrmEditor *m_piEditor;
   CATHSO *m_piHSO;
   CATISO *m_piISO;
+
+  //紧固件线特征列表
+  CATListValCATISpecObject_var m_alstSpecFSTLines;
 
 };
 

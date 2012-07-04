@@ -16,6 +16,8 @@
 #include "CATIndicationAgent.h"
 #include "CATMathPlane.h"
 #include "CATSO.h"
+#include "CATIMeasurableLine.h"
+
 
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstDeleteCmd);
@@ -124,7 +126,7 @@ void PrtFstDeleteCmd::BuildGraph()
 	//转换关系 点到点
 	AddTransition(StSelectFSTLine, StSelectFSTLine, 
 		IsLastModifiedAgentCondition(m_piFstLineAgt),
-		Action ((ActionMethod) &PrtFstDeleteCmd::ActiveFSTLineSL));
+		Action ((ActionMethod) &PrtFstDeleteCmd::ChooseFSTLines));
 }
 
 //判断是否为ZP模型
@@ -204,18 +206,133 @@ CATBoolean PrtFstDeleteCmd::SeletedIsFSTLine(CATDialogAgent * iAgent, void * iUs
 }
 
 //各种转换消息响应函数
-CATBoolean PrtFstDeleteCmd::ActiveFSTLineSL( void *UsefulData)
-{
-	return TRUE;
-}
-
 CATBoolean PrtFstDeleteCmd::ChooseFSTLines( void *UsefulData)
 {
+	//定义集群
+	CATSO * pSO = NULL ;
+	pSO = m_piFstLineAgt->GetListOfValues();
+	if ( NULL != pSO )
+	{
+		int lg = pSO->GetSize();
+		for ( int i=0 ; i < lg ; i++)
+		{
+			CATPathElement * pPath = (CATPathElement*) (*pSO)[i];
+			CATPathElement * pSubPath = NULL;
+
+			CATBaseUnknown * pLeaf =NULL ;
+			if ( NULL != pPath )
+				pSubPath = pPath->GetSubPath("CATISpecObject");
+			pLeaf = (*pSubPath)[pSubPath->GetSize()-1];
+
+			CATISpecObject_var spLeaf = pLeaf;
+
+			if (spLeaf != NULL_var)
+			{
+				CATISpecObject_var spChoosedLine = spLeaf;
+				//添加到列表中，对于重复的直接删除
+
+				BOOL existFlag = FALSE;
+				for (int j = 1; j <= m_alstSpecFSTLines.Size(); j++)
+				{
+					if (m_alstSpecFSTLines[j] == spLeaf)
+					{						
+						m_alstSpecFSTLines.RemoveValue(spLeaf);
+						PrtService::RemoveHSO(spLeaf);
+
+						//列表更新
+						m_pDlg->_FSTLineSL->ClearLine();
+						for (int i = 1; i <= m_alstSpecFSTLines.Size(); i ++)
+						{
+							CATUnicodeString strShowPath("");
+							CATPathElement *piPath = NULL;
+							PrtService::GetPathElementFromSpecObject(piPath,m_alstSpecFSTLines[i],NULL);
+							PrtService::PathElementString(piPath,strShowPath,TRUE);
+							m_pDlg->_FSTLineSL->SetLine(strShowPath);
+
+							piPath->Release();
+							piPath=NULL;
+						}
+						
+						existFlag = TRUE;
+						break;
+					}
+				}
+
+				//不存在放入
+				if (!existFlag) //
+				{
+					//先清空列表
+					if (m_alstSpecFSTLines.Size() == 0)
+					{
+						m_pDlg->_FSTLineSL->ClearLine();
+					}
+					//
+					m_alstSpecFSTLines.Append(spLeaf);
+
+					//
+					CATUnicodeString strShowPath("");
+					strShowPath = spLeaf->GetDisplayName();
+					PrtService::PathElementString(pSubPath,strShowPath,TRUE);
+					m_pDlg->_FSTLineSL->SetLine(strShowPath);
+				}
+
+			}
+		}
+	}
+
+	//
+	m_pDlg->_FSTLineSL->ClearSelect();
+	m_piFstLineAgt->InitializeAcquisition();
 	return TRUE;
 }
 
 //
 void PrtFstDeleteCmd::GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//获得并清空ISO
+	m_piISO->Empty();
+
+	//获取所选信息
+	int  iSize = m_pDlg->_FSTLineSL->GetSelectCount();
+	if (iSize != 0 )
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pDlg->_FSTLineSL->GetSelect(ioTabRow,iSize);
+
+		//获得线对应的端点
+		CATISpecObject_var spLine = m_alstSpecFSTLines[ioTabRow[0]+1];
+		CATIMeasurableLine_var spMeasLine = spLine;
+		CATMathPoint  ioOrigin;
+		spMeasLine->GetOrigin(ioOrigin);
+		//
+		CATLISTV(CATMathPoint) lstMathPoints;
+		lstMathPoints.Append(ioOrigin);
+
+		//使其居中，高亮显示模型信息
+		PrtService::CenterViewPoints(lstMathPoints);
+		PrtService::HighlightHSO(spLine);
+
+		//
+		CATIAlias_var spAliasOnPt = spLine;
+		CATUnicodeString StrTextValue = spAliasOnPt->GetAlias();
+
+		CATMathPointf TextPosNode;
+		TextPosNode.x = (float)(ioOrigin.GetX());
+		TextPosNode.y = (float)(ioOrigin.GetY());
+		TextPosNode.z = (float)(ioOrigin.GetZ());
+
+		CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
+		CATGraphicAttributeSet   TextGaNode ;
+		TextGaNode.SetColor(RED);
+		CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
+		pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
+		CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
+		piRepPtAlias->SetRep(pRepForTextStart) ;
+		m_piISO->AddElement(piRepPtAlias);
+
+		piRepPtAlias->Release();
+		piRepPtAlias=NULL;
+	}
 	
 }
