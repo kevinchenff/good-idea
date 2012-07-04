@@ -1524,7 +1524,7 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 				//计数创建成功的点线模型数量
 				dCountResult++;
 				//调用函数，按照参数信息创建点线模型
-				CreateFstLinesAndCircles(spIntersect01,spIntersect02,spFstTypeGSMTool);
+				CreateFstLinesAndCircles(spIntersect01,spIntersect02,spFstTypeGSMTool,m_lstSpecPoints[i]);
 
 				//收起几何图形集节点结构树显示
 				PrtService::CollapseAllNode(spFstTypeGSMTool);
@@ -1558,7 +1558,7 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 }
 
 //按照参数信息创建点线模型
-void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool)
+void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CATISpecObject_var ispPoint02,CATISpecObject_var ispJointTypeGSMTool,CATISpecObject_var ispPosPoint)
 {
 	//
 	//获得文档指针
@@ -1650,6 +1650,11 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 	PrtService::SetSepcObjectAttrEx("YES",strFSTMainKey,spResultLine);
 
 	//写入坐标位置值XYZ及向量，可直接获取，暂时不写入
+
+
+	//写入安装点特征，当删除特征时，可直接把该点恢复显示状态
+	CATUnicodeString strFSTPosPointKey("F_ATTEX_Point");
+	PrtService::SetSepcObjectAttrEx(ispPosPoint,strFSTPosPointKey,spResultLine);
 
 	//
 	PrtService::ObjectUpdate(spResultLine);
@@ -2193,6 +2198,8 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 		(*LstStrAtrrValue04).Append("222");
 		m_pListStrSpecialValue.Append(LstStrAtrrValue04);
 	}
+
+	m_userChoosedFlag = TRUE;
 
 	ChangeOKApplyState();
 

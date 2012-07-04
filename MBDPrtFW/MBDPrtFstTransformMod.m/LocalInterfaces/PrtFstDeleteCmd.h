@@ -59,6 +59,8 @@ class PrtFstDeleteCmd: public CATStateCommand
   void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void RemoveSelectedPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void RemoveAllPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
 
   //
   BOOL IsThisZPPrt(CATUnicodeString istrDocName);
