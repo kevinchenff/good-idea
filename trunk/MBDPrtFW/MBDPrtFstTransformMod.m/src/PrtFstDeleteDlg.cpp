@@ -31,7 +31,7 @@
 PrtFstDeleteDlg::PrtFstDeleteDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstDeleteDlg",CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstDeleteDlg",CATDlgWndBtnOKCancel|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
