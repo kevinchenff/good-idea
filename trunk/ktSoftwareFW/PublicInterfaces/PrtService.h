@@ -526,7 +526,7 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   static void CenterSpecGraph(CATPathElement* piPathEle);
 
   //视图居中给定点对象
-  static BOOL CenterViewPoints(const CATLISTV(CATMathPoint) lstMathPoints);
+  static BOOL CenterViewPoints(const CATLISTV(CATMathPoint) lstMathPoints,double dIniRadius = 20);
 
 
 //**********************************************************************************************************************************************************************************************************************************************************
