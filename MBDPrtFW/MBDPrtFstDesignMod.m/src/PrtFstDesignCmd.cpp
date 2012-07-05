@@ -2160,6 +2160,28 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrSpecialValue[k];
 		delete TempLstStr;
 	}
+	//
+	m_pListStrPropertyName.RemoveAll();
+	m_pListStrPropertyValue.RemoveAll();
+	m_pListStrSpecialName.RemoveAll();
+	m_pListStrSpecialValue.RemoveAll();
+	//
+
+	m_alistStrFSTType.RemoveAll();
+	m_alistStrFSTType.RemoveAll();
+	//
+	m_lststrCirclePositions.RemoveAll();
+	m_alistStrFSTName.RemoveAll();
+	m_alistStrFSTName.RemoveAll();
+	//
+	m_lstCircleRadiusValues.RemoveAll();
+	m_lstCircleThicks.RemoveAll();
+
+	//
+	/*m_pListStrPropertyName = NULL;
+	m_pListStrPropertyValue = NULL;
+	m_pListStrSpecialName = NULL;
+	m_pListStrSpecialValue = NULL;*/
 
 	//
 	//初始化测试数据
@@ -2246,7 +2268,6 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 		m_materialFileName = p2;
 		m_RaFMShellThickness = (double)thickness;*/
 		::FreeLibrary(hDll);
-
 	}
 }
 

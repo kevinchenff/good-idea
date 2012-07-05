@@ -583,6 +583,39 @@ void PrtFstDeleteCmd::GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, C
 
 		piRepPtAlias->Release();
 		piRepPtAlias=NULL;
+
+		//  [7/5/2012 xyuser]
+		//显示信息
+		m_pDlg->_ExternalInfoML->ClearLine();
+		m_pDlg->_InstanceInfoML->ClearLine();
+		//标准号信息
+		CATListValCATUnicodeString lststrJstPropertyName,lststrJstPropertyValue;
+		CATUnicodeString strProNameKey("F_ATTEX_PropertyNameList");
+		CATUnicodeString strProValueKey("F_ATTEX_PropertyValueList");
+		//
+		BOOL bIsExistKey = false;
+		PrtService::GetSepcObjectAttrEx(bIsExistKey,lststrJstPropertyName,strProNameKey,spLine);
+		PrtService::GetSepcObjectAttrEx(bIsExistKey,lststrJstPropertyValue,strProValueKey,spLine);
+		//
+		for (int i=1; i<=lststrJstPropertyName.Size(); i++)
+		{
+			m_pDlg->_ExternalInfoML->SetColumnItem(0,lststrJstPropertyName[i]);
+			m_pDlg->_ExternalInfoML->SetColumnItem(1,lststrJstPropertyValue[i]);
+		}
+
+		//规格信息
+		CATListValCATUnicodeString lststrJstSpecialName,lststrJstSpecialValue;
+		CATUnicodeString strSpecialNameKey("F_ATTEX_SpecialNameList");
+		CATUnicodeString strSpecialValueKey("F_ATTEX_SpecialValueList");
+		//
+		PrtService::GetSepcObjectAttrEx(bIsExistKey,lststrJstSpecialName,strSpecialNameKey,spLine);
+		PrtService::GetSepcObjectAttrEx(bIsExistKey,lststrJstSpecialValue,strSpecialValueKey,spLine);	
+
+		for (int i=1; i<=lststrJstPropertyName.Size(); i++)
+		{
+			m_pDlg->_InstanceInfoML->SetColumnItem(0,lststrJstSpecialName[i]);
+			m_pDlg->_InstanceInfoML->SetColumnItem(1,lststrJstSpecialValue[i]);
+		}
 	}
 	
 }
@@ -621,6 +654,11 @@ void PrtFstDeleteCmd::RemoveSelectedPBCB(CATCommand* cmd, CATNotification* evt, 
 			piPath=NULL;
 		}
 
+		//
+		//删除显示信息
+		m_pDlg->_ExternalInfoML->ClearLine();
+		m_pDlg->_InstanceInfoML->ClearLine();
+
 	}
 
 }
@@ -629,6 +667,10 @@ void PrtFstDeleteCmd::RemoveAllPBCB(CATCommand* cmd, CATNotification* evt, CATCo
 	//
 	m_alstSpecFSTLines.RemoveAll();
 	m_pDlg->_FSTLineSL->ClearLine();
+	//
+	//删除显示信息
+	m_pDlg->_ExternalInfoML->ClearLine();
+	m_pDlg->_InstanceInfoML->ClearLine();	
 	//
 	m_piHSO->Empty();
 	m_piISO->Empty();
