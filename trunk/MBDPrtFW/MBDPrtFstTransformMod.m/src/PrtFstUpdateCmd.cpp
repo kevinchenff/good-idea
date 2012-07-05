@@ -353,8 +353,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		m_pDlg->_SuccessMultiList->SetColumnItem(1,PrtService::GetAlias(m_alistSuccessfulSpec[i]));
 		m_pDlg->_SuccessMultiList->SetColumnItem(2,"夹持长度更新成功");
 
-	}
-	
+	}	
 
 	//
 	for (int i=1; i <= m_alistErrorSpec.Size(); i ++)
