@@ -403,8 +403,11 @@ void PrtFstDeleteCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	}
 
 	//更新ZP模型
-	PrtService::ObjectUpdate(spPart);		
+	PrtService::ObjectUpdate(spPart);
 
+	//删除显示信息
+	m_pDlg->_ExternalInfoML->ClearLine();
+	m_pDlg->_InstanceInfoML->ClearLine();
 }
 
 //
@@ -553,14 +556,22 @@ void PrtFstDeleteCmd::GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, C
 		//获得线对应的端点
 		CATISpecObject_var spLine = m_alstSpecFSTLines[ioTabRow[0]+1];
 		CATIMeasurableLine_var spMeasLine = spLine;
-		CATMathPoint  ioOrigin;
+		CATMathPoint  ioOrigin, ioTopPoint;
 		spMeasLine->GetOrigin(ioOrigin);
 		//
 		CATLISTV(CATMathPoint) lstMathPoints;
 		lstMathPoints.Append(ioOrigin);
 
+		//获得顶点信息
+		CATIGSMLinePtDir_var spGSMLine = spLine;
+		CATISpecObject_var spTopPoint;
+		spGSMLine->GetStartingPoint(spTopPoint);
+		CATIMeasurablePoint_var spMeasPoint = spTopPoint;
+		spMeasPoint->GetPoint(ioTopPoint);
+
+
 		//使其居中，高亮显示模型信息
-		PrtService::CenterViewPoints(lstMathPoints);
+		PrtService::CenterViewPoints(lstMathPoints,100);
 		PrtService::HighlightHSO(spLine);
 
 		//
@@ -568,13 +579,13 @@ void PrtFstDeleteCmd::GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, C
 		CATUnicodeString StrTextValue = spAliasOnPt->GetAlias();
 
 		CATMathPointf TextPosNode;
-		TextPosNode.x = (float)(ioOrigin.GetX());
-		TextPosNode.y = (float)(ioOrigin.GetY());
-		TextPosNode.z = (float)(ioOrigin.GetZ());
+		TextPosNode.x = (float)(ioTopPoint.GetX());
+		TextPosNode.y = (float)(ioTopPoint.GetY());
+		TextPosNode.z = (float)(ioTopPoint.GetZ());
 
 		CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
 		CATGraphicAttributeSet   TextGaNode ;
-		TextGaNode.SetColor(RED);
+		TextGaNode.SetColor(BLUE);
 		CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
 		pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
 		CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
