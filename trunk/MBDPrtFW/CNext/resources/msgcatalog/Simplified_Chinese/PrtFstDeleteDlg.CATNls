@@ -1,6 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "Fastener Delete";
 BOK = "Delete Fasteners";
+BCancel = "Close";
 Frame001.Title = "Choosed Fasteners";
 Frame001.Frame008.Frame010.RemoveSelPB.Title = "Remove Seleted";
 Frame001.Frame008.Frame010.RemoveAllPB.Title = "Remove All";
