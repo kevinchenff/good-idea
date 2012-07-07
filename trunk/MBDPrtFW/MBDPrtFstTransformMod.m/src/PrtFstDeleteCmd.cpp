@@ -182,6 +182,16 @@ void PrtFstDeleteCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		}
 
 		//
+		//写入紧固件辅助元素，删除的时候直接获取后删除该辅助元素
+		CATUnicodeString strProcessPointKey("F_ATTEX_ProcessPoint");
+		CATListValCATISpecObject_var alstProcessPoint;
+		PrtService::GetSepcObjectAttrEx(bIsExistKey,alstProcessPoint,strProcessPointKey,m_alstSpecFSTLines[i]);
+		for (int k=1; k<=alstProcessPoint.Size(); k++)
+		{
+			alstProcessPoint[k]->GetFather()->Remove(alstProcessPoint[k]);
+		}
+
+		//
 		CATISpecObject_var spGSM03=m_alstSpecFSTLines[i]->GetFather()->GetFather();
 		spGSM03->Remove(m_alstSpecFSTLines[i]->GetFather());
 	}

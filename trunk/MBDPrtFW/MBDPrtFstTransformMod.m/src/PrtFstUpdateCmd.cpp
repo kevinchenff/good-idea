@@ -26,7 +26,13 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstUpdateCmd);
 
-const double cdBoltAllowence = 2;
+//螺栓螺丝高出部分必须 大于等于 2mm
+const double cdBoltEndMinAllowence = 2;
+
+//螺杆露出高度最小值
+const double cdBoltStartMinAllowence = 0;
+//螺杆露出高度最大值
+const double cdBoltStartMaxAllowence = 1;
 
 
 //-------------------------------------------------------------------------
@@ -393,7 +399,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 	CATIMeasurableLine_var spMeasLine = spIntersectionLine;
 	spMeasLine->GetLength(dJstLength);
 
-	//
+	//所要获得的所有长度信息
 	double dLength = 0, dThickLimit = 0,dThick = 0;
 	//
 	ioListStrNameValue[1].ConvertToNum(&dLength,"%lf");
@@ -420,7 +426,6 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		//
 		PrtService::ModifySpecObjCertainParams(m_piDoc,spLine,iListStrName,ioListStrNameValue);
 	}
-
 	
 	//2 获取垫圈及螺母的“厚度值”
 	iListStrName.RemoveAll(); ioListStrNameValue.RemoveAll();
@@ -444,6 +449,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		dCompareValue -= alistDNutThick[i];
 	}
 
+	//
 	if (dCompareValue >= dAllowance)
 	{
 		m_alistSuccessfulSpec.Append(alistSpecLine);
