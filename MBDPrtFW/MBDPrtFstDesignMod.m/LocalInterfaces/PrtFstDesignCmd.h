@@ -134,7 +134,7 @@ private:
 	CATListValCATISpecObject_var m_lstSpecFirstSurfs,m_lstSpecSecSurfs;
 
 	//夹持厚度最大值及最小值
-	double m_dJstThickMax,m_dJstThickMin;
+	double m_dJstThickMax,m_dJstThickMin, m_dFirstPrdThickMin,m_dFirstPrdThickMax;
 
 	//定义字符串列表指针，从动态DLL中获取这些信息，此值将直接写入特征属性中
 	//---------------------------------------------------------

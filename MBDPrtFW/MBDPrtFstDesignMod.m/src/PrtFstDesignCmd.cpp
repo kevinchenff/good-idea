@@ -20,6 +20,10 @@
 #include "CATTopLineOperator.h"
 #include "CATIMeasurableLine.h"
 #include "CATIGSMCircleCenterAxis.h"
+#include "CATIBodyRequest.h"
+
+//拓扑计算时，最大线长
+const double DTOPLOGLENGTH = 100.0;
 
 
 #include "CATCreateExternalObject.h"
@@ -37,7 +41,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
-  ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0),m_userChoosedFlag(FALSE)
+  ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0),m_dFirstPrdThickMin(0),m_dFirstPrdThickMax(0),m_userChoosedFlag(FALSE)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -543,6 +547,9 @@ void PrtFstDesignCmd::ApplyDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 	//测试代码，显示最大距离和最小距离
 	/*PrtService::ktErrorMsgBox(m_dJstThickMin);
 	PrtService::ktErrorMsgBox(m_dJstThickMax);*/
+
+	PrtService::ktErrorMsgBox(m_dFirstPrdThickMin);
+	PrtService::ktErrorMsgBox(m_dFirstPrdThickMax);
 	//
 	ChangeOKApplyState();
 }
@@ -798,7 +805,7 @@ CATBoolean PrtFstDesignCmd::ChooseFirstSurfs( void *UsefulData)
 			}
 		}
 
-		//显示安装方向
+		//显示安装方向，计算夹持厚度，计算第一安装面厚度
 		CalculateJoinThickInTop(m_lstSpecFirstSurfs,m_lstSpecSecSurfs,m_lstSpecPoints);
 	}
 
@@ -1649,12 +1656,24 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 	CATUnicodeString strFSTMainKey("F_ATTEX_SIGN");
 	PrtService::SetSepcObjectAttrEx("YES",strFSTMainKey,spResultLine);
 
-	//写入坐标位置值XYZ及向量，可直接获取，暂时不写入
-
+	//写入顶点特征，用于以后直接输出安装定位信息，方向信息可以通过线直接输出
+	CATUnicodeString strFSTTopPointKey("F_ATTEX_TopPoint");
+	PrtService::SetSepcObjectAttrEx(spStartPoint,strFSTTopPointKey,spResultLine);
 
 	//写入安装点特征，当删除特征时，可直接把该点恢复显示状态
 	CATUnicodeString strFSTPosPointKey("F_ATTEX_Point");
 	PrtService::SetSepcObjectAttrEx(ispPosPoint,strFSTPosPointKey,spResultLine);
+
+	//写入连接零件列表特征
+	CATUnicodeString strPrdLinkKey("F_ATTEX_LINK_PRT");
+	PrtService::SetSepcObjectAttrEx(m_lstSpecPrds,strPrdLinkKey,spResultLine);
+
+	//写入紧固件辅助元素，删除的时候直接获取后删除该辅助元素
+	CATUnicodeString strProcessPointKey("F_ATTEX_ProcessPoint");
+	CATListValCATISpecObject_var alstProcessPoint;
+	alstProcessPoint.Append(ispPoint02);
+	alstProcessPoint.Append(ispPoint01);
+	PrtService::SetSepcObjectAttrEx(alstProcessPoint,strProcessPointKey,spResultLine);
 
 	//
 	PrtService::ObjectUpdate(spResultLine);
@@ -1973,6 +1992,9 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 		m_dJstThickMax = 0;
 		m_dJstThickMin = 0;
 		//
+		m_dFirstPrdThickMin=0;
+		m_dFirstPrdThickMax=0;
+		//
 		return;
 	}
 	//
@@ -2021,6 +2043,47 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 	delete piHybAss02;
 	piHybAss02 = NULL;	
 	//
+	//------------------------------------------------------------
+	//获得第一个安装零件的实体特征，该特征只从PARTBODY中获取，其它的均不识别
+	CATIProduct_var spInstPrd = m_lstSpecPrds[1];
+	CATISpecObject_var spPart=NULL_var;
+	PrdService::GetPartFromPrd(spInstPrd,spPart);
+
+	//获取第一个安装面实体MainBody中所有实体特征
+	CATListValCATISpecObject_var alstSpecInMainBody;
+	//
+	if (spPart != NULL_var)
+	{
+		CATIPartRequest_var spPrtRequest(spPart);
+		
+		//获取main body
+		CATISpecObject_var spMainBody ;
+		spPrtRequest->GetMainBody("MfDefault3DView",spMainBody);
+
+		//
+		CATIBodyRequest_var spBodyRequest = spMainBody;
+		//获取Body Results
+		CATListValCATBaseUnknown_var  oResults;
+		spBodyRequest->GetResults("MfDefault3DView", oResults);
+
+		for (int j=1; j<=oResults.Size(); j++)
+		{
+			CATIMf3DBehavior_var sp3DBehavor = oResults[j];
+			CATISpecObject_var spSoildObj = oResults[j];
+			//
+			if(sp3DBehavor!=NULL_var)
+			{
+				if(sp3DBehavor->IsASolid()==S_OK)
+				{
+					alstSpecInMainBody.Append(spSoildObj);
+				}
+			}
+		}
+
+	}
+
+	//
+	//------------------------------------------------------------
 	//采用循环
 	for (int i = 1; i <= ilstspPoints.Size(); i ++)
 	{
@@ -2044,9 +2107,9 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 			if (piPjtBody01 != NULL)
 			{
 				//创建TOP线,与SURF02求交点
-				CATTopLineOperator*  pLineOpera = CATCreateTopLineOperatorNormalToShell(iFactory, &topdata, piPjtBody01,piSurfBody01,100.0);
-				pLineOpera->SetFirstLimit(-100.0);
-				pLineOpera->SetSecondLimit(100.0);
+				CATTopLineOperator*  pLineOpera = CATCreateTopLineOperatorNormalToShell(iFactory, &topdata, piPjtBody01,piSurfBody01,DTOPLOGLENGTH);
+				pLineOpera->SetFirstLimit(-DTOPLOGLENGTH);
+				pLineOpera->SetSecondLimit(DTOPLOGLENGTH);
 				pLineOpera->Run();
 				CATBody* pBodyDirLine = pLineOpera->GetResult();
 				delete pLineOpera;
@@ -2055,7 +2118,61 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 				//
 				if (pBodyDirLine !=NULL)
 				{
-					//
+					//1 创建给第一安装面模型的交集
+					for (int j=1; j <= alstSpecInMainBody.Size(); j ++)
+					{
+						CATIGeometricalElement_var spGeomEleBody = alstSpecInMainBody[j];
+						CATBody_var spBody = spGeomEleBody->GetBodyResult();
+						//
+						CATHybIntersect* pIntersect = CATCreateTopIntersect(iFactory, &topdata, pBodyDirLine,spBody);
+						pIntersect->Run();
+						CATBody* pBodyInters = pIntersect->GetResult();
+						delete pIntersect;
+						pIntersect = NULL;
+						//
+						if (pBodyInters != NULL)
+						{
+							//
+							CATLISTP(CATCell) ioResult01;
+							//
+							pBodyInters->GetAllCells(ioResult01,0);
+							//如果交点不是两个，跳过去继续
+							if (ioResult01.Size() != 2)
+							{
+								continue;
+							}
+							//
+							CATMathPoint mathPoint1,mathPoint2;
+							//
+							CATVertex* pVertex01 = (CATVertex*)ioResult01[1];
+							CATVertex* pVertex02 = (CATVertex*)ioResult01[2];
+							//
+							CATPoint* pPoint01=pVertex01->GetPoint();
+							CATPoint* pPoint02=pVertex02->GetPoint();
+							//
+							pPoint01->GetMathPoint(mathPoint1);
+							pPoint02->GetMathPoint(mathPoint2);
+							//获得两点之间的距离
+							double dDistance;
+							dDistance = mathPoint1.DistanceTo(mathPoint2);
+							if (i == 1)
+							{
+								m_dFirstPrdThickMax = dDistance;
+								m_dFirstPrdThickMin = dDistance;							
+							}
+							if (dDistance > m_dFirstPrdThickMax)
+							{
+								m_dFirstPrdThickMax = dDistance;
+							}
+							if (dDistance < m_dFirstPrdThickMin)
+							{
+								m_dFirstPrdThickMin = dDistance;
+							}
+						}
+
+					}
+
+					//2 创建与所选曲面之间的交集
 					CATHybIntersect* pIntersect = CATCreateTopIntersect(iFactory, &topdata, pBodyDirLine,piSurfBody02);
 					pIntersect->Run();
 					CATBody* pBodyInters = pIntersect->GetResult();
