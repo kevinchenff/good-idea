@@ -2123,8 +2123,12 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 					{
 						CATIGeometricalElement_var spGeomEleBody = alstSpecInMainBody[j];
 						CATBody_var spBody = spGeomEleBody->GetBodyResult();
+						//把特征拷贝到现在的PRT文件中
+						CATBody_var spResultBody=NULL_var;
+						PrtService::CopyTopoBody(iFactory,spBody,m_lstSpecPrds[1],spResultBody);
+						m_piISO->AddElement(spResultBody);
 						//
-						CATHybIntersect* pIntersect = CATCreateTopIntersect(iFactory, &topdata, pBodyDirLine,spBody);
+						CATHybIntersect* pIntersect = CATCreateTopIntersect(iFactory, &topdata, pBodyDirLine,spResultBody);
 						pIntersect->Run();
 						CATBody* pBodyInters = pIntersect->GetResult();
 						delete pIntersect;
@@ -2169,6 +2173,9 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 								m_dFirstPrdThickMin = dDistance;
 							}
 						}
+
+						//
+						iFactory->Remove(spResultBody,CATICGMContainer::RemoveDependancies);
 
 					}
 

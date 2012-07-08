@@ -298,7 +298,8 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
   //功能：特征拷贝
   static BOOL CopyFeatureToPartDocument(CATISpecObject_var &spSpecCopyResult, const CATISpecObject_var spObjectToCopy, const CATISpecObject_var spTarget,CATIProduct *piSourceInst,CATIProduct *piTargetInst, CATBoolean LinkMode,int iAttributeMode=3);
 
-
+  //功能：考虑转换矩阵的情况下，拷贝拓扑body
+  static BOOL CopyTopoBody(CATGeoFactory *ispGeoFactory,CATBody_var ispSourSolidBody,CATIProduct_var ispPrd,CATBody_var &iospResultBody);
 
 
 
