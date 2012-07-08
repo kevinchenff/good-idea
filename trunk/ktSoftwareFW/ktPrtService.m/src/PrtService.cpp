@@ -22,7 +22,9 @@
 #include "CATNavigBox.h"
 #include "CATIGraphNode.h"
 #include "CATINavigateObject.h"
-
+#include "CATCloneManager.h"
+#include "CATTransfoManager.h"
+#include "CATIMovable.h"
 
 
 const CATUnicodeString StrDivisionName = "########";
@@ -2742,6 +2744,51 @@ BOOL PrtService::CopyFeatureToPartDocument(CATISpecObject_var &spSpecCopyResult,
 
 	delete ptCATMmrInterPartCopy;
 	return TRUE;
+}
+
+
+BOOL PrtService::CopyTopoBody(CATGeoFactory *ispGeoFactory,CATBody_var ispSourSolidBody,CATIProduct_var ispPrd,CATBody_var &iospResultBody)
+{
+	CATTry
+	{   
+		//¿½±´
+		CATCloneManager * pCloneManager= new CATCloneManager(ispGeoFactory, CatCGMSingleDuplicate);
+		pCloneManager->Add(ispSourSolidBody);
+		pCloneManager->Run();
+		CATBody_var spCopyedBody = pCloneManager->ReadImage(ispSourSolidBody);
+		delete pCloneManager;
+		pCloneManager = NULL;
+		if (spCopyedBody==NULL_var)
+		{
+			ktErrorMsgBox("\nFailed to copy body");
+			return FALSE;
+		}
+
+		//×ª»»¾ØÕó
+		CATIMovable_var spMovable = ispPrd; 
+		if (spMovable==NULL_var)
+		{
+			ktErrorMsgBox("\nfailed to get CATIMovable_var");
+			return FALSE;
+		}
+		CATMathTransformation mathTransf;
+		HRESULT rc = spMovable->GetAbsPosition( mathTransf) ;
+
+		CATTransfoManager * pTransfoManager = new CATTransfoManager(mathTransf,ispGeoFactory); 
+		pTransfoManager->Add(spCopyedBody);
+		pTransfoManager->Run();
+		iospResultBody = pTransfoManager->ReadImage(spCopyedBody);
+		delete pTransfoManager;
+		pTransfoManager = NULL;		
+		ispGeoFactory->Remove(spCopyedBody,CATICGMContainer::RemoveDependancies);
+	}
+	CATCatch(CATError, error)
+	{
+		ktErrorMsgBox("\nfailed to get copy and transform body");
+		return FALSE;
+	}
+	CATEndTry	
+		return TRUE;
 }
 
 //**********************************************************************************************************************************************************************************************************************************************************
