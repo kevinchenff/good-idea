@@ -371,8 +371,17 @@ HRESULT MBDPrtAddMaterialCmd::SetMaterialProperty(CATIMaterialFeature * &pIMater
 		CATICkeParm_var spConverter = listSpecAttrParm[i];
 		CATUnicodeString strName = spConverter->Name();
 
+		int BenginNum = strName.SearchSubString("\\",0,CATUnicodeString::CATSearchModeBackward); 
+		int StrLength = strName.GetLengthInChar();
+		CATUnicodeString StrParaName = strName.SubString(BenginNum+1,StrLength-BenginNum-1);
+
 		CATUnicodeString  strShow = spConverter->Show( ); 
-		cout <<"Name: "<<strName<<" "<<"Value: "<<strShow<<endl;
+		cout <<"Name: "<<StrParaName<<" "<<"Value: "<<strShow<<endl;
+
+		if (StrParaName == "Density")
+		{
+			spConverter->Valuate(1111);
+		}
 	}
 
 	CATIAlias_var spAlias = pIMaterialFeature;
