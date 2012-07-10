@@ -58,9 +58,10 @@ class PrtFstDesignDlg: public CATDlgDialog
  CATDlgFrame*      _Frame003;
  CATDlgPushButton*      _ChooseFstPB;
  CATDlgFrame*      _Frame004;
- CATDlgEditor*      _SpecInfoEditor;
- CATDlgFrame*      _Frame015;
- CATDlgPushButton*      _ShowDetailInfoPB;
+ CATDlgFrame*      _Frame020;
+ CATDlgMultiList*      _ChoosedFstNormalInfoML;
+ CATDlgFrame*      _Frame021;
+ CATDlgMultiList*      _ChoosedFstDetailInfoML;
  CATDlgFrame*      _Frame016;
  CATDlgSelectorList*      _PrdSL;
  CATDlgFrame*      _Frame017;

@@ -8,10 +8,16 @@ Frame002.DirectionPB.Title = "Reverse";
 Frame002.Label014.Title = "Fastener Direction";
 Frame003.Title = "Fastener Style";
 Frame003.ChooseFstPB.Title = "Choose Fastener STD...";
-Frame004.Title = "Specific Info";
-Frame015.ShowDetailInfoPB.Title = "Show Fastener STD Info...";
+Frame004.Title = "Choosed Fasteners Info";
+Frame004.Frame020.Title = "Fasteners Info";
+ Frame004.Frame020.ChoosedFstNormalInfoML.ColumnTitle1 = "Specification No.";
+ Frame004.Frame020.ChoosedFstNormalInfoML.ColumnTitle2 = "Name";
+Frame004.Frame021.Title = "Fasteners Detail Info";
+ Frame004.Frame021.ChoosedFstDetailInfoML.ColumnTitle1 = "Property";
+ Frame004.Frame021.ChoosedFstDetailInfoML.ColumnTitle2 = "Value";
 Frame016.Title = "Choose Fastener Contextual";
 Frame017.DeletePointPB.Title = "Delete All Points";
 Frame017.ChoosePointGSMToolPB.Title = "Choose Points GSMTool";
 Frame017.SeleDeleteCheckB.Title = "Remove mode";
 // END WIZARD REPLACEMENT ZONE
+

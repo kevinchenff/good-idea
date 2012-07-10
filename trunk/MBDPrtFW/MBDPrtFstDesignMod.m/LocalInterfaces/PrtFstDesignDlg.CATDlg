@@ -90,28 +90,41 @@ CATDlgFrame Frame004
   STYLE = CATDlgGridLayout;
   GRID = { 5, 0, 1, 1, CATGRID_4SIDES };
   ROWRES = { 0 };
+  COLRES = { 0, 1 };
+}
+
+CATDlgFrame Frame020
+{
+  FATHER = Frame004;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
   COLRES = { 0 };
 }
 
-CATDlgEditor SpecInfoEditor
+CATDlgMultiList ChoosedFstNormalInfoML
 {
-  FATHER = Frame004;
-  STYLE = CATDlgEdtMultiline;
-  TH = 4;
+  FATHER = Frame020;
+  CC = 2;
+  VCC = 1;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgFrame Frame015
+CATDlgFrame Frame021
 {
-  FATHER = PrtFstDesignDlg;
-  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
-  GRID = { 6, 0, 1, 1, CATGRID_4SIDES };
+  FATHER = Frame004;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
 }
 
-CATDlgPushButton ShowDetailInfoPB
+CATDlgMultiList ChoosedFstDetailInfoML
 {
-  FATHER = Frame015;
-  GRID = { 0, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM };
+  FATHER = Frame021;
+  CC = 2;
+  VCC = 1;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgFrame Frame016
