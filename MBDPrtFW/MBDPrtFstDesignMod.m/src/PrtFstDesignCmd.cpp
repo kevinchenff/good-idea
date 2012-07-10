@@ -25,7 +25,6 @@
 //拓扑计算时，最大线长
 const double DTOPLOGLENGTH = 100.0;
 
-
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstDesignCmd);
 
@@ -42,6 +41,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_pDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
   ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0),m_dFirstPrdThickMin(0),m_dFirstPrdThickMax(0),m_userChoosedFlag(FALSE)
+  ,m_dFstMaxIndex(0)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -546,10 +546,10 @@ void PrtFstDesignCmd::ApplyDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 	//
 	//测试代码，显示最大距离和最小距离
 	/*PrtService::ktErrorMsgBox(m_dJstThickMin);
-	PrtService::ktErrorMsgBox(m_dJstThickMax);*/
+	PrtService::ktErrorMsgBox(m_dJstThickMax);
 
 	PrtService::ktErrorMsgBox(m_dFirstPrdThickMin);
-	PrtService::ktErrorMsgBox(m_dFirstPrdThickMax);
+	PrtService::ktErrorMsgBox(m_dFirstPrdThickMax);*/
 	//
 	ChangeOKApplyState();
 }
@@ -1349,6 +1349,17 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
 	//获取PART
 	CATISpecObject_var spPart = opiRootContainer->GetPart();
+	
+	//从当前PRT中获取紧固件计数器，以最大值模式递增
+	CATUnicodeString strIndexKey("F_ATTEX_MAXIndex");
+	BOOL bIsExistKey;
+	PrtService::GetSepcObjectAttrEx(bIsExistKey,m_dFstMaxIndex,strIndexKey,spPart);
+	if (!bIsExistKey)
+	{
+		m_dFstMaxIndex=0;
+		PrtService::SetSepcObjectAttrEx(m_dFstMaxIndex,strIndexKey,spPart);
+	}
+	
 	//
 	CATISpecObject_var spFSTAssGSMTool = NULL_var;
 	int oDiag = 0 ;
@@ -1560,6 +1571,9 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 		PrtService::ShowDlgNotify("错误信息提示","所选模型第一安装曲面与第二安装曲面在安装方向存在叠加情况，请手动处理！");
 	}
 
+	//反写ID Index到PART文件中
+	PrtService::SetSepcObjectAttrEx(m_dFstMaxIndex,strIndexKey,spPart);
+
 	//更新整个PART
 	PrtService::ObjectUpdate(spPart);
 }
@@ -1621,6 +1635,12 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 
 	lststrParmName.Append("夹层厚度");
 	lststrParmValue.Append(strdJstLength);
+	//ID Index号
+	lststrParmName.Append("ID");
+	m_dFstMaxIndex++;
+	CATUnicodeString strMaxIndex;
+	strMaxIndex.BuildFromNum(m_dFstMaxIndex);
+	lststrParmValue.Append(strMaxIndex);
 	//挂载更改时间参数
 	char str[20];
 	CHandleString::myGetTime(str);

@@ -315,9 +315,9 @@ HRESULT MBDPrtAddMaterialCmd::ApplyMaterial(CATIMaterialFeature *pIMaterialFeatu
 	}
 
 	// »ñÈ¡PartBody
-	/*CATIPartRequest_var spPrtRequst = spPart;
+	CATIPartRequest_var spPrtRequst = spPart;
 	CATBaseUnknown_var  oPartBody;
-	spPrtRequst->GetMainBody("MfDefault3DView",oPartBody );*/
+	spPrtRequst->GetMainBody("MfDefault3DView",oPartBody );
 	// No more need of this interface
 	pIPrtCont->Release();
 	pIPrtCont = NULL ;
@@ -326,7 +326,7 @@ HRESULT MBDPrtAddMaterialCmd::ApplyMaterial(CATIMaterialFeature *pIMaterialFeatu
 	// 2- Retrieves the material support of the part 
 	//---------------------------------------------------
 	CATIMaterialSupport * pIMaterialSupportOnPart = NULL ;
-	hr = spPart->QueryInterface(IID_CATIMaterialSupport,(void**) &pIMaterialSupportOnPart);
+	hr = oPartBody->QueryInterface(IID_CATIMaterialSupport,(void**) &pIMaterialSupportOnPart);
 	if ( FAILED(hr) )
 	{
 		cout << "Pb with the CATIMaterialSupport interface "<< endl;
