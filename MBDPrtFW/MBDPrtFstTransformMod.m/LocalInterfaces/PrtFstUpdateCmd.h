@@ -64,6 +64,13 @@ class PrtFstUpdateCmd: public CATStateCommand
   //检查线模型的更新情况，是否超出安装长度要求，检验规则：长度-夹层
   HRESULT CheckFstLineLengthInfo(CATListValCATISpecObject_var &alistSpecLine,CATListValCATISpecObject_var &alistSpecCircle,double dAllowance);
 
+  //
+  //对错误紧固件处理PB的响应
+  void ReportAndMarkCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void DeleteAllErrorCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+
+  
 
 private:
 
@@ -81,6 +88,11 @@ private:
 	CATListValCATISpecObject_var m_alistSuccessfulSpec, m_alistErrorSpec;
 	//失效类型
 	CATListValCATUnicodeString m_alistErrorType;
+
+	//
+	//右键context按钮对话框
+	CATDlgContextualMenu  *m_pContextMenu;
+	CATDlgPushItem * m_pPushItemReportAndMark,* m_pPushItemDeleteAll;
 };
 
 //----------------------------------------------------------------------
