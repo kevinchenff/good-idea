@@ -9,4 +9,7 @@ Frame003.Title = "Update Error";
  Frame003.ErrorMultiList.ColumnTitle1 = "Serial Number";
  Frame003.ErrorMultiList.ColumnTitle2 = "Trademark";
  Frame003.ErrorMultiList.ColumnTitle3 = "Error Reason";
+ Frame005.Title = "Operation with Error";
+Frame005.ReportAndMarkPB.Title = "Report And Mark";
+Frame005.DeleteAllErrorPB.Title = "Delete All Error";
 // END WIZARD REPLACEMENT ZONE

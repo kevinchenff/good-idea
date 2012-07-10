@@ -103,6 +103,17 @@ void PrtFstUpdateCmd::BuildGraph()
 		m_pDlg->GetDiaCANCELNotification(),
 		(CATCommandMethod)&PrtFstUpdateCmd::CloseDlgCB,
 		NULL);
+
+	//增加对错误紧固件处理PB的响应
+	AddAnalyseNotificationCB (m_pDlg->_ReportAndMarkPB, 
+		m_pDlg->_ReportAndMarkPB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstUpdateCmd::ReportAndMarkCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pDlg->_DeleteAllErrorPB, 
+		m_pDlg->_DeleteAllErrorPB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstUpdateCmd::DeleteAllErrorCB,
+		NULL);
 }
 
 
@@ -460,4 +471,12 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 	}
 
 	return rc;
+}
+
+
+void PrtFstUpdateCmd::ReportAndMarkCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+}
+void PrtFstUpdateCmd::DeleteAllErrorCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
 }

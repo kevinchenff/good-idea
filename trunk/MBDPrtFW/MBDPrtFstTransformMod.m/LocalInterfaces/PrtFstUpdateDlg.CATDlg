@@ -41,4 +41,24 @@ CATDlgMultiList ErrorMultiList
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
+CATDlgFrame Frame005
+{
+  FATHER = PrtFstUpdateDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgPushButton ReportAndMarkPB
+{
+  FATHER = Frame005;
+  GRID = { 0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgPushButton DeleteAllErrorPB
+{
+  FATHER = Frame005;
+  GRID = { 0, 1, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
 // END WIZARD REPLACEMENT ZONE

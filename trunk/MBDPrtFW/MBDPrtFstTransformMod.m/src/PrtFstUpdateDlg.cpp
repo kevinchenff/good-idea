@@ -40,6 +40,9 @@ PrtFstUpdateDlg::PrtFstUpdateDlg() :
  _SuccessMultiList = NULL;
  _Frame003 = NULL;
  _ErrorMultiList = NULL;
+ _Frame005 = NULL;
+ _ReportAndMarkPB = NULL;
+ _DeleteAllErrorPB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -56,6 +59,9 @@ PrtFstUpdateDlg::~PrtFstUpdateDlg()
  _SuccessMultiList = NULL;
  _Frame003 = NULL;
  _ErrorMultiList = NULL;
+ _Frame005 = NULL;
+ _ReportAndMarkPB = NULL;
+ _DeleteAllErrorPB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -95,6 +101,13 @@ _Frame003 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _ErrorMultiList -> SetColumnTitles(3, ErrorMultiListTitles);
  _ErrorMultiList -> SetVisibleColumnCount( 3 );
 _ErrorMultiList -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame005 = new CATDlgFrame(this, "Frame005", CATDlgGridLayout);
+_Frame005 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Frame005 -> SetGridColumnResizable(1,1);
+ _ReportAndMarkPB = new CATDlgPushButton(_Frame005, "ReportAndMarkPB");
+_ReportAndMarkPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
+ _DeleteAllErrorPB = new CATDlgPushButton(_Frame005, "DeleteAllErrorPB");
+_DeleteAllErrorPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 _SuccessMultiList->SetColumnTextWidth(0,10);
