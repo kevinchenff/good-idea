@@ -105,9 +105,9 @@ _ErrorMultiList -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
 _Frame005 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  _Frame005 -> SetGridColumnResizable(1,1);
  _ReportAndMarkPB = new CATDlgPushButton(_Frame005, "ReportAndMarkPB");
-_ReportAndMarkPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
+_ReportAndMarkPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _DeleteAllErrorPB = new CATDlgPushButton(_Frame005, "DeleteAllErrorPB");
-_DeleteAllErrorPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
+_DeleteAllErrorPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 _SuccessMultiList->SetColumnTextWidth(0,10);

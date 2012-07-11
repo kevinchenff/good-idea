@@ -43,7 +43,7 @@ const double cdBoltStartMaxAllowence = 1;
 PrtFstUpdateCmd::PrtFstUpdateCmd() :
   CATStateCommand ("PrtFstUpdateCmd", CATDlgEngOneShot, CATCommandModeExclusive) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL)
+,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL),m_strFilePath("")
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -867,8 +867,72 @@ void PrtFstUpdateCmd::ReportAndMarkCB(CATCommand* cmd, CATNotification* evt, CAT
 	{
 		PrtService::SetSpecObjColor(m_alistErrorSpec[i],0,6,1);
 	}
-		
+
+	//
+	m_pFileDlg = new CATDlgFile(m_pDlg,"选择目录",CATDlgFolderChooser);
+	m_pFileDlg->SetVisibility(CATDlgShow);
+	AddAnalyseNotificationCB (m_pFileDlg,m_pFileDlg->GetDiaOKNotification(),(CATCommandMethod)&PrtFstUpdateCmd::OpenOK,NULL);
 }
+
+//
+void PrtFstUpdateCmd::OpenOK(CATCommand * iSendingCommand, CATNotification * iSentNotification,CATCommandClientData iUsefulData)
+{
+	//导出EXCEL文件
+	m_pFileDlg->GetDirectory(m_strFilePath);
+	m_pFileDlg->RequestDelayedDestruction();
+	m_pFileDlg = NULL;
+	//
+	char cTmp[512];
+	CHandleString::myGetTime2(cTmp);
+	//
+	CATUnicodeString StrPath = m_strFilePath+"\\"+CATUnicodeString(cTmp)+"_"+"ErrorReportInfo.xls";
+	StrPath.ReplaceSubString("\\\\","\\");
+	CKerExcel  CEEndExcel;
+	//
+	CEEndExcel.Open();
+	CEEndExcel.OpenSheet("Sheet1");
+	//
+	//输出EXCEL头
+	CEEndExcel.SetItemText(1,1,"紧固件规格号");
+	CEEndExcel.SetItemText(1,2,"紧固件ID");
+	CEEndExcel.SetItemText(1,3,"总长度mm");	
+	CEEndExcel.SetItemText(1,4,"夹持厚度mm");
+	CEEndExcel.SetItemText(1,5,"夹层厚度mm");
+	CEEndExcel.SetItemText(1,6,"更改时间");
+	CEEndExcel.SetItemText(1,7,"错误信息");
+	
+	//
+	for(int i=1;i<=m_alistErrorSpec.Size();i++)
+	{
+		//
+		CATListValCATUnicodeString iListStrName;
+		iListStrName.Append("ID");
+		iListStrName.Append("总长度");
+		iListStrName.Append("夹持厚度");
+		iListStrName.Append("夹层厚度");
+		iListStrName.Append("更改时间");
+		CATListValCATUnicodeString ioListStrNameValue;
+		PrtService::GetSpecObjCertainParams(m_alistErrorSpec[i],iListStrName,ioListStrNameValue);
+		//
+		CATUnicodeString strName;
+		CATIAlias_var spAlias = m_alistErrorSpec[i];
+		strName = spAlias->GetAlias();
+		//
+		
+		//
+		CEEndExcel.SetItemText(i+1,1,strName);
+		for (int j=1; j<=ioListStrNameValue.Size(); j++)
+		{
+			CEEndExcel.SetItemText(i+1,j+1,ioListStrNameValue[j]);
+		}
+		CEEndExcel.SetItemText(i+1,7,m_aliststrErrorInfo[i]);
+	}
+	//
+	CEEndExcel.SaveAs(StrPath);
+	CEEndExcel.Exit();
+}
+
+
 void PrtFstUpdateCmd::DeleteAllErrorCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	// 删除紧固件几何，并更新参数信息，所选列表
