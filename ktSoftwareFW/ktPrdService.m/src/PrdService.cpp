@@ -542,9 +542,12 @@ HRESULT PrdService::GetPartFromPrd(CATIProduct_var spInsProduct,CATISpecObject_v
 				piPrtContainerOnRoot->Release();piPrtContainerOnRoot=NULL;
 			}
 		}
+		else return E_FAIL;
 	}
+	else return E_FAIL;
 
-	return S_OK;
+	//
+	return rc;
 }
 
 

@@ -992,7 +992,7 @@ CATBoolean PrtFstDesignCmd::ChoosePrds( void *UsefulData)
 
 			if (m_lstSpecPrds.Size()==0)
 			{
-				m_pDlg->_PrdSL->SetLine("请选择连接零件");
+				m_pDlg->_PrdSL->SetLine("请选择连接零件（需确保所选第一个为第一安装零件）");
 			}
 		}
 	}
@@ -2146,7 +2146,7 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 						//把特征拷贝到现在的PRT文件中
 						CATBody_var spResultBody=NULL_var;
 						PrtService::CopyTopoBody(iFactory,spBody,m_lstSpecPrds[1],spResultBody);
-						m_piISO->AddElement(spResultBody);
+						//m_piISO->AddElement(spResultBody);
 						//
 						CATHybIntersect* pIntersect = CATCreateTopIntersect(iFactory, &topdata, pBodyDirLine,spResultBody);
 						pIntersect->Run();
@@ -2330,7 +2330,7 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 	//
 	//初始化测试数据
 	//
-	m_alistStrFSTType.Append("螺栓");
+	m_alistStrFSTType.Append("螺栓|六角头螺栓");
 	m_alistStrFSTType.Append("螺母");
 
 	//

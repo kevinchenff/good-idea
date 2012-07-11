@@ -188,7 +188,17 @@ void PrtFstDeleteCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		PrtService::GetSepcObjectAttrEx(bIsExistKey,alstProcessPoint,strProcessPointKey,m_alstSpecFSTLines[i]);
 		for (int k=1; k<=alstProcessPoint.Size(); k++)
 		{
-			alstProcessPoint[k]->GetFather()->Remove(alstProcessPoint[k]);
+			CATISpecObject_var spFather = alstProcessPoint[k]->GetFather();
+			spFather->Remove(alstProcessPoint[k]);
+			//
+			//检查几何图形集是否已经不包含元素了
+			CATListValCATISpecObject_var iolstspFoundResult;
+			CATIDescendants_var spDescendants = spFather;
+			spDescendants->GetDirectChildren("CATISpecObject",iolstspFoundResult);
+			if (iolstspFoundResult.Size()==0)
+			{
+				spFather->GetFather()->Remove(spFather);
+			}
 		}
 
 		//
