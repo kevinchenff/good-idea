@@ -18,6 +18,7 @@
 #ifndef PrtFstUpdateCmd_H
 #define PrtFstUpdateCmd_H
 
+#include "ktKerExcel.h"
 #include "ktPubHeaders.h"
 #include "CATStateCommand.h"
 #include "CATBoolean.h"
@@ -69,6 +70,8 @@ class PrtFstUpdateCmd: public CATStateCommand
   void ReportAndMarkCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void DeleteAllErrorCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
+  //
+  void OpenOK(CATCommand * iSendingCommand, CATNotification * iSentNotification,CATCommandClientData iUsefulData);
 
   
 
@@ -88,6 +91,10 @@ private:
 	CATListValCATISpecObject_var m_alistSuccessfulSpec, m_alistErrorSpec;
 	// ß–ß¿‡–Õ
 	CATListValCATUnicodeString m_aliststrErrorInfo;
+	//
+	CATDlgFile *m_pFileDlg;
+	//
+	CATUnicodeString m_strFilePath;
 };
 
 //----------------------------------------------------------------------
