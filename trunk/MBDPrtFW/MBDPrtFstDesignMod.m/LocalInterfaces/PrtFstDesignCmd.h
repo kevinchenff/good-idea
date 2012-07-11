@@ -140,7 +140,7 @@ private:
 	//---------------------------------------------------------
 	CATListPV  m_pListStrPropertyName,m_pListStrPropertyValue;
 	CATListPV  m_pListStrSpecialName,m_pListStrSpecialValue;
-	CATListValCATUnicodeString m_alistStrFSTType; //存储紧固件类型：螺栓，螺钉，铆钉，螺母，垫片
+	CATListValCATUnicodeString m_alistStrFSTType; //存储紧固件类型：螺栓，螺钉，铆钉，螺母，垫片，写入格式：螺栓|六角螺栓
 	CATListValCATUnicodeString m_lststrCirclePositions; //螺母、垫片的安装位置，需要写入特征属性中
 
 	//

@@ -187,7 +187,7 @@ _PointCountEditor -> SetGridConstraints(0, 3, 1, 1, CATGRID_4SIDES);
 _FirstSurfSL->SetLine("未选择");
 _SecondSurfSL->SetLine("未选择");
 _PointsSL->SetLine("请选择安装点");
-_PrdSL->SetLine("请选择连接零件");
+_PrdSL->SetLine("请选择连接零件（需确保所选第一个为第一安装零件）");
 _PointCountEditor->SetText("0 个");
 //
 this->SetOKSensitivity(CATDlgDisable);

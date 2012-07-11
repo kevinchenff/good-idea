@@ -87,12 +87,7 @@ private:
 	//数据列表
 	CATListValCATISpecObject_var m_alistSuccessfulSpec, m_alistErrorSpec;
 	//失效类型
-	CATListValCATUnicodeString m_alistErrorType;
-
-	//
-	//右键context按钮对话框
-	CATDlgContextualMenu  *m_pContextMenu;
-	CATDlgPushItem * m_pPushItemReportAndMark,* m_pPushItemDeleteAll;
+	CATListValCATUnicodeString m_aliststrErrorInfo;
 };
 
 //----------------------------------------------------------------------
