@@ -5,4 +5,5 @@ Frame001.Label003.Title = "Selected Surface:";
 Frame001.Label007.Title = "Curve Offset Distance:";
 Frame009.NumPointRB.Title = "Number Of Points:";
 Frame009.DistanceRB.Title = "Distance Between Points:";
+ReverseDirePB.Title = "Reverse Direction";
 // END WIZARD REPLACEMENT ZONE

@@ -42,7 +42,8 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
   CATStateCommand ("PrtFstPointsCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL)
-  ,m_SpecSurfs(NULL_var),m_piDoc(NULL)
+  ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var)
+  ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -134,6 +135,16 @@ void PrtFstPointsCmd::BuildGraph()
 		(CATCommandMethod)&PrtFstPointsCmd::CloseDlgCB,
 		NULL);
 
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetDiaPREVIEWNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OnPREVIEWCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->_ReverseDirePB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OnReverseDirePBCB,
+		NULL);
+
 	//创建边线代理
 	m_pCurveAgt = new CATFeatureImportAgent("选择边线");
 	m_pCurveAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSO | CATDlgEngRepeat );
@@ -223,16 +234,15 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,"过程元素",NULL_var,ospFatGSSpecObj,oDiag,1,0);
 	}
 	//创建几何图形集放置点集合
-	CATISpecObject_var spPointGSMTool = NULL_var;
 	int oDiag = 0 ;
-	PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,"安装点集合",ospFatGSSpecObj,spPointGSMTool,oDiag,0,0);
+	PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,"安装点集合",ospFatGSSpecObj,m_spPointGSMTool,oDiag,0,0);
 
 	//创建偏移线
 	CATISpecObject_var spInputCurve = NULL_var;
 	if (m_lstSpecCurves.Size() >= 2)
 	{
 		spInputCurve = iospGSMFact->CreateAssemble(m_lstSpecCurves,NULL_var,TRUE);
-		PrtService::CAAGsiInsertInProceduralView(spInputCurve,spPointGSMTool);
+		PrtService::CAAGsiInsertInProceduralView(spInputCurve,m_spPointGSMTool);
 		PrtService::SetAlias(spInputCurve,"基线");
 		PrtService::SetSpecObjShowAttr(spInputCurve,"Hide");
 		rc = PrtService::ObjectUpdate(spInputCurve);
@@ -240,7 +250,7 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		{
 			PrtService::ShowDlgNotify("错误提示","所选线集合非连通，请重新选择!");
 			spInputCurve->GetFather()->Remove(spInputCurve);
-			spPointGSMTool->GetFather()->Remove(spPointGSMTool);
+			m_spPointGSMTool->GetFather()->Remove(m_spPointGSMTool);
 			return;
 		}
 	}
@@ -252,25 +262,27 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	//创建偏移线
 	double dOffsetValue = m_pDlg->_DistanceSpinner->GetValue();
 	dOffsetValue *= 1000.0;
+	m_dCurveOffsetValue = dOffsetValue;
+	//
 	CATICkeParm_var spCkeOffset = NULL_var;
 	spCkeOffset = PrtService::LocalInstLitteral(&dOffsetValue,1,"Length","Length");
-	CATISpecObject_var spCurvePar = NULL_var;
-	spCurvePar = iospGSMFact->CreateCurvePar(spInputCurve,m_SpecSurfs,spCkeOffset,FALSE);
-	PrtService::CAAGsiInsertInProceduralView(spCurvePar,spPointGSMTool);
-	PrtService::SetAlias(spCurvePar,"排布线");
-	PrtService::SetSpecObjShowAttr(spCurvePar,"Hide");
-	rc = PrtService::ObjectUpdate(spCurvePar);
+	//
+	m_spCurvePar = iospGSMFact->CreateCurvePar(spInputCurve,m_SpecSurfs,spCkeOffset,FALSE);
+	PrtService::CAAGsiInsertInProceduralView(m_spCurvePar,m_spPointGSMTool);
+	PrtService::SetAlias(m_spCurvePar,"排布线");
+	PrtService::SetSpecObjShowAttr(m_spCurvePar,"Hide");
+	rc = PrtService::ObjectUpdate(m_spCurvePar);
 	if (FAILED(rc))
 	{
-		CATIGSMCurvePar_var spGSMPar = spCurvePar;
+		CATIGSMCurvePar_var spGSMPar = m_spCurvePar;
 		spGSMPar->SetInvertDirection(TRUE);
 	}
-	rc = PrtService::ObjectUpdate(spCurvePar);
+	rc = PrtService::ObjectUpdate(m_spCurvePar);
 	if (FAILED(rc))
 	{
 		PrtService::ShowDlgNotify("错误提示","所选线在算选安装面上无法生成平行线!");
-		spCurvePar->GetFather()->Remove(spCurvePar);
-		spPointGSMTool->GetFather()->Remove(spPointGSMTool);
+		m_spCurvePar->GetFather()->Remove(m_spCurvePar);
+		m_spPointGSMTool->GetFather()->Remove(m_spPointGSMTool);
 		return;	
 	}
 	
@@ -286,9 +298,11 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			PrtService::ShowDlgNotify("错误提示","所设置点数不能为0!");
 			return;	
 		}
+		//
+		m_dPointsCount=odNumValue;
 		//获得长度值
 		CATIMeasurableCurve_var spMeasCurve = NULL_var;
-		spMeasCurve = spCurvePar;
+		spMeasCurve = m_spCurvePar;
 		if (spMeasCurve != NULL_var)
 		{
 			double dCrvLength = 0;
@@ -304,13 +318,14 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 				CATICkeParm_var spCkedDistanceV = NULL_var;
 				spCkedDistanceV = PrtService::LocalInstLitteral(&dDistValues,1,"Length","Length");
 				//
-				CATISpecObject_var spPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedDistanceV,CATGSMSameOrientation);
-				PrtService::CAAGsiInsertInProceduralView(spPoint,spPointGSMTool);
+				CATISpecObject_var spPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedDistanceV,CATGSMSameOrientation);
+				PrtService::CAAGsiInsertInProceduralView(spPoint,m_spPointGSMTool);
 				//
 				rc = PrtService::ObjectUpdate(spPoint);
 				if (FAILED(rc))
 				{
 					spPoint->GetFather()->Remove(spPoint);
+					spPoint=NULL_var;
 					pointErrFlag = TRUE;
 				}
 			}
@@ -335,9 +350,11 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			PrtService::ShowDlgNotify("错误提示","所设置点间隙值不能为0!");
 			return;	
 		}
+		//
+		m_dPointDistance=odGapValue;
 		//获得长度值
 		CATIMeasurableCurve_var spMeasCurve = NULL_var;
-		spMeasCurve = spCurvePar;
+		spMeasCurve = m_spCurvePar;
 		if (spMeasCurve != NULL_var)
 		{
 			double dCrvLength = 0;
@@ -353,13 +370,14 @@ void PrtFstPointsCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 				CATICkeParm_var spCkedDistanceV = NULL_var;
 				spCkedDistanceV = PrtService::LocalInstLitteral(&dDistValues,1,"Length","Length");
 				//
-				CATISpecObject_var spPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedDistanceV,CATGSMSameOrientation);
-				PrtService::CAAGsiInsertInProceduralView(spPoint,spPointGSMTool);
+				CATISpecObject_var spPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedDistanceV,CATGSMSameOrientation);
+				PrtService::CAAGsiInsertInProceduralView(spPoint,m_spPointGSMTool);
 				//
 				rc = PrtService::ObjectUpdate(spPoint);
 				if (FAILED(rc))
 				{
 					spPoint->GetFather()->Remove(spPoint);
+					spPoint=NULL_var;
 					pointErrFlag = TRUE;
 				}
 			}
@@ -550,4 +568,172 @@ CATBoolean PrtFstPointsCmd::ActiveSurfSL( void *UsefulData)
 
 	m_pSurfAgt->InitializeAcquisition();
 	return TRUE;
+}
+
+void PrtFstPointsCmd::OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//获得状态的所有值
+	//如果选择 间距模式
+	double odGapValue = 0;
+	odGapValue = m_pDlg->_PointDistSpinner->GetValue();
+	odGapValue *= 1000.0;
+	//
+	if (odGapValue == 0)
+	{
+		PrtService::ShowDlgNotify("错误提示","所设置点间隙值不能为0!");
+		return;	
+	}
+	//
+	//如果选择 点数模式
+	double odNumValue = 0;
+	odNumValue = m_pDlg->_NumSpinner->GetValue();
+	//
+	if (odNumValue == 0)
+	{
+		PrtService::ShowDlgNotify("错误提示","所设置点数不能为0!");
+		return;	
+	}
+	//
+	//创建偏移线
+	double dOffsetValue = m_pDlg->_DistanceSpinner->GetValue();
+	dOffsetValue *= 1000.0;
+	//
+	CATBoolean IsChangedValue = FALSE;
+	if (odGapValue!=m_dPointDistance || odNumValue!=m_dPointsCount || dOffsetValue!=m_dCurveOffsetValue)
+	{
+		IsChangedValue=TRUE;
+	}
+
+	//
+	if (m_spPointGSMTool != NULL_var && m_spCurvePar != NULL_var && m_alstSpecPoint.Size()!=0 && IsChangedValue)
+	{
+		//获得文档指针
+		CATDocument * pDoc = PrtService::GetPrtDocument();
+		CATIGSMFactory_var iospGSMFact = NULL_var;
+		PrtService::GetGSMFactory(pDoc,iospGSMFact);
+		//
+		for (int i=1; i<=m_alstSpecPoint.Size(); i++)
+		{
+			m_spPointGSMTool->Remove(m_alstSpecPoint[i]);
+		}
+		m_alstSpecPoint.RemoveAll();
+		//
+		//
+		CATICkeParm_var spCkeOffset = NULL_var;
+		spCkeOffset = PrtService::LocalInstLitteral(&dOffsetValue,1,"Length","Length");
+		//
+		//
+		CATIGSMCurvePar_var spGSMCurvePar = m_spCurvePar;
+		spGSMCurvePar->SetCurveParValue(spCkeOffset);
+
+		//
+		//获得交付设置的参数
+		if (m_pDlg->_NumPointRB->GetState() == CATDlgCheck)
+		{
+			//如果选择 点数模式
+			double odNumValue = 0;
+			odNumValue = m_pDlg->_NumSpinner->GetValue();
+			//
+			if (odNumValue == 0)
+			{
+				PrtService::ShowDlgNotify("错误提示","所设置点数不能为0!");
+				return;	
+			}
+			//
+			m_dPointsCount=odNumValue;
+			//获得长度值
+			CATIMeasurableCurve_var spMeasCurve = NULL_var;
+			spMeasCurve = m_spCurvePar;
+			if (spMeasCurve != NULL_var)
+			{
+				double dCrvLength = 0;
+				spMeasCurve->GetLength(dCrvLength);
+				//
+				double dDistanceV = dCrvLength/(odNumValue+1);
+				//
+				CATBoolean pointErrFlag = FALSE;
+				//
+				for (int i=1; i <= odNumValue; i ++)
+				{
+					double dDistValues = i*dDistanceV;
+					CATICkeParm_var spCkedDistanceV = NULL_var;
+					spCkedDistanceV = PrtService::LocalInstLitteral(&dDistValues,1,"Length","Length");
+					//
+					CATISpecObject_var spPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedDistanceV,CATGSMSameOrientation);
+					PrtService::CAAGsiInsertInProceduralView(spPoint,m_spPointGSMTool);
+					//
+					HRESULT rc = PrtService::ObjectUpdate(spPoint);
+					if (FAILED(rc))
+					{
+						spPoint->GetFather()->Remove(spPoint);
+						spPoint=NULL_var;
+						pointErrFlag = TRUE;
+					}
+				}
+				//
+				if (pointErrFlag == TRUE)
+				{
+					PrtService::ShowDlgNotify("错误提示","所选线不能为闭合曲线，无法生存安装点，请重新选择!");
+					return;
+				}
+
+			}
+		} 
+		else
+		{
+			//如果选择 间距模式
+			double odGapValue = 0;
+			odGapValue = m_pDlg->_PointDistSpinner->GetValue();
+			odGapValue *= 1000.0;
+			//
+			if (odGapValue == 0)
+			{
+				PrtService::ShowDlgNotify("错误提示","所设置点间隙值不能为0!");
+				return;	
+			}
+			//
+			m_dPointDistance=odGapValue;
+			//获得长度值
+			CATIMeasurableCurve_var spMeasCurve = NULL_var;
+			spMeasCurve = m_spCurvePar;
+			if (spMeasCurve != NULL_var)
+			{
+				double dCrvLength = 0;
+				spMeasCurve->GetLength(dCrvLength);
+				//
+				double odNumValue = (int)(dCrvLength/odGapValue)-1;
+				//
+				CATBoolean pointErrFlag = FALSE;
+				//
+				for (int i=1; i <= odNumValue; i ++)
+				{
+					double dDistValues = i*odGapValue;
+					CATICkeParm_var spCkedDistanceV = NULL_var;
+					spCkedDistanceV = PrtService::LocalInstLitteral(&dDistValues,1,"Length","Length");
+					//
+					CATISpecObject_var spPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedDistanceV,CATGSMSameOrientation);
+					PrtService::CAAGsiInsertInProceduralView(spPoint,m_spPointGSMTool);
+					//
+					HRESULT rc = PrtService::ObjectUpdate(spPoint);
+					if (FAILED(rc))
+					{
+						spPoint->GetFather()->Remove(spPoint);
+						spPoint=NULL_var;
+						pointErrFlag = TRUE;
+					}
+				}
+				//
+				if (pointErrFlag == TRUE)
+				{
+					PrtService::ShowDlgNotify("错误提示","所选线不能为闭合曲线，无法生存安装点，请重新选择!");
+					return;
+				}
+			}
+		}
+	}
+
+	//
+}
+void PrtFstPointsCmd::OnReverseDirePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
 }

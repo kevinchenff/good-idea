@@ -97,6 +97,7 @@ class PrtFstPointsDlg: public CATDlgDialog
  CATDlgRadioButton*      _DistanceRB;
  CATDlgSpinner*      _NumSpinner;
  CATDlgSpinner*      _PointDistSpinner;
+ CATDlgPushButton*      _ReverseDirePB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 
