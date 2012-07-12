@@ -171,8 +171,8 @@ void PrtFstDesignCmd::BuildGraph()
 {
 	m_pDlg = new PrtFstDesignDlg();
 	m_pDlg->Build();
-	m_pDlg->SetVisibility(CATDlgShow); 
-
+	m_pDlg->SetVisibility(CATDlgShow);
+	m_pDlg->_ChooseFstPB->SetSensitivity(CATDlgDisable);
 
 	// 主对话框的消息响应
 	AddAnalyseNotificationCB (m_pDlg, 
@@ -209,6 +209,13 @@ void PrtFstDesignCmd::BuildGraph()
 	AddAnalyseNotificationCB (m_pDlg->_ChooseFstPB, 
 		m_pDlg->_ChooseFstPB->GetPushBActivateNotification(),
 		(CATCommandMethod)&PrtFstDesignCmd::ChooseFstCB,
+		NULL);
+
+	//选择紧固件信息列表，查看具体信息
+	//选择紧固件类型，调用DLL
+	AddAnalyseNotificationCB (m_pDlg->_ChoosedFstNormalInfoML, 
+		m_pDlg->_ChoosedFstNormalInfoML->GetListSelectNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::ChoosedFstNormalInfoMLCB,
 		NULL);
 	
 	//创建安装点代理
@@ -462,6 +469,7 @@ void PrtFstDesignCmd::BuildGraph()
 //转变OK APPLY按钮的显示状态
 void PrtFstDesignCmd::ChangeOKApplyState()
 {
+	//控制APPLY&OK状态
 	if (m_lstSpecPoints.Size()!=0 && m_lstSpecPrds.Size()!=0 && m_lstSpecFirstSurfs.Size()!=0 && m_lstSpecSecSurfs.Size()!=0 && m_userChoosedFlag!=FALSE)
 	{
 		m_pDlg->SetOKSensitivity(CATDlgEnable);
@@ -471,6 +479,16 @@ void PrtFstDesignCmd::ChangeOKApplyState()
 	{
 		m_pDlg->SetOKSensitivity(CATDlgDisable);
 		m_pDlg->SetAPPLYSensitivity(CATDlgDisable);
+	}
+
+	//控制紧固件选择按钮状态
+	if (m_lstSpecPoints.Size()!=0 && m_lstSpecPrds.Size()!=0 && m_lstSpecFirstSurfs.Size()!=0 && m_lstSpecSecSurfs.Size()!=0)
+	{
+		m_pDlg->_ChooseFstPB->SetSensitivity(CATDlgEnable);
+	}
+	else
+	{
+		m_pDlg->_ChooseFstPB->SetSensitivity(CATDlgDisable);
 	}
 }
 
@@ -551,6 +569,11 @@ void PrtFstDesignCmd::ApplyDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 	PrtService::ktErrorMsgBox(m_dFirstPrdThickMin);
 	PrtService::ktErrorMsgBox(m_dFirstPrdThickMax);*/
 	//
+
+	//调用清空紧固件信息数组函数
+	ClearFstInfoLst();
+
+	//调整按钮显示状态
 	ChangeOKApplyState();
 }
 
@@ -2279,10 +2302,9 @@ void PrtFstDesignCmd::CalculateJoinThickInTop(CATListValCATISpecObject_var ilsts
 	pConfig->Release();
 }
 
-//选择紧固件类型
-void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+//清理紧固件信息数组函数
+void PrtFstDesignCmd::ClearFstInfoLst()
 {
-	//
 	//清除紧固件属性信息参数内存
 	for (int k=1;k<=m_pListStrPropertyName.Size();k++)
 	{
@@ -2322,10 +2344,18 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 	m_lstCircleThicks.RemoveAll();
 
 	//
-	/*m_pListStrPropertyName = NULL;
-	m_pListStrPropertyValue = NULL;
-	m_pListStrSpecialName = NULL;
-	m_pListStrSpecialValue = NULL;*/
+	m_userChoosedFlag = FALSE;
+		
+	//清空ML内容
+	m_pDlg->_ChoosedFstDetailInfoML->ClearLine();
+	m_pDlg->_ChoosedFstNormalInfoML->ClearLine();
+}
+
+//选择紧固件类型
+void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//调用清空紧固件信息数组函数
+	ClearFstInfoLst();
 
 	//
 	//初始化测试数据
@@ -2347,26 +2377,34 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 	for (int j=1;j<=2;j++)
 	{
 		CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue01).Append("AAA");
+		(*LstStrAtrrValue01).Append("PropertyAAA");
 		m_pListStrPropertyName.Append(LstStrAtrrValue01);
 
 		//
 		CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue02).Append("111");
+		(*LstStrAtrrValue02).Append("Property111");
 		m_pListStrPropertyValue.Append(LstStrAtrrValue02);
 
 		CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue03).Append("BBB");
+		(*LstStrAtrrValue03).Append("SpecialBBB");
 		m_pListStrSpecialName.Append(LstStrAtrrValue03);
 
 		//
 		CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue04).Append("222");
+		(*LstStrAtrrValue04).Append("Special222");
 		m_pListStrSpecialValue.Append(LstStrAtrrValue04);
 	}
 
+	//
+	for (int i=1;i<=m_alistStrFSTName.Size();i++)
+	{
+		//
+		m_pDlg->_ChoosedFstNormalInfoML->SetColumnItem(0,m_alistStrFSTName[i]);
+		m_pDlg->_ChoosedFstNormalInfoML->SetColumnItem(1,m_alistStrFSTType[i]);
+	}
+	//
+	
 	m_userChoosedFlag = TRUE;
-
 	ChangeOKApplyState();
 
 	//
@@ -2424,5 +2462,42 @@ void PrtFstDesignCmd::GetStrlistFromListPV(int iCount,CATListPV ipListStrName,CA
 	{
 		CATUnicodeString StrHeadName = (*TempLstStr)[j];
 		ioalstName.Append(StrHeadName);
+	}
+}
+//选择查看紧固件详细信息响应
+void PrtFstDesignCmd::ChoosedFstNormalInfoMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//清空数据
+	m_pDlg->_ChoosedFstDetailInfoML->ClearLine();
+
+	//
+	//获取所选信息
+	int  iSize = m_pDlg->_ChoosedFstNormalInfoML->GetSelectCount();
+	if (iSize != 0 )
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pDlg->_ChoosedFstNormalInfoML->GetSelect(ioTabRow,iSize);
+		//
+		CATListValCATUnicodeString lststrJstTypeInfoName,lststrJstTypeInfoValue;
+		//属性信息
+		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrPropertyName,lststrJstTypeInfoName);
+		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrPropertyValue,lststrJstTypeInfoValue);
+		//参数信息
+		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrSpecialName,lststrJstTypeInfoName);
+		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrSpecialValue,lststrJstTypeInfoValue);
+		//
+		if (ioTabRow[0]+1 >= 2)
+		{
+			lststrJstTypeInfoName.Append("安装位置");
+			lststrJstTypeInfoValue.Append(m_lststrCirclePositions[ioTabRow[0]]);
+		}
+
+		//显示
+		for (int i=1; i<=lststrJstTypeInfoName.Size(); i++)
+		{
+			m_pDlg->_ChoosedFstDetailInfoML->SetColumnItem(0,lststrJstTypeInfoName[i]);
+			m_pDlg->_ChoosedFstDetailInfoML->SetColumnItem(1,lststrJstTypeInfoValue[i]);
+		}
 	}
 }

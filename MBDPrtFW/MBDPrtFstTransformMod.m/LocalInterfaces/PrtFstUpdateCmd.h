@@ -73,7 +73,8 @@ class PrtFstUpdateCmd: public CATStateCommand
   //
   void OpenOK(CATCommand * iSendingCommand, CATNotification * iSentNotification,CATCommandClientData iUsefulData);
 
-  
+  //
+  void GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
 private:
 
