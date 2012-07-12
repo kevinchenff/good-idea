@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PrtFstPointsDlg
 {
-  STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
+  STYLE = CATDlgWndBtnOKCancelPreview|CATDlgGridLayout;
   ROWRES = { 0, 1 };
   COLRES = { 0 };
 }
@@ -99,6 +99,12 @@ CATDlgSpinner PointDistSpinner
   STEP = 10.000000;
   FORM = "%d";
   GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton ReverseDirePB
+{
+  FATHER = PrtFstPointsDlg;
+  GRID = { 2, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM };
 }
 
 // END WIZARD REPLACEMENT ZONE

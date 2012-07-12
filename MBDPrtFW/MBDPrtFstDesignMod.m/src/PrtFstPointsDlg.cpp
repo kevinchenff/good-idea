@@ -32,7 +32,7 @@
 PrtFstPointsDlg::PrtFstPointsDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstPointsDlg",CATDlgWndBtnOKCancel|CATDlgGridLayout
+"PrtFstPointsDlg",CATDlgWndBtnOKCancelPreview|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -49,6 +49,7 @@ PrtFstPointsDlg::PrtFstPointsDlg() :
  _DistanceRB = NULL;
  _NumSpinner = NULL;
  _PointDistSpinner = NULL;
+ _ReverseDirePB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -73,6 +74,7 @@ PrtFstPointsDlg::~PrtFstPointsDlg()
  _DistanceRB = NULL;
  _NumSpinner = NULL;
  _PointDistSpinner = NULL;
+ _ReverseDirePB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -104,10 +106,6 @@ _CurveSL -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 _SurfSL -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
  _Label007 = new CATDlgLabel(_Frame001, "Label007");
 _Label007 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
-// _DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntry);
-// _DistanceSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
-// _DistanceSpinner -> SetFormat("%d");
-//_DistanceSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
  _Frame009 = new CATDlgFrame(this, "Frame009", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame009 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame009 -> SetGridColumnResizable(0,1);
@@ -116,14 +114,8 @@ _Frame009 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 _NumPointRB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _DistanceRB = new CATDlgRadioButton(_Frame009, "DistanceRB");
 _DistanceRB -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
-// _NumSpinner = new CATDlgSpinner(_Frame009, "NumSpinner", CATDlgSpnEntry);
-// _NumSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
-// _NumSpinner -> SetFormat("%d");
-//_NumSpinner -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
-// _PointDistSpinner = new CATDlgSpinner(_Frame009, "PointDistSpinner", CATDlgSpnEntry);
-// _PointDistSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
-// _PointDistSpinner -> SetFormat("%d");
-//_PointDistSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _ReverseDirePB = new CATDlgPushButton(this, "ReverseDirePB");
+_ReverseDirePB -> SetGridConstraints(2, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 _DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntry|CATDlgSpnDouble);

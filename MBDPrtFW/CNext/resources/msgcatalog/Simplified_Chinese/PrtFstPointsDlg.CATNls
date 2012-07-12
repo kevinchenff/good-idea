@@ -5,4 +5,5 @@ Frame001.Label003.Title = "选择的基面:";
 Frame001.Label007.Title = "曲线偏移距离:";
 Frame009.NumPointRB.Title = "安装点个数:";
 Frame009.DistanceRB.Title = "安装点间距:";
+ReverseDirePB.Title = "反向偏移线";
 // END WIZARD REPLACEMENT ZONE

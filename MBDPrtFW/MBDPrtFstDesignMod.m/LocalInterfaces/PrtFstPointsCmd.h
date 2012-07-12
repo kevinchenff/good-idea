@@ -56,6 +56,10 @@ class PrtFstPointsCmd: public CATStateCommand
   //消息框响应函数
   void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  //
+  void OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void OnReverseDirePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  //
 
   CATBoolean ChooseCurve( void *UsefulData);
   CATBoolean ChooseSurf( void *UsefulData);
@@ -80,6 +84,15 @@ class PrtFstPointsCmd: public CATStateCommand
 	  //定义数据列表环境变量
 	  CATListValCATISpecObject_var m_lstSpecCurves;
 	  CATISpecObject_var m_SpecSurfs;
+
+	  //
+	  CATISpecObject_var m_spPointGSMTool;
+	  CATISpecObject_var m_spCurvePar;
+	  CATListValCATISpecObject_var m_alstSpecPoint;
+
+	  //用户所选值
+	  double m_dCurveOffsetValue,m_dPointsCount,m_dPointDistance;
+
 
 };
 
