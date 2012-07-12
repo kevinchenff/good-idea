@@ -90,6 +90,8 @@ class PrtFstDesignCmd: public CATStateCommand
   void ReverseDirCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data); 
   //选择紧固件类型
   void ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data); 
+  //选择查看紧固件详细信息响应
+  void ChoosedFstNormalInfoMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data); 
   //在IOS中显示标记点
   void ShowPointInfoInISO(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
   //判断一个曲面特征是否在另一个数组中
@@ -110,9 +112,10 @@ class PrtFstDesignCmd: public CATStateCommand
   void ChangeOKApplyState();
   //设置或者修改 紧固件描述 中的类型信息
   void SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool,CATUnicodeString strChooseFstType,double idCount,CATListValCATUnicodeString ilststrJstTypeInfoName, CATListValCATUnicodeString ilststrJstTypeInfoValue);
-
   //从PV列表中获得指定的字符串
   void GetStrlistFromListPV(int iCount,CATListPV ipListStrName,CATListValCATUnicodeString &ioalstName);
+  //清理紧固件信息数组函数
+  void ClearFstInfoLst();
 
 private:
 	PrtFstDesignDlg *m_pDlg;
@@ -140,7 +143,7 @@ private:
 	//---------------------------------------------------------
 	CATListPV  m_pListStrPropertyName,m_pListStrPropertyValue;
 	CATListPV  m_pListStrSpecialName,m_pListStrSpecialValue;
-	CATListValCATUnicodeString m_alistStrFSTType; //存储紧固件类型：螺栓，螺钉，铆钉，螺母，垫片，写入格式：螺栓|六角螺栓
+	CATListValCATUnicodeString m_alistStrFSTType; //存储紧固件类型：螺栓，螺钉，铆钉，螺母，垫片，格式：螺栓|六角螺栓
 	CATListValCATUnicodeString m_lststrCirclePositions; //螺母、垫片的安装位置，需要写入特征属性中
 
 	//

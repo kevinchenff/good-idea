@@ -77,6 +77,11 @@ PrtFstUpdateCmd::~PrtFstUpdateCmd()
       m_pDlg->RequestDelayedDestruction();
 	  m_pDlg=NULL;
    }
+
+   //获得并清空ISO
+   m_piISO->Empty();
+   m_piHSO->Empty();
+
 }
 
 
@@ -116,6 +121,13 @@ void PrtFstUpdateCmd::BuildGraph()
 		m_pDlg->_DeleteAllErrorPB->GetPushBActivateNotification(),
 		(CATCommandMethod)&PrtFstUpdateCmd::DeleteAllErrorCB,
 		NULL);
+
+	//
+	//增加对 紧固件线列表的响应控制
+	AddAnalyseNotificationCB (m_pDlg->_ErrorMultiList, 
+		m_pDlg->_ErrorMultiList->GetListSelectNotification(),
+		(CATCommandMethod)&PrtFstUpdateCmd::GetSeletedFSTLine,
+		NULL);
 }
 
 
@@ -142,6 +154,9 @@ void PrtFstUpdateCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 
 void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//
+	//获得并清空ISO
+	m_piISO->Empty();
 	//清除数据列表
 	m_alistSuccessfulSpec.RemoveAll();
 	m_alistErrorSpec.RemoveAll();
@@ -493,7 +508,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		{
 			CATUnicodeString strInfo,strTemp;
 			strTemp.BuildFromNum(dThick-dThickLimit,"%lf");
-			strInfo += "螺栓光杆凹入夹层中，尺寸值为：" + strTemp + "mm";
+			strInfo += "螺栓光杆凹入夹层中，凹入尺寸量为：" + strTemp + "mm";
 			
 			alstErrorInfoItems.Append(strInfo);
 		}
@@ -502,7 +517,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		{
 			CATUnicodeString strInfo,strTemp;
 			strTemp.BuildFromNum(dThickLimit-dThick,"%lf");
-			strInfo += "螺栓光杆凸出夹层值超过1mm，尺寸值为：" + strTemp + "mm";
+			strInfo += "螺栓光杆凸出夹层值超过1mm，凸出尺寸量为：" + strTemp + "mm";
 
 			alstErrorInfoItems.Append(strInfo);
 		}
@@ -511,7 +526,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		{
 			CATUnicodeString strInfo,strTemp;
 			strTemp.BuildFromNum((dThick+dNutsThick+2)-dLength,"%lf");
-			strInfo += "螺栓尾端凸出螺母的高度H不得小于2mm，当前尺寸值为：" + strTemp + "mm";
+			strInfo += "螺栓尾端凸出螺母的高度H不得小于2mm，凸出尺寸量为：" + strTemp + "mm";
 
 			alstErrorInfoItems.Append(strInfo);
 		}
@@ -581,7 +596,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-					strErrorDetailInfo += "平墩头铆钉长度小于安装规范要求，尺寸值为：" + strTemp + "mm";					
+					strErrorDetailInfo += "平墩头铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
 				}
 			}
 		}
@@ -597,7 +612,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 				CATUnicodeString strInfo,strTemp;
 				strTemp.BuildFromNum(dThick-dLength,"%lf");
-				strErrorDetailInfo += "压窝铆接平墩头铆钉长度小于夹层厚度，尺寸值为：" + strTemp + "mm";					
+				strErrorDetailInfo += "压窝铆接平墩头铆钉长度小于夹层厚度，尺寸差量为：" + strTemp + "mm";					
 			}
 			else
 			{
@@ -742,7 +757,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 						CATUnicodeString strInfo,strTemp;
 						strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-						strErrorDetailInfo += "压窝铆接平墩头铆钉长度小于安装规范要求，尺寸值为：" + strTemp + "mm";				
+						strErrorDetailInfo += "压窝铆接平墩头铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";				
 					}
 				}
 			}			
@@ -785,7 +800,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-					strErrorDetailInfo += "双面沉头铆钉长度小于安装规范要求，尺寸值为：" + strTemp + "mm";					
+					strErrorDetailInfo += "双面沉头铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
 				}
 			}
 		}
@@ -827,7 +842,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-					strErrorDetailInfo += "平头大圆角铆钉长度小于安装规范要求，尺寸值为：" + strTemp + "mm";					
+					strErrorDetailInfo += "平头大圆角铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
 				}
 			}
 		}
@@ -841,7 +856,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 				CATUnicodeString strInfo,strTemp;
 				strTemp.BuildFromNum(dThick-dLength,"%lf");
-				strErrorDetailInfo += "铆钉长度小于夹层厚度，尺寸值为：" + strTemp + "mm";					
+				strErrorDetailInfo += "铆钉长度小于夹层厚度，尺寸差量为：" + strTemp + "mm";					
 			}
 
 			else
@@ -935,6 +950,10 @@ void PrtFstUpdateCmd::OpenOK(CATCommand * iSendingCommand, CATNotification * iSe
 
 void PrtFstUpdateCmd::DeleteAllErrorCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//
+	//获得并清空ISO
+	m_piISO->Empty();
+
 	// 删除紧固件几何，并更新参数信息，所选列表
 	for (int i=1; i <= m_alistErrorSpec.Size(); i++)
 	{
@@ -1194,4 +1213,69 @@ void PrtFstUpdateCmd::DeleteAllErrorCB(CATCommand* cmd, CATNotification* evt, CA
 	//更新ZP模型
 	PrtService::ObjectUpdate(spPart);
 
+}
+
+//
+void PrtFstUpdateCmd::GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//获得并清空ISO
+	m_piISO->Empty();
+	m_piHSO->Empty();
+
+	//获取所选信息
+	int  iSize = m_pDlg->_ErrorMultiList->GetSelectCount();
+	if (iSize != 0 )
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pDlg->_ErrorMultiList->GetSelect(ioTabRow,iSize);
+
+		//获得线对应的端点
+		CATISpecObject_var spLine = m_alistErrorSpec[ioTabRow[0]+1];
+		CATIMeasurableLine_var spMeasLine = spLine;
+		CATMathPoint  ioOrigin, ioTopPoint;
+		spMeasLine->GetOrigin(ioOrigin);
+		//
+		CATLISTV(CATMathPoint) lstMathPoints;
+		lstMathPoints.Append(ioOrigin);
+
+		//获得顶点信息
+		CATIGSMLinePtDir_var spGSMLine = spLine;
+		CATISpecObject_var spTopPoint;
+		spGSMLine->GetStartingPoint(spTopPoint);
+		CATIMeasurablePoint_var spMeasPoint = spTopPoint;
+		spMeasPoint->GetPoint(ioTopPoint);
+
+
+		//使其居中，高亮显示模型信息
+		PrtService::CenterViewPoints(lstMathPoints,100);
+		PrtService::HighlightHSO(spLine);
+
+		//
+		//
+		CATListValCATUnicodeString iListStrName;
+		iListStrName.Append("ID");
+		CATListValCATUnicodeString ioListStrNameValue;
+		PrtService::GetSpecObjCertainParams(spLine,iListStrName,ioListStrNameValue);
+		//
+		CATUnicodeString StrTextValue(""); StrTextValue += "ID = " + ioListStrNameValue[1];
+		//
+
+		CATMathPointf TextPosNode;
+		TextPosNode.x = (float)(ioTopPoint.GetX());
+		TextPosNode.y = (float)(ioTopPoint.GetY());
+		TextPosNode.z = (float)(ioTopPoint.GetZ());
+
+		CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
+		CATGraphicAttributeSet   TextGaNode ;
+		TextGaNode.SetColor(RED);
+		CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
+		pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
+		CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
+		piRepPtAlias->SetRep(pRepForTextStart) ;
+		m_piISO->AddElement(piRepPtAlias);
+
+		piRepPtAlias->Release();
+		piRepPtAlias=NULL;
+	}
 }
