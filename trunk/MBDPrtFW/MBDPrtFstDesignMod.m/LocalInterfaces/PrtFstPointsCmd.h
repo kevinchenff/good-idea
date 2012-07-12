@@ -68,6 +68,8 @@ class PrtFstPointsCmd: public CATStateCommand
   CATBoolean ActiveSurfSL( void *UsefulData);
   //
   BOOL IsThisZPPrt(CATUnicodeString istrDocName);
+  //
+  void CreatePoints();
   
   private:
 
@@ -91,8 +93,7 @@ class PrtFstPointsCmd: public CATStateCommand
 	  CATListValCATISpecObject_var m_alstSpecPoint;
 
 	  //用户所选值
-	  double m_dCurveOffsetValue,m_dPointsCount,m_dPointDistance;
-
+	  double m_dCurveOffsetValue,m_dPointsCount,m_dPointDistance,m_dType;
 
 };
 
