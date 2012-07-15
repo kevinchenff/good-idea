@@ -117,3 +117,72 @@ void MatChooseMainDlg::OnBnClickedNextsteppb()
 	//
 	this->ShowWindow(SW_HIDE);
 }
+
+//查询函数，通过DLL访问数据库系统
+HRESULT MatChooseMainDlg::QuaryDatabase()
+{
+	HRESULT rc = E_FAIL;
+	// method
+	HINSTANCE hDll= NULL;//DLL句柄 	
+	typedef HRESULT (*lpFun)(BSTR* ,int ,BSTR *&, int&); 
+	hDll = LoadLibrary(_T("MBDStdWebService.dll"));
+	if(NULL == hDll)
+	{
+		LPVOID lpMsgBuf;
+		FormatMessage( 
+			FORMAT_MESSAGE_ALLOCATE_BUFFER | 
+			FORMAT_MESSAGE_FROM_SYSTEM | 
+			FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL,
+			GetLastError(),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+			(LPTSTR) &lpMsgBuf,
+			0,
+			NULL 
+			);
+		//MessageBox("提示信息" );
+		LocalFree( lpMsgBuf );
+		return;
+	}
+
+	BSTR iStrQuery[5];
+	iStrQuery[0] = _com_util::ConvertStringToBSTR("DatabaseName=F_BEAD_FLANGE_SPEC_INFO");
+	BSTR * ioQueryResult;
+	//*ioQueryResult = new ArrayOfString[10];
+	int in0_nSizeIs = 1;
+	int out_nSizeIs = 0;
+
+	if (NULL!=hDll)
+	{
+		lpFun pMBDQuery = (lpFun)GetProcAddress(hDll,"MBDQuery");
+		if (NULL==pMBDQuery)
+		{
+			AfxMessageBox(_T("DLL中函数寻找失败"));
+		}
+
+
+		//可能需要对输入条件进行判断，以求确定内容的可靠性
+
+		HRESULT hr = pMBDQuery(iStrQuery,in0_nSizeIs,ioQueryResult,out_nSizeIs);
+
+		if (SUCCEEDED(hr))
+		{
+			int i = 0;
+			if (ioQueryResult != NULL)
+			{
+				while (NULL != *(ioQueryResult+i))
+				{
+					CString str(*(ioQueryResult+i));
+					//MessageBox(NULL,str,TEXT("msg"),MB_OK);
+					MessageBox(str,L"调用结果");
+					i++;
+				}
+			}
+		}
+
+		::FreeLibrary(hDll);
+	}
+	
+	//
+	return rc;
+}
