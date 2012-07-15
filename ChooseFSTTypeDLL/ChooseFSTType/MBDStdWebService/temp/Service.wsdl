@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc12="http://www.w3.org/2003/05/soap-encoding" xmlns:soapenc11="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://services.stdpms" xmlns:soap11="http://schemas.xmlsoap.org/soap/envelope/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://www.w3.org/2003/05/soap-envelope" targetNamespace="http://services.stdpms" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://services.stdpms">
+      <xsd:complexType name="ArrayOfString">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GetArrayPrototype">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="tns:ArrayOfString" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetArrayPrototypeResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Insert">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="tns:ArrayOfString" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="InsertResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:ArrayOfString" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Query">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="tns:ArrayOfString" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="QueryResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:ArrayOfString" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetParametersNameAndKey">
+        <xsd:complexType />
+      </xsd:element>
+      <xsd:element name="GetParametersNameAndKeyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="tns:ArrayOfString" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:complexType name="ArrayOfArrayOfString">
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="ArrayOfString" nillable="true" type="tns:ArrayOfString" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:element name="GetArrayPrototype1">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="in0" nillable="true" type="tns:ArrayOfArrayOfString" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GetArrayPrototype1Response">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element minOccurs="1" maxOccurs="1" name="out" nillable="true" type="xsd:string" />
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="GetParametersNameAndKeyRequest">
+    <wsdl:part name="parameters" element="tns:GetParametersNameAndKey" />
+  </wsdl:message>
+  <wsdl:message name="GetParametersNameAndKeyResponse">
+    <wsdl:part name="parameters" element="tns:GetParametersNameAndKeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetArrayPrototypeRequest">
+    <wsdl:part name="parameters" element="tns:GetArrayPrototype" />
+  </wsdl:message>
+  <wsdl:message name="GetArrayPrototype1Request">
+    <wsdl:part name="parameters" element="tns:GetArrayPrototype1" />
+  </wsdl:message>
+  <wsdl:message name="InsertResponse">
+    <wsdl:part name="parameters" element="tns:InsertResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertRequest">
+    <wsdl:part name="parameters" element="tns:Insert" />
+  </wsdl:message>
+  <wsdl:message name="QueryRequest">
+    <wsdl:part name="parameters" element="tns:Query" />
+  </wsdl:message>
+  <wsdl:message name="GetArrayPrototype1Response">
+    <wsdl:part name="parameters" element="tns:GetArrayPrototype1Response" />
+  </wsdl:message>
+  <wsdl:message name="GetArrayPrototypeResponse">
+    <wsdl:part name="parameters" element="tns:GetArrayPrototypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="QueryResponse">
+    <wsdl:part name="parameters" element="tns:QueryResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServicePortType">
+    <wsdl:operation name="GetArrayPrototype">
+      <wsdl:input name="GetArrayPrototypeRequest" message="tns:GetArrayPrototypeRequest" />
+      <wsdl:output name="GetArrayPrototypeResponse" message="tns:GetArrayPrototypeResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Insert">
+      <wsdl:input name="InsertRequest" message="tns:InsertRequest" />
+      <wsdl:output name="InsertResponse" message="tns:InsertResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="Query">
+      <wsdl:input name="QueryRequest" message="tns:QueryRequest" />
+      <wsdl:output name="QueryResponse" message="tns:QueryResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetParametersNameAndKey">
+      <wsdl:input name="GetParametersNameAndKeyRequest" message="tns:GetParametersNameAndKeyRequest" />
+      <wsdl:output name="GetParametersNameAndKeyResponse" message="tns:GetParametersNameAndKeyResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="GetArrayPrototype1">
+      <wsdl:input name="GetArrayPrototype1Request" message="tns:GetArrayPrototype1Request" />
+      <wsdl:output name="GetArrayPrototype1Response" message="tns:GetArrayPrototype1Response" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceHttpBinding" type="tns:ServicePortType">
+    <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetArrayPrototype">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="GetArrayPrototypeRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetArrayPrototypeResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Insert">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="InsertRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="InsertResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Query">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="QueryRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="QueryResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetParametersNameAndKey">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="GetParametersNameAndKeyRequest">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetParametersNameAndKeyResponse">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetArrayPrototype1">
+      <wsdlsoap:operation soapAction="" />
+      <wsdl:input name="GetArrayPrototype1Request">
+        <wsdlsoap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="GetArrayPrototype1Response">
+        <wsdlsoap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="ServiceHttpPort" binding="tns:ServiceHttpBinding">
+      <wsdlsoap:address location="http://192.168.100.101:8080/StdPartMS/services/Service" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
