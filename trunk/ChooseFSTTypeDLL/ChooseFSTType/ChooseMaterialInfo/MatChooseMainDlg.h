@@ -13,6 +13,10 @@ public:
 	MatChooseMainDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~MatChooseMainDlg();
 
+
+	//查询函数，通过DLL访问数据库系统
+	HRESULT QuaryDatabase();
+
 // Dialog Data
 	enum { IDD = IDD_MaterialMainDlg };
 
