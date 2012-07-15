@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CallDLL", "CallDLL\CallDLL.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChooseMaterialInfo", "ChooseMaterialInfo\ChooseMaterialInfo.vcproj", "{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MBDStdWebService", "MBDStdWebService\MBDStdWebService.vcproj", "{B190727E-C8CF-4825-A200-FC19F8EF1246}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -36,6 +38,12 @@ Global
 		{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}.Release|Win32.ActiveCfg = Release|Win32
 		{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}.Release|Win32.Build.0 = Release|Win32
 		{4E31F9F6-29CF-4305-9ADB-998C9DCD6B9B}.Release|x64.ActiveCfg = Release|Win32
+		{B190727E-C8CF-4825-A200-FC19F8EF1246}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B190727E-C8CF-4825-A200-FC19F8EF1246}.Debug|Win32.Build.0 = Debug|Win32
+		{B190727E-C8CF-4825-A200-FC19F8EF1246}.Debug|x64.ActiveCfg = Debug|Win32
+		{B190727E-C8CF-4825-A200-FC19F8EF1246}.Release|Win32.ActiveCfg = Release|Win32
+		{B190727E-C8CF-4825-A200-FC19F8EF1246}.Release|Win32.Build.0 = Release|Win32
+		{B190727E-C8CF-4825-A200-FC19F8EF1246}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

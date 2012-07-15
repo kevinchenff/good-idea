@@ -1,0 +1,6 @@
+; MBDStdWebService.def : Declares the module parameters for the DLL.
+
+LIBRARY      "MBDStdWebService"
+
+EXPORTS
+    ; Explicit exports can go here

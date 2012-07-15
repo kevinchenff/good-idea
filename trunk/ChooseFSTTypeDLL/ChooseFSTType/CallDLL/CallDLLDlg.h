@@ -31,4 +31,6 @@ public:
 	afx_msg void OnBnClickedCallbutton();
 public:
 	afx_msg void OnBnClickedButton2();
+public:
+	afx_msg void OnBnClickedWebbutton();
 };
