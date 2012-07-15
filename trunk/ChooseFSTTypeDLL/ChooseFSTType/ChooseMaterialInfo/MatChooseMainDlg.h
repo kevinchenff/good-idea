@@ -3,6 +3,12 @@
 #include "MatOtherInfoDlg.h"
 class MatOtherInfoDlg;
 
+#include <vector>
+#include "string.h"
+#include "wchar.h"
+#include "iostream"
+using namespace std;
+
 // MatChooseMainDlg dialog
 
 class MatChooseMainDlg : public CDialog
@@ -16,6 +22,17 @@ public:
 
 	//查询函数，通过DLL访问数据库系统
 	HRESULT QuaryDatabase();
+
+	//插入函数，通过DLL反写信息到数据库系统
+	HRESULT InsertDatabase();
+
+	//字符串解析函数
+	string* SplitString(string str, string split, int& iSubStrs);
+	//Cstring To BSTR Convert
+	void CstringToBSTR(CString icstr, BSTR &iobstr);
+	//
+	//Cstring To BSTR Convert
+	void BSTRToCstring(CString &iocstr, BSTR ibstr);
 
 // Dialog Data
 	enum { IDD = IDD_MaterialMainDlg };
