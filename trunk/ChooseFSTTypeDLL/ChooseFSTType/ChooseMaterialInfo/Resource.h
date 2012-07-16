@@ -14,6 +14,7 @@
 #define IDC_COMBO6                      3006
 #define IDC_COMBO7                      3007
 #define IDC_BUTTON1                     3008
+#define IDC_SearchPB                    3008
 #define IDC_NextStepPB                  3009
 #define IDC_EDIT1                       3010
 #define IDC_EDIT2                       3011
