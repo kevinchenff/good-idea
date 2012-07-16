@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Chinese (P.R.C.) resources
+// 中文(中华人民共和国) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -117,7 +117,7 @@ BEGIN
     COMBOBOX        IDC_COMBO5,11,130,114,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_COMBO6,11,156,114,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
     COMBOBOX        IDC_COMBO7,11,182,114,30,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      " 查询",IDC_BUTTON1,31,250,73,14
+    PUSHBUTTON      " 查询",IDC_SearchPB,31,250,73,14
     PUSHBUTTON      "下一步",IDC_NextStepPB,495,319,50,14
 END
 
@@ -170,7 +170,7 @@ END
 //
 
 IDB_BITBackground       BITMAP                  "res\\catiaBackground.bmp"
-#endif    // Chinese (P.R.C.) resources
+#endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

@@ -3,6 +3,7 @@
 #include "MatOtherInfoDlg.h"
 class MatOtherInfoDlg;
 
+#include "afxcoll.h"
 #include <vector>
 #include "string.h"
 #include "wchar.h"
@@ -21,10 +22,10 @@ public:
 
 
 	//查询函数，通过DLL访问数据库系统
-	HRESULT QuaryDatabase();
+	HRESULT QuaryDatabase(CStringArray &ialstCStrInput, CStringArray &ioalstCStrResult);
 
 	//插入函数，通过DLL反写信息到数据库系统
-	HRESULT InsertDatabase();
+	HRESULT InsertDatabase(CStringArray &ialstCStrInput, CStringArray &ioalstCStrResult);
 
 	//字符串解析函数
 	string* SplitString(string str, string split, int& iSubStrs);
@@ -48,4 +49,6 @@ public:
 
 public:
 	MatOtherInfoDlg* m_piSon;
+public:
+	afx_msg void OnBnClickedSearchpb();
 };

@@ -5,7 +5,6 @@
 #include "ChooseMaterialInfo.h"
 #include "MatChooseMainDlg.h"
 
-
 #include <string>
 using std::string;
 
@@ -57,6 +56,7 @@ BEGIN_MESSAGE_MAP(MatChooseMainDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_NextStepPB, &MatChooseMainDlg::OnBnClickedNextsteppb)
+	ON_BN_CLICKED(IDC_SearchPB, &MatChooseMainDlg::OnBnClickedSearchpb)
 END_MESSAGE_MAP()
 
 
@@ -142,7 +142,7 @@ void MatChooseMainDlg::OnBnClickedNextsteppb()
 }
 
 //查询函数，通过DLL访问数据库系统
-HRESULT MatChooseMainDlg::QuaryDatabase()
+HRESULT MatChooseMainDlg::QuaryDatabase(CStringArray &ialstCStrInput, CStringArray &ioalstCStrResult)
 {
 	HRESULT rc = E_FAIL;
 	// method
@@ -168,13 +168,23 @@ HRESULT MatChooseMainDlg::QuaryDatabase()
 		return rc;
 	}
 
-	BSTR iStrQuery[5];
-	iStrQuery[0] = _com_util::ConvertStringToBSTR("DatabaseName=F_BEAD_FLANGE_SPEC_INFO");
+	//	
 	BSTR * ioQueryResult;
-	//*ioQueryResult = new ArrayOfString[10];
-	int in0_nSizeIs = 1;
+	int in0_nSizeIs = ialstCStrInput.GetSize();
 	int out_nSizeIs = 0;
+	BSTR *iStrQuery = new BSTR[in0_nSizeIs];
 
+	//
+	for (int i=0; i<in0_nSizeIs; i++)
+	{
+		//
+		BSTR iobstr;
+		CString cstr = ialstCStrInput.GetAt(i);
+		CstringToBSTR(cstr,iobstr);
+		iStrQuery[i]=iobstr;		
+	}
+
+	//
 	if (NULL!=hDll)
 	{
 		lpFun pMBDQuery = (lpFun)GetProcAddress(hDll,"MBDQuery");
@@ -185,7 +195,6 @@ HRESULT MatChooseMainDlg::QuaryDatabase()
 
 
 		//可能需要对输入条件进行判断，以求确定内容的可靠性
-
 		HRESULT hr = pMBDQuery(iStrQuery,in0_nSizeIs,ioQueryResult,out_nSizeIs);
 
 		if (SUCCEEDED(hr))
@@ -196,8 +205,8 @@ HRESULT MatChooseMainDlg::QuaryDatabase()
 				while (NULL != *(ioQueryResult+i))
 				{
 					CString str(*(ioQueryResult+i));
-					//MessageBox(NULL,str,TEXT("msg"),MB_OK);
-					MessageBox(str,L"调用结果");
+					ioalstCStrResult.Add(str);
+					//MessageBox(str,L"调用结果");
 					i++;
 				}
 			}
@@ -211,7 +220,7 @@ HRESULT MatChooseMainDlg::QuaryDatabase()
 }
 
 
-HRESULT MatChooseMainDlg::InsertDatabase()
+HRESULT MatChooseMainDlg::InsertDatabase(CStringArray &ialstCStrInput, CStringArray &ioalstCStrResult)
 {
 	HRESULT rc = E_FAIL;
 	// method
@@ -236,16 +245,23 @@ HRESULT MatChooseMainDlg::InsertDatabase()
 		LocalFree( lpMsgBuf );
 		return rc;
 	}
+	//
 
-	BSTR iStrQuery[3];
-	iStrQuery[0] = _com_util::ConvertStringToBSTR("MBD_Sys_DatabaseName=MBD_DB_HeatTreatment");
-	iStrQuery[1] = _com_util::ConvertStringToBSTR("MBD_DBCol_HeatTreatment_MaterialMark=jjjgggg");
-	iStrQuery[2] = _com_util::ConvertStringToBSTR("MBD_DBCol_HeatTreatment_StandardNote=jjjggggg");
-	
+	//	
 	BSTR * ioQueryResult;
-	//*ioQueryResult = new ArrayOfString[10];
-	int in0_nSizeIs = 3;
+	int in0_nSizeIs = ialstCStrInput.GetSize();
 	int out_nSizeIs = 0;
+	BSTR *iStrQuery = new BSTR[in0_nSizeIs];
+
+	//
+	for (int i=0; i<in0_nSizeIs; i++)
+	{
+		//
+		BSTR iobstr;
+		CstringToBSTR(ialstCStrInput.GetAt(i),iobstr);
+		iStrQuery[i]=iobstr;		
+	}
+	//
 
 	if (NULL!=hDll)
 	{
@@ -268,8 +284,8 @@ HRESULT MatChooseMainDlg::InsertDatabase()
 				while (NULL != *(ioQueryResult+i))
 				{
 					CString str(*(ioQueryResult+i));
-					//MessageBox(NULL,str,TEXT("msg"),MB_OK);
-					MessageBox(str,L"调用结果");
+					ioalstCStrResult.Add(str);
+					//MessageBox(str,L"调用结果");
 					i++;
 				}
 			}
@@ -355,4 +371,21 @@ void MatChooseMainDlg::BSTRToCstring(CString &iocstr, BSTR ibstr)
 {
 	CString str(ibstr == NULL ? L"":ibstr);
     iocstr = str;
+}
+
+void MatChooseMainDlg::OnBnClickedSearchpb()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CStringArray ialstCStrInput,ioalstCStrResult;
+	//
+	CString cstr01(_T("DatabaseName=F_BEAD_FLANGE_SPEC_INFO"));
+	ialstCStrInput.Add(cstr01);
+	//
+	QuaryDatabase(ialstCStrInput,ioalstCStrResult);
+
+	//
+	for (int i=0; i<ioalstCStrResult.GetSize(); i++)
+	{
+		MessageBox(ioalstCStrResult.GetAt(i),L"调用结果");
+	}
 }
