@@ -24,7 +24,7 @@ CATCreateClass( MBDPrtAddMaterialCmd);
 MBDPrtAddMaterialCmd::MBDPrtAddMaterialCmd() :
   CATStateCommand ("MBDPrtAddMaterialCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-,m_piDoc(NULL)
+,m_piDoc(NULL),m_pDlg(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -43,6 +43,11 @@ MBDPrtAddMaterialCmd::MBDPrtAddMaterialCmd() :
 //-------------------------------------------------------------------------
 MBDPrtAddMaterialCmd::~MBDPrtAddMaterialCmd()
 {
+	if (m_pDlg != NULL)
+	{
+		m_pDlg->RequestDelayedDestruction();
+		m_pDlg=NULL;
+	}
 }
 
 
@@ -66,10 +71,42 @@ BOOL MBDPrtAddMaterialCmd::IsThisZPPrt(CATUnicodeString istrDocName)
 //-------------------------------------------------------------------------
 void MBDPrtAddMaterialCmd::BuildGraph()
 {
-	SearchMaterialInfo();
+	//
+	m_pDlg = new MBDPrtAddMaterialDlg();
+	m_pDlg->Build();
+	m_pDlg->SetVisibility(CATDlgShow);
+	//
+	// 主对话框的消息响应
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetDiaOKNotification(),
+		(CATCommandMethod)&MBDPrtAddMaterialCmd::OkDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetWindCloseNotification(),
+		(CATCommandMethod)&MBDPrtAddMaterialCmd::CloseDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pDlg, 
+		m_pDlg->GetDiaCANCELNotification(),
+		(CATCommandMethod)&MBDPrtAddMaterialCmd::CloseDlgCB,
+		NULL);
+	//
+}
+
+//消息框响应函数
+void MBDPrtAddMaterialCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
 	CreateMaterialCatalog();
+	//
 	RequestDelayedDestruction();
 }
+void MBDPrtAddMaterialCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	RequestDelayedDestruction();
+}
+
 
 
 void MBDPrtAddMaterialCmd::SearchMaterialInfo()

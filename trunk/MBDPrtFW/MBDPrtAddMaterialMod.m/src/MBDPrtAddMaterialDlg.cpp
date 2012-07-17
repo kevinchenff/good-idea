@@ -36,6 +36,31 @@ MBDPrtAddMaterialDlg::MBDPrtAddMaterialDlg() :
                                )
 {
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+ _Frame001 = NULL;
+ _Frame002 = NULL;
+ _SearchCombo01 = NULL;
+ _SearchCombo02 = NULL;
+ _SearchCombo03 = NULL;
+ _SearchCombo04 = NULL;
+ _SearchCombo05 = NULL;
+ _SearchCombo06 = NULL;
+ _Label01 = NULL;
+ _Label02 = NULL;
+ _Label03 = NULL;
+ _Label04 = NULL;
+ _Label05 = NULL;
+ _Label06 = NULL;
+ _ContentEditor = NULL;
+ _LabelContent = NULL;
+ _SearchPB = NULL;
+ _Label07 = NULL;
+ _Label08 = NULL;
+ _Label09 = NULL;
+ _Frame003 = NULL;
+ _ResultML = NULL;
+ _ResultDetailEditor = NULL;
+//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+
 
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 
@@ -55,6 +80,31 @@ MBDPrtAddMaterialDlg::~MBDPrtAddMaterialDlg()
 //     this is done automatically
 //  --------------------------------------------------
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+ _Frame001 = NULL;
+ _Frame002 = NULL;
+ _SearchCombo01 = NULL;
+ _SearchCombo02 = NULL;
+ _SearchCombo03 = NULL;
+ _SearchCombo04 = NULL;
+ _SearchCombo05 = NULL;
+ _SearchCombo06 = NULL;
+ _Label01 = NULL;
+ _Label02 = NULL;
+ _Label03 = NULL;
+ _Label04 = NULL;
+ _Label05 = NULL;
+ _Label06 = NULL;
+ _ContentEditor = NULL;
+ _LabelContent = NULL;
+ _SearchPB = NULL;
+ _Label07 = NULL;
+ _Label08 = NULL;
+ _Label09 = NULL;
+ _Frame003 = NULL;
+ _ResultML = NULL;
+ _ResultDetailEditor = NULL;
+//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+
 
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 
@@ -73,14 +123,89 @@ void MBDPrtAddMaterialDlg::Build()
 //  -------------------------------------------------------------------
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
-
+ SetGridRowResizable(0,1);
+ SetGridColumnResizable(0,1);
+ _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgFraNoFrame|CATDlgGridLayout);
+_Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame001 -> SetGridRowResizable(0,1);
+ _Frame001 -> SetGridColumnResizable(1,1);
+ _Frame002 = new CATDlgFrame(_Frame001, "Frame002", CATDlgGridLayout);
+_Frame002 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _SearchCombo01 = new CATDlgCombo(_Frame002, "SearchCombo01", CATDlgCmbDropDown);
+_SearchCombo01 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _SearchCombo02 = new CATDlgCombo(_Frame002, "SearchCombo02", CATDlgCmbDropDown);
+_SearchCombo02 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _SearchCombo03 = new CATDlgCombo(_Frame002, "SearchCombo03", CATDlgCmbDropDown);
+_SearchCombo03 -> SetGridConstraints(4, 0, 1, 1, CATGRID_4SIDES);
+ _SearchCombo04 = new CATDlgCombo(_Frame002, "SearchCombo04", CATDlgCmbDropDown);
+_SearchCombo04 -> SetGridConstraints(6, 0, 1, 1, CATGRID_4SIDES);
+ _SearchCombo05 = new CATDlgCombo(_Frame002, "SearchCombo05", CATDlgCmbDropDown);
+_SearchCombo05 -> SetGridConstraints(8, 0, 1, 1, CATGRID_4SIDES);
+ _SearchCombo06 = new CATDlgCombo(_Frame002, "SearchCombo06", CATDlgCmbDropDown);
+_SearchCombo06 -> SetGridConstraints(10, 0, 1, 1, CATGRID_4SIDES);
+ _Label01 = new CATDlgLabel(_Frame002, "Label01");
+_Label01 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Label02 = new CATDlgLabel(_Frame002, "Label02");
+_Label02 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
+ _Label03 = new CATDlgLabel(_Frame002, "Label03");
+_Label03 -> SetGridConstraints(5, 0, 1, 1, CATGRID_4SIDES);
+ _Label04 = new CATDlgLabel(_Frame002, "Label04");
+_Label04 -> SetGridConstraints(7, 0, 1, 1, CATGRID_4SIDES);
+ _Label05 = new CATDlgLabel(_Frame002, "Label05");
+_Label05 -> SetGridConstraints(9, 0, 1, 1, CATGRID_4SIDES);
+ _Label06 = new CATDlgLabel(_Frame002, "Label06");
+_Label06 -> SetGridConstraints(11, 0, 1, 1, CATGRID_4SIDES);
+ _ContentEditor = new CATDlgEditor(_Frame002, "ContentEditor");
+ _ContentEditor -> SetVisibleTextWidth(15);
+_ContentEditor -> SetGridConstraints(13, 0, 1, 1, CATGRID_4SIDES);
+ _LabelContent = new CATDlgLabel(_Frame002, "LabelContent");
+_LabelContent -> SetGridConstraints(12, 0, 1, 1, CATGRID_4SIDES);
+ _SearchPB = new CATDlgPushButton(_Frame002, "SearchPB");
+_SearchPB -> SetGridConstraints(17, 0, 1, 1, CATGRID_4SIDES);
+ _Label07 = new CATDlgLabel(_Frame002, "Label07");
+_Label07 -> SetGridConstraints(14, 0, 1, 1, CATGRID_4SIDES);
+ _Label08 = new CATDlgLabel(_Frame002, "Label08");
+_Label08 -> SetGridConstraints(15, 0, 1, 1, CATGRID_4SIDES);
+ _Label09 = new CATDlgLabel(_Frame002, "Label09");
+_Label09 -> SetGridConstraints(16, 0, 1, 1, CATGRID_4SIDES);
+ _Frame003 = new CATDlgFrame(_Frame001, "Frame003", CATDlgGridLayout);
+_Frame003 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _Frame003 -> SetGridRowResizable(0,1);
+ _Frame003 -> SetGridColumnResizable(0,1);
+ _ResultML = new CATDlgMultiList(_Frame003, "ResultML");
+ CATUnicodeString ResultMLTitles [ 12 ];
+ ResultMLTitles[0] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle1");
+ ResultMLTitles[1] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle2");
+ ResultMLTitles[2] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle3");
+ ResultMLTitles[3] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle4");
+ ResultMLTitles[4] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle5");
+ ResultMLTitles[5] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle6");
+ ResultMLTitles[6] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle7");
+ ResultMLTitles[7] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle8");
+ ResultMLTitles[8] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle9");
+ ResultMLTitles[9] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle10");
+ ResultMLTitles[10] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle11");
+ ResultMLTitles[11] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle12");
+ _ResultML -> SetColumnTitles(12, ResultMLTitles);
+ _ResultML -> SetVisibleColumnCount( 8 );
+_ResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _ResultDetailEditor = new CATDlgEditor(_Frame003, "ResultDetailEditor", CATDlgEdtMultiline|CATDlgEdtReadOnly);
+ _ResultDetailEditor -> SetVisibleTextHeight(16);
+ _ResultDetailEditor -> SetVisibleTextWidth(40);
+_ResultDetailEditor -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 
-//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
-
-
-//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+//Òþ²ØËùÓÐLabel
+_Label01->SetVisibility(CATDlgHide);
+_Label02->SetVisibility(CATDlgHide);
+_Label03->SetVisibility(CATDlgHide);
+_Label04->SetVisibility(CATDlgHide);
+_Label05->SetVisibility(CATDlgHide);
+_Label06->SetVisibility(CATDlgHide);
+_Label07->SetVisibility(CATDlgHide);
+_Label08->SetVisibility(CATDlgHide);
+_Label09->SetVisibility(CATDlgHide);
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION

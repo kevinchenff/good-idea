@@ -2,6 +2,165 @@
 CATDlgDialog MBDPrtAddMaterialDlg
 {
   STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame Frame001
+{
+  FATHER = MBDPrtAddMaterialDlg;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 1 };
+}
+
+CATDlgFrame Frame002
+{
+  FATHER = Frame001;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo SearchCombo01
+{
+  FATHER = Frame002;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo SearchCombo02
+{
+  FATHER = Frame002;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo SearchCombo03
+{
+  FATHER = Frame002;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 4, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo SearchCombo04
+{
+  FATHER = Frame002;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 6, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo SearchCombo05
+{
+  FATHER = Frame002;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 8, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo SearchCombo06
+{
+  FATHER = Frame002;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 10, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label01
+{
+  FATHER = Frame002;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label02
+{
+  FATHER = Frame002;
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label03
+{
+  FATHER = Frame002;
+  GRID = { 5, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label04
+{
+  FATHER = Frame002;
+  GRID = { 7, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label05
+{
+  FATHER = Frame002;
+  GRID = { 9, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label06
+{
+  FATHER = Frame002;
+  GRID = { 11, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor ContentEditor
+{
+  FATHER = Frame002;
+  TW = 15;
+  GRID = { 13, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel LabelContent
+{
+  FATHER = Frame002;
+  GRID = { 12, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton SearchPB
+{
+  FATHER = Frame002;
+  GRID = { 17, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label07
+{
+  FATHER = Frame002;
+  GRID = { 14, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label08
+{
+  FATHER = Frame002;
+  GRID = { 15, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label09
+{
+  FATHER = Frame002;
+  GRID = { 16, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame003
+{
+  FATHER = Frame001;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList ResultML
+{
+  FATHER = Frame003;
+  CC = 12;
+  VCC = 8;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor ResultDetailEditor
+{
+  FATHER = Frame003;
+  STYLE = CATDlgEdtMultiline|CATDlgEdtReadOnly;
+  TH = 16;
+  TW = 40;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE
