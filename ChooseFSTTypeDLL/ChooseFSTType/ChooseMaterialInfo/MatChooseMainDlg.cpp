@@ -40,7 +40,17 @@ MatChooseMainDlg::MatChooseMainDlg(CWnd* pParent /*=NULL*/)
 		m_piSon->DestroyWindow();
 		m_piSon = NULL;
 	}
+	//≥ı ºªØCOMBO ARRAY
+	//m_alstCOMB.Add(m_COMBO01);
+	/*m_alstCOMB.Add(m_COMBO02);
+	m_alstCOMB.Add(m_COMBO03);
+	m_alstCOMB.Add(m_COMBO04);
+	m_alstCOMB.Add(m_COMBO05);
+	m_alstCOMB.Add(m_COMBO06);
+	m_alstCOMB.Add(m_COMBO07);*/
+
 }
+
 
 MatChooseMainDlg::~MatChooseMainDlg()
 {
@@ -49,6 +59,13 @@ MatChooseMainDlg::~MatChooseMainDlg()
 void MatChooseMainDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_COMBO1, m_COMBO01);
+	DDX_Control(pDX, IDC_COMBO2, m_COMBO02);
+	DDX_Control(pDX, IDC_COMBO3, m_COMBO03);
+	DDX_Control(pDX, IDC_COMBO4, m_COMBO04);
+	DDX_Control(pDX, IDC_COMBO5, m_COMBO05);
+	DDX_Control(pDX, IDC_COMBO6, m_COMBO06);
+	DDX_Control(pDX, IDC_COMBO7, m_COMBO07);
 }
 
 

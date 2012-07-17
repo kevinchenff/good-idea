@@ -34,6 +34,9 @@
 #include "CATIMaterialFeature.h" 
 #include "CATIFamilyFeature.h"
 
+//
+#include "MBDPrtAddMaterialDlg.h"
+
 //----------------------------------------------------------------------
 
 /**
@@ -61,6 +64,10 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
      * <i>(states, transitions and agents)</i>
      */
   virtual void     BuildGraph();
+  //
+  //消息框响应函数
+  void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //判断是否为ZP模型
   BOOL IsThisZPPrt(CATUnicodeString istrDocName);
   //查询材料信息FROM DATABASE
@@ -79,6 +86,9 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
 	  //文档指针
 	  CATDocument *m_piDoc;
 	  CATUnicodeString m_strDocName;
+
+	  //
+	  MBDPrtAddMaterialDlg *m_pDlg;
 
 };
 

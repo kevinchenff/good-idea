@@ -4,10 +4,12 @@
 class MatOtherInfoDlg;
 
 #include "afxcoll.h"
+#include <afxtempl.h>
 #include <vector>
 #include "string.h"
 #include "wchar.h"
 #include "iostream"
+#include "afxwin.h"
 using namespace std;
 
 // MatChooseMainDlg dialog
@@ -19,8 +21,7 @@ class MatChooseMainDlg : public CDialog
 public:
 	MatChooseMainDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~MatChooseMainDlg();
-
-
+	//
 	//查询函数，通过DLL访问数据库系统
 	HRESULT QuaryDatabase(CStringArray &ialstCStrInput, CStringArray &ioalstCStrResult);
 
@@ -51,4 +52,19 @@ public:
 	MatOtherInfoDlg* m_piSon;
 public:
 	afx_msg void OnBnClickedSearchpb();
+public:
+	CComboBox m_COMBO01;
+public:
+	CComboBox m_COMBO02;
+public:
+	CComboBox m_COMBO03;
+public:
+	CComboBox m_COMBO04;
+public:
+	CComboBox m_COMBO05;
+public:
+	CComboBox m_COMBO06;
+public:
+	CComboBox m_COMBO07;
+
 };

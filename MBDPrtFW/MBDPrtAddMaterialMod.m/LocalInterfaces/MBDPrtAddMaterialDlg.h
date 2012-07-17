@@ -51,6 +51,31 @@ class MBDPrtAddMaterialDlg: public CATDlgDialog
 
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
+ CATDlgFrame*      _Frame001;
+ CATDlgFrame*      _Frame002;
+ CATDlgCombo*      _SearchCombo01;
+ CATDlgCombo*      _SearchCombo02;
+ CATDlgCombo*      _SearchCombo03;
+ CATDlgCombo*      _SearchCombo04;
+ CATDlgCombo*      _SearchCombo05;
+ CATDlgCombo*      _SearchCombo06;
+ CATDlgLabel*      _Label01;
+ CATDlgLabel*      _Label02;
+ CATDlgLabel*      _Label03;
+ CATDlgLabel*      _Label04;
+ CATDlgLabel*      _Label05;
+ CATDlgLabel*      _Label06;
+ CATDlgEditor*      _ContentEditor;
+ CATDlgLabel*      _LabelContent;
+ CATDlgPushButton*      _SearchPB;
+ CATDlgLabel*      _Label07;
+ CATDlgLabel*      _Label08;
+ CATDlgLabel*      _Label09;
+ CATDlgFrame*      _Frame003;
+ CATDlgMultiList*      _ResultML;
+ CATDlgEditor*      _ResultDetailEditor;
+//END CAA2 WIZARD WIDGET DECLARATION SECTION
+
 
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
