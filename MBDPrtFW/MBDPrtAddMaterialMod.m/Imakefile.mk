@@ -15,7 +15,8 @@ WIZARD_LINK_MODULES = JS0GROUP \
 JS0GROUP JS0FM DI0PANV2 CATMathematics CATDialogEngine  \
 CATApplicationFrame CATObjectModelerBase \
 CATMatInterfaces Material CATMecModInterfaces KnowledgeItf CATObjectSpecsModeler \
-ktBasicService ktDirFileService ktExcelService ktPrdService ktPrtService ktStrLogService ktXMLService\
+ktBasicService ktDirFileService ktExcelService ktPrdService ktPrtService ktStrLogService ktXMLService \
+ktWebservice \
 
 # END WIZARD EDITION ZONE
 

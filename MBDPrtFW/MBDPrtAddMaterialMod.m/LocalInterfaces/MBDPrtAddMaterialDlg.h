@@ -20,6 +20,12 @@
 
 #include "CATDlgDialog.h"
 #include "CATDlgInclude.h"
+#include "CATLISTPIUnknown.h"
+#include "CATListOfCATUnicodeString.h"
+#include "MBDWebservice.h"
+#include "iostream"
+using namespace std;
+
 
 //----------------------------------------------------------------------
 
@@ -44,10 +50,13 @@ class MBDPrtAddMaterialDlg: public CATDlgDialog
 
   void Build ();
 
+  //COMBO按钮选择的响应
+  CATBoolean ComboItemSearchCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  //对每一个COMBO信息进行更新
+  HRESULT SetSearchItemComboList(CATListValCATUnicodeString astrKeyWords,CATDlgCombo * piDlgCombo);
+  //获取所有WBSItem信息
+  void GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStrSearchItems);
 
-  protected:
-
-  private:
 
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
@@ -76,14 +85,13 @@ class MBDPrtAddMaterialDlg: public CATDlgDialog
  CATDlgEditor*      _ResultDetailEditor;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
+ //定义COMBO列表
+ CATLISTP(IUnknown)  m_ItemComboList;
 
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
+ //记录combo初始化名称
+ CATLISTV(CATUnicodeString) m_alsStrCurrentWBSItem;
+ //记录WEBSERVICE ITEMS
+ CATLISTV(CATUnicodeString) m_alsStrCurrentWBSShow;
 };
 
 //----------------------------------------------------------------------
