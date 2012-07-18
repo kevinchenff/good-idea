@@ -68,13 +68,15 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
   //消息框响应函数
   void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  //
+  void SearchMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void SearchResultMLSelectedCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+  //
   //判断是否为ZP模型
   BOOL IsThisZPPrt(CATUnicodeString istrDocName);
-  //查询材料信息FROM DATABASE
-  void SearchMaterialInfo();
   //获取材料catalog文件
   HRESULT CreateMaterialCatalog();
-
   //赋材料
   HRESULT ApplyMaterial(CATIMaterialFeature *pIMaterialFeature);
 
@@ -89,6 +91,12 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
 
 	  //
 	  MBDPrtAddMaterialDlg *m_pDlg;
+
+	  //
+	  int m_selectResultLine;
+
+	  //查询结果数组的指针
+	  
 
 };
 

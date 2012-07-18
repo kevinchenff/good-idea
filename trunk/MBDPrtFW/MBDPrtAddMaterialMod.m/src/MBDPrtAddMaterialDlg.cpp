@@ -22,6 +22,7 @@
 #include "CATICkeParm.h"
 #endif
 
+const int MAXCOUNT = 6;
 
 
 
@@ -60,15 +61,6 @@ MBDPrtAddMaterialDlg::MBDPrtAddMaterialDlg() :
  _ResultML = NULL;
  _ResultDetailEditor = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
-
-
-//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
-
-
-//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
-
-
-//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
 //-------------------------------------------------------------------------
@@ -103,15 +95,6 @@ MBDPrtAddMaterialDlg::~MBDPrtAddMaterialDlg()
  _Frame003 = NULL;
  _ResultML = NULL;
  _ResultDetailEditor = NULL;
-//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
-
-
-//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
-
-
-//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
-
-
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -207,8 +190,191 @@ _Label07->SetVisibility(CATDlgHide);
 _Label08->SetVisibility(CATDlgHide);
 _Label09->SetVisibility(CATDlgHide);
 
+//
+m_alsStrCurrentWBSItem.Append("MATERIAL_INFO_MATERIAL_CLASS_BIG");
+m_alsStrCurrentWBSItem.Append("MATERIAL_INFO_MATERIAL_CLASS_SMALL");
+m_alsStrCurrentWBSItem.Append("MATERIAL_INFO_MATERIAL_NAME");
+m_alsStrCurrentWBSItem.Append("MATERIAL_INFO_MATERIAL_TEC_CONDITION");
+m_alsStrCurrentWBSItem.Append("MATERIAL_INFO_SUPPLY_STATUS");
+m_alsStrCurrentWBSItem.Append("MATERIAL_INFO_TYPE");
+m_alsStrCurrentWBSItem.Append("MATERIAL_INFO_MATERIAL_MARK");
+
+
+//初始化显示界面
+CATUnicodeString strComboName01(" 请选择： < “材料大类别” >");
+CATUnicodeString strComboName02(" 请选择： < “材料小类别” >");
+CATUnicodeString strComboName03(" 请选择： < “材料名称” >");
+CATUnicodeString strComboName04(" 请选择： < “材料技术条件” >");
+CATUnicodeString strComboName05(" 请选择： < “供应状态” >");
+CATUnicodeString strComboName06(" 请选择： < “品种” >");
+m_alsStrCurrentWBSShow.Append(strComboName01);
+m_alsStrCurrentWBSShow.Append(strComboName02);
+m_alsStrCurrentWBSShow.Append(strComboName03);
+m_alsStrCurrentWBSShow.Append(strComboName04);
+m_alsStrCurrentWBSShow.Append(strComboName05);
+m_alsStrCurrentWBSShow.Append(strComboName06);
+
+//加入所有COMBO到列表中
+m_ItemComboList.Append(_SearchCombo01);
+m_ItemComboList.Append(_SearchCombo02);
+m_ItemComboList.Append(_SearchCombo03);
+m_ItemComboList.Append(_SearchCombo04);
+m_ItemComboList.Append(_SearchCombo05);
+m_ItemComboList.Append(_SearchCombo06);
+//
+m_ItemComboList.Append(_ResultDetailEditor);
+//
+
+//
+for (int i=1; i<=MAXCOUNT; i++)
+{
+	((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
+}
+
+//
+for (int i = 1; i <= MAXCOUNT; i ++)
+{
+	AddAnalyseNotificationCB ((CATDlgCombo*)m_ItemComboList[i],((CATDlgCombo*)m_ItemComboList[i])->GetComboSelectNotification(),
+		(CATCommandMethod)&MBDPrtAddMaterialDlg::ComboItemSearchCB,NULL);
+}
+
+
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
 
 }
+
+
+CATBoolean MBDPrtAddMaterialDlg::ComboItemSearchCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//获得当前combo列表位置
+	int comboIndex = m_ItemComboList.Locate(cmd);
+	cout<<"用户点选的是"<<comboIndex<<endl;
+
+	//搜索关键字列表
+	CATLISTV(CATUnicodeString) aStrComboItemSelected;
+	aStrComboItemSelected.Append(""); //添加一个空字符，占住位置，后面再修改它
+
+	//获取搜索之前的COMBO的所有选择参数
+	//采用循环方式
+	for (int i = 1; i <= comboIndex; i++)
+	{
+		int tempIndex;
+		tempIndex = ((CATDlgCombo*)m_ItemComboList[i])->GetSelect();
+
+		if (tempIndex != 0)
+		{
+			CATUnicodeString strTempIndexItem ;
+			((CATDlgCombo*)m_ItemComboList[i])->GetLine(strTempIndexItem,tempIndex);
+
+			//构造赋值形式的字符串
+			CATUnicodeString strTemp = m_alsStrCurrentWBSItem[i] + "=" + strTempIndexItem;
+			aStrComboItemSelected.Append(strTemp);
+		}
+
+	}
+
+	//更新选择该COMBO之后的COMBO的显示情况
+	//减去1的原因，最后一个为EDITOR指针，非combo
+	for (int j = comboIndex+1; j <= m_ItemComboList.Size() - 1; j++)
+	{
+		CATUnicodeString strSearch = CATUnicodeString("MBD_Sys_DropdownList=") + m_alsStrCurrentWBSItem[j];
+		aStrComboItemSelected[1] = strSearch;
+
+		//调用函数清除并添加新内容
+		((CATDlgCombo*) m_ItemComboList[j])->ClearLine();
+		CATUnicodeString strComboName = m_alsStrCurrentWBSShow[j];
+		((CATDlgCombo*) m_ItemComboList[j])->SetLine(strComboName);
+		HRESULT hr = SetSearchItemComboList(aStrComboItemSelected,(CATDlgCombo*)m_ItemComboList[j]);
+	}
+
+	return TRUE;
+}
+
+//============================================================
+// [4/27/2011 ev5adm]
+// 设置搜索条件combo下拉框的显示内容
+//============================================================
+HRESULT MBDPrtAddMaterialDlg::SetSearchItemComboList(CATListValCATUnicodeString astrKeyWords,CATDlgCombo * piDlgCombo)
+{
+	HRESULT hr = S_OK;
+	//清空
+	//存储搜索得到的combo value 
+	CATListValCATUnicodeString strListOfSearchResult;
+	CATListValCATUnicodeString astrCombolistValue;
+	//调用查询接口
+	hr = MBDWebservice::QueryDataWebService(astrKeyWords,strListOfSearchResult);
+
+	//过滤需要的信息
+	if (SUCCEEDED(hr))
+	{
+		//计算以2为倍数的循环次数
+		int cyclecount = (int)((strListOfSearchResult.Size()-2)/2);
+
+		if (cyclecount >= 1)
+		{
+
+			for (int i = 1; i <= cyclecount; i++)
+			{
+				astrCombolistValue.Append(strListOfSearchResult[i*2 + 1]);
+			}
+
+		}
+
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	//显示在combo下拉列表中
+	for (int j = 1; j <= astrCombolistValue.Size(); j++)
+	{
+		piDlgCombo->SetLine(astrCombolistValue[j]);
+	}
+
+	return hr;
+}
+
+//获取所有WBSItem信息
+void MBDPrtAddMaterialDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStrSearchItems)
+{
+	//获取所选查询库信息
+	CATUnicodeString strDatabase("");
+	strDatabase = CATUnicodeString("MBD_Sys_DatabaseName=MATERIAL_INFO"); 
+	listStrSearchItems.Append(strDatabase);
+
+	//获取所有设置信息
+	int count = m_ItemComboList.Size();
+
+	for (int i = 1; i <= count-1; i ++)
+	{
+		int selectComboItem = ((CATDlgCombo*) m_ItemComboList[i])->GetSelect();
+
+		if (selectComboItem != 0)
+		{
+			CATUnicodeString strComboValue("");
+			((CATDlgCombo*) m_ItemComboList[i])->GetLine(strComboValue,selectComboItem);
+
+			CATUnicodeString strValue("");
+			strValue = m_alsStrCurrentWBSItem[i] + "=" + strComboValue;
+			listStrSearchItems.Append(strValue);
+		}
+
+
+	}
+
+	// Append Editor Values
+	CATUnicodeString strEditorValue("");
+	strEditorValue = ((CATDlgEditor*) m_ItemComboList[count])->GetText();
+	if (strEditorValue != "")
+	{
+		strEditorValue = m_alsStrCurrentWBSItem[count] + "=" + strEditorValue;
+		listStrSearchItems.Append(strEditorValue);
+	}
+	else
+	{
+		strEditorValue = m_alsStrCurrentWBSItem[count] + "=########";
+		listStrSearchItems.Append(strEditorValue);
+	}
+
+}
+
 
