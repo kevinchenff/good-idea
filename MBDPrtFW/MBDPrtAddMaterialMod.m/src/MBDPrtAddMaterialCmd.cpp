@@ -79,17 +79,12 @@ void MBDPrtAddMaterialCmd::BuildGraph()
 	//
 	// 主对话框的消息响应
 	AddAnalyseNotificationCB (m_pDlg, 
-		m_pDlg->GetDiaOKNotification(),
-		(CATCommandMethod)&MBDPrtAddMaterialCmd::OkDlgCB,
-		NULL);
-
-	AddAnalyseNotificationCB (m_pDlg, 
 		m_pDlg->GetWindCloseNotification(),
 		(CATCommandMethod)&MBDPrtAddMaterialCmd::CloseDlgCB,
 		NULL);
 
 	AddAnalyseNotificationCB (m_pDlg, 
-		m_pDlg->GetDiaCANCELNotification(),
+		m_pDlg->GetDiaCLOSENotification(),
 		(CATCommandMethod)&MBDPrtAddMaterialCmd::CloseDlgCB,
 		NULL);
 	//
@@ -98,6 +93,17 @@ void MBDPrtAddMaterialCmd::BuildGraph()
 		m_pDlg->_SearchPB->GetPushBActivateNotification(),
 		(CATCommandMethod)&MBDPrtAddMaterialCmd::SearchMaterialCB,
 		NULL);
+	// 
+	AddAnalyseNotificationCB (m_pDlg->_AddMainMaterialPB, 
+		m_pDlg->_AddMainMaterialPB->GetPushBActivateNotification(),
+		(CATCommandMethod)&MBDPrtAddMaterialCmd::AddMainMaterialCB,
+		NULL);
+	// 
+	AddAnalyseNotificationCB (m_pDlg->_AddAuxiliaryMaterialPB, 
+		m_pDlg->_AddAuxiliaryMaterialPB->GetPushBActivateNotification(),
+		(CATCommandMethod)&MBDPrtAddMaterialCmd::AddAuxiliaryMaterialCB,
+		NULL);
+
 	//
 	//用户点击搜索结果mutillist
 	AddAnalyseNotificationCB (m_pDlg->_ResultML, 
@@ -108,13 +114,7 @@ void MBDPrtAddMaterialCmd::BuildGraph()
 
 }
 
-//消息框响应函数
-void MBDPrtAddMaterialCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
-{
-	CreateMaterialCatalog();
-	//
-	RequestDelayedDestruction();
-}
+//
 void MBDPrtAddMaterialCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
@@ -497,3 +497,13 @@ void MBDPrtAddMaterialCmd::SearchMaterialCB(CATCommand* cmd, CATNotification* ev
 	//设置显示状态
 	//m_pDlg->_InsertToGSMToolPB->SetSensitivity(CATDlgDisable);
 }
+
+void MBDPrtAddMaterialCmd::AddMainMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+void MBDPrtAddMaterialCmd::AddAuxiliaryMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+

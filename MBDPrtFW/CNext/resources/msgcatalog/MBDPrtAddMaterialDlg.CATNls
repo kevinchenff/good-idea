@@ -16,4 +16,6 @@ Frame001.Frame003.Title = "Search Result";
  Frame001.Frame003.ResultML.ColumnTitle10 = "Variety Code";
  Frame001.Frame003.ResultML.ColumnTitle11 = "Varieties of technical conditions";
  Frame001.Frame003.ResultML.ColumnTitle12 = "Imported or new materials";
+Frame001.Frame003.Frame007.AddMainMaterialPB.Title = "Add Main Material";
+Frame001.Frame003.Frame007.AddAuxiliaryMaterialPB.Title = "Add Auxiliary material";
 // END WIZARD REPLACEMENT ZONE
