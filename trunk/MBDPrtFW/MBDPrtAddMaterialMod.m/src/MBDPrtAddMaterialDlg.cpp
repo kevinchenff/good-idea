@@ -32,7 +32,7 @@ const int MAXCOUNT = 6;
 MBDPrtAddMaterialDlg::MBDPrtAddMaterialDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"MBDPrtAddMaterialDlg",CATDlgWndBtnOKCancel|CATDlgGridLayout
+"MBDPrtAddMaterialDlg",CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -60,6 +60,9 @@ MBDPrtAddMaterialDlg::MBDPrtAddMaterialDlg() :
  _Frame003 = NULL;
  _ResultML = NULL;
  _ResultDetailEditor = NULL;
+ _Frame007 = NULL;
+ _AddMainMaterialPB = NULL;
+ _AddAuxiliaryMaterialPB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -95,6 +98,9 @@ MBDPrtAddMaterialDlg::~MBDPrtAddMaterialDlg()
  _Frame003 = NULL;
  _ResultML = NULL;
  _ResultDetailEditor = NULL;
+ _Frame007 = NULL;
+ _AddMainMaterialPB = NULL;
+ _AddAuxiliaryMaterialPB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -176,6 +182,14 @@ _ResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _ResultDetailEditor -> SetVisibleTextHeight(16);
  _ResultDetailEditor -> SetVisibleTextWidth(40);
 _ResultDetailEditor -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame007 = new CATDlgFrame(_Frame003, "Frame007", CATDlgFraNoFrame|CATDlgGridLayout);
+_Frame007 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Frame007 -> SetGridRowResizable(0,1);
+ _Frame007 -> SetGridColumnResizable(0,1);
+ _AddMainMaterialPB = new CATDlgPushButton(_Frame007, "AddMainMaterialPB");
+_AddMainMaterialPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
+ _AddAuxiliaryMaterialPB = new CATDlgPushButton(_Frame007, "AddAuxiliaryMaterialPB");
+_AddAuxiliaryMaterialPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 

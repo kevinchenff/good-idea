@@ -66,11 +66,12 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
   virtual void     BuildGraph();
   //
   //消息框响应函数
-  void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //
   void SearchMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void SearchResultMLSelectedCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void AddMainMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void AddAuxiliaryMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
   //
   //判断是否为ZP模型

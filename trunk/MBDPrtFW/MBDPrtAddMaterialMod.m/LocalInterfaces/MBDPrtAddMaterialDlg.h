@@ -83,6 +83,9 @@ class MBDPrtAddMaterialDlg: public CATDlgDialog
  CATDlgFrame*      _Frame003;
  CATDlgMultiList*      _ResultML;
  CATDlgEditor*      _ResultDetailEditor;
+ CATDlgFrame*      _Frame007;
+ CATDlgPushButton*      _AddMainMaterialPB;
+ CATDlgPushButton*      _AddAuxiliaryMaterialPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
  //定义COMBO列表

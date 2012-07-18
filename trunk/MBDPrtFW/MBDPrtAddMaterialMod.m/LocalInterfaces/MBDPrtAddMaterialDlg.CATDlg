@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog MBDPrtAddMaterialDlg
 {
-  STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
+  STYLE = CATDlgWndBtnClose|CATDlgGridLayout;
   ROWRES = { 0 };
   COLRES = { 0 };
 }
@@ -161,6 +161,27 @@ CATDlgEditor ResultDetailEditor
   TH = 16;
   TW = 40;
   GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame007
+{
+  FATHER = Frame003;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgPushButton AddMainMaterialPB
+{
+  FATHER = Frame007;
+  GRID = { 0, 1, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgPushButton AddAuxiliaryMaterialPB
+{
+  FATHER = Frame007;
+  GRID = { 0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
 }
 
 // END WIZARD REPLACEMENT ZONE
