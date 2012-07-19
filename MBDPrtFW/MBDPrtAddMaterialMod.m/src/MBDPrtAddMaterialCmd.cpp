@@ -71,9 +71,6 @@ void MBDPrtAddMaterialCmd::ClearListStrMaterialDetailInfo()
 	}
 	//
 	m_pListStrMaterialDetailInfo.RemoveAll();
-	//
-	m_pDlg->_ResultDetailEditor->ClearLine();
-	m_pDlg->_ResultML->ClearLine();
 }
 
 
@@ -459,6 +456,9 @@ void MBDPrtAddMaterialCmd::SearchMaterialCB(CATCommand* cmd, CATNotification* ev
 {
 	//³õÊ¼»¯×´Ì¬
 	ClearListStrMaterialDetailInfo();
+	//
+	m_pDlg->_ResultDetailEditor->ClearLine();
+	m_pDlg->_ResultML->ClearLine();
 	//----------------------
 	// Go and search
 	//----------------------
