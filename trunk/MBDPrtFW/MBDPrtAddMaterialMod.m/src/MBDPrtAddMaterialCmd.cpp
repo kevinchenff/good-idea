@@ -25,7 +25,7 @@ CATCreateClass( MBDPrtAddMaterialCmd);
 MBDPrtAddMaterialCmd::MBDPrtAddMaterialCmd() :
   CATStateCommand ("MBDPrtAddMaterialCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-,m_piDoc(NULL),m_pDlg(NULL)
+,m_piDoc(NULL),m_pDlg(NULL),m_pMatParamDlg(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -48,6 +48,12 @@ MBDPrtAddMaterialCmd::~MBDPrtAddMaterialCmd()
 	{
 		m_pDlg->RequestDelayedDestruction();
 		m_pDlg=NULL;
+	}
+
+	if (NULL!=m_pMatParamDlg)
+	{
+		m_pMatParamDlg->RequestDelayedDestruction();
+		m_pMatParamDlg=NULL;
 	}
 }
 
@@ -77,6 +83,10 @@ void MBDPrtAddMaterialCmd::BuildGraph()
 	m_pDlg->Build();
 	m_pDlg->SetVisibility(CATDlgShow);
 	//
+	//m_pDlg->_AddMainMaterialPB->SetSensitivity(CATDlgDisable);
+	//m_pDlg->_AddAuxiliaryMaterialPB->SetSensitivity(CATDlgDisable);
+
+	//
 	// 主对话框的消息响应
 	AddAnalyseNotificationCB (m_pDlg, 
 		m_pDlg->GetWindCloseNotification(),
@@ -93,6 +103,8 @@ void MBDPrtAddMaterialCmd::BuildGraph()
 		m_pDlg->_SearchPB->GetPushBActivateNotification(),
 		(CATCommandMethod)&MBDPrtAddMaterialCmd::SearchMaterialCB,
 		NULL);
+	
+	//用户点击添加主材、添加辅材按钮
 	// 
 	AddAnalyseNotificationCB (m_pDlg->_AddMainMaterialPB, 
 		m_pDlg->_AddMainMaterialPB->GetPushBActivateNotification(),
@@ -110,8 +122,6 @@ void MBDPrtAddMaterialCmd::BuildGraph()
 		m_pDlg->_ResultML->GetListSelectNotification(),
 		(CATCommandMethod)&MBDPrtAddMaterialCmd::SearchResultMLSelectedCB,
 		NULL);
-
-
 }
 
 //
@@ -393,7 +403,7 @@ HRESULT MBDPrtAddMaterialCmd::SetMaterialProperty(CATIMaterialFeature * &pIMater
 }
 
 
-//修改该部分内容，添加右键更改功能
+//点击所选ML行的响应函数
 void MBDPrtAddMaterialCmd::SearchResultMLSelectedCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//清空备注信息
@@ -498,12 +508,108 @@ void MBDPrtAddMaterialCmd::SearchMaterialCB(CATCommand* cmd, CATNotification* ev
 	//m_pDlg->_InsertToGSMToolPB->SetSensitivity(CATDlgDisable);
 }
 
-void MBDPrtAddMaterialCmd::AddMainMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
-{
-
-}
 void MBDPrtAddMaterialCmd::AddAuxiliaryMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//
+	CATUnicodeString strAuxiliaryMaterialValue("YL12");
+	//
+	CATISpecObject_var spGSMTool = NULL_var;
+	PrtService::ObtainGSMTool(m_piDoc,"消耗辅助材料",spGSMTool);
+	if (spGSMTool != NULL_var)
+	{
+		//
+		CATListValCATUnicodeString lststrJstTypeInfoName,lststrJstTypeInfoValue;
+		lststrJstTypeInfoName.Append("消耗辅助材料");
+		//
+		PrtService::GetSpecObjCertainParams(spGSMTool,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+		//
+		CATUnicodeString strValue = lststrJstTypeInfoValue[1];
+		CATListValCATUnicodeString lststrResult;
+		CHandleString::StringToVector(strValue,"|",lststrResult);
+		//
+		CATBoolean existFlag = FALSE;
+		for (int i=1; i<= lststrResult.Size(); i++)
+		{
+			if (strAuxiliaryMaterialValue == lststrResult[i])
+			{
+				existFlag=TRUE;
+				break;
+			}
+		}
 
+		if (existFlag==FALSE)
+		{
+			lststrResult.Append(strAuxiliaryMaterialValue);
+		}
+
+		//
+		CATUnicodeString strNewValue;
+		for (int i1=1; i1 <= lststrResult.Size(); i1++)
+		{
+			strNewValue += lststrResult[i1];
+			if (i1 != lststrResult.Size())
+			{
+				strNewValue += "|";
+			}
+		}
+		//
+		lststrJstTypeInfoValue[1]=strNewValue;
+		//挂载测试参数
+		PrtService::ModifySpecObjCertainParams(m_piDoc,spGSMTool,lststrJstTypeInfoName,lststrJstTypeInfoValue);
+	}
+	else
+	{
+		PrtService::ShowDlgNotify("错误信息","未能找到“消耗辅助材料”几何图形集！");
+	}
 }
 
+
+//添加主材信息
+void MBDPrtAddMaterialCmd::AddMainMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	//
+	if (m_pMatParamDlg == NULL)
+	{
+		m_pMatParamDlg = new MBDPrtMainMaterialParamDlg();
+		m_pMatParamDlg->Build();
+		m_pMatParamDlg->SetVisibility(CATDlgShow);
+	}
+	else
+	{
+		m_pMatParamDlg->SetVisibility(CATDlgShow);
+	}
+	//
+
+	// 消息响应
+	AddAnalyseNotificationCB (m_pMatParamDlg, 
+		m_pMatParamDlg->GetWindCloseNotification(),
+		(CATCommandMethod)&MBDPrtAddMaterialCmd::CloseMatParamDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pMatParamDlg, 
+		m_pMatParamDlg->GetDiaCANCELNotification(),
+		(CATCommandMethod)&MBDPrtAddMaterialCmd::CloseMatParamDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pMatParamDlg, 
+		m_pMatParamDlg->GetDiaOKNotification(),
+		(CATCommandMethod)&MBDPrtAddMaterialCmd::OkMatParamDlgCB,
+		NULL);
+	//
+}
+
+
+//辅助框响应函数
+void MBDPrtAddMaterialCmd::CloseMatParamDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	m_pMatParamDlg->SetVisibility(CATDlgHide);
+}
+
+void MBDPrtAddMaterialCmd::OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	CreateMaterialCatalog();
+	//
+	RequestDelayedDestruction();
+}

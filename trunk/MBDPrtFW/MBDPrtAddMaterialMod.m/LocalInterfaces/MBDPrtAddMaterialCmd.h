@@ -36,6 +36,8 @@
 
 //
 #include "MBDPrtAddMaterialDlg.h"
+#include "MBDPrtMainMaterialParamDlg.h"
+
 
 //----------------------------------------------------------------------
 
@@ -80,9 +82,14 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
   HRESULT CreateMaterialCatalog();
   //赋材料
   HRESULT ApplyMaterial(CATIMaterialFeature *pIMaterialFeature);
-
   //更改材料属性
   HRESULT SetMaterialProperty(CATIMaterialFeature * &pIMaterialFeature);
+
+  //
+  //辅助框响应函数
+  void CloseMatParamDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
 
   private:
 
@@ -90,14 +97,17 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
 	  CATDocument *m_piDoc;
 	  CATUnicodeString m_strDocName;
 
-	  //
+	  //主对话框
 	  MBDPrtAddMaterialDlg *m_pDlg;
 
-	  //
+	  //所选行
 	  int m_selectResultLine;
 
 	  //查询结果数组的指针
-	  
+	  CATListPV  m_pListStrMaterialDetailInfo;
+
+	  //主材辅助参数对话框
+	  MBDPrtMainMaterialParamDlg *m_pMatParamDlg;
 
 };
 
