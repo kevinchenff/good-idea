@@ -84,6 +84,8 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
   HRESULT ApplyMaterial(CATIMaterialFeature *pIMaterialFeature);
   //更改材料属性
   HRESULT SetMaterialProperty(CATIMaterialFeature * &pIMaterialFeature);
+  //
+  void ClearListStrMaterialDetailInfo();
 
   //
   //辅助框响应函数

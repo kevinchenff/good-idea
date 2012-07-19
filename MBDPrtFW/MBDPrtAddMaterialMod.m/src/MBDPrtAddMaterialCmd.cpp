@@ -55,6 +55,25 @@ MBDPrtAddMaterialCmd::~MBDPrtAddMaterialCmd()
 		m_pMatParamDlg->RequestDelayedDestruction();
 		m_pMatParamDlg=NULL;
 	}
+
+	//
+	ClearListStrMaterialDetailInfo();
+}
+
+
+void MBDPrtAddMaterialCmd::ClearListStrMaterialDetailInfo()
+{
+	//
+	for (int k=1;k<=m_pListStrMaterialDetailInfo.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_pListStrMaterialDetailInfo[k];
+		delete TempLstStr;
+	}
+	//
+	m_pListStrMaterialDetailInfo.RemoveAll();
+	//
+	m_pDlg->_ResultDetailEditor->ClearLine();
+	m_pDlg->_ResultML->ClearLine();
 }
 
 
@@ -438,7 +457,8 @@ void MBDPrtAddMaterialCmd::SearchResultMLSelectedCB(CATCommand* cmd, CATNotifica
 //
 void MBDPrtAddMaterialCmd::SearchMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-	//存在BUG问题，如果不判断对话框显示状态，会出现多次运行的可能.
+	//初始化状态
+	ClearListStrMaterialDetailInfo();
 	//----------------------
 	// Go and search
 	//----------------------
@@ -450,11 +470,6 @@ void MBDPrtAddMaterialCmd::SearchMaterialCB(CATCommand* cmd, CATNotification* ev
 	{
 		cout<<"第"<<i<<"行数据："<<m_listStrSearchItemsValue[i].ConvertToChar()<<endl;
 	}*/
-
-	//查询WEBSERVICE获取搜选结果
-	m_pDlg->_ResultML->ClearLine();
-	m_pDlg->_ResultDetailEditor->ClearLine();
-
 	//存储搜索得到的Value 
 	CATListValCATUnicodeString strListOfSearchResult;
 	//调用查询接口
@@ -463,49 +478,54 @@ void MBDPrtAddMaterialCmd::SearchMaterialCB(CATCommand* cmd, CATNotification* ev
 	//过滤需要的信息
 	if (SUCCEEDED(hr))
 	{
+		//获得数据条目，及每条目数据个数，分别对应第二、第三，数据内容从第六条开始
+		CATUnicodeString strCount=strListOfSearchResult[2];
+		CATUnicodeString strCutNumb=strListOfSearchResult[3];
+		double dCount=0,dCutNumb=1;
+		strCount.ConvertToNum(&dCount);
+		strCutNumb.ConvertToNum(&dCutNumb);
+
 		//计算以3为倍数的循环次数
-		int cyclecount = (int)((strListOfSearchResult.Size()-2)/3);
-
-		if (cyclecount >= 1)
+		int cyclecount = (int)((strListOfSearchResult.Size()-5)/dCutNumb);
+		//
+		if (cyclecount==dCount)
 		{
-
-			for (int i = 1; i <= cyclecount; i++)
+			//
+			for (int i=1; i<=dCutNumb; i++)
 			{
-				/*m_strListOfSearchResult01.Append(strListOfSearchResult[i*3]);
-				m_strListOfSearchResult02.Append(strListOfSearchResult[i*3 + 1]);
-
-				CATUnicodeString strConvert = strListOfSearchResult[i*3 + 2];
-				if (strConvert == "########")
+				//首选创建实例化的数组列
+				CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+				m_pListStrMaterialDetailInfo.Append(LstStrAtrrValue01);
+				//
+				for (int j=1; j<=cyclecount; j++)
 				{
-					strConvert = NULL;
-					m_strListOfSearchResult03.Append(strConvert);
+					//
+					CATUnicodeString strConvert = strListOfSearchResult[(j-1)*dCutNumb+i+5];
+					//
+					if (strConvert == "########")
+					{
+						strConvert = NULL;
+						(*LstStrAtrrValue01).Append(strConvert);
+					}
+					else
+						(*LstStrAtrrValue01).Append(strConvert);									
 				}
-				else
-					m_strListOfSearchResult03.Append(strConvert);*/					
 
+				//
+				for (int k=1; k<=(*LstStrAtrrValue01).Size(); k++)
+				{
+					m_pDlg->_ResultML->SetColumnItem(i-1,(*LstStrAtrrValue01)[k]);
+				}
 			}
 
 		}
 
+		//			
 	}
 
-	//填写结果项
-	//if (m_strListOfSearchResult01.Size() > 0)
-	//{
-
-	//	for (int i = 1; i <= m_strListOfSearchResult01.Size();i++)
-	//	{
-	//		CATUnicodeString IndexNum;
-	//		IndexNum.BuildFromNum(i);
-	//		/*m_piDlg->_SearchResultML->SetColumnItem(0,IndexNum);
-	//		m_piDlg->_SearchResultML->SetColumnItem(1,m_strListOfSearchResult01[i]);
-	//		m_piDlg->_SearchResultML->SetColumnItem(2,m_strListOfSearchResult02[i]);*/
-	//	}
-
-	//}
-
 	//设置显示状态
-	//m_pDlg->_InsertToGSMToolPB->SetSensitivity(CATDlgDisable);
+	m_pDlg->_AddMainMaterialPB->SetSensitivity(CATDlgDisable);
+	m_pDlg->_AddAuxiliaryMaterialPB->SetSensitivity(CATDlgDisable);
 }
 
 void MBDPrtAddMaterialCmd::AddAuxiliaryMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
