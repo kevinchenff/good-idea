@@ -131,7 +131,7 @@ HRESULT MBDWebservice::QueryDataWebService(CATListValCATUnicodeString &strListOf
 	//调用DLL通过webservice查询结果
 	HINSTANCE hDll= NULL;//DLL句柄 	
 	typedef HRESULT (*lpFun)(BSTR* ,int ,BSTR *&, int&); 
-	hDll = LoadLibrary(_T("MBDWebService.dll"));
+	hDll = LoadLibrary(_T("MBDStdWebService.dll"));
 	if(NULL == hDll)
 	{
 		LPVOID lpMsgBuf;
@@ -195,7 +195,7 @@ HRESULT MBDWebservice::InsertDataWebService(CATListValCATUnicodeString astrKeyWo
 	//调用DLL通过webservice查询结果
 	HINSTANCE hDll= NULL;//DLL句柄 	
 	typedef HRESULT (*lpFun)(BSTR* ,int ,BSTR *&, int&); 
-	hDll = LoadLibrary(_T("MBDWebService.dll"));
+	hDll = LoadLibrary(_T("MBDStdWebService.dll"));
 	if(NULL == hDll)
 	{
 		LPVOID lpMsgBuf;

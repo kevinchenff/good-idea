@@ -1596,7 +1596,7 @@ HRESULT PrtService::SetSpecGraphProperty(CATISpecObject_var spSpecOnObject,CATVi
 		//Update the graph view
 		CATIRedrawEvent_var spRedraw = spSpecOnObject;
 		spRedraw -> Redraw(); 
-		ObjectUpdate(spSpecOnObject);
+		//ObjectUpdate(spSpecOnObject);
 	}
 
 	return rc;

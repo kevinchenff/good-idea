@@ -42,8 +42,8 @@ MBDPrtAddMaterialCmd::MBDPrtAddMaterialCmd() :
 
 	//
 	m_iValuePrtColor[0]=0;
-	m_iValuePrtColor[0]=1;
-	m_iValuePrtColor[0]=2;
+	m_iValuePrtColor[0]=0;
+	m_iValuePrtColor[0]=0;
 
 	//
 	m_alsStrMatInfoCATIAName.Append("材料类别");
@@ -517,15 +517,15 @@ HRESULT MBDPrtAddMaterialCmd::GetSelectedMaterialInfo()
 	CATUnicodeString strContent;
 	m_pDlg->_ResultML->GetColumnItem(2,strContent,m_iSelectedIndex);
 	m_alsStrMatInfoCATIAValue.Append(strContent);
+	m_pDlg->_ResultML->GetColumnItem(4,strContent,m_iSelectedIndex);
+	m_alsStrMatInfoCATIAValue.Append(strContent);
+	m_pDlg->_ResultML->GetColumnItem(9,strContent,m_iSelectedIndex);
+	m_alsStrMatInfoCATIAValue.Append(strContent);
 	m_pDlg->_ResultML->GetColumnItem(5,strContent,m_iSelectedIndex);
-	m_alsStrMatInfoCATIAValue.Append(strContent);
-	m_pDlg->_ResultML->GetColumnItem(10,strContent,m_iSelectedIndex);
-	m_alsStrMatInfoCATIAValue.Append(strContent);
-	m_pDlg->_ResultML->GetColumnItem(6,strContent,m_iSelectedIndex);
 	m_alsStrMatInfoCATIAValue.Append(strContent);
 
 	//获取颜色
-	m_pDlg->_ResultML->GetColumnItem(18,strContent,m_iSelectedIndex);
+	m_pDlg->_ResultML->GetColumnItem(17,strContent,m_iSelectedIndex);
 	CATListValCATUnicodeString alsStrColor;
 	CHandleString::StringToVector(strContent,",",alsStrColor);
 	if (alsStrColor.Size()==3)
@@ -534,6 +534,11 @@ HRESULT MBDPrtAddMaterialCmd::GetSelectedMaterialInfo()
 		{
 			alsStrColor[i].ConvertToNum(m_iValuePrtColor + i-1);
 		}
+
+		//
+		cout<<"m_iValuePrtColor[0] "<<m_iValuePrtColor[0]<<endl;
+		cout<<"m_iValuePrtColor[1] "<<m_iValuePrtColor[1]<<endl;
+		cout<<"m_iValuePrtColor[2] "<<m_iValuePrtColor[2]<<endl;
 	}	
 	else
 	{
@@ -542,15 +547,15 @@ HRESULT MBDPrtAddMaterialCmd::GetSelectedMaterialInfo()
 	}
 
 	//获取密度
-	m_pDlg->_ResultML->GetColumnItem(17,strContent,m_iSelectedIndex);
+	m_pDlg->_ResultML->GetColumnItem(16,strContent,m_iSelectedIndex);
 	strContent.ConvertToNum(&m_dDensity);
 
 	//伸长率
-	m_pDlg->_ResultML->GetColumnItem(14,strContent,m_iSelectedIndex);
+	m_pDlg->_ResultML->GetColumnItem(13,strContent,m_iSelectedIndex);
 	strContent.ConvertToNum(&m_dPoissonRatio);
 
 	//抗拉强度
-	m_pDlg->_ResultML->GetColumnItem(13,strContent,m_iSelectedIndex);
+	m_pDlg->_ResultML->GetColumnItem(12,strContent,m_iSelectedIndex);
 	strContent.ConvertToNum(&m_dYieldStrength); 
 
 	return S_OK;
@@ -637,7 +642,7 @@ void MBDPrtAddMaterialCmd::AddAuxiliaryMaterialCB(CATCommand* cmd, CATNotificati
 {
 	//
 	CATUnicodeString strAuxiliaryMaterialValue;
-	m_pDlg->_ResultML->GetColumnItem(3,strAuxiliaryMaterialValue,m_iSelectedIndex);
+	m_pDlg->_ResultML->GetColumnItem(0,strAuxiliaryMaterialValue,m_iSelectedIndex);
 	//
 	CATISpecObject_var spGSMTool = NULL_var;
 	PrtService::ObtainGSMTool(m_piDoc,"消耗辅助材料",spGSMTool);
@@ -748,10 +753,10 @@ void MBDPrtAddMaterialCmd::OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt
 		dHeight *= 1000;
 		//
 		CATUnicodeString strSize,strTemp01,strTemp02,strTemp03;
-		strTemp01.BuildFromNum(dLength,"lf%");
-		strTemp02.BuildFromNum(dWidth,"lf%");
-		strTemp03.BuildFromNum(dHeight,"lf%");
-		strSize = strTemp01+"mm"+"X"+strTemp02+"mm"+"X"+strTemp03 +"mm";
+		strTemp01.BuildFromNum(dLength);
+		strTemp02.BuildFromNum(dWidth);
+		strTemp03.BuildFromNum(dHeight);
+		strSize = strTemp01+"mm"+"x"+strTemp02+"mm"+"x"+strTemp03 +"mm";
 		//
 		m_alsStrMatInfoCATIAValue.Append(strSize);
 		//
@@ -764,7 +769,7 @@ void MBDPrtAddMaterialCmd::OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt
 			PrtService::ModifySpecObjCertainParams(m_piDoc,spGSMTool,m_alsStrMatInfoCATIAName,m_alsStrMatInfoCATIAValue);
 			//赋值材质球
 			CATUnicodeString strMaterialCode;
-			m_pDlg->_ResultML->GetColumnItem(3,strMaterialCode,m_iSelectedIndex);
+			m_pDlg->_ResultML->GetColumnItem(0,strMaterialCode,m_iSelectedIndex);
 			CreateMaterialCatalog(m_alsStrMatInfoCATIAValue[1],strMaterialCode,m_dDensity,m_dPoissonRatio,m_dYieldStrength);
 			//赋值颜色属性
 			CATIPrtContainer *opiRootContainer = NULL;

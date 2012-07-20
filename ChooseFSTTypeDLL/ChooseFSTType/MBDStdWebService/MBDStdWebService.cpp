@@ -98,16 +98,16 @@ HRESULT CMBDStdWebServiceApp::MBDQuery(BSTR* iStrQuery,int in0_nSizeIs,BSTR *&io
 
 	// 可以调用SetUrl动态设置Web服务地址
 	// MyMBDService->SetUrl(L"http://avicitzhoujie:8080/MBDDatabase/services/MBDService");
-	MyMBDService->SetUrl(L"http://192.168.100.120:80/StdPartMS/services/Service");
+	//MyMBDService->SetUrl(L"http://192.168.100.120:80/StdPartMS/services/Service");
 
-	/*
+	
 	char * strURLAddress = NULL;
 	hr = GetURLAddress(strURLAddress);
 
 	//检验配置文件状态
 	if(hr == S_FALSE)
 	{
-		AfxMessageBox(_T("网络连接失败！请检查AVICIT-MBD软件配置信息状态..."));
+		AfxMessageBox(_T("网络连接失败！请检查软件网络地址配置信息状态..."));
 
 		return hr;
 	}
@@ -115,7 +115,6 @@ HRESULT CMBDStdWebServiceApp::MBDQuery(BSTR* iStrQuery,int in0_nSizeIs,BSTR *&io
 	//调用MBDWebService实例
 	LPCTSTR lstr =	MCBS_2_LOCAL(strURLAddress);
 	hr = MyMBDService->SetUrl(lstr);
-	*/
 	hr = MyMBDService->Query(iStrQuery,in0_nSizeIs,&ioQueryResult,&out_nSizeIs); //注意，返回值是以指针形式返回
 
 	//检验调用情况
@@ -149,28 +148,27 @@ HRESULT CMBDStdWebServiceApp::MBDInsert(BSTR* in0, int in0_nSizeIs, BSTR* &out, 
 
 	// 可以调用SetUrl动态设置Web服务地址
 	// MyMBDService->SetUrl(L"http://avicitzhoujie:8080/MBDDatabase/services/MBDService");
-	MyMBDService->SetUrl(L"http://192.168.100.120:80/StdPartMS/services/Service");
+	//MyMBDService->SetUrl(L"http://192.168.100.120:80/StdPartMS/services/Service");
 
-	/*char * strURLAddress = NULL;
+	char * strURLAddress = NULL;
 	hr = GetURLAddress(strURLAddress);
 
 	//检验配置文件状态
 	if(FAILED(hr))
 	{
-		AfxMessageBox(_T("网络连接失败！请检查您的电脑网络连接状态或者检查AVICIT-MBD软件AVICITMBD-config配置信息是否正确..."));
+		AfxMessageBox(_T("网络连接失败！请检查您的电脑网络连接状态或者检查软件网络地址配置信息是否正确..."));
 		return hr;
 	}
 	
 	//调用MBDWebService实例
 	LPCTSTR lstr =	MCBS_2_LOCAL(strURLAddress);
 	hr = MyMBDService->SetUrl(lstr);
-	*/
 
 	hr = MyMBDService->Insert(in0, in0_nSizeIs, &out, &out_nSizeIs); //注意，返回值是以指针形式返回
 
 	if(FAILED(hr))
 	{
-		AfxMessageBox(_T("网络连接失败！请检查您的电脑网络连接状态或者检查AVICIT-MBD软件配置状态..."));
+		AfxMessageBox(_T("网络连接失败！请检查您的电脑网络连接状态或者检查软件网络配置状态..."));
 
 		delete MyMBDService;
 		CoUninitialize();
