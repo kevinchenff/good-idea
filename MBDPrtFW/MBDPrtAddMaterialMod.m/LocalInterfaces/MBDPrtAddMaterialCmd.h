@@ -79,13 +79,15 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
   //判断是否为ZP模型
   BOOL IsThisZPPrt(CATUnicodeString istrDocName);
   //获取材料catalog文件
-  HRESULT CreateMaterialCatalog();
+  HRESULT CreateMaterialCatalog(CATUnicodeString istrMatTypeName,CATUnicodeString istrMatIdenCode,double idDensity,double idPoissonRatio,double idYieldStrength);
   //赋材料
   HRESULT ApplyMaterial(CATIMaterialFeature *pIMaterialFeature);
   //更改材料属性
-  HRESULT SetMaterialProperty(CATIMaterialFeature * &pIMaterialFeature);
-  //
+  HRESULT SetMaterialProperty(CATIMaterialFeature * &pIMaterialFeature,CATUnicodeString istrMatIdenCode,double idDensity,double idPoissonRatio,double idYieldStrength);
+  //初始化列表
   void ClearListStrMaterialDetailInfo();
+  //获得材料所选信息
+  HRESULT GetSelectedMaterialInfo();
 
   //
   //辅助框响应函数
@@ -110,6 +112,15 @@ class MBDPrtAddMaterialCmd: public CATStateCommand
 
 	  //主材辅助参数对话框
 	  MBDPrtMainMaterialParamDlg *m_pMatParamDlg;
+
+	  //所选行号
+	  int m_iSelectedIndex;
+	  //材料选择所要获得的属性值
+	  CATListValCATUnicodeString m_alsStrMatInfoCATIAName,m_alsStrMatInfoCATIAValue;
+	  //材质颜色
+	  unsigned int m_iValuePrtColor[3];
+	  //密度(Density)、伸长率(Poisson Ratio)、抗拉强度(Yield Strength)
+	  double m_dDensity,m_dPoissonRatio,m_dYieldStrength;
 
 };
 

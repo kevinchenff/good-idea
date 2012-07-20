@@ -64,6 +64,30 @@ MBDPrtAddMaterialDlg::MBDPrtAddMaterialDlg() :
  _AddMainMaterialPB = NULL;
  _AddAuxiliaryMaterialPB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+
+ //初始化属性显示名称
+ m_lstStrPropertyName[0]=CATUnicodeString("材料代码");
+ m_lstStrPropertyName[1]=CATUnicodeString("材料大类别");
+ m_lstStrPropertyName[2]=CATUnicodeString("材料小类别");
+ m_lstStrPropertyName[3]=CATUnicodeString("材料标识");
+ m_lstStrPropertyName[4]=CATUnicodeString("材料名称");
+ m_lstStrPropertyName[5]=CATUnicodeString("材料牌号");
+ m_lstStrPropertyName[6]=CATUnicodeString("材料技术条件"); 
+ m_lstStrPropertyName[7]=CATUnicodeString("供应状态");
+ m_lstStrPropertyName[8]=CATUnicodeString("品种");
+ m_lstStrPropertyName[9]=CATUnicodeString("品种代号");
+ m_lstStrPropertyName[10]=CATUnicodeString("材料规格");
+ m_lstStrPropertyName[11]=CATUnicodeString("品种技术条件");
+ m_lstStrPropertyName[12]=CATUnicodeString("进口或新材料");
+ m_lstStrPropertyName[13]=CATUnicodeString("抗拉强度");
+ m_lstStrPropertyName[14]=CATUnicodeString("伸长率");
+ m_lstStrPropertyName[15]=CATUnicodeString("密度单位");
+ m_lstStrPropertyName[16]=CATUnicodeString("密度公差");
+ m_lstStrPropertyName[17]=CATUnicodeString("密度");
+ m_lstStrPropertyName[18]=CATUnicodeString("材质颜色");
+ m_lstStrPropertyName[19]=CATUnicodeString("应用型号");
+ m_lstStrPropertyName[20]=CATUnicodeString("备注");
+
 }
 
 //-------------------------------------------------------------------------
@@ -162,7 +186,7 @@ _Frame003 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _Frame003 -> SetGridRowResizable(0,1);
  _Frame003 -> SetGridColumnResizable(0,1);
  _ResultML = new CATDlgMultiList(_Frame003, "ResultML");
- CATUnicodeString ResultMLTitles [ 12 ];
+ /*CATUnicodeString ResultMLTitles [ 21 ];
  ResultMLTitles[0] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle1");
  ResultMLTitles[1] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle2");
  ResultMLTitles[2] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle3");
@@ -175,8 +199,17 @@ _Frame003 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  ResultMLTitles[9] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle10");
  ResultMLTitles[10] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle11");
  ResultMLTitles[11] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle12");
- _ResultML -> SetColumnTitles(12, ResultMLTitles);
- _ResultML -> SetVisibleColumnCount( 8 );
+ ResultMLTitles[12] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle13");
+ ResultMLTitles[13] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle14");
+ ResultMLTitles[14] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle15");
+ ResultMLTitles[15] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle16");
+ ResultMLTitles[16] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle17");
+ ResultMLTitles[17] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle18");
+ ResultMLTitles[18] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle19");
+ ResultMLTitles[19] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle20");
+ ResultMLTitles[20] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle21");*/
+ _ResultML -> SetColumnTitles(21, m_lstStrPropertyName);
+ _ResultML -> SetVisibleColumnCount( 10 );
 _ResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _ResultDetailEditor = new CATDlgEditor(_Frame003, "ResultDetailEditor", CATDlgEdtMultiline|CATDlgEdtReadOnly);
  _ResultDetailEditor -> SetVisibleTextHeight(16);

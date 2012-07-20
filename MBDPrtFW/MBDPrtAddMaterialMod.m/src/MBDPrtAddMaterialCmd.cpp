@@ -14,6 +14,7 @@
 //===================================================================
 #include "MBDPrtAddMaterialCmd.h"
 #include "MBDWebservice.h"
+#include "CATVisPropertiesValues.h"
 
 #include "CATCreateExternalObject.h"
 CATCreateClass( MBDPrtAddMaterialCmd);
@@ -26,6 +27,7 @@ MBDPrtAddMaterialCmd::MBDPrtAddMaterialCmd() :
   CATStateCommand ("MBDPrtAddMaterialCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
 ,m_piDoc(NULL),m_pDlg(NULL),m_pMatParamDlg(NULL)
+,m_dDensity(0),m_dPoissonRatio(0),m_dYieldStrength(0),m_iSelectedIndex(-1)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -37,6 +39,19 @@ MBDPrtAddMaterialCmd::MBDPrtAddMaterialCmd() :
 		PrtService::ShowDlgNotify("提示","该功能仅能在零件模型中操作，不能在ZP模型中操作，点击关闭！");
 		RequestDelayedDestruction();
 	}
+
+	//
+	m_iValuePrtColor[0]=0;
+	m_iValuePrtColor[0]=1;
+	m_iValuePrtColor[0]=2;
+
+	//
+	m_alsStrMatInfoCATIAName.Append("材料类别");
+	m_alsStrMatInfoCATIAName.Append("材料牌号");
+	m_alsStrMatInfoCATIAName.Append("材料规格");
+	m_alsStrMatInfoCATIAName.Append("材料技术条件");
+	m_alsStrMatInfoCATIAName.Append("毛料尺寸");
+
 }
 
 //-------------------------------------------------------------------------
@@ -99,8 +114,8 @@ void MBDPrtAddMaterialCmd::BuildGraph()
 	m_pDlg->Build();
 	m_pDlg->SetVisibility(CATDlgShow);
 	//
-	//m_pDlg->_AddMainMaterialPB->SetSensitivity(CATDlgDisable);
-	//m_pDlg->_AddAuxiliaryMaterialPB->SetSensitivity(CATDlgDisable);
+	m_pDlg->_AddMainMaterialPB->SetSensitivity(CATDlgDisable);
+	m_pDlg->_AddAuxiliaryMaterialPB->SetSensitivity(CATDlgDisable);
 
 	//
 	// 主对话框的消息响应
@@ -148,7 +163,7 @@ void MBDPrtAddMaterialCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CAT
 }
 
 //
-HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog()
+HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog(CATUnicodeString istrMatTypeName,CATUnicodeString istrMatIdenCode,double idDensity,double idPoissonRatio,double idYieldStrength)
 {
 	HRESULT hr = S_OK;
 
@@ -252,12 +267,39 @@ HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog()
 		return hr ;
 	}
 	//---------------------------------------------------
-	// 5-3 Retrieves the last material in this family
+	// 5-3 Retrieves the right name of material in this family
 	//---------------------------------------------------
-
+	CATBoolean existFlag = FALSE;
 	CATIMaterialFeature * pIMaterialFeature = NULL ;
-	pIMaterialFeature= pIFamilyFeature->GetMaterial(NbMaterial);
+	for (int i=1; i<= NbMaterial; i++)
+	{
+		CATIMaterialFeature * pIMaterialFeaIndex = NULL ;
+		pIMaterialFeaIndex= pIFamilyFeature->GetMaterial(i);
+		//
+		//Prints the name of the last material
+		CATUnicodeString NameOfTheMaterial ;
+		NameOfTheMaterial = pIMaterialFeaIndex->GetLabel() ;
+		//
+		if (NameOfTheMaterial==istrMatTypeName)
+		{
+			pIMaterialFeature = pIMaterialFeaIndex;
+			pIMaterialFeaIndex->Release();
+			pIMaterialFeaIndex=NULL;
+			//
+			existFlag = TRUE;
+			break;
+		}
+	}
+	//
+	if (existFlag == FALSE)
+	{
+		PrtService::ShowDlgNotify("错误信息","文件"+strCustomMBDMaterial+"不存在名称为" + istrMatTypeName + "材质，请联系系统管理员！");
+		PrtService::ShowDlgNotify("提示信息","系统默认采用第一个材质球作为替代材质赋予材料属性！");
+		//
+		pIMaterialFeature = pIFamilyFeature->GetMaterial(1);
+	}
 
+	//
 	if ( NULL == pIMaterialFeature )
 	{
 		cout << " The Family has no material" << endl ;
@@ -268,14 +310,11 @@ HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog()
 	pIFamilyFeature->Release();
 	pIFamilyFeature = NULL ;
 
-	//Prints the name of the last material
-	CATUnicodeString NameOfTheMaterial ;
-	NameOfTheMaterial = pIMaterialFeature->GetLabel() ;
-	cout << "The name of the last material is ="<< NameOfTheMaterial.ConvertToChar() << endl;
+	
 
 	//  [2/20/2011 ev5adm]
 	// 添加材料属性信息
-	hr = SetMaterialProperty(pIMaterialFeature);
+	hr = SetMaterialProperty(pIMaterialFeature,istrMatIdenCode,idDensity,idPoissonRatio,idYieldStrength);
 
 
     //  [2/22/2011 ev5adm]
@@ -377,7 +416,7 @@ HRESULT MBDPrtAddMaterialCmd::ApplyMaterial(CATIMaterialFeature *pIMaterialFeatu
 	return hr;
 }
 
-HRESULT MBDPrtAddMaterialCmd::SetMaterialProperty(CATIMaterialFeature * &pIMaterialFeature)
+HRESULT MBDPrtAddMaterialCmd::SetMaterialProperty(CATIMaterialFeature * &pIMaterialFeature,CATUnicodeString istrMatIdenCode,double idDensity,double idPoissonRatio,double idYieldStrength)
 {
 
 	HRESULT hr = S_OK;
@@ -406,14 +445,25 @@ HRESULT MBDPrtAddMaterialCmd::SetMaterialProperty(CATIMaterialFeature * &pIMater
 		CATUnicodeString  strShow = spConverter->Show( ); 
 		cout <<"Name: "<<StrParaName<<" "<<"Value: "<<strShow<<endl;
 
+		//
 		if (StrParaName == "Density")
 		{
-			spConverter->Valuate(1111);
+			spConverter->Valuate(idDensity);
+		}
+		//
+		if (StrParaName == "Poisson Ratio")
+		{
+			spConverter->Valuate(idPoissonRatio);
+		}
+		//
+		if (StrParaName == "Yield Strength")
+		{
+			spConverter->Valuate(idYieldStrength);
 		}
 	}
 
 	CATIAlias_var spAlias = pIMaterialFeature;
-	spAlias->SetAlias("MBDMaterial");
+	spAlias->SetAlias(istrMatIdenCode);
 
 	return hr;
 }
@@ -434,21 +484,76 @@ void MBDPrtAddMaterialCmd::SearchResultMLSelectedCB(CATCommand* cmd, CATNotifica
 		m_pDlg->_ResultML->GetSelect(ioTabRow,iSize);
 		//cout<<"总共有"<<iSize<<"个数据，选中编号为："<<ioTabRow[0]<<endl;
 
-		//显示备注信息
-		/*if (m_strListOfSearchResult03[ioTabRow[0] + 1] != NULL)
+		for (int i=0; i< MAXPROPERTYINDEX; i++)
 		{
-			m_pDlg->_ResultDetailEditor->SetText(m_strListOfSearchResult03[ioTabRow[0] + 1]);
-			m_selectResultLine = ioTabRow[0] + 1;
-		}*/
+			CATUnicodeString strContent;
+			m_pDlg->_ResultML->GetColumnItem(i,strContent,ioTabRow[0]);
+			CATUnicodeString strTemp = m_pDlg->m_lstStrPropertyName[i] + " = " + strContent /*+ "\\n"*/;
+
+			//
+			m_pDlg->_ResultDetailEditor->SetLine(strTemp);
+		}
+
+		//获取所选行号	
+		m_iSelectedIndex = ioTabRow[0];
+
 
 		//对按钮状态的控制
-		//m_piDlg->_InsertToGSMToolPB->SetSensitivity(CATDlgEnable);
+		m_pDlg->_AddMainMaterialPB->SetSensitivity(CATDlgEnable);
+		m_pDlg->_AddAuxiliaryMaterialPB->SetSensitivity(CATDlgEnable);
 	}
 	else
 	{
 		//对按钮状态的控制
-		//m_pDlg->_InsertToGSMToolPB->SetSensitivity(CATDlgDisable);
+		m_pDlg->_AddMainMaterialPB->SetSensitivity(CATDlgDisable);
+		m_pDlg->_AddAuxiliaryMaterialPB->SetSensitivity(CATDlgDisable);
 	}
+}
+
+HRESULT MBDPrtAddMaterialCmd::GetSelectedMaterialInfo()
+{
+	HRESULT rc=E_FAIL;
+	//获取所需材料信息，对于毛料尺寸，最后选主材时构建
+	CATUnicodeString strContent;
+	m_pDlg->_ResultML->GetColumnItem(2,strContent,m_iSelectedIndex);
+	m_alsStrMatInfoCATIAValue.Append(strContent);
+	m_pDlg->_ResultML->GetColumnItem(5,strContent,m_iSelectedIndex);
+	m_alsStrMatInfoCATIAValue.Append(strContent);
+	m_pDlg->_ResultML->GetColumnItem(10,strContent,m_iSelectedIndex);
+	m_alsStrMatInfoCATIAValue.Append(strContent);
+	m_pDlg->_ResultML->GetColumnItem(6,strContent,m_iSelectedIndex);
+	m_alsStrMatInfoCATIAValue.Append(strContent);
+
+	//获取颜色
+	m_pDlg->_ResultML->GetColumnItem(18,strContent,m_iSelectedIndex);
+	CATListValCATUnicodeString alsStrColor;
+	CHandleString::StringToVector(strContent,",",alsStrColor);
+	if (alsStrColor.Size()==3)
+	{
+		for (int i=1; i<=3; i++)
+		{
+			alsStrColor[i].ConvertToNum(m_iValuePrtColor + i-1);
+		}
+	}	
+	else
+	{
+		PrtService:ShowDlgNotify("错误信息","该行数据颜色信息格式错误，请修正！");
+		return rc;
+	}
+
+	//获取密度
+	m_pDlg->_ResultML->GetColumnItem(17,strContent,m_iSelectedIndex);
+	strContent.ConvertToNum(&m_dDensity);
+
+	//伸长率
+	m_pDlg->_ResultML->GetColumnItem(14,strContent,m_iSelectedIndex);
+	strContent.ConvertToNum(&m_dPoissonRatio);
+
+	//抗拉强度
+	m_pDlg->_ResultML->GetColumnItem(13,strContent,m_iSelectedIndex);
+	strContent.ConvertToNum(&m_dYieldStrength); 
+
+	return S_OK;
 }
 
 //
@@ -531,7 +636,8 @@ void MBDPrtAddMaterialCmd::SearchMaterialCB(CATCommand* cmd, CATNotification* ev
 void MBDPrtAddMaterialCmd::AddAuxiliaryMaterialCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
-	CATUnicodeString strAuxiliaryMaterialValue("YL12");
+	CATUnicodeString strAuxiliaryMaterialValue;
+	m_pDlg->_ResultML->GetColumnItem(3,strAuxiliaryMaterialValue,m_iSelectedIndex);
 	//
 	CATISpecObject_var spGSMTool = NULL_var;
 	PrtService::ObtainGSMTool(m_piDoc,"消耗辅助材料",spGSMTool);
@@ -628,8 +734,67 @@ void MBDPrtAddMaterialCmd::CloseMatParamDlgCB(CATCommand* cmd, CATNotification* 
 
 void MBDPrtAddMaterialCmd::OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//获取材料信息
+	HRESULT rc = GetSelectedMaterialInfo();	
 	//
-	CreateMaterialCatalog();
-	//
-	RequestDelayedDestruction();
+	if (SUCCEEDED(rc))
+	{
+		//获得尺寸参数
+		double dLength = m_pMatParamDlg->_HeigthSpinner->GetValue();
+		dLength *= 1000;
+		double dWidth = m_pMatParamDlg->_WidthSpinner->GetValue();
+		dWidth *= 1000;
+		double dHeight = m_pMatParamDlg->_HeigthSpinner->GetValue();
+		dHeight *= 1000;
+		//
+		CATUnicodeString strSize,strTemp01,strTemp02,strTemp03;
+		strTemp01.BuildFromNum(dLength,"lf%");
+		strTemp02.BuildFromNum(dWidth,"lf%");
+		strTemp03.BuildFromNum(dHeight,"lf%");
+		strSize = strTemp01+"mm"+"X"+strTemp02+"mm"+"X"+strTemp03 +"mm";
+		//
+		m_alsStrMatInfoCATIAValue.Append(strSize);
+		//
+		//获取材料描述几何图形集
+		CATISpecObject_var spGSMTool = NULL_var;
+		PrtService::ObtainGSMTool(m_piDoc,"材料描述",spGSMTool);
+		if (spGSMTool != NULL_var)
+		{
+			//挂载测试参数
+			PrtService::ModifySpecObjCertainParams(m_piDoc,spGSMTool,m_alsStrMatInfoCATIAName,m_alsStrMatInfoCATIAValue);
+			//赋值材质球
+			CATUnicodeString strMaterialCode;
+			m_pDlg->_ResultML->GetColumnItem(3,strMaterialCode,m_iSelectedIndex);
+			CreateMaterialCatalog(m_alsStrMatInfoCATIAValue[1],strMaterialCode,m_dDensity,m_dPoissonRatio,m_dYieldStrength);
+			//赋值颜色属性
+			CATIPrtContainer *opiRootContainer = NULL;
+			PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
+			//获取PART
+			CATISpecObject_var spPart = opiRootContainer->GetPart();
+			if (spPart != NULL_var)
+			{
+				CATIPartRequest_var spPrtRequest(spPart);
+
+				//获取main body
+				CATISpecObject_var spMainBody ;
+				spPrtRequest->GetMainBody("MfDefault3DView",spMainBody);
+				//更改MAINBODY颜色
+				CATVisPropertiesValues Attribut;
+				Attribut.SetColor(m_iValuePrtColor[0],m_iValuePrtColor[1],m_iValuePrtColor[2]);
+				//
+				PrtService::SetSpecGraphProperty(spMainBody,Attribut,CATVPColor,CATVPMesh);
+			}
+			//
+			RequestDelayedDestruction();
+		}
+		else
+		{
+			PrtService::ShowDlgNotify("错误信息","未能找到“材料描述”几何图形集！");
+			m_pMatParamDlg->SetVisibility(CATDlgHide);
+		}
+	}
+	else
+	{
+		m_pMatParamDlg->SetVisibility(CATDlgHide);		
+	}
 }

@@ -149,8 +149,8 @@ CATDlgFrame Frame003
 CATDlgMultiList ResultML
 {
   FATHER = Frame003;
-  CC = 12;
-  VCC = 8;
+  CC = 21;
+  VCC = 10;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
