@@ -26,6 +26,8 @@
 #include "iostream"
 using namespace std;
 
+const int MAXPROPERTYINDEX = 21;
+
 
 //----------------------------------------------------------------------
 
@@ -95,6 +97,10 @@ class MBDPrtAddMaterialDlg: public CATDlgDialog
  CATLISTV(CATUnicodeString) m_alsStrCurrentWBSItem;
  //记录WEBSERVICE ITEMS
  CATLISTV(CATUnicodeString) m_alsStrCurrentWBSShow;
+
+ //属性头名称
+ CATUnicodeString m_lstStrPropertyName[MAXPROPERTYINDEX];
+
 };
 
 //----------------------------------------------------------------------

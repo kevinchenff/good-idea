@@ -16,7 +16,7 @@ JS0GROUP JS0FM DI0PANV2 CATMathematics CATDialogEngine  \
 CATApplicationFrame CATObjectModelerBase \
 CATMatInterfaces Material CATMecModInterfaces KnowledgeItf CATObjectSpecsModeler \
 ktBasicService ktDirFileService ktExcelService ktPrdService ktPrtService ktStrLogService ktXMLService \
-ktWebservice \
+ktWebservice CATVisualization \
 JS0GROUP JS0FM DI0PANV2 CATApplicationFrame 
 # END WIZARD EDITION ZONE
 
