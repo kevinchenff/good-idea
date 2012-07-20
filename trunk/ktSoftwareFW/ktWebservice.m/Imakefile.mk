@@ -31,8 +31,8 @@ OS = Windows_NT
 
 LOCAL_CCFLAGS= / d4251
 
-#LOCAL_CCFLAGS = -I "C:\Program Files\Microsoft Visual Studio 8\VC\PlatformSDK\Include"
-#LOCAL_LDFLAGS = "C:\Program Files\Microsoft Visual Studio 8\VC\PlatformSDK\Lib\WSock32.Lib"
+LOCAL_CCFLAGS = -I "C:\Program Files\Microsoft Visual Studio 8\VC\PlatformSDK\Include"
+LOCAL_LDFLAGS = "C:\Program Files\Microsoft Visual Studio 8\VC\PlatformSDK\Lib\WSock32.Lib"
 
-LOCAL_CCFLAGS = -I "C:\Program Files (x86)\Microsoft Visual Studio 8\VC\PlatformSDK\Include"
-LOCAL_LDFLAGS = "C:\Program Files (x86)\Microsoft Visual Studio 8\VC\PlatformSDK\Lib\AMD64\WSock32.Lib"
+#LOCAL_CCFLAGS = -I "C:\Program Files (x86)\Microsoft Visual Studio 8\VC\PlatformSDK\Include"
+#LOCAL_LDFLAGS = "C:\Program Files (x86)\Microsoft Visual Studio 8\VC\PlatformSDK\Lib\AMD64\WSock32.Lib"

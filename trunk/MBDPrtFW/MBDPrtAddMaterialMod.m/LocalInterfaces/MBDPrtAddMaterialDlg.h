@@ -26,7 +26,7 @@
 #include "iostream"
 using namespace std;
 
-const int MAXPROPERTYINDEX = 21;
+const int MAXPROPERTYINDEX = 20;
 
 
 //----------------------------------------------------------------------

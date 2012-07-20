@@ -66,27 +66,26 @@ MBDPrtAddMaterialDlg::MBDPrtAddMaterialDlg() :
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 
  //初始化属性显示名称
- m_lstStrPropertyName[0]=CATUnicodeString("材料代码");
+ m_lstStrPropertyName[0]=CATUnicodeString("材料标识");
  m_lstStrPropertyName[1]=CATUnicodeString("材料大类别");
  m_lstStrPropertyName[2]=CATUnicodeString("材料小类别");
- m_lstStrPropertyName[3]=CATUnicodeString("材料标识");
- m_lstStrPropertyName[4]=CATUnicodeString("材料名称");
- m_lstStrPropertyName[5]=CATUnicodeString("材料牌号");
- m_lstStrPropertyName[6]=CATUnicodeString("材料技术条件"); 
- m_lstStrPropertyName[7]=CATUnicodeString("供应状态");
- m_lstStrPropertyName[8]=CATUnicodeString("品种");
- m_lstStrPropertyName[9]=CATUnicodeString("品种代号");
- m_lstStrPropertyName[10]=CATUnicodeString("材料规格");
- m_lstStrPropertyName[11]=CATUnicodeString("品种技术条件");
- m_lstStrPropertyName[12]=CATUnicodeString("进口或新材料");
- m_lstStrPropertyName[13]=CATUnicodeString("抗拉强度");
- m_lstStrPropertyName[14]=CATUnicodeString("伸长率");
- m_lstStrPropertyName[15]=CATUnicodeString("密度单位");
- m_lstStrPropertyName[16]=CATUnicodeString("密度公差");
- m_lstStrPropertyName[17]=CATUnicodeString("密度");
- m_lstStrPropertyName[18]=CATUnicodeString("材质颜色");
- m_lstStrPropertyName[19]=CATUnicodeString("应用型号");
- m_lstStrPropertyName[20]=CATUnicodeString("备注");
+ m_lstStrPropertyName[3]=CATUnicodeString("材料名称");
+ m_lstStrPropertyName[4]=CATUnicodeString("材料牌号");
+ m_lstStrPropertyName[5]=CATUnicodeString("材料技术条件"); 
+ m_lstStrPropertyName[6]=CATUnicodeString("供应状态");
+ m_lstStrPropertyName[7]=CATUnicodeString("品种");
+ m_lstStrPropertyName[8]=CATUnicodeString("品种代号");
+ m_lstStrPropertyName[9]=CATUnicodeString("材料规格");
+ m_lstStrPropertyName[10]=CATUnicodeString("品种技术条件");
+ m_lstStrPropertyName[11]=CATUnicodeString("进口或新材料");
+ m_lstStrPropertyName[12]=CATUnicodeString("抗拉强度");
+ m_lstStrPropertyName[13]=CATUnicodeString("伸长率");
+ m_lstStrPropertyName[14]=CATUnicodeString("密度单位");
+ m_lstStrPropertyName[15]=CATUnicodeString("密度公差");
+ m_lstStrPropertyName[16]=CATUnicodeString("密度");
+ m_lstStrPropertyName[17]=CATUnicodeString("材质颜色");
+ m_lstStrPropertyName[18]=CATUnicodeString("应用型号");
+ m_lstStrPropertyName[19]=CATUnicodeString("备注");
 
 }
 
@@ -208,11 +207,11 @@ _Frame003 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  ResultMLTitles[18] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle19");
  ResultMLTitles[19] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle20");
  ResultMLTitles[20] = CATMsgCatalog::BuildMessage("MBDPrtAddMaterialDlg", "Frame001.Frame003.ResultML.ColumnTitle21");*/
- _ResultML -> SetColumnTitles(21, m_lstStrPropertyName);
- _ResultML -> SetVisibleColumnCount( 10 );
+ _ResultML -> SetColumnTitles(MAXPROPERTYINDEX, m_lstStrPropertyName);
+ _ResultML -> SetVisibleColumnCount( 15 );
 _ResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _ResultDetailEditor = new CATDlgEditor(_Frame003, "ResultDetailEditor", CATDlgEdtMultiline|CATDlgEdtReadOnly);
- _ResultDetailEditor -> SetVisibleTextHeight(16);
+ _ResultDetailEditor -> SetVisibleTextHeight(20);
  _ResultDetailEditor -> SetVisibleTextWidth(40);
 _ResultDetailEditor -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame007 = new CATDlgFrame(_Frame003, "Frame007", CATDlgFraNoFrame|CATDlgGridLayout);
@@ -279,6 +278,18 @@ for (int i=1; i<=MAXCOUNT; i++)
 }
 
 //
+//显示COMBO控件下拉框信息
+for (int i = 1; i <= m_ItemComboList.Size()-1; i ++)
+{
+	CATListValCATUnicodeString astrKeyWords;
+
+	CATUnicodeString strWBSItem = CATUnicodeString("DropdownList=") + m_alsStrCurrentWBSItem[i];
+	astrKeyWords.Append(strWBSItem);
+
+	SetSearchItemComboList(astrKeyWords,(CATDlgCombo*)m_ItemComboList[i]);
+}
+
+//
 for (int i = 1; i <= MAXCOUNT; i ++)
 {
 	AddAnalyseNotificationCB ((CATDlgCombo*)m_ItemComboList[i],((CATDlgCombo*)m_ItemComboList[i])->GetComboSelectNotification(),
@@ -325,7 +336,7 @@ CATBoolean MBDPrtAddMaterialDlg::ComboItemSearchCB(CATCommand* cmd, CATNotificat
 	//减去1的原因，最后一个为EDITOR指针，非combo
 	for (int j = comboIndex+1; j <= m_ItemComboList.Size() - 1; j++)
 	{
-		CATUnicodeString strSearch = CATUnicodeString("MBD_Sys_DropdownList=") + m_alsStrCurrentWBSItem[j];
+		CATUnicodeString strSearch = CATUnicodeString("DropdownList=") + m_alsStrCurrentWBSItem[j];
 		aStrComboItemSelected[1] = strSearch;
 
 		//调用函数清除并添加新内容
@@ -355,19 +366,28 @@ HRESULT MBDPrtAddMaterialDlg::SetSearchItemComboList(CATListValCATUnicodeString 
 	//过滤需要的信息
 	if (SUCCEEDED(hr))
 	{
-		//计算以2为倍数的循环次数
-		int cyclecount = (int)((strListOfSearchResult.Size()-2)/2);
+		//获得数据条目，及每条目数据个数，分别对应第二、第三，数据内容从第六条开始
+		CATUnicodeString strCount=strListOfSearchResult[2];
+		CATUnicodeString strCutNumb=strListOfSearchResult[3];
+		double dCount=0,dCutNumb=1;
+		strCount.ConvertToNum(&dCount);
+		strCutNumb.ConvertToNum(&dCutNumb);
 
-		if (cyclecount >= 1)
+		//计算以3为倍数的循环次数
+		int cyclecount = (int)((strListOfSearchResult.Size()-5)/dCutNumb);
+		//
+		if (cyclecount==dCount && dCutNumb==1)
 		{
-
-			for (int i = 1; i <= cyclecount; i++)
+			if (cyclecount >= 1)
 			{
-				astrCombolistValue.Append(strListOfSearchResult[i*2 + 1]);
+
+				for (int i = 1; i <= cyclecount; i++)
+				{
+					astrCombolistValue.Append(strListOfSearchResult[i+5]);
+				}
+
 			}
-
 		}
-
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -385,7 +405,7 @@ void MBDPrtAddMaterialDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStr
 {
 	//获取所选查询库信息
 	CATUnicodeString strDatabase("");
-	strDatabase = CATUnicodeString("MBD_Sys_DatabaseName=MATERIAL_INFO"); 
+	strDatabase = CATUnicodeString("DatabaseName=MATERIAL_INFO"); 
 	listStrSearchItems.Append(strDatabase);
 
 	//获取所有设置信息
