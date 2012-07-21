@@ -34,11 +34,11 @@ MBDPrtAddMaterialCmd::MBDPrtAddMaterialCmd() :
 	PrtService::GetPrdNumberFormDoc(m_piDoc,m_strDocName);
 
 	//判断是否为ZP模型;
-	if (IsThisZPPrt(m_strDocName))
+	/*if (IsThisZPPrt(m_strDocName))
 	{
 		PrtService::ShowDlgNotify("提示","该功能仅能在零件模型中操作，不能在ZP模型中操作，点击关闭！");
 		RequestDelayedDestruction();
-	}
+	}*/
 
 	//
 	m_iValuePrtColor[0]=0;
@@ -163,7 +163,7 @@ void MBDPrtAddMaterialCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CAT
 }
 
 //
-HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog(CATUnicodeString istrMatTypeName,CATUnicodeString istrMatIdenCode,double idDensity,double idPoissonRatio,double idYieldStrength)
+HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog(CATUnicodeString istrMainCategory,CATUnicodeString istrMatTypeName,CATUnicodeString istrMatIdenCode,double idDensity,double idPoissonRatio,double idYieldStrength)
 {
 	HRESULT hr = S_OK;
 
@@ -234,11 +234,38 @@ HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog(CATUnicodeString istrMatType
 	}
 
 	//---------------------------------------------------
-	// 5-2 Retrieves the first family 
+	// 5-2 Retrieves the right family 
 	//---------------------------------------------------
+    CATIFamilyFeature * pIFamilyFeature = NULL ;
+	CATBoolean existFlag01 = FALSE;
+	for (int i=1; i<=NbFamily; i++)
+	{
+		CATIFamilyFeature * pIFamilyFeatTemp = NULL ;
+		pIFamilyFeatTemp = pILibraryFeature->GetFamily(i);
 
-	CATIFamilyFeature * pIFamilyFeature = NULL ;
-	pIFamilyFeature = pILibraryFeature->GetFamily(1);
+		//Prints the name of the first family
+		CATUnicodeString NameOfTheFamily ;
+		NameOfTheFamily = pIFamilyFeatTemp->GetLabel() ;
+		
+		if (NameOfTheFamily==istrMainCategory)
+		{
+			pIFamilyFeature=pIFamilyFeatTemp;
+			existFlag01=TRUE;
+			//
+			pIFamilyFeatTemp->Release();
+			pIFamilyFeatTemp=NULL;
+			break;
+		}
+	}
+
+	//
+	if (existFlag01 == FALSE)
+	{
+		PrtService::ShowDlgNotify("错误信息","文件"+strCustomMBDMaterial+"不存在名称为" + istrMainCategory + "材料类别，请联系系统管理员！");
+		PrtService::ShowDlgNotify("提示信息","系统默认采用第一个材料类别作为替代材质赋予材料属性！");
+		//
+		pIFamilyFeature = pILibraryFeature->GetFamily(1);
+	}	
 
 	if ( NULL == pIFamilyFeature )
 	{
@@ -249,11 +276,6 @@ HRESULT MBDPrtAddMaterialCmd::CreateMaterialCatalog(CATUnicodeString istrMatType
 	//No more need of the library feature
 	pILibraryFeature->Release();
 	pILibraryFeature = NULL ;
-
-	//Prints the name of the first family
-	CATUnicodeString NameOfTheFamily ;
-	NameOfTheFamily = pIFamilyFeature->GetLabel() ;
-	cout << "The name of the first family is ="<< NameOfTheFamily.ConvertToChar() << endl;
 
 	//Prints the count of material is this family
 	int NbMaterial = pIFamilyFeature->GetMaterialCount();
@@ -515,6 +537,9 @@ HRESULT MBDPrtAddMaterialCmd::GetSelectedMaterialInfo()
 	HRESULT rc=E_FAIL;
 	//获取所需材料信息，对于毛料尺寸，最后选主材时构建
 	CATUnicodeString strContent;
+	//
+	m_pDlg->_ResultML->GetColumnItem(1,m_strMatMainCatalog,m_iSelectedIndex);	
+	//
 	m_pDlg->_ResultML->GetColumnItem(2,strContent,m_iSelectedIndex);
 	m_alsStrMatInfoCATIAValue.Append(strContent);
 	m_pDlg->_ResultML->GetColumnItem(4,strContent,m_iSelectedIndex);
@@ -536,9 +561,9 @@ HRESULT MBDPrtAddMaterialCmd::GetSelectedMaterialInfo()
 		}
 
 		//
-		cout<<"m_iValuePrtColor[0] "<<m_iValuePrtColor[0]<<endl;
+		/*cout<<"m_iValuePrtColor[0] "<<m_iValuePrtColor[0]<<endl;
 		cout<<"m_iValuePrtColor[1] "<<m_iValuePrtColor[1]<<endl;
-		cout<<"m_iValuePrtColor[2] "<<m_iValuePrtColor[2]<<endl;
+		cout<<"m_iValuePrtColor[2] "<<m_iValuePrtColor[2]<<endl;*/
 	}	
 	else
 	{
@@ -770,7 +795,7 @@ void MBDPrtAddMaterialCmd::OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt
 			//赋值材质球
 			CATUnicodeString strMaterialCode;
 			m_pDlg->_ResultML->GetColumnItem(0,strMaterialCode,m_iSelectedIndex);
-			CreateMaterialCatalog(m_alsStrMatInfoCATIAValue[1],strMaterialCode,m_dDensity,m_dPoissonRatio,m_dYieldStrength);
+			CreateMaterialCatalog(m_strMatMainCatalog,m_alsStrMatInfoCATIAValue[1],strMaterialCode,m_dDensity,m_dPoissonRatio,m_dYieldStrength);
 			//赋值颜色属性
 			CATIPrtContainer *opiRootContainer = NULL;
 			PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
