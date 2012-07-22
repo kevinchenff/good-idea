@@ -87,6 +87,7 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridRowResizable(0,1);
  _Frame002 -> SetGridColumnResizable(0,1);
  _SearchResultSL = new CATDlgSelectorList(_Frame002, "SearchResultSL");
+ _SearchResultSL -> SetVisibleTextWidth(40);
 _SearchResultSL -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame005 = new CATDlgFrame(this, "Frame005", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame005 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);

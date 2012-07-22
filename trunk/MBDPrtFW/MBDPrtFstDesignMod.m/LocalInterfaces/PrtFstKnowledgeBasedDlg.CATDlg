@@ -25,6 +25,7 @@ CATDlgFrame Frame002
 CATDlgSelectorList SearchResultSL
 {
   FATHER = Frame002;
+  TW = 40;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
