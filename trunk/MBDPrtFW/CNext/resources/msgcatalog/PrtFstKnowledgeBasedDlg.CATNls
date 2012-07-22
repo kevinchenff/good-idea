@@ -1,31 +1,12 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "Knowledge Based Choose";
 Frame001.Title = "Search Items";
+Frame001.Label01.Title = "Please Select Head Type: ";
+Frame001.Label02.Title = "Please Select Material type: ";
+Frame001.Label03.Title = "Please Select Surface Treatment: ";
+Frame001.Label04.Title = "Please Select Fastener Name: ";
+Frame001.Label05.Title = "Please Select Fastener Code: ";
 Frame002.Title = "Search Results";
 Frame005.NextStepPB.Title = "Next Step";
 Frame005.LastStepPB.Title = "Last Step";
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
 // END WIZARD REPLACEMENT ZONE
