@@ -1,11 +1,12 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "Free Style Choose";
 Frame001.Title = "Search Items";
-Frame001.Label01.Title = "Please Select Head Type: ";
-Frame001.Label02.Title = "Please Select Material type: ";
-Frame001.Label03.Title = "Please Select Surface Treatment: ";
-Frame001.Label04.Title = "Please Select Fastener Name: ";
-Frame001.Label05.Title = "Please Select Fastener Code: ";
+Frame001.Label01.Title = "Select Head Type: ";
+Frame001.Label02.Title = "Select Material type: ";
+Frame001.Label03.Title = "Select Surface Treatment: ";
+Frame001.Label04.Title = "Select Fastener Name: ";
+Frame001.Label05.Title = "Select Fastener Code: ";
+Frame001.Label06.Title = "Select Main Fastener: ";
 Frame001.GoToSearchPB.Title = "Go To Search";
 Frame002.Title = "Search Results";
  Frame002.SearchResultsML.ColumnTitle1 = "title00";

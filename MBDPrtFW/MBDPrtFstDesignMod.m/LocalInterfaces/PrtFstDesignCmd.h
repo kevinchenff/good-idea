@@ -30,6 +30,8 @@
 
 //
 #include "PrtFstAccessDlg.h"
+#include "PrtFstFreeStyleDlg.h"
+#include "PrtFstKnowledgeBasedDlg.h"
 
 
 
@@ -126,7 +128,22 @@ class PrtFstDesignCmd: public CATStateCommand
   //---------------------------------
   void OkFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
-
+  void AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  //
+  //---------------------------------
+  //对FreeStyle DLG的消息响应
+  //---------------------------------
+  void OkFstFreeStyleDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void CloseFstFreeStyleDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  //
+  //---------------------------------
+  //对KnowledgeBased DLG的消息响应
+  //---------------------------------
+  void OkFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void CloseFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  //
 
 private:
 	PrtFstDesignDlg *m_pDlg;
@@ -170,7 +187,13 @@ private:
 	double m_dFstMaxIndex;
 
 	//--------------------------------------------------------
+	//紧固件选择对话框
+	//--------------------------------------------------------
 	PrtFstAccessDlg *m_pFstAccessDlg;
+	PrtFstFreeStyleDlg *m_pFstFreeStyleDlg;
+	PrtFstKnowledgeBasedDlg *m_pFstKnowledgeBasedDlg;
+
+
 
 };
 
