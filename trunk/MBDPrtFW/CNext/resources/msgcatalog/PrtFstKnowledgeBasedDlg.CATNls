@@ -6,6 +6,7 @@ Frame001.Label02.Title = "Please Select Material type: ";
 Frame001.Label03.Title = "Please Select Surface Treatment: ";
 Frame001.Label04.Title = "Please Select Fastener Name: ";
 Frame001.Label05.Title = "Please Select Fastener Code: ";
+Frame001.GoToSearchPB.Title = "Go To Search";
 Frame002.Title = "Search Results";
 Frame005.NextStepPB.Title = "Next Step";
 Frame005.LastStepPB.Title = "Last Step";

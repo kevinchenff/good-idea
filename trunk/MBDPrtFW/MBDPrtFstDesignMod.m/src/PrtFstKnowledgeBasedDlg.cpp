@@ -47,6 +47,7 @@ PrtFstKnowledgeBasedDlg::PrtFstKnowledgeBasedDlg() :
  _Combo03 = NULL;
  _Editor01 = NULL;
  _Editor02 = NULL;
+ _GoToSearchPB = NULL;
  _Frame002 = NULL;
  _SearchResultSL = NULL;
  _Frame005 = NULL;
@@ -78,6 +79,7 @@ PrtFstKnowledgeBasedDlg::~PrtFstKnowledgeBasedDlg()
  _Combo03 = NULL;
  _Editor01 = NULL;
  _Editor02 = NULL;
+ _GoToSearchPB = NULL;
  _Frame002 = NULL;
  _SearchResultSL = NULL;
  _Frame005 = NULL;
@@ -123,6 +125,8 @@ _Combo03 -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
 _Editor01 -> SetGridConstraints(3, 1, 1, 1, CATGRID_4SIDES);
  _Editor02 = new CATDlgEditor(_Frame001, "Editor02");
 _Editor02 -> SetGridConstraints(4, 1, 1, 1, CATGRID_4SIDES);
+ _GoToSearchPB = new CATDlgPushButton(_Frame001, "GoToSearchPB");
+_GoToSearchPB -> SetGridConstraints(5, 1, 1, 1, CATGRID_4SIDES);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
 _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridRowResizable(0,1);

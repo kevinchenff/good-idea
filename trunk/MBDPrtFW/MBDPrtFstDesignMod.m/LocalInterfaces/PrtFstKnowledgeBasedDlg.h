@@ -62,6 +62,7 @@ class PrtFstKnowledgeBasedDlg: public CATDlgDialog
  CATDlgCombo*      _Combo03;
  CATDlgEditor*      _Editor01;
  CATDlgEditor*      _Editor02;
+ CATDlgPushButton*      _GoToSearchPB;
  CATDlgFrame*      _Frame002;
  CATDlgSelectorList*      _SearchResultSL;
  CATDlgFrame*      _Frame005;

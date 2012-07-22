@@ -6,6 +6,7 @@ Frame001.Label02.Title = "请选择材料：";
 Frame001.Label03.Title = "请选择表面处理：";
 Frame001.Label04.Title = "请选择紧固件名称：";
 Frame001.Label05.Title = "请选择紧固件标准号：";
+Frame001.GoToSearchPB.Title = "Go To Search";
 Frame002.Title = "Search Results";
 Frame005.NextStepPB.Title = "Next Step";
 Frame005.LastStepPB.Title = "Last Step";

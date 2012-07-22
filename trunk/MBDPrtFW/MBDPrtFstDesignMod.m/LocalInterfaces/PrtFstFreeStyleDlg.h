@@ -52,6 +52,22 @@ class PrtFstFreeStyleDlg: public CATDlgDialog
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
+ CATDlgLabel*      _Label01;
+ CATDlgLabel*      _Label02;
+ CATDlgLabel*      _Label03;
+ CATDlgLabel*      _Label04;
+ CATDlgLabel*      _Label05;
+ CATDlgCombo*      _Combo01;
+ CATDlgCombo*      _Combo02;
+ CATDlgCombo*      _Combo03;
+ CATDlgEditor*      _Editor01;
+ CATDlgEditor*      _Editor02;
+ CATDlgPushButton*      _GoToSearchPB;
+ CATDlgFrame*      _Frame002;
+ CATDlgMultiList*      _SearchResultsML;
+ CATDlgFrame*      _Frame004;
+ CATDlgPushButton*      _NextStepPB;
+ CATDlgPushButton*      _LastStepPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 
