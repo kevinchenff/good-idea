@@ -1,0 +1,14 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "Choose Fasteners";
+Frame001.Title = "Choose style";
+Frame001.FreeStyleRadioB.Title = "Free Style Choose";
+Frame001.KnowledgeBasedChooseRadioB.Title = "Knowledge Based Choose";
+Frame001.GoToChoosePB.Title = "Access To Choose Fasteners";
+Frame002.Title = "Choose Result";
+ Frame002.ChoosedFastenersML.ColumnTitle1 = "title00";
+ Frame002.ChoosedFastenersML.ColumnTitle2 = "title01";
+ Frame002.ChoosedFastenersML.ColumnTitle3 = "title02";
+ Frame002.ChoosedFastenersML.ColumnTitle4 = "title03";
+ Frame002.ChoosedFastenersML.ColumnTitle5 = "title04";
+Frame002.SaveBackCheckB.Title = "Save to Knowledge Data Base";
+// END WIZARD REPLACEMENT ZONE
