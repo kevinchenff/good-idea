@@ -1,0 +1,58 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog PrtFstAccessDlg
+{
+  STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
+  ROWRES = { 1 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame Frame001
+{
+  FATHER = PrtFstAccessDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgRadioButton FreeStyleRadioB
+{
+  FATHER = Frame001;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgRadioButton KnowledgeBasedChooseRadioB
+{
+  FATHER = Frame001;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton GoToChoosePB
+{
+  FATHER = Frame001;
+  GRID = { 1, 1, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgFrame Frame002
+{
+  FATHER = PrtFstAccessDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList ChoosedFastenersML
+{
+  FATHER = Frame002;
+  CC = 5;
+  VCC = 5;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCheckButton SaveBackCheckB
+{
+  FATHER = Frame002;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+// END WIZARD REPLACEMENT ZONE

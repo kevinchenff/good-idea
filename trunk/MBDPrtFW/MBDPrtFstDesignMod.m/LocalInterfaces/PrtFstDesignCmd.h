@@ -28,6 +28,9 @@
 #include "CAT3DBagRep.h"
 #include "CAT3DManipulator.h"
 
+//
+#include "PrtFstAccessDlg.h"
+
 
 
 //----------------------------------------------------------------------
@@ -117,6 +120,14 @@ class PrtFstDesignCmd: public CATStateCommand
   //清理紧固件信息数组函数
   void ClearFstInfoLst();
 
+
+  //---------------------------------
+  //对ACCESS DLG的消息响应
+  //---------------------------------
+  void OkFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void CloseFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+
 private:
 	PrtFstDesignDlg *m_pDlg;
 
@@ -157,6 +168,9 @@ private:
 
 	//ZP模型紧固件计数器
 	double m_dFstMaxIndex;
+
+	//--------------------------------------------------------
+	PrtFstAccessDlg *m_pFstAccessDlg;
 
 };
 

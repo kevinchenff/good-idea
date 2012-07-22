@@ -41,7 +41,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_pDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
   ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0),m_dFirstPrdThickMin(0),m_dFirstPrdThickMax(0),m_userChoosedFlag(FALSE)
-  ,m_dFstMaxIndex(0)
+  ,m_dFstMaxIndex(0),m_pFstAccessDlg(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -156,10 +156,16 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 		delete TempLstStr;
 	}
 
-
 	//高亮点清空
 	m_piHSO->Empty();
 	m_piISO->Empty();
+
+	//----------------------------
+	if (m_pFstAccessDlg != NULL)
+	{
+		m_pFstAccessDlg->RequestDelayedDestruction();
+		m_pFstAccessDlg=NULL;
+	}
    
 }
 
@@ -2351,6 +2357,55 @@ void PrtFstDesignCmd::ClearFstInfoLst()
 	m_pDlg->_ChoosedFstNormalInfoML->ClearLine();
 }
 
+//从PV列表中获得指定的字符串
+void PrtFstDesignCmd::GetStrlistFromListPV(int iCount,CATListPV ipListStrName,CATListValCATUnicodeString &ioalstName)
+{
+	CATLISTV(CATUnicodeString) *TempLstStr = (CATLISTV(CATUnicodeString) *) ipListStrName[iCount];
+	for (int j=1;j<=TempLstStr->Size();j++)
+	{
+		CATUnicodeString StrHeadName = (*TempLstStr)[j];
+		ioalstName.Append(StrHeadName);
+	}
+}
+//选择查看紧固件详细信息响应
+void PrtFstDesignCmd::ChoosedFstNormalInfoMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//清空数据
+	m_pDlg->_ChoosedFstDetailInfoML->ClearLine();
+
+	//
+	//获取所选信息
+	int  iSize = m_pDlg->_ChoosedFstNormalInfoML->GetSelectCount();
+	if (iSize != 0 )
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pDlg->_ChoosedFstNormalInfoML->GetSelect(ioTabRow,iSize);
+		//
+		CATListValCATUnicodeString lststrJstTypeInfoName,lststrJstTypeInfoValue;
+		//属性信息
+		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrPropertyName,lststrJstTypeInfoName);
+		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrPropertyValue,lststrJstTypeInfoValue);
+		//参数信息
+		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrSpecialName,lststrJstTypeInfoName);
+		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrSpecialValue,lststrJstTypeInfoValue);
+		//
+		if (ioTabRow[0]+1 >= 2)
+		{
+			lststrJstTypeInfoName.Append("安装位置");
+			lststrJstTypeInfoValue.Append(m_lststrCirclePositions[ioTabRow[0]]);
+		}
+
+		//显示
+		for (int i=1; i<=lststrJstTypeInfoName.Size(); i++)
+		{
+			m_pDlg->_ChoosedFstDetailInfoML->SetColumnItem(0,lststrJstTypeInfoName[i]);
+			m_pDlg->_ChoosedFstDetailInfoML->SetColumnItem(1,lststrJstTypeInfoValue[i]);
+		}
+	}
+}
+
+
 //选择紧固件类型
 void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
@@ -2403,101 +2458,50 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 		m_pDlg->_ChoosedFstNormalInfoML->SetColumnItem(1,m_alistStrFSTType[i]);
 	}
 	//
-	
+
 	m_userChoosedFlag = TRUE;
 	ChangeOKApplyState();
 
-	//
-	HINSTANCE hDll= NULL;//DLL句柄 	
-	typedef void (*lpFun)(std::string&,std::string&,float&); 
-	hDll = LoadLibrary(_T("ChooseFSTType.dll"));
-	if(NULL == hDll)
-	{
-		LPVOID lpMsgBuf;
-		FormatMessage( 
-			FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-			FORMAT_MESSAGE_FROM_SYSTEM | 
-			FORMAT_MESSAGE_IGNORE_INSERTS,
-			NULL,
-			GetLastError(),
-			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-			(LPTSTR) &lpMsgBuf,
-			0,
-			NULL 
-			);
-
-		LocalFree( lpMsgBuf );
-		return;
-	}
-
-	if (NULL!=hDll)
-	{
-		lpFun pShowDlg = (lpFun)GetProcAddress(hDll,"ShowFstTypeSelectionDlg");
-		if (NULL==pShowDlg)
-		{
-			PrtService::ShowDlgNotify("错误提示！","选择紧固件类型DLL中函数寻找失败");
-		}
-
-		float thickness=0;
-		std::string pFilePath;
-		std::string pFileName;
-		pShowDlg(pFilePath,pFileName,thickness);
-
-		const char *p1=pFilePath.data();
-		const char *p2= pFileName.data();
-
-		/*m_materialFilePath = p1;
-		m_materialFileName = p2;
-		m_RaFMShellThickness = (double)thickness;*/
-		::FreeLibrary(hDll);
-	}
-}
-
-
-//从PV列表中获得指定的字符串
-void PrtFstDesignCmd::GetStrlistFromListPV(int iCount,CATListPV ipListStrName,CATListValCATUnicodeString &ioalstName)
-{
-	CATLISTV(CATUnicodeString) *TempLstStr = (CATLISTV(CATUnicodeString) *) ipListStrName[iCount];
-	for (int j=1;j<=TempLstStr->Size();j++)
-	{
-		CATUnicodeString StrHeadName = (*TempLstStr)[j];
-		ioalstName.Append(StrHeadName);
-	}
-}
-//选择查看紧固件详细信息响应
-void PrtFstDesignCmd::ChoosedFstNormalInfoMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
-{
-	//清空数据
-	m_pDlg->_ChoosedFstDetailInfoML->ClearLine();
+	//------------------------------------------------------------------------------------------
+	//弹出选择紧固件对话框，进行操作
+	//------------------------------------------------------------------------------------------
+	m_pFstAccessDlg = new PrtFstAccessDlg();
+	m_pFstAccessDlg->Build();
+	m_pFstAccessDlg->SetVisibility(CATDlgShow);
+	m_pFstAccessDlg->SetOKSensitivity(CATDlgDisable);
 
 	//
-	//获取所选信息
-	int  iSize = m_pDlg->_ChoosedFstNormalInfoML->GetSelectCount();
-	if (iSize != 0 )
-	{
-		//得到当前所选行的具体信息：行号
-		int * ioTabRow = new int[iSize];
-		m_pDlg->_ChoosedFstNormalInfoML->GetSelect(ioTabRow,iSize);
-		//
-		CATListValCATUnicodeString lststrJstTypeInfoName,lststrJstTypeInfoValue;
-		//属性信息
-		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrPropertyName,lststrJstTypeInfoName);
-		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrPropertyValue,lststrJstTypeInfoValue);
-		//参数信息
-		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrSpecialName,lststrJstTypeInfoName);
-		GetStrlistFromListPV(ioTabRow[0]+1,m_pListStrSpecialValue,lststrJstTypeInfoValue);
-		//
-		if (ioTabRow[0]+1 >= 2)
-		{
-			lststrJstTypeInfoName.Append("安装位置");
-			lststrJstTypeInfoValue.Append(m_lststrCirclePositions[ioTabRow[0]]);
-		}
+	// 主对话框的消息响应
+	AddAnalyseNotificationCB (m_pFstAccessDlg, 
+		m_pFstAccessDlg->GetDiaOKNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::OkFstAccessDlgCB,
+		NULL);
 
-		//显示
-		for (int i=1; i<=lststrJstTypeInfoName.Size(); i++)
-		{
-			m_pDlg->_ChoosedFstDetailInfoML->SetColumnItem(0,lststrJstTypeInfoName[i]);
-			m_pDlg->_ChoosedFstDetailInfoML->SetColumnItem(1,lststrJstTypeInfoValue[i]);
-		}
-	}
+	AddAnalyseNotificationCB (m_pFstAccessDlg, 
+		m_pFstAccessDlg->GetWindCloseNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::CloseFstAccessDlgCB,
+		NULL);
+
+	AddAnalyseNotificationCB (m_pFstAccessDlg, 
+		m_pFstAccessDlg->GetDiaCANCELNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::CloseFstAccessDlgCB,
+		NULL);
+}
+
+//---------------------------------
+//对ACCESS DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::OkFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	
+	//
+	m_pFstAccessDlg->RequestDelayedDestruction();
+	m_pFstAccessDlg=NULL;
+}
+void PrtFstDesignCmd::CloseFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+	//
+	m_pFstAccessDlg->RequestDelayedDestruction();
+	m_pFstAccessDlg=NULL;
 }
