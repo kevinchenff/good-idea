@@ -77,6 +77,12 @@ CATDlgEditor Editor02
   GRID = { 4, 1, 1, 1, CATGRID_4SIDES };
 }
 
+CATDlgPushButton GoToSearchPB
+{
+  FATHER = Frame001;
+  GRID = { 5, 1, 1, 1, CATGRID_4SIDES };
+}
+
 CATDlgFrame Frame002
 {
   FATHER = PrtFstKnowledgeBasedDlg;

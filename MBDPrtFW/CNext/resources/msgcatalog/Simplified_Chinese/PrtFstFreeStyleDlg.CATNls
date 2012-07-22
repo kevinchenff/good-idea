@@ -1,15 +1,19 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "Free Style Choose";
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
-// END WIZARD REPLACEMENT ZONE
-
-
+Frame001.Title = "Search Items";
+Frame001.Label01.Title = "Please Select Head Type: ";
+Frame001.Label02.Title = "Please Select Material type: ";
+Frame001.Label03.Title = "Please Select Surface Treatment: ";
+Frame001.Label04.Title = "Please Select Fastener Name: ";
+Frame001.Label05.Title = "Please Select Fastener Code: ";
+Frame001.GoToSearchPB.Title = "Go To Search";
+Frame002.Title = "Search Results";
+ Frame002.SearchResultsML.ColumnTitle1 = "title00";
+ Frame002.SearchResultsML.ColumnTitle2 = "title01";
+ Frame002.SearchResultsML.ColumnTitle3 = "title02";
+ Frame002.SearchResultsML.ColumnTitle4 = "title03";
+ Frame002.SearchResultsML.ColumnTitle5 = "title04";
+ Frame002.SearchResultsML.ColumnTitle6 = "title05";
+Frame004.NextStepPB.Title = "Next Step";
+Frame004.LastStepPB.Title = "Last Step";
 // END WIZARD REPLACEMENT ZONE
