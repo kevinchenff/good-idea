@@ -41,7 +41,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_pDlg(NULL),m_piDoc(NULL),m_piFirstSurfSLAgt(NULL),m_piSecSurfSLAgt(NULL),m_piPointSLAgt(NULL)
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
   ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0),m_dFirstPrdThickMin(0),m_dFirstPrdThickMax(0),m_userChoosedFlag(FALSE)
-  ,m_dFstMaxIndex(0),m_pFstAccessDlg(NULL)
+  ,m_dFstMaxIndex(0),m_pFstAccessDlg(NULL),m_pFstFreeStyleDlg(NULL),m_pFstKnowledgeBasedDlg(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -165,6 +165,18 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 	{
 		m_pFstAccessDlg->RequestDelayedDestruction();
 		m_pFstAccessDlg=NULL;
+	}
+
+	if (m_pFstFreeStyleDlg != NULL)
+	{
+		m_pFstFreeStyleDlg->RequestDelayedDestruction();
+		m_pFstFreeStyleDlg=NULL;
+	}
+
+	if (m_pFstKnowledgeBasedDlg != NULL)
+	{
+		m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeBasedDlg=NULL;
 	}
    
 }
@@ -2486,6 +2498,12 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 		m_pFstAccessDlg->GetDiaCANCELNotification(),
 		(CATCommandMethod)&PrtFstDesignCmd::CloseFstAccessDlgCB,
 		NULL);
+	//
+	AddAnalyseNotificationCB (m_pFstAccessDlg->_GoToChoosePB, 
+		m_pFstAccessDlg->_GoToChoosePB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstDesignCmd::AccessDlgGoToChoosePBCB,
+		NULL);
+
 }
 
 //---------------------------------
@@ -2504,4 +2522,114 @@ void PrtFstDesignCmd::CloseFstAccessDlgCB(CATCommand* cmd, CATNotification* evt,
 	//
 	m_pFstAccessDlg->RequestDelayedDestruction();
 	m_pFstAccessDlg=NULL;
+}
+
+void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	if (m_pFstAccessDlg->_FreeStyleRadioB->GetState() == CATDlgCheck)
+	{
+		m_pFstFreeStyleDlg = new PrtFstFreeStyleDlg();
+		m_pFstFreeStyleDlg->Build();
+		m_pFstFreeStyleDlg->SetVisibility(CATDlgShow);
+
+		//
+		// 主对话框的消息响应
+		AddAnalyseNotificationCB (m_pFstFreeStyleDlg, 
+			m_pFstFreeStyleDlg->GetDiaOKNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::OkFstFreeStyleDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstFreeStyleDlg, 
+			m_pFstFreeStyleDlg->GetWindCloseNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstFreeStyleDlg, 
+			m_pFstFreeStyleDlg->GetDiaCLOSENotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleDlgCB,
+			NULL);
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleDlg->_GoToSearchPB, 
+			m_pFstFreeStyleDlg->_GoToSearchPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleDlgGoToSearchPBCB,
+			NULL);
+
+	} 
+	else
+	{
+		m_pFstKnowledgeBasedDlg = new PrtFstKnowledgeBasedDlg();
+		m_pFstKnowledgeBasedDlg->Build();
+		m_pFstKnowledgeBasedDlg->SetVisibility(CATDlgShow);
+
+		//
+		// 主对话框的消息响应
+		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg, 
+			m_pFstKnowledgeBasedDlg->GetDiaOKNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::OkFstKnowledgeBasedDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg, 
+			m_pFstKnowledgeBasedDlg->GetWindCloseNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstKnowledgeBasedDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg, 
+			m_pFstKnowledgeBasedDlg->GetDiaCLOSENotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstKnowledgeBasedDlgCB,
+			NULL);
+		//
+		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg->_GoToSearchPB, 
+			m_pFstKnowledgeBasedDlg->_GoToSearchPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedDlgGoToSearchPBCB,
+			NULL);
+	}
+}
+
+
+//---------------------------------
+//对FreeStyle DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::OkFstFreeStyleDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+	//
+	m_pFstFreeStyleDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleDlg=NULL;
+
+}
+void PrtFstDesignCmd::CloseFstFreeStyleDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+	//
+	m_pFstFreeStyleDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleDlg=NULL;
+
+}
+void PrtFstDesignCmd::FstFreeStyleDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+//
+//---------------------------------
+//对KnowledgeBased DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::OkFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeBasedDlg=NULL;
+
+
+}
+void PrtFstDesignCmd::CloseFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeBasedDlg=NULL;
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
 }

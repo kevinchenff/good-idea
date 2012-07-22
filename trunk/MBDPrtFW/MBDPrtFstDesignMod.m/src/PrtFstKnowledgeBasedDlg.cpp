@@ -99,7 +99,6 @@ void PrtFstKnowledgeBasedDlg::Build()
 //  -------------------------------------------------------------------
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
- SetGridRowResizable(0,1);
  SetGridRowResizable(1,1);
  SetGridColumnResizable(0,1);
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);

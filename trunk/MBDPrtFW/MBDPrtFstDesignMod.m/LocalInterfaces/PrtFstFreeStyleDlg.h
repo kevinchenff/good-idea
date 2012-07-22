@@ -44,12 +44,6 @@ class PrtFstFreeStyleDlg: public CATDlgDialog
 
   void Build ();
 
-
-  protected:
-
-  private:
-
-
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
  CATDlgLabel*      _Label01;
@@ -63,6 +57,8 @@ class PrtFstFreeStyleDlg: public CATDlgDialog
  CATDlgEditor*      _Editor01;
  CATDlgEditor*      _Editor02;
  CATDlgPushButton*      _GoToSearchPB;
+ CATDlgLabel*      _Label06;
+ CATDlgCombo*      _Combo04;
  CATDlgFrame*      _Frame002;
  CATDlgMultiList*      _SearchResultsML;
  CATDlgFrame*      _Frame004;

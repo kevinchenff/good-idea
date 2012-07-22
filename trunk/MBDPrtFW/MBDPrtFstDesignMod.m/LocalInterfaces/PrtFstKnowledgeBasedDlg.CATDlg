@@ -2,7 +2,7 @@
 CATDlgDialog PrtFstKnowledgeBasedDlg
 {
   STYLE = CATDlgWndBtnClose|CATDlgGridLayout;
-  ROWRES = { 0, 1 };
+  ROWRES = { 1 };
   COLRES = { 0 };
 }
 
