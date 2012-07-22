@@ -37,6 +37,16 @@ PrtFstKnowledgeBasedDlg::PrtFstKnowledgeBasedDlg() :
 {
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
  _Frame001 = NULL;
+ _Label01 = NULL;
+ _Label02 = NULL;
+ _Label03 = NULL;
+ _Label04 = NULL;
+ _Label05 = NULL;
+ _Combo01 = NULL;
+ _Combo02 = NULL;
+ _Combo03 = NULL;
+ _Editor01 = NULL;
+ _Editor02 = NULL;
  _Frame002 = NULL;
  _SearchResultSL = NULL;
  _Frame005 = NULL;
@@ -58,6 +68,16 @@ PrtFstKnowledgeBasedDlg::~PrtFstKnowledgeBasedDlg()
 //  --------------------------------------------------
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
  _Frame001 = NULL;
+ _Label01 = NULL;
+ _Label02 = NULL;
+ _Label03 = NULL;
+ _Label04 = NULL;
+ _Label05 = NULL;
+ _Combo01 = NULL;
+ _Combo02 = NULL;
+ _Combo03 = NULL;
+ _Editor01 = NULL;
+ _Editor02 = NULL;
  _Frame002 = NULL;
  _SearchResultSL = NULL;
  _Frame005 = NULL;
@@ -82,11 +102,33 @@ void PrtFstKnowledgeBasedDlg::Build()
  SetGridColumnResizable(0,1);
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame001 -> SetGridColumnResizable(1,1);
+ _Label01 = new CATDlgLabel(_Frame001, "Label01");
+_Label01 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Label02 = new CATDlgLabel(_Frame001, "Label02");
+_Label02 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Label03 = new CATDlgLabel(_Frame001, "Label03");
+_Label03 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Label04 = new CATDlgLabel(_Frame001, "Label04");
+_Label04 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
+ _Label05 = new CATDlgLabel(_Frame001, "Label05");
+_Label05 -> SetGridConstraints(4, 0, 1, 1, CATGRID_4SIDES);
+ _Combo01 = new CATDlgCombo(_Frame001, "Combo01", CATDlgCmbDropDown);
+_Combo01 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _Combo02 = new CATDlgCombo(_Frame001, "Combo02", CATDlgCmbDropDown);
+_Combo02 -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _Combo03 = new CATDlgCombo(_Frame001, "Combo03", CATDlgCmbDropDown);
+_Combo03 -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
+ _Editor01 = new CATDlgEditor(_Frame001, "Editor01");
+_Editor01 -> SetGridConstraints(3, 1, 1, 1, CATGRID_4SIDES);
+ _Editor02 = new CATDlgEditor(_Frame001, "Editor02");
+_Editor02 -> SetGridConstraints(4, 1, 1, 1, CATGRID_4SIDES);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
 _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridRowResizable(0,1);
  _Frame002 -> SetGridColumnResizable(0,1);
  _SearchResultSL = new CATDlgSelectorList(_Frame002, "SearchResultSL");
+ _SearchResultSL -> SetVisibleTextHeight(12);
  _SearchResultSL -> SetVisibleTextWidth(40);
 _SearchResultSL -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame005 = new CATDlgFrame(this, "Frame005", CATDlgFraNoFrame|CATDlgGridLayout);

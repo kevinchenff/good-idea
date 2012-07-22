@@ -52,6 +52,16 @@ class PrtFstKnowledgeBasedDlg: public CATDlgDialog
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
+ CATDlgLabel*      _Label01;
+ CATDlgLabel*      _Label02;
+ CATDlgLabel*      _Label03;
+ CATDlgLabel*      _Label04;
+ CATDlgLabel*      _Label05;
+ CATDlgCombo*      _Combo01;
+ CATDlgCombo*      _Combo02;
+ CATDlgCombo*      _Combo03;
+ CATDlgEditor*      _Editor01;
+ CATDlgEditor*      _Editor02;
  CATDlgFrame*      _Frame002;
  CATDlgSelectorList*      _SearchResultSL;
  CATDlgFrame*      _Frame005;
