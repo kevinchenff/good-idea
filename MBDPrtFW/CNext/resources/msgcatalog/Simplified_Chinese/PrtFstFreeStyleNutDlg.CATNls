@@ -1,0 +1,22 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "Choose Fastener Nut";
+Frame001.Title = "Search Items";
+Frame001.Label01.Title = "Selete Nut Type: ";
+Frame001.Label02.Title = "Selete Material: ";
+Frame001.Label03.Title = "Select Surface Treatment: ";
+Frame001.Label04.Title = "Select Fastener Standard Number: ";
+Frame002.Title = "Search Results";
+ Frame002.SearchResultML.ColumnTitle1 = "title00";
+ Frame002.SearchResultML.ColumnTitle2 = "title01";
+ Frame002.SearchResultML.ColumnTitle3 = "title02";
+ Frame002.SearchResultML.ColumnTitle4 = "title03";
+ Frame002.SearchResultML.ColumnTitle5 = "title04";
+ Frame002.SearchResultML.ColumnTitle6 = "title05";
+ Frame002.SearchResultML.ColumnTitle7 = "title06";
+ Frame002.SearchResultML.ColumnTitle8 = "title07";
+Frame003.NextStepPB.Title = "Next Step";
+Frame003.LastStepPB.Title = "Last Step";
+// END WIZARD REPLACEMENT ZONE
+
+
+// END WIZARD REPLACEMENT ZONE
