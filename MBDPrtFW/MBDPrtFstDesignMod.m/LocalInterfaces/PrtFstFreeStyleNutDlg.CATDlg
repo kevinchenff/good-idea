@@ -35,7 +35,7 @@ CATDlgLabel Label03
 CATDlgLabel Label04
 {
   FATHER = Frame001;
-  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 4, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgCombo Combo01
@@ -64,6 +64,25 @@ CATDlgCombo Combo04
   FATHER = Frame001;
   STYLE = CATDlgCmbDropDown;
   GRID = { 3, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton GoToSearchPB
+{
+  FATHER = Frame001;
+  GRID = { 5, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label05
+{
+  FATHER = Frame001;
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo Combo05
+{
+  FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 4, 1, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgFrame Frame002
