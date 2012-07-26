@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PrtFstKnowledgeBasedDlg
 {
-  STYLE = CATDlgWndBtnClose|CATDlgGridLayout;
+  STYLE = CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout;
   ROWRES = { 1 };
   COLRES = { 0 };
 }

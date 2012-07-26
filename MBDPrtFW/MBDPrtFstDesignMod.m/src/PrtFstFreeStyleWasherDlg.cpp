@@ -31,7 +31,7 @@
 PrtFstFreeStyleWasherDlg::PrtFstFreeStyleWasherDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstFreeStyleWasherDlg",CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstFreeStyleWasherDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {

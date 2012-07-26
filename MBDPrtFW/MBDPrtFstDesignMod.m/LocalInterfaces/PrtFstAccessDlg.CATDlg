@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PrtFstAccessDlg
 {
-  STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
+  STYLE = CATDlgWndModal|CATDlgWndBtnOKCancel|CATDlgGridLayout;
   ROWRES = { 1 };
   COLRES = { 0 };
 }

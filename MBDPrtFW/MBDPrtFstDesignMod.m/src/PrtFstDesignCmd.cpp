@@ -42,6 +42,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_piFirstSurfAgt(NULL),m_piSecSurfAgt(NULL),m_piPointsAgt(NULL),m_piPrdSLAgt(NULL),m_piPointGSMPBAgt(NULL),m_piPrdAgt(NULL)
   ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0),m_dFirstPrdThickMin(0),m_dFirstPrdThickMax(0),m_userChoosedFlag(FALSE)
   ,m_dFstMaxIndex(0),m_pFstAccessDlg(NULL),m_pFstFreeStyleDlg(NULL),m_pFstKnowledgeBasedDlg(NULL)
+  ,m_pFstFreeStyleMainBoltDlg(NULL),m_pFstFreeStyleNutDlg(NULL),m_pFstFreeStyleWasherDlg(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();

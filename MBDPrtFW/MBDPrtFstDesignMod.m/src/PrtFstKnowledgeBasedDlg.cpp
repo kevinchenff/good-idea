@@ -31,7 +31,7 @@
 PrtFstKnowledgeBasedDlg::PrtFstKnowledgeBasedDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstKnowledgeBasedDlg",CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstKnowledgeBasedDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
