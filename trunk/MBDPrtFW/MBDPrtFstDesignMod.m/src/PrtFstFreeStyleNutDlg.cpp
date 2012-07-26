@@ -31,7 +31,7 @@
 PrtFstFreeStyleNutDlg::PrtFstFreeStyleNutDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstFreeStyleNutDlg",CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstFreeStyleNutDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {

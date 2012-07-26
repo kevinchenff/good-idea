@@ -31,7 +31,7 @@
 PrtFstFreeStyleMainBoltDlg::PrtFstFreeStyleMainBoltDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstFreeStyleMainBoltDlg",CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstFreeStyleMainBoltDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {

@@ -31,7 +31,7 @@
 PrtFstAccessDlg::PrtFstAccessDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstAccessDlg",CATDlgWndBtnOKCancel|CATDlgGridLayout
+"PrtFstAccessDlg",CATDlgWndModal|CATDlgWndBtnOKCancel|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -97,12 +97,12 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridRowResizable(0,1);
  _Frame002 -> SetGridColumnResizable(0,1);
  _ChoosedFastenersML = new CATDlgMultiList(_Frame002, "ChoosedFastenersML");
- /*CATUnicodeString ChoosedFastenersMLTitles [ 5 ];
+ CATUnicodeString ChoosedFastenersMLTitles [ 5 ];
  ChoosedFastenersMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstAccessDlg", "Frame002.ChoosedFastenersML.ColumnTitle1");
  ChoosedFastenersMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstAccessDlg", "Frame002.ChoosedFastenersML.ColumnTitle2");
  ChoosedFastenersMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstAccessDlg", "Frame002.ChoosedFastenersML.ColumnTitle3");
  ChoosedFastenersMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstAccessDlg", "Frame002.ChoosedFastenersML.ColumnTitle4");
- ChoosedFastenersMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstAccessDlg", "Frame002.ChoosedFastenersML.ColumnTitle5");*/
+ ChoosedFastenersMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstAccessDlg", "Frame002.ChoosedFastenersML.ColumnTitle5");
  _ChoosedFastenersML -> SetColumnTitles(5, ChoosedFastenersMLTitles);
  _ChoosedFastenersML -> SetVisibleColumnCount( 5 );
 _ChoosedFastenersML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);

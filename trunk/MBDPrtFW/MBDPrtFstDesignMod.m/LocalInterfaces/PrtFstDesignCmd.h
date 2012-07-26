@@ -33,6 +33,9 @@
 #include "PrtFstFreeStyleDlg.h"
 #include "PrtFstKnowledgeBasedDlg.h"
 
+#include "PrtFstFreeStyleMainBoltDlg.h"
+#include "PrtFstFreeStyleNutDlg.h"
+#include "PrtFstFreeStyleWasherDlg.h"
 
 
 //----------------------------------------------------------------------
@@ -193,8 +196,10 @@ private:
 	PrtFstFreeStyleDlg *m_pFstFreeStyleDlg;
 	PrtFstKnowledgeBasedDlg *m_pFstKnowledgeBasedDlg;
 
-
-
+	//
+	PrtFstFreeStyleMainBoltDlg *m_pFstFreeStyleMainBoltDlg;
+	PrtFstFreeStyleNutDlg *m_pFstFreeStyleNutDlg;
+	PrtFstFreeStyleWasherDlg *m_pFstFreeStyleWasherDlg;
 };
 
 //----------------------------------------------------------------------
