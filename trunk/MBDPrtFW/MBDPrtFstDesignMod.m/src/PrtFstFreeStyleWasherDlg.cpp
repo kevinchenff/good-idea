@@ -37,6 +37,29 @@ PrtFstFreeStyleWasherDlg::PrtFstFreeStyleWasherDlg() :
 {
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
  _Frame001 = NULL;
+ _Label01 = NULL;
+ _Combo01 = NULL;
+ _Label02 = NULL;
+ _Combo02 = NULL;
+ _Label03 = NULL;
+ _Combo03 = NULL;
+ _Label04 = NULL;
+ _Combo04 = NULL;
+ _Label05 = NULL;
+ _Combo05 = NULL;
+ _Frame002 = NULL;
+ _RearchResultsML = NULL;
+ _Frame008 = NULL;
+ _PosSTARTRB = NULL;
+ _PosENDRB = NULL;
+ _Frame003 = NULL;
+ _ChooseWashersML = NULL;
+ _Frame005 = NULL;
+ _RemovePB = NULL;
+ _ClearAllPB = NULL;
+ _Frame004 = NULL;
+ _NextStepPB = NULL;
+ _LastStepPB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 
 
@@ -68,6 +91,29 @@ PrtFstFreeStyleWasherDlg::~PrtFstFreeStyleWasherDlg()
 //  --------------------------------------------------
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
  _Frame001 = NULL;
+ _Label01 = NULL;
+ _Combo01 = NULL;
+ _Label02 = NULL;
+ _Combo02 = NULL;
+ _Label03 = NULL;
+ _Combo03 = NULL;
+ _Label04 = NULL;
+ _Combo04 = NULL;
+ _Label05 = NULL;
+ _Combo05 = NULL;
+ _Frame002 = NULL;
+ _RearchResultsML = NULL;
+ _Frame008 = NULL;
+ _PosSTARTRB = NULL;
+ _PosENDRB = NULL;
+ _Frame003 = NULL;
+ _ChooseWashersML = NULL;
+ _Frame005 = NULL;
+ _RemovePB = NULL;
+ _ClearAllPB = NULL;
+ _Frame004 = NULL;
+ _NextStepPB = NULL;
+ _LastStepPB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 
 
@@ -97,8 +143,81 @@ void PrtFstFreeStyleWasherDlg::Build()
 //  -------------------------------------------------------------------
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+ SetGridRowResizable(1,1);
+ SetGridRowResizable(2,1);
+ SetGridColumnResizable(0,1);
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame001 -> SetGridColumnResizable(1,1);
+ _Label01 = new CATDlgLabel(_Frame001, "Label01");
+_Label01 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Combo01 = new CATDlgCombo(_Frame001, "Combo01", CATDlgCmbDropDown);
+_Combo01 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _Label02 = new CATDlgLabel(_Frame001, "Label02");
+_Label02 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Combo02 = new CATDlgCombo(_Frame001, "Combo02", CATDlgCmbDropDown);
+_Combo02 -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _Label03 = new CATDlgLabel(_Frame001, "Label03");
+_Label03 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Combo03 = new CATDlgCombo(_Frame001, "Combo03", CATDlgCmbDropDown);
+_Combo03 -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
+ _Label04 = new CATDlgLabel(_Frame001, "Label04");
+_Label04 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
+ _Combo04 = new CATDlgCombo(_Frame001, "Combo04", CATDlgCmbDropDown);
+_Combo04 -> SetGridConstraints(3, 1, 1, 1, CATGRID_4SIDES);
+ _Label05 = new CATDlgLabel(_Frame001, "Label05");
+_Label05 -> SetGridConstraints(4, 0, 1, 1, CATGRID_4SIDES);
+ _Combo05 = new CATDlgCombo(_Frame001, "Combo05", CATDlgCmbDropDown);
+_Combo05 -> SetGridConstraints(4, 1, 1, 1, CATGRID_4SIDES);
+ _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
+_Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame002 -> SetGridRowResizable(1,1);
+ _Frame002 -> SetGridColumnResizable(0,1);
+ _RearchResultsML = new CATDlgMultiList(_Frame002, "RearchResultsML");
+ CATUnicodeString RearchResultsMLTitles [ 6 ];
+ RearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle1");
+ RearchResultsMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle2");
+ RearchResultsMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle3");
+ RearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle4");
+ RearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle5");
+ RearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle6");
+ _RearchResultsML -> SetColumnTitles(6, RearchResultsMLTitles);
+ _RearchResultsML -> SetVisibleColumnCount( 6 );
+_RearchResultsML -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame008 = new CATDlgFrame(_Frame002, "Frame008", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame008 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _PosSTARTRB = new CATDlgRadioButton(_Frame008, "PosSTARTRB");
+_PosSTARTRB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _PosENDRB = new CATDlgRadioButton(_Frame008, "PosENDRB");
+_PosENDRB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgGridLayout);
+_Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Frame003 -> SetGridRowResizable(0,1);
+ _Frame003 -> SetGridColumnResizable(0,1);
+ _ChooseWashersML = new CATDlgMultiList(_Frame003, "ChooseWashersML");
+ CATUnicodeString ChooseWashersMLTitles [ 6 ];
+ ChooseWashersMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle1");
+ ChooseWashersMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle2");
+ ChooseWashersMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle3");
+ ChooseWashersMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle4");
+ ChooseWashersMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle5");
+ ChooseWashersMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle6");
+ _ChooseWashersML -> SetColumnTitles(6, ChooseWashersMLTitles);
+ _ChooseWashersML -> SetVisibleColumnCount( 6 );
+_ChooseWashersML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame005 = new CATDlgFrame(_Frame003, "Frame005", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame005 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _RemovePB = new CATDlgPushButton(_Frame005, "RemovePB");
+_RemovePB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _ClearAllPB = new CATDlgPushButton(_Frame005, "ClearAllPB");
+_ClearAllPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _Frame004 = new CATDlgFrame(this, "Frame004", CATDlgFraNoFrame|CATDlgGridLayout);
+_Frame004 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
+ _Frame004 -> SetGridColumnResizable(0,1);
+ _NextStepPB = new CATDlgPushButton(_Frame004, "NextStepPB");
+_NextStepPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _LastStepPB = new CATDlgPushButton(_Frame004, "LastStepPB");
+_LastStepPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 

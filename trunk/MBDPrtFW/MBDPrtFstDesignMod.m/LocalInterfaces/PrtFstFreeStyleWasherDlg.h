@@ -52,6 +52,29 @@ class PrtFstFreeStyleWasherDlg: public CATDlgDialog
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
+ CATDlgLabel*      _Label01;
+ CATDlgCombo*      _Combo01;
+ CATDlgLabel*      _Label02;
+ CATDlgCombo*      _Combo02;
+ CATDlgLabel*      _Label03;
+ CATDlgCombo*      _Combo03;
+ CATDlgLabel*      _Label04;
+ CATDlgCombo*      _Combo04;
+ CATDlgLabel*      _Label05;
+ CATDlgCombo*      _Combo05;
+ CATDlgFrame*      _Frame002;
+ CATDlgMultiList*      _RearchResultsML;
+ CATDlgFrame*      _Frame008;
+ CATDlgRadioButton*      _PosSTARTRB;
+ CATDlgRadioButton*      _PosENDRB;
+ CATDlgFrame*      _Frame003;
+ CATDlgMultiList*      _ChooseWashersML;
+ CATDlgFrame*      _Frame005;
+ CATDlgPushButton*      _RemovePB;
+ CATDlgPushButton*      _ClearAllPB;
+ CATDlgFrame*      _Frame004;
+ CATDlgPushButton*      _NextStepPB;
+ CATDlgPushButton*      _LastStepPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 

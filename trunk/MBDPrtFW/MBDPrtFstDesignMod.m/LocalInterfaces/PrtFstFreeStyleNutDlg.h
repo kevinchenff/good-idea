@@ -60,6 +60,9 @@ class PrtFstFreeStyleNutDlg: public CATDlgDialog
  CATDlgCombo*      _Combo02;
  CATDlgCombo*      _Combo03;
  CATDlgCombo*      _Combo04;
+ CATDlgPushButton*      _GoToSearchPB;
+ CATDlgLabel*      _Label05;
+ CATDlgCombo*      _Combo05;
  CATDlgFrame*      _Frame002;
  CATDlgMultiList*      _SearchResultML;
  CATDlgFrame*      _Frame003;

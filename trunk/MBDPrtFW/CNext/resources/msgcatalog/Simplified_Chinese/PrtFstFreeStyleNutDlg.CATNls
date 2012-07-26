@@ -5,6 +5,7 @@ Frame001.Label01.Title = "Selete Nut Type: ";
 Frame001.Label02.Title = "Selete Material: ";
 Frame001.Label03.Title = "Select Surface Treatment: ";
 Frame001.Label04.Title = "Select Fastener Standard Number: ";
+Frame001.Label05.Title = "Select Fastener Name: ";
 Frame002.Title = "Search Results";
  Frame002.SearchResultML.ColumnTitle1 = "title00";
  Frame002.SearchResultML.ColumnTitle2 = "title01";
