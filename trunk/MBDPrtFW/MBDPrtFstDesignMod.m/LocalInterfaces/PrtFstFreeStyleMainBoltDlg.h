@@ -60,8 +60,8 @@ class PrtFstFreeStyleMainBoltDlg: public CATDlgDialog
  CATDlgEditor*      _FirstLayerThicknessEditor;
  CATDlgFrame*      _Frame002;
  CATDlgLabel*      _Label04;
- CATDlgSpinner*      _Spinner012;
- CATDlgSpinner*      _Spinner013;
+ CATDlgSpinner*      _MinSpinner;
+ CATDlgSpinner*      _MaxSpinner;
  CATDlgPushButton*      _GoToSearchPB;
  CATDlgFrame*      _Frame003;
  CATDlgMultiList*      _SearchResultML;

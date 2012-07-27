@@ -68,7 +68,7 @@ CATDlgLabel Label04
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgSpinner Spinner012
+CATDlgSpinner MinSpinner
 {
   FATHER = Frame002;
   MIN = 0.000000;
@@ -77,7 +77,7 @@ CATDlgSpinner Spinner012
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgSpinner Spinner013
+CATDlgSpinner MaxSpinner
 {
   FATHER = Frame002;
   MIN = 0.000000;
