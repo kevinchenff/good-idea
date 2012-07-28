@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PrtFstFreeStyleNutDlg
 {
-  STYLE = CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout;
+  STYLE = CATDlgWndBtnClose|CATDlgGridLayout;
   ROWRES = { 1 };
   COLRES = { 0 };
 }

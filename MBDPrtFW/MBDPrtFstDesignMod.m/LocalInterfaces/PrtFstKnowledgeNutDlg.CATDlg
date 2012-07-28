@@ -1,0 +1,46 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog PrtFstKnowledgeNutDlg
+{
+  STYLE = CATDlgWndBtnClose|CATDlgGridLayout;
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame Frame002
+{
+  FATHER = PrtFstKnowledgeNutDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList SearchResultsML
+{
+  FATHER = Frame002;
+  CC = 6;
+  VCC = 6;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame003
+{
+  FATHER = PrtFstKnowledgeNutDlg;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 0 };
+}
+
+CATDlgPushButton NextStepPB
+{
+  FATHER = Frame003;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton LastStepPB
+{
+  FATHER = Frame003;
+  GRID = { 0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+// END WIZARD REPLACEMENT ZONE
