@@ -1,0 +1,19 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "Choose Main Fastener";
+Frame001.Title = "Model Parameters Info";
+Frame002.Title = "Search Items";
+Frame002.Label009.Title = " <= Diameter <= ";
+Frame002.GoToSearchPB.Title = "Go To Search";
+Frame003.Title = "Search Results";
+ Frame003.SearchResultsML.ColumnTitle1 = "title00";
+ Frame003.SearchResultsML.ColumnTitle2 = "title01";
+ Frame003.SearchResultsML.ColumnTitle3 = "title02";
+ Frame003.SearchResultsML.ColumnTitle4 = "title03";
+ Frame003.SearchResultsML.ColumnTitle5 = "title04";
+ Frame003.SearchResultsML.ColumnTitle6 = "title05";
+Frame004.NextStepPB.Title = "Next Step";
+Frame004.LastStepPB.Title = "Last Step";
+// END WIZARD REPLACEMENT ZONE
+
+
+// END WIZARD REPLACEMENT ZONE
