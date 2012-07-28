@@ -43,6 +43,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_piPointGSMAgt(NULL),m_piISO(NULL),m_dJstThickMax(0),m_dJstThickMin(0),m_dFirstPrdThickMin(0),m_dFirstPrdThickMax(0),m_userChoosedFlag(FALSE)
   ,m_dFstMaxIndex(0),m_pFstAccessDlg(NULL),m_pFstFreeStyleDlg(NULL),m_pFstKnowledgeBasedDlg(NULL)
   ,m_pFstFreeStyleMainBoltDlg(NULL),m_pFstFreeStyleNutDlg(NULL),m_pFstFreeStyleWasherDlg(NULL)
+  ,m_pFstKnowledgeMainBoltDlg(NULL),m_pFstKnowledgeNutDlg(NULL),m_pFstKnowledgeWasherDlg(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -178,6 +179,44 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 	{
 		m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
 		m_pFstKnowledgeBasedDlg=NULL;
+	}
+
+	//
+	if (m_pFstFreeStyleMainBoltDlg != NULL)
+	{
+		m_pFstFreeStyleMainBoltDlg->RequestDelayedDestruction();
+		m_pFstFreeStyleMainBoltDlg=NULL;
+	}
+
+	if (m_pFstFreeStyleNutDlg != NULL)
+	{
+		m_pFstFreeStyleNutDlg->RequestDelayedDestruction();
+		m_pFstFreeStyleNutDlg=NULL;
+	}
+
+	if (m_pFstFreeStyleWasherDlg != NULL)
+	{
+		m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
+		m_pFstFreeStyleWasherDlg=NULL;
+	}
+
+	//
+	if (m_pFstKnowledgeMainBoltDlg != NULL)
+	{
+		m_pFstKnowledgeMainBoltDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeMainBoltDlg=NULL;
+	}
+
+	if (m_pFstKnowledgeNutDlg != NULL)
+	{
+		m_pFstKnowledgeNutDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeNutDlg=NULL;
+	}
+
+	if (m_pFstKnowledgeWasherDlg != NULL)
+	{
+		m_pFstKnowledgeWasherDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeWasherDlg=NULL;
 	}
    
 }
@@ -2537,11 +2576,6 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 		//
 		// 主对话框的消息响应
 		AddAnalyseNotificationCB (m_pFstFreeStyleDlg, 
-			m_pFstFreeStyleDlg->GetDiaOKNotification(),
-			(CATCommandMethod)&PrtFstDesignCmd::OkFstFreeStyleDlgCB,
-			NULL);
-
-		AddAnalyseNotificationCB (m_pFstFreeStyleDlg, 
 			m_pFstFreeStyleDlg->GetWindCloseNotification(),
 			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleDlgCB,
 			NULL);
@@ -2556,6 +2590,15 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleDlgGoToSearchPBCB,
 			NULL);
 
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleDlg->_LastStepPB, 
+			m_pFstFreeStyleDlg->_LastStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleDlgLastStepPBCB,
+			NULL);
+		AddAnalyseNotificationCB (m_pFstFreeStyleDlg->_NextStepPB, 
+			m_pFstFreeStyleDlg->_NextStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB,
+			NULL);
 	} 
 	else
 	{
@@ -2565,11 +2608,6 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 
 		//
 		// 主对话框的消息响应
-		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg, 
-			m_pFstKnowledgeBasedDlg->GetDiaOKNotification(),
-			(CATCommandMethod)&PrtFstDesignCmd::OkFstKnowledgeBasedDlgCB,
-			NULL);
-
 		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg, 
 			m_pFstKnowledgeBasedDlg->GetWindCloseNotification(),
 			(CATCommandMethod)&PrtFstDesignCmd::CloseFstKnowledgeBasedDlgCB,
@@ -2591,38 +2629,240 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 //---------------------------------
 //对FreeStyle DLG的消息响应
 //---------------------------------
-void PrtFstDesignCmd::OkFstFreeStyleDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
-{
-
-	//
-	m_pFstFreeStyleDlg->RequestDelayedDestruction();
-	m_pFstFreeStyleDlg=NULL;
-
-}
 void PrtFstDesignCmd::CloseFstFreeStyleDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-
 	//
 	m_pFstFreeStyleDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleDlg=NULL;
 
 }
+
+void PrtFstDesignCmd::FstFreeStyleDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	m_pFstFreeStyleDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleDlg=NULL;
+}
+
+//
+//响应函数：计算自由选择模式主紧固件规格信息
 void PrtFstDesignCmd::FstFreeStyleDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 
 }
+//-------------------------------------------------------------
+//显示并初始化下一个对话框，m_pFstFreeStyleMainBoltDlg
+//-------------------------------------------------------------
+void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	//
+	if (m_pFstFreeStyleMainBoltDlg == NULL)
+	{
+		m_pFstFreeStyleMainBoltDlg = new PrtFstFreeStyleMainBoltDlg();
+		m_pFstFreeStyleMainBoltDlg->Build();
+		m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgShow);
+
+		//
+		// 主对话框的消息响应
+		AddAnalyseNotificationCB (m_pFstFreeStyleMainBoltDlg, 
+			m_pFstFreeStyleMainBoltDlg->GetWindCloseNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleMainBoltDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstFreeStyleMainBoltDlg, 
+			m_pFstFreeStyleMainBoltDlg->GetDiaCLOSENotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleMainBoltDlgCB,
+			NULL);
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleMainBoltDlg->_GoToSearchPB, 
+			m_pFstFreeStyleMainBoltDlg->_GoToSearchPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB,
+			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleMainBoltDlg->_LastStepPB, 
+			m_pFstFreeStyleMainBoltDlg->_LastStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleMainBoltDlgLastStepPBCB,
+			NULL);
+		AddAnalyseNotificationCB (m_pFstFreeStyleMainBoltDlg->_NextStepPB, 
+			m_pFstFreeStyleMainBoltDlg->_NextStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB,
+			NULL);
+	}
+	else
+	{
+		m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgShow);
+	}
+
+}
+
+//---------------------------------
+//对FreeStyle MainBolt DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::CloseFstFreeStyleMainBoltDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstFreeStyleMainBoltDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleMainBoltDlg=NULL;
+}
+
+void PrtFstDesignCmd::FstFreeStyleMainBoltDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstFreeStyleMainBoltDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleMainBoltDlg=NULL;
+}
+
+void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+}
+
+//--------------------------------------------------------------------------------------------
+//显示并初始化下一个对话框 PrtFstFreeStyleNutDlg 需要判断当前是螺栓还是铆钉，根据情况作出判断
+//--------------------------------------------------------------------------------------------
+void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	if (m_pFstFreeStyleNutDlg == NULL)
+	{
+		m_pFstFreeStyleNutDlg = new PrtFstFreeStyleNutDlg();
+		m_pFstFreeStyleNutDlg->Build();
+		m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
+
+		//
+		// 主对话框的消息响应
+		AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg, 
+			m_pFstFreeStyleNutDlg->GetWindCloseNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleNutDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg, 
+			m_pFstFreeStyleNutDlg->GetDiaCLOSENotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleNutDlgCB,
+			NULL);
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg->_GoToSearchPB, 
+			m_pFstFreeStyleNutDlg->_GoToSearchPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB,
+			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg->_LastStepPB, 
+			m_pFstFreeStyleNutDlg->_LastStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleNutDlgLastStepPBCB,
+			NULL);
+		AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg->_NextStepPB, 
+			m_pFstFreeStyleNutDlg->_NextStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleNutDlgNextStepPBCB,
+			NULL);
+	}
+	else
+	{
+		m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
+	}
+}
+
+//---------------------------------
+//对FreeStyle Nut DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::CloseFstFreeStyleNutDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstFreeStyleNutDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleNutDlg=NULL;
+}
+
+void PrtFstDesignCmd::FstFreeStyleNutDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstFreeStyleNutDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleNutDlg=NULL;
+}
+
+void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+
+//--------------------------------------------------------------------------------------------
+//显示并初始化下一个对话框 PrtFstFreeStyleWasherDlg
+//--------------------------------------------------------------------------------------------
+void PrtFstDesignCmd::FstFreeStyleNutDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	if (m_pFstFreeStyleWasherDlg == NULL)
+	{
+		m_pFstFreeStyleWasherDlg = new PrtFstFreeStyleWasherDlg();
+		m_pFstFreeStyleWasherDlg->Build();
+		m_pFstFreeStyleWasherDlg->SetVisibility(CATDlgShow);
+
+		//
+		// 主对话框的消息响应
+		AddAnalyseNotificationCB (m_pFstFreeStyleWasherDlg, 
+			m_pFstFreeStyleWasherDlg->GetWindCloseNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleWasherDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstFreeStyleWasherDlg, 
+			m_pFstFreeStyleWasherDlg->GetDiaCLOSENotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleWasherDlgCB,
+			NULL);
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleWasherDlg->_GoToSearchPB, 
+			m_pFstFreeStyleWasherDlg->_GoToSearchPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB,
+			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleWasherDlg->_LastStepPB, 
+			m_pFstFreeStyleWasherDlg->_LastStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleWasherDlgLastStepPBCB,
+			NULL);
+		AddAnalyseNotificationCB (m_pFstFreeStyleWasherDlg->_NextStepPB, 
+			m_pFstFreeStyleWasherDlg->_NextStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB,
+			NULL);
+	}
+	else
+	{
+		m_pFstFreeStyleWasherDlg->SetVisibility(CATDlgShow);
+	}
+}
+
+
+//---------------------------------
+//对FreeStyle Washer DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::CloseFstFreeStyleWasherDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleWasherDlg=NULL;
+}
+void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+}
+void PrtFstDesignCmd::FstFreeStyleWasherDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleWasherDlg=NULL;
+}
+void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	//获得需要的数据
+	
+
+
+	//
+	m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
+	m_pFstFreeStyleWasherDlg=NULL;
+}
+
 //
 //---------------------------------
 //对KnowledgeBased DLG的消息响应
 //---------------------------------
-void PrtFstDesignCmd::OkFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
-{
-	//
-	m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
-	m_pFstKnowledgeBasedDlg=NULL;
-
-
-}
 void PrtFstDesignCmd::CloseFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
@@ -2632,5 +2872,6 @@ void PrtFstDesignCmd::CloseFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotificati
 }
 void PrtFstDesignCmd::FstKnowledgeBasedDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//
 
 }

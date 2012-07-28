@@ -1,7 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PrtFstFreeStyleWasherDlg
 {
-  STYLE = CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout;
+  STYLE = CATDlgWndBtnClose|CATDlgGridLayout;
   ROWRES = { 1, 2 };
   COLRES = { 0 };
 }
@@ -77,6 +77,12 @@ CATDlgCombo Combo05
   FATHER = Frame001;
   STYLE = CATDlgCmbDropDown;
   GRID = { 4, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton GoToSearchPB
+{
+  FATHER = Frame001;
+  GRID = { 5, 1, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgFrame Frame002
