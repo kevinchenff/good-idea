@@ -52,9 +52,15 @@ class PrtFstKnowledgeMainBoltDlg: public CATDlgDialog
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
+ CATDlgLabel*      _Label01;
+ CATDlgLabel*      _Label02;
+ CATDlgLabel*      _Label03;
+ CATDlgEditor*      _MaxLayerThicknessEditor;
+ CATDlgEditor*      _MinLayerThicknessEditor;
+ CATDlgEditor*      _FirstLayerThicknessEditor;
  CATDlgFrame*      _Frame002;
  CATDlgSpinner*      _MinSpinner;
- CATDlgLabel*      _Label009;
+ CATDlgLabel*      _DiameterLabel;
  CATDlgSpinner*      _MaxSpinner;
  CATDlgPushButton*      _GoToSearchPB;
  CATDlgFrame*      _Frame003;

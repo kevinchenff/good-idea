@@ -37,9 +37,15 @@ PrtFstKnowledgeMainBoltDlg::PrtFstKnowledgeMainBoltDlg() :
 {
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
  _Frame001 = NULL;
+ _Label01 = NULL;
+ _Label02 = NULL;
+ _Label03 = NULL;
+ _MaxLayerThicknessEditor = NULL;
+ _MinLayerThicknessEditor = NULL;
+ _FirstLayerThicknessEditor = NULL;
  _Frame002 = NULL;
  _MinSpinner = NULL;
- _Label009 = NULL;
+ _DiameterLabel = NULL;
  _MaxSpinner = NULL;
  _GoToSearchPB = NULL;
  _Frame003 = NULL;
@@ -66,9 +72,15 @@ PrtFstKnowledgeMainBoltDlg::~PrtFstKnowledgeMainBoltDlg()
 //  --------------------------------------------------
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
  _Frame001 = NULL;
+ _Label01 = NULL;
+ _Label02 = NULL;
+ _Label03 = NULL;
+ _MaxLayerThicknessEditor = NULL;
+ _MinLayerThicknessEditor = NULL;
+ _FirstLayerThicknessEditor = NULL;
  _Frame002 = NULL;
  _MinSpinner = NULL;
- _Label009 = NULL;
+ _DiameterLabel = NULL;
  _MaxSpinner = NULL;
  _GoToSearchPB = NULL;
  _Frame003 = NULL;
@@ -97,6 +109,20 @@ void PrtFstKnowledgeMainBoltDlg::Build()
  SetGridColumnResizable(0,1);
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame001 -> SetGridColumnResizable(1,1);
+ _Label01 = new CATDlgLabel(_Frame001, "Label01");
+_Label01 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Label02 = new CATDlgLabel(_Frame001, "Label02");
+_Label02 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Label03 = new CATDlgLabel(_Frame001, "Label03");
+_Label03 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _MaxLayerThicknessEditor = new CATDlgEditor(_Frame001, "MaxLayerThicknessEditor", CATDlgEdtReadOnly);
+ _MaxLayerThicknessEditor -> SetVisibleTextWidth(15);
+_MaxLayerThicknessEditor -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _MinLayerThicknessEditor = new CATDlgEditor(_Frame001, "MinLayerThicknessEditor", CATDlgEdtReadOnly);
+_MinLayerThicknessEditor -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _FirstLayerThicknessEditor = new CATDlgEditor(_Frame001, "FirstLayerThicknessEditor", CATDlgEdtReadOnly);
+_FirstLayerThicknessEditor -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
 _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridColumnResizable(0,1);
@@ -104,8 +130,8 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _MinSpinner = new CATDlgSpinner(_Frame002, "MinSpinner");
  _MinSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
 _MinSpinner -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _Label009 = new CATDlgLabel(_Frame002, "Label009");
-_Label009 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _DiameterLabel = new CATDlgLabel(_Frame002, "DiameterLabel");
+_DiameterLabel -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _MaxSpinner = new CATDlgSpinner(_Frame002, "MaxSpinner");
  _MaxSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
 _MaxSpinner -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
