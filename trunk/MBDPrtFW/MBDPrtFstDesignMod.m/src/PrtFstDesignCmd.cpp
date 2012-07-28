@@ -2572,6 +2572,9 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 		m_pFstFreeStyleDlg = new PrtFstFreeStyleDlg();
 		m_pFstFreeStyleDlg->Build();
 		m_pFstFreeStyleDlg->SetVisibility(CATDlgShow);
+		
+		//设置主对话框隐藏
+		m_pFstAccessDlg->SetVisibility(CATDlgHide);
 
 		//
 		// 主对话框的消息响应
@@ -2606,6 +2609,9 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 		m_pFstKnowledgeBasedDlg->Build();
 		m_pFstKnowledgeBasedDlg->SetVisibility(CATDlgShow);
 
+		//设置主对话框隐藏
+		m_pFstAccessDlg->SetVisibility(CATDlgHide);
+
 		//
 		// 主对话框的消息响应
 		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg, 
@@ -2635,12 +2641,20 @@ void PrtFstDesignCmd::CloseFstFreeStyleDlgCB(CATCommand* cmd, CATNotification* e
 	m_pFstFreeStyleDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleDlg=NULL;
 
+	//
+	//设置主对话框显示
+	m_pFstAccessDlg->SetVisibility(CATDlgShow);
+
 }
 
 void PrtFstDesignCmd::FstFreeStyleDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	m_pFstFreeStyleDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleDlg=NULL;
+
+	//
+	//设置主对话框显示
+	m_pFstAccessDlg->SetVisibility(CATDlgShow);
 }
 
 //
@@ -2661,6 +2675,10 @@ void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotificati
 		m_pFstFreeStyleMainBoltDlg = new PrtFstFreeStyleMainBoltDlg();
 		m_pFstFreeStyleMainBoltDlg->Build();
 		m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgShow);
+
+		//
+		//设置前对话框隐藏
+		m_pFstFreeStyleDlg->SetVisibility(CATDlgHide);
 
 		//
 		// 主对话框的消息响应
@@ -2692,6 +2710,9 @@ void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotificati
 	else
 	{
 		m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgShow);
+		//
+		//设置前对话框隐藏
+		m_pFstFreeStyleDlg->SetVisibility(CATDlgHide);
 	}
 
 }
@@ -2704,6 +2725,11 @@ void PrtFstDesignCmd::CloseFstFreeStyleMainBoltDlgCB(CATCommand* cmd, CATNotific
 	//
 	m_pFstFreeStyleMainBoltDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleMainBoltDlg=NULL;
+
+	//
+	//设置前对话框显示
+	m_pFstFreeStyleDlg->SetVisibility(CATDlgShow);
+
 }
 
 void PrtFstDesignCmd::FstFreeStyleMainBoltDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
@@ -2711,6 +2737,10 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgLastStepPBCB(CATCommand* cmd, CATNo
 	//
 	m_pFstFreeStyleMainBoltDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleMainBoltDlg=NULL;
+
+	//
+	//设置前对话框显示
+	m_pFstFreeStyleDlg->SetVisibility(CATDlgShow);
 }
 
 void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
@@ -2729,6 +2759,10 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNo
 		m_pFstFreeStyleNutDlg = new PrtFstFreeStyleNutDlg();
 		m_pFstFreeStyleNutDlg->Build();
 		m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
+
+		//
+		//设置前对话框隐藏
+		m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgHide);
 
 		//
 		// 主对话框的消息响应
@@ -2760,6 +2794,10 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNo
 	else
 	{
 		m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
+
+		//
+		//设置前对话框隐藏
+		m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgHide);
 	}
 }
 
@@ -2771,6 +2809,10 @@ void PrtFstDesignCmd::CloseFstFreeStyleNutDlgCB(CATCommand* cmd, CATNotification
 	//
 	m_pFstFreeStyleNutDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleNutDlg=NULL;
+
+	//
+	//设置前对话框显示
+	m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgShow);
 }
 
 void PrtFstDesignCmd::FstFreeStyleNutDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
@@ -2778,6 +2820,10 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgLastStepPBCB(CATCommand* cmd, CATNotific
 	//
 	m_pFstFreeStyleNutDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleNutDlg=NULL;
+
+	//
+	//设置前对话框显示
+	m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgShow);
 }
 
 void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
@@ -2796,6 +2842,10 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgNextStepPBCB(CATCommand* cmd, CATNotific
 		m_pFstFreeStyleWasherDlg = new PrtFstFreeStyleWasherDlg();
 		m_pFstFreeStyleWasherDlg->Build();
 		m_pFstFreeStyleWasherDlg->SetVisibility(CATDlgShow);
+
+		//
+		//设置前对话框隐藏
+		m_pFstFreeStyleNutDlg->SetVisibility(CATDlgHide);
 
 		//
 		// 主对话框的消息响应
@@ -2827,6 +2877,10 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgNextStepPBCB(CATCommand* cmd, CATNotific
 	else
 	{
 		m_pFstFreeStyleWasherDlg->SetVisibility(CATDlgShow);
+		//
+		//设置前对话框隐藏
+		m_pFstFreeStyleNutDlg->SetVisibility(CATDlgHide);
+
 	}
 }
 
@@ -2838,6 +2892,9 @@ void PrtFstDesignCmd::CloseFstFreeStyleWasherDlgCB(CATCommand* cmd, CATNotificat
 {
 	m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleWasherDlg=NULL;
+	//
+	//设置前对话框显示
+	m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
 }
 void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
@@ -2846,6 +2903,10 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgLastStepPBCB(CATCommand* cmd, CATNoti
 {
 	m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleWasherDlg=NULL;
+
+	//
+	//设置前对话框显示
+	m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
 }
 void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
@@ -2853,10 +2914,30 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 	//获得需要的数据
 	
 
-
 	//
-	m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
-	m_pFstFreeStyleWasherDlg=NULL;
+	//设置前对话框显示
+	m_pFstAccessDlg->SetVisibility(CATDlgShow);
+
+	//--------------------------------------------
+	//关闭所有过程对话框
+	//--------------------------------------------
+	if (m_pFstFreeStyleMainBoltDlg != NULL)
+	{
+		m_pFstFreeStyleMainBoltDlg->RequestDelayedDestruction();
+		m_pFstFreeStyleMainBoltDlg=NULL;
+	}
+
+	if (m_pFstFreeStyleNutDlg != NULL)
+	{
+		m_pFstFreeStyleNutDlg->RequestDelayedDestruction();
+		m_pFstFreeStyleNutDlg=NULL;
+	}
+
+	if (m_pFstFreeStyleWasherDlg != NULL)
+	{
+		m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
+		m_pFstFreeStyleWasherDlg=NULL;
+	}
 }
 
 //
