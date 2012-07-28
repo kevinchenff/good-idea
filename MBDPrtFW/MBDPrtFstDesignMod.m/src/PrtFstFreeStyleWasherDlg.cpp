@@ -31,7 +31,7 @@
 PrtFstFreeStyleWasherDlg::PrtFstFreeStyleWasherDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstFreeStyleWasherDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstFreeStyleWasherDlg",CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -47,6 +47,7 @@ PrtFstFreeStyleWasherDlg::PrtFstFreeStyleWasherDlg() :
  _Combo04 = NULL;
  _Label05 = NULL;
  _Combo05 = NULL;
+ _GoToSearchPB = NULL;
  _Frame002 = NULL;
  _RearchResultsML = NULL;
  _Frame008 = NULL;
@@ -101,6 +102,7 @@ PrtFstFreeStyleWasherDlg::~PrtFstFreeStyleWasherDlg()
  _Combo04 = NULL;
  _Label05 = NULL;
  _Combo05 = NULL;
+ _GoToSearchPB = NULL;
  _Frame002 = NULL;
  _RearchResultsML = NULL;
  _Frame008 = NULL;
@@ -169,6 +171,8 @@ _Combo04 -> SetGridConstraints(3, 1, 1, 1, CATGRID_4SIDES);
 _Label05 -> SetGridConstraints(4, 0, 1, 1, CATGRID_4SIDES);
  _Combo05 = new CATDlgCombo(_Frame001, "Combo05", CATDlgCmbDropDown);
 _Combo05 -> SetGridConstraints(4, 1, 1, 1, CATGRID_4SIDES);
+ _GoToSearchPB = new CATDlgPushButton(_Frame001, "GoToSearchPB");
+_GoToSearchPB -> SetGridConstraints(5, 1, 1, 1, CATGRID_4SIDES);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
 _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridRowResizable(1,1);

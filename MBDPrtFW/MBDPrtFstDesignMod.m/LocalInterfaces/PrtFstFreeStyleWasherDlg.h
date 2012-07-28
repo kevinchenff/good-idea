@@ -44,12 +44,6 @@ class PrtFstFreeStyleWasherDlg: public CATDlgDialog
 
   void Build ();
 
-
-  protected:
-
-  private:
-
-
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
  CATDlgLabel*      _Label01;
@@ -62,6 +56,7 @@ class PrtFstFreeStyleWasherDlg: public CATDlgDialog
  CATDlgCombo*      _Combo04;
  CATDlgLabel*      _Label05;
  CATDlgCombo*      _Combo05;
+ CATDlgPushButton*      _GoToSearchPB;
  CATDlgFrame*      _Frame002;
  CATDlgMultiList*      _RearchResultsML;
  CATDlgFrame*      _Frame008;
@@ -75,24 +70,6 @@ class PrtFstFreeStyleWasherDlg: public CATDlgDialog
  CATDlgFrame*      _Frame004;
  CATDlgPushButton*      _NextStepPB;
  CATDlgPushButton*      _LastStepPB;
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
 

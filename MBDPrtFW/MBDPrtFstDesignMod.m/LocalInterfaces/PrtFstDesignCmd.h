@@ -37,6 +37,8 @@
 #include "PrtFstFreeStyleNutDlg.h"
 #include "PrtFstFreeStyleWasherDlg.h"
 
+#include "PrtFstKnowledgeMainBoltDlg.h"
+#include "PrtFstKnowledgeNutDlg.h"
 
 //----------------------------------------------------------------------
 
@@ -136,14 +138,40 @@ class PrtFstDesignCmd: public CATStateCommand
   //---------------------------------
   //对FreeStyle DLG的消息响应
   //---------------------------------
-  void OkFstFreeStyleDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseFstFreeStyleDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstFreeStyleDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+  //
+  //---------------------------------
+  //对FreeStyle MainBolt DLG的消息响应
+  //---------------------------------
+  void CloseFstFreeStyleMainBoltDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleMainBoltDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+  //---------------------------------
+  //对FreeStyle Nut DLG的消息响应
+  //---------------------------------
+  void CloseFstFreeStyleNutDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleNutDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleNutDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+  //---------------------------------
+  //对FreeStyle Washer DLG的消息响应
+  //---------------------------------
+  void CloseFstFreeStyleWasherDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleWasherDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
   //
   //---------------------------------
   //对KnowledgeBased DLG的消息响应
   //---------------------------------
-  void OkFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstKnowledgeBasedDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //
@@ -200,6 +228,11 @@ private:
 	PrtFstFreeStyleMainBoltDlg *m_pFstFreeStyleMainBoltDlg;
 	PrtFstFreeStyleNutDlg *m_pFstFreeStyleNutDlg;
 	PrtFstFreeStyleWasherDlg *m_pFstFreeStyleWasherDlg;
+
+	//
+	PrtFstKnowledgeMainBoltDlg *m_pFstKnowledgeMainBoltDlg;
+	PrtFstKnowledgeNutDlg *m_pFstKnowledgeNutDlg;
+	PrtFstFreeStyleWasherDlg *m_pFstKnowledgeWasherDlg;
 };
 
 //----------------------------------------------------------------------
