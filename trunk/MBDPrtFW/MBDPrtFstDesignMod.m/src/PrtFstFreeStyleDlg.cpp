@@ -22,8 +22,7 @@
 #include "CATICkeParm.h"
 #endif
 
-
-
+const int MAXCOUNT = 3;
 
 //-------------------------------------------------------------------------
 // Constructor
@@ -57,6 +56,18 @@ PrtFstFreeStyleDlg::PrtFstFreeStyleDlg() :
  _LastStepPB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 
+ //初始化属性显示名称
+ m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件名称");
+ m_lstStrPropertyName[2]=CATUnicodeString("头部类型");
+ m_lstStrPropertyName[3]=CATUnicodeString("材料");
+ m_lstStrPropertyName[4]=CATUnicodeString("表面处理");
+ m_lstStrPropertyName[5]=CATUnicodeString("边距"); 
+ m_lstStrPropertyName[6]=CATUnicodeString("间距");
+ m_lstStrPropertyName[7]=CATUnicodeString("单位制");
+ m_lstStrPropertyName[8]=CATUnicodeString("备注");
+ //
+ m_IChoosedIndex = 0;
 
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
@@ -91,8 +102,6 @@ PrtFstFreeStyleDlg::~PrtFstFreeStyleDlg()
  _LastStepPB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 
-
-//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
 
@@ -139,15 +148,15 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridRowResizable(0,1);
  _Frame002 -> SetGridColumnResizable(0,1);
  _SearchResultsML = new CATDlgMultiList(_Frame002, "SearchResultsML");
- CATUnicodeString SearchResultsMLTitles [ 6 ];
+ /*CATUnicodeString SearchResultsMLTitles [ 6 ];
  SearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle1");
  SearchResultsMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle2");
  SearchResultsMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle3");
  SearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle4");
  SearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle5");
- SearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle6");
- _SearchResultsML -> SetColumnTitles(6, SearchResultsMLTitles);
- _SearchResultsML -> SetVisibleColumnCount( 6 );
+ SearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle6");*/
+ _SearchResultsML -> SetColumnTitles(9, m_lstStrPropertyName);
+ _SearchResultsML -> SetVisibleColumnCount( 9 );
 _SearchResultsML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame004 = new CATDlgFrame(this, "Frame004", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame004 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
@@ -158,11 +167,270 @@ _NextStepPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 _LastStepPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
+//初始化三种类型的主紧固件查询条件，分别是：铆钉 螺栓 螺钉
+//记录标注号索引
+CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue01).Append("F_RIVET_STD_CODE_INFO");
+(*LstStrAtrrValue01).Append("F_BOLT_STD_CODE_INFO");
+(*LstStrAtrrValue01).Append("F_SCREW_STD_CODE_INFO");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue01);
+//记录规格号索引
+CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue02).Append("F_RIVET_SPEC_INFO");
+(*LstStrAtrrValue02).Append("F_BOLT_SPEC_INFO");
+(*LstStrAtrrValue02).Append("F_SCREW_SPEC_INFO");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue02);
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_HEAD_TYPE");
+(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_MATERIAL");
+(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_SURFACE_TREATMENT");
+(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_FASTENER_NAME");
+(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue03);
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_HEAD_TYPE");
+(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_MATERIAL");
+(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_SURFACE_TREATMENT");
+(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_FASTENER_NAME");
+(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue04);
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue05 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_HEAD_TYPE");
+(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_MATERIAL");
+(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_SURFACE_TREATMENT");
+(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_FASTENER_NAME");
+(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue05);
 
-//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+//
+CATUnicodeString strComboName01(" 请选择： < “主紧固件类型” >");
+_Combo01->SetLine(strComboName01);
+_Combo01->SetLine("铆钉");
+_Combo01->SetLine("螺栓");
+_Combo01->SetLine("螺钉");
+
+//初始化显示界面
+CATUnicodeString strComboName02(" 请选择： < “头部类型” >");
+CATUnicodeString strComboName03(" 请选择： < “材料名称” >");
+CATUnicodeString strComboName04(" 请选择： < “表面处理方法” >");
+
+m_alsStrCurrentWBSShow.Append(strComboName02);
+m_alsStrCurrentWBSShow.Append(strComboName03);
+m_alsStrCurrentWBSShow.Append(strComboName04);
+
+//加入所有COMBO到列表中
+//m_ItemComboList.Append(_SearchCombo01);
+m_ItemComboList.Append(_Combo02);
+m_ItemComboList.Append(_Combo03);
+m_ItemComboList.Append(_Combo04);
+//
+m_ItemComboList.Append(_Editor01);
+m_ItemComboList.Append(_Editor02);
+//
+
+//
+for (int i=1; i<=MAXCOUNT; i++)
+{
+	((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
+}
+
+//
+
+
+//对第一个COMBO设置单独的响应函数
+AddAnalyseNotificationCB (_Combo01,_Combo01->GetComboSelectNotification(),
+						  (CATCommandMethod)&PrtFstFreeStyleDlg::MainFstComboItemCB,NULL);
+
+//
+for (int i = 1; i <= MAXCOUNT; i ++)
+{
+	AddAnalyseNotificationCB ((CATDlgCombo*)m_ItemComboList[i],((CATDlgCombo*)m_ItemComboList[i])->GetComboSelectNotification(),
+		(CATCommandMethod)&PrtFstFreeStyleDlg::ComboItemSearchCB,NULL);
+}
+
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
 
 }
+
+//初始化选择框
+CATBoolean PrtFstFreeStyleDlg::MainFstComboItemCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//获得第一个COMBO所选的内容
+	int tempIndex;
+	tempIndex = _Combo01->GetSelect();
+	//
+	m_IChoosedIndex=tempIndex;
+	//
+	if (m_IChoosedIndex != 0)
+	{
+		//
+		CATLISTV(CATUnicodeString) * TempLstStr01 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[1];
+		m_StrCurrentDataBaseName = (* TempLstStr01)[m_IChoosedIndex];
+		//
+		CATLISTV(CATUnicodeString) * TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[m_IChoosedIndex+2];
+		m_alsStrCurrentWBSItem = *TempLstStr02;
+		
+
+		//
+		//显示COMBO控件下拉框信息
+		for (int i = 1; i <= m_ItemComboList.Size()-2; i ++)
+		{
+			CATListValCATUnicodeString astrKeyWords;
+
+			CATUnicodeString strWBSItem = CATUnicodeString("DropdownList=") + m_alsStrCurrentWBSItem[i];
+			astrKeyWords.Append(strWBSItem);
+
+			SetSearchItemComboList(astrKeyWords,(CATDlgCombo*)m_ItemComboList[i]);
+		}
+	}
+
+	return TRUE;
+}
+
+CATBoolean PrtFstFreeStyleDlg::ComboItemSearchCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//获得当前combo列表位置
+	int comboIndex = m_ItemComboList.Locate(cmd);
+	//cout<<"用户点选的是"<<comboIndex<<endl;
+
+	//搜索关键字列表
+	CATLISTV(CATUnicodeString) aStrComboItemSelected;
+	aStrComboItemSelected.Append(""); //添加一个空字符，占住位置，后面再修改它
+
+	//获取搜索之前的COMBO的所有选择参数
+	//采用循环方式
+	for (int i = 1; i <= comboIndex; i++)
+	{
+		int tempIndex;
+		tempIndex = ((CATDlgCombo*)m_ItemComboList[i])->GetSelect();
+
+		if (tempIndex != 0)
+		{
+			CATUnicodeString strTempIndexItem ;
+			((CATDlgCombo*)m_ItemComboList[i])->GetLine(strTempIndexItem,tempIndex);
+
+			//构造赋值形式的字符串
+			CATUnicodeString strTemp = m_alsStrCurrentWBSItem[i] + "=" + strTempIndexItem;
+			aStrComboItemSelected.Append(strTemp);
+		}
+
+	}
+
+	//更新选择该COMBO之后的COMBO的显示情况
+	//减去2的原因，最后2个为EDITOR指针，非combo
+	for (int j = comboIndex+1; j <= m_ItemComboList.Size() - 2; j++)
+	{
+		CATUnicodeString strSearch = CATUnicodeString("DropdownList=") + m_alsStrCurrentWBSItem[j];
+		aStrComboItemSelected[1] = strSearch;
+
+		//调用函数清除并添加新内容
+		((CATDlgCombo*) m_ItemComboList[j])->ClearLine();
+		CATUnicodeString strComboName = m_alsStrCurrentWBSShow[j];
+		((CATDlgCombo*) m_ItemComboList[j])->SetLine(strComboName);
+		HRESULT hr = SetSearchItemComboList(aStrComboItemSelected,(CATDlgCombo*)m_ItemComboList[j]);
+	}
+
+	return TRUE;
+}
+
+//============================================================
+// [4/27/2011 ev5adm]
+// 设置搜索条件combo下拉框的显示内容
+//============================================================
+HRESULT PrtFstFreeStyleDlg::SetSearchItemComboList(CATListValCATUnicodeString astrKeyWords,CATDlgCombo * piDlgCombo)
+{
+	HRESULT hr = S_OK;
+	//清空
+	//存储搜索得到的combo value 
+	CATListValCATUnicodeString strListOfSearchResult;
+	CATListValCATUnicodeString astrCombolistValue;
+	//调用查询接口
+	hr = MBDWebservice::QueryDataWebService(astrKeyWords,strListOfSearchResult);
+
+	//过滤需要的信息
+	if (SUCCEEDED(hr))
+	{
+		//获得数据条目，及每条目数据个数，分别对应第二、第三，数据内容从第六条开始
+		CATUnicodeString strCount=strListOfSearchResult[2];
+		CATUnicodeString strCutNumb=strListOfSearchResult[3];
+		double dCount=0,dCutNumb=1;
+		strCount.ConvertToNum(&dCount);
+		strCutNumb.ConvertToNum(&dCutNumb);
+
+		//计算以3为倍数的循环次数
+		int cyclecount = (int)((strListOfSearchResult.Size()-5)/dCutNumb);
+		//
+		if (cyclecount==dCount && dCutNumb==1)
+		{
+			if (cyclecount >= 1)
+			{
+
+				for (int i = 1; i <= cyclecount; i++)
+				{
+					astrCombolistValue.Append(strListOfSearchResult[i+5]);
+				}
+
+			}
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	//显示在combo下拉列表中
+	for (int j = 1; j <= astrCombolistValue.Size(); j++)
+	{
+		piDlgCombo->SetLine(astrCombolistValue[j]);
+	}
+
+	return hr;
+}
+
+//获取所有WBSItem信息
+void PrtFstFreeStyleDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStrSearchItems)
+{
+	//获取所选查询库信息
+	CATUnicodeString strDatabase("");
+	strDatabase = CATUnicodeString("DatabaseName=") + m_StrCurrentDataBaseName; 
+	listStrSearchItems.Append(strDatabase);
+
+	//获取所有设置信息
+	int count = m_ItemComboList.Size();
+
+	for (int i = 1; i <= count-1; i ++)
+	{
+		int selectComboItem = ((CATDlgCombo*) m_ItemComboList[i])->GetSelect();
+
+		if (selectComboItem != 0)
+		{
+			CATUnicodeString strComboValue("");
+			((CATDlgCombo*) m_ItemComboList[i])->GetLine(strComboValue,selectComboItem);
+
+			CATUnicodeString strValue("");
+			strValue = m_alsStrCurrentWBSItem[i] + "=" + strComboValue;
+			listStrSearchItems.Append(strValue);
+		}
+
+
+	}
+
+	// Append Editor Values
+	CATUnicodeString strEditorValue("");
+	strEditorValue = ((CATDlgEditor*) m_ItemComboList[count])->GetText();
+	if (strEditorValue != "")
+	{
+		strEditorValue = m_alsStrCurrentWBSItem[count] + "=" + strEditorValue;
+		listStrSearchItems.Append(strEditorValue);
+	}
+	else
+	{
+		strEditorValue = m_alsStrCurrentWBSItem[count] + "=########";
+		listStrSearchItems.Append(strEditorValue);
+	}
+
+}
+
 
