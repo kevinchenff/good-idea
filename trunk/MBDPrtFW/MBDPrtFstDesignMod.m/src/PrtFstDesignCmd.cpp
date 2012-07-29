@@ -1036,7 +1036,6 @@ CATBoolean PrtFstDesignCmd::ChoosePrds( void *UsefulData)
 				if (m_lstSpecPrds[i] == spSpecOnSelection)
 				{
 					m_lstSpecPrds.RemoveValue(spSpecOnSelection);
-					PrtService::RemoveHSO(spSpecOnSelection);
 					existFlag = TRUE;
 					break;
 				}
@@ -1083,6 +1082,10 @@ CATBoolean PrtFstDesignCmd::ChoosePrds( void *UsefulData)
 	m_pDlg->_PointsSL->ClearSelect();
 	m_pDlg->_SecondSurfSL->ClearSelect();
 	m_pDlg->_FirstSurfSL->ClearSelect();
+
+	//
+	PrtService::ClearHSO();
+	PrtService::HighLightObjLst(m_lstSpecPrds);
 
 	//
 	ChangeOKApplyState();
