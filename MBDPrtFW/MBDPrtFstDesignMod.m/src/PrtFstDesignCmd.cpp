@@ -1036,6 +1036,7 @@ CATBoolean PrtFstDesignCmd::ChoosePrds( void *UsefulData)
 				if (m_lstSpecPrds[i] == spSpecOnSelection)
 				{
 					m_lstSpecPrds.RemoveValue(spSpecOnSelection);
+					PrtService::RemoveHSO(spSpecOnSelection);
 					existFlag = TRUE;
 					break;
 				}
