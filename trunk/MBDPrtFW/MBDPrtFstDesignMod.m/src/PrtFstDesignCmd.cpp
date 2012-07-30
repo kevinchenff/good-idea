@@ -2580,6 +2580,12 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 		//设置主对话框隐藏
 		m_pFstAccessDlg->SetVisibility(CATDlgHide);
 
+		//对按钮状态的控制
+		m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
+
+		//对按钮状态的控制
+		m_pFstFreeStyleDlg->_GoToSearchPB->SetSensitivity(CATDlgDisable);
+
 		//
 		// 主对话框的消息响应
 		AddAnalyseNotificationCB (m_pFstFreeStyleDlg, 
@@ -2606,6 +2612,13 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 			m_pFstFreeStyleDlg->_NextStepPB->GetPushBActivateNotification(),
 			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB,
 			NULL);
+
+		//ML选择的响应
+		AddAnalyseNotificationCB (m_pFstFreeStyleDlg->_SearchResultsML, 
+			m_pFstFreeStyleDlg->_SearchResultsML->GetListSelectNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleDlgSearchResultsMLCB,
+			NULL);
+
 	} 
 	else
 	{
@@ -2665,7 +2678,29 @@ void PrtFstDesignCmd::FstFreeStyleDlgLastStepPBCB(CATCommand* cmd, CATNotificati
 //响应函数：计算自由选择模式主紧固件规格信息
 void PrtFstDesignCmd::FstFreeStyleDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//
+	
+}
 
+//响应函数：ML选择单项内容
+void PrtFstDesignCmd::FstFreeStyleDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//获取所选信息
+	int  iSize = m_pFstFreeStyleDlg->_SearchResultsML->GetSelectCount();
+	if (iSize != 0)
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pFstFreeStyleDlg->_SearchResultsML->GetSelect(ioTabRow,iSize);
+
+		//对按钮状态的控制
+		m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgEnable);
+	}
+	else
+	{
+		//对按钮状态的控制
+		m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
+	}
 }
 //-------------------------------------------------------------
 //显示并初始化下一个对话框，m_pFstFreeStyleMainBoltDlg
@@ -2958,5 +2993,5 @@ void PrtFstDesignCmd::CloseFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotificati
 void PrtFstDesignCmd::FstKnowledgeBasedDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
-
+	
 }

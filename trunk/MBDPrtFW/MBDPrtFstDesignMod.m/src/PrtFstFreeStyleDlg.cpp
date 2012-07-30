@@ -287,6 +287,22 @@ CATBoolean PrtFstFreeStyleDlg::MainFstComboItemCB(CATCommand* cmd, CATNotificati
 
 			SetSearchItemComboList(astrKeyWords,(CATDlgCombo*)m_ItemComboList[i]);
 		}
+		
+		//对按钮状态的控制
+		_GoToSearchPB->SetSensitivity(CATDlgEnable);
+	}
+	else//如果为零的时候，清除所有下拉框信息
+	{
+		//
+		for (int i=1; i<=MAXCOUNT; i++)
+		{
+			((CATDlgCombo*)m_ItemComboList[i])->ClearLine();
+			((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
+		}
+
+		//对按钮状态的控制
+		_GoToSearchPB->SetSensitivity(CATDlgDisable);
+
 	}
 
 	return TRUE;
