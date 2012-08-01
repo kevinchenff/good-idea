@@ -63,6 +63,12 @@ class PrtFstFreeStyleMainBoltDlg: public CATDlgDialog
  CATDlgPushButton*      _LastStepPB;
  CATDlgPushButton*      _NextStepPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
+
+ //
+ // Ù–‘Õ∑√˚≥∆
+ CATUnicodeString m_lstStrPropertyName[9];
+
+
 };
 
 //----------------------------------------------------------------------

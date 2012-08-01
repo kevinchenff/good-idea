@@ -152,7 +152,8 @@ class PrtFstDesignCmd: public CATStateCommand
   void FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstFreeStyleMainBoltDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
-
+  void FstFreeStyleMainBoltDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  
   //---------------------------------
   //对FreeStyle Nut DLG的消息响应
   //---------------------------------
