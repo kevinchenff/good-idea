@@ -2581,7 +2581,7 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 		m_pFstAccessDlg->SetVisibility(CATDlgHide);
 
 		//对按钮状态的控制
-		m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
+		//m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
 
 		//对按钮状态的控制
 		m_pFstFreeStyleDlg->_GoToSearchPB->SetSensitivity(CATDlgDisable);
@@ -2714,10 +2714,29 @@ void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotificati
 		m_pFstFreeStyleMainBoltDlg = new PrtFstFreeStyleMainBoltDlg();
 		m_pFstFreeStyleMainBoltDlg->Build();
 		m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgShow);
+		
+		//显示计算的相关参数信息
+		CATUnicodeString strValue01;
+		strValue01.BuildFromNum(m_dJstThickMax);
+		strValue01 += "mm";
+		m_pFstFreeStyleMainBoltDlg->_MaxLayerThicknessEditor->SetText(strValue01);
+		//
+		CATUnicodeString strValue02;
+		strValue02.BuildFromNum(m_dJstThickMin);
+		strValue02 += "mm";
+		m_pFstFreeStyleMainBoltDlg->_MinLayerThicknessEditor->SetText(strValue02);
+		//
+		CATUnicodeString strValue03;
+		strValue03.BuildFromNum(m_dFirstPrdThickMax);
+		strValue03 += "mm";
+		m_pFstFreeStyleMainBoltDlg->_FirstLayerThicknessEditor->SetText(strValue03);
 
 		//
 		//设置前对话框隐藏
 		m_pFstFreeStyleDlg->SetVisibility(CATDlgHide);
+
+		//对按钮状态的控制
+		//m_pFstFreeStyleMainBoltDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
 
 		//
 		// 主对话框的消息响应
@@ -2744,6 +2763,13 @@ void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotificati
 		AddAnalyseNotificationCB (m_pFstFreeStyleMainBoltDlg->_NextStepPB, 
 			m_pFstFreeStyleMainBoltDlg->_NextStepPB->GetPushBActivateNotification(),
 			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB,
+			NULL);
+
+		//
+		//ML选择的响应
+		AddAnalyseNotificationCB (m_pFstFreeStyleMainBoltDlg->_SearchResultML, 
+			m_pFstFreeStyleMainBoltDlg->_SearchResultML->GetListSelectNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleMainBoltDlgSearchResultsMLCB,
 			NULL);
 	}
 	else
@@ -2782,6 +2808,28 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgLastStepPBCB(CATCommand* cmd, CATNo
 	m_pFstFreeStyleDlg->SetVisibility(CATDlgShow);
 }
 
+//
+void PrtFstDesignCmd::FstFreeStyleMainBoltDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	//获取所选信息
+	int  iSize = m_pFstFreeStyleMainBoltDlg->_SearchResultML->GetSelectCount();
+	if (iSize != 0)
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pFstFreeStyleMainBoltDlg->_SearchResultML->GetSelect(ioTabRow,iSize);
+
+		//对按钮状态的控制
+		m_pFstFreeStyleMainBoltDlg->_NextStepPB->SetSensitivity(CATDlgEnable);
+	}
+	else
+	{
+		//对按钮状态的控制
+		m_pFstFreeStyleMainBoltDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
+	}
+}
+
 void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
@@ -2792,6 +2840,85 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 //--------------------------------------------------------------------------------------------
 void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//写判断方法，如果非螺栓，则不显示螺母 垫圈向导
+/*  if (m_pFstFreeStyleDlg->m_IChoosedIndex != 2) //如果是铆钉 螺钉直接获取所选信息，退出向导
+	{
+
+		//获取所需信息
+
+
+
+
+		//
+		//设置前对话框显示
+		m_pFstAccessDlg->SetVisibility(CATDlgShow);
+
+		//--------------------------------------------
+		//关闭所有过程对话框
+		//--------------------------------------------
+		if (m_pFstFreeStyleDlg != NULL)
+		{
+			m_pFstFreeStyleDlg->RequestDelayedDestruction();
+			m_pFstFreeStyleDlg=NULL;
+		}
+
+		if (m_pFstFreeStyleMainBoltDlg != NULL)
+		{
+			m_pFstFreeStyleMainBoltDlg->RequestDelayedDestruction();
+			m_pFstFreeStyleMainBoltDlg=NULL;
+		}
+	} 
+	else 
+	{
+		//
+		if (m_pFstFreeStyleNutDlg == NULL)
+		{
+			m_pFstFreeStyleNutDlg = new PrtFstFreeStyleNutDlg();
+			m_pFstFreeStyleNutDlg->Build();
+			m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
+
+			//
+			//设置前对话框隐藏
+			m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgHide);
+
+			//
+			// 主对话框的消息响应
+			AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg, 
+				m_pFstFreeStyleNutDlg->GetWindCloseNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleNutDlgCB,
+				NULL);
+
+			AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg, 
+				m_pFstFreeStyleNutDlg->GetDiaCLOSENotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleNutDlgCB,
+				NULL);
+			//
+			AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg->_GoToSearchPB, 
+				m_pFstFreeStyleNutDlg->_GoToSearchPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB,
+				NULL);
+
+			//
+			AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg->_LastStepPB, 
+				m_pFstFreeStyleNutDlg->_LastStepPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleNutDlgLastStepPBCB,
+				NULL);
+			AddAnalyseNotificationCB (m_pFstFreeStyleNutDlg->_NextStepPB, 
+				m_pFstFreeStyleNutDlg->_NextStepPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleNutDlgNextStepPBCB,
+				NULL);
+		}
+		else
+		{
+			m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
+
+			//
+			//设置前对话框隐藏
+			m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgHide);
+		}
+	}
+	*/
+
 	//
 	if (m_pFstFreeStyleNutDlg == NULL)
 	{
@@ -2838,6 +2965,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNo
 		//设置前对话框隐藏
 		m_pFstFreeStyleMainBoltDlg->SetVisibility(CATDlgHide);
 	}
+	
 }
 
 //---------------------------------
@@ -2960,6 +3088,12 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 	//--------------------------------------------
 	//关闭所有过程对话框
 	//--------------------------------------------
+	if (m_pFstFreeStyleDlg != NULL)
+	{
+		m_pFstFreeStyleDlg->RequestDelayedDestruction();
+		m_pFstFreeStyleDlg=NULL;
+	}
+
 	if (m_pFstFreeStyleMainBoltDlg != NULL)
 	{
 		m_pFstFreeStyleMainBoltDlg->RequestDelayedDestruction();

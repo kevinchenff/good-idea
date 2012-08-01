@@ -71,6 +71,7 @@ CATDlgLabel Label04
 CATDlgSpinner MinSpinner
 {
   FATHER = Frame002;
+  STYLE = CATDlgSpnEntry;
   MIN = 0.000000;
   MAX = 10.000000;
   STEP = 10.000000;
@@ -80,6 +81,7 @@ CATDlgSpinner MinSpinner
 CATDlgSpinner MaxSpinner
 {
   FATHER = Frame002;
+  STYLE = CATDlgSpnEntry;
   MIN = 0.000000;
   MAX = 10.000000;
   STEP = 10.000000;
