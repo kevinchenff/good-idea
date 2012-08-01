@@ -102,6 +102,13 @@ PrtFstFreeStyleDlg::~PrtFstFreeStyleDlg()
  _LastStepPB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 
+ //Çå³ýÄÚ´æ
+ for (int k=1;k<=m_plsStrCurrentWBSItem.Size();k++)
+ {
+	 CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[k];
+	 delete TempLstStr;
+ }
+
 }
 
 
