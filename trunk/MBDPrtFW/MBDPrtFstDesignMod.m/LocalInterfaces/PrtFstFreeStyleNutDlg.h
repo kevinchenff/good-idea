@@ -20,6 +20,11 @@
 
 #include "CATDlgDialog.h"
 #include "CATDlgInclude.h"
+#include "CATLISTPIUnknown.h"
+#include "CATListOfCATUnicodeString.h"
+#include "MBDWebservice.h"
+#include "iostream"
+using namespace std;
 
 //----------------------------------------------------------------------
 
@@ -44,6 +49,15 @@ class PrtFstFreeStyleNutDlg: public CATDlgDialog
 
   void Build ();
 
+  //COMBO按钮选择的响应
+  CATBoolean ComboItemSearchCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  CATBoolean MainFstComboItemCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+  //对每一个COMBO信息进行更新
+  HRESULT SetSearchItemComboList(CATListValCATUnicodeString astrKeyWords,CATDlgCombo * piDlgCombo);
+  //获取所有WBSItem信息
+  void GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStrSearchItems);
+
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
  CATDlgLabel*      _Label01;
@@ -64,14 +78,22 @@ class PrtFstFreeStyleNutDlg: public CATDlgDialog
  CATDlgPushButton*      _LastStepPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
+ //
+ //定义COMBO列表
+ CATLISTP(IUnknown)  m_ItemComboList;
 
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
+ //记录WEBSERVICE ITEMS
+ CATListPV m_plsStrCurrentWBSItem;
+ CATLISTV(CATUnicodeString) m_alsStrCurrentWBSItem;
+ //记录combo初始化名称
+ CATLISTV(CATUnicodeString) m_alsStrCurrentWBSShow;
 
+ //属性头名称
+ CATUnicodeString m_lstStrPropertyName[9];
+ //
+ int m_IChoosedIndex;
+ CATUnicodeString m_StrCurrentDataBaseName; 
 
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
 
 //----------------------------------------------------------------------
