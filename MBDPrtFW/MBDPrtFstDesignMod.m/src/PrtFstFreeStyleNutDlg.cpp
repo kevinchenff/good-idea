@@ -169,7 +169,7 @@ _NextStepPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 _LastStepPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
-//初始化三种类型的主紧固件查询条件，分别是：铆钉 螺栓 螺钉
+//初始化三种类型的主紧固件查询条件，分别是：普通螺母、单耳、双耳、角型
 //记录标注号索引
 CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
 (*LstStrAtrrValue01).Append("F_NUT_NORMAL_STD_CODE_INFO");
@@ -185,20 +185,32 @@ CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)()
 (*LstStrAtrrValue02).Append("F_NUT_CORNER_SHAPE_PSL_SPEC");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue02);
 //
-CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_HEAD_TYPE");
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_MATERIAL");
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_SURFACE_TREATMENT");
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_FASTENER_NAME");
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_FASTENER_MARK");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue03);
+CATLISTV(CATUnicodeString) *LstStrAtrrValue031 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue031).Append("F_NUT_NORMAL_STD_CODE_INFO_MATERIAL");
+(*LstStrAtrrValue031).Append("F_NUT_NORMAL_STD_CODE_INFO_SURFACE_TREATMENT");
+(*LstStrAtrrValue031).Append("F_NUT_NORMAL_STD_CODE_INFO_FASTENER_NAME");
+(*LstStrAtrrValue031).Append("F_NUT_NORMAL_STD_CODE_INFO_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue031);
+////
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue032 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_FASTENER_MARK");
+(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_FASTENER_SPECIFICATIONS");
+(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_NOMINAL_DIAMETER");
+(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_TOTAL_THICKNESS");
+//
+(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_STRUCTURE_THICKNESS");
+(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_PLATE_THICKNESS");
+(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_NOMINAL_DIAMETER");
+(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_TOTAL_THICKNESS");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue032);
+
 //
 CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_HEAD_TYPE");
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_MATERIAL");
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_SURFACE_TREATMENT");
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_FASTENER_NAME");
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_FASTENER_MARK");
+(*LstStrAtrrValue04).Append("F_NUT_SINGLE_EAR_PSL_STD_MATERIAL");
+(*LstStrAtrrValue04).Append("F_NUT_SINGLE_EAR_PSL_STD_SURFACE_TREATMENT");
+(*LstStrAtrrValue04).Append("F_NUT_SINGLE_EAR_PSL_STD_FASTENER_NAME");
+(*LstStrAtrrValue04).Append("F_NUT_SINGLE_EAR_PSL_STD_FASTENER_MARK");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue04);
 //
 CATLISTV(CATUnicodeString) *LstStrAtrrValue05 = new CATLISTV(CATUnicodeString)();
@@ -218,14 +230,12 @@ _Combo01->SetLine("双耳托板自锁螺母");
 _Combo01->SetLine("角形托板自锁螺母");
 
 //初始化显示界面
-CATUnicodeString strComboName02(" 请选择： < “头部类型” >");
 CATUnicodeString strComboName03(" 请选择： < “材料名称” >");
 CATUnicodeString strComboName04(" 请选择： < “表面处理方法” >");
 CATUnicodeString strComboName05(" 请选择： < “螺母名称” >");
 CATUnicodeString strComboName06(" 请选择： < “螺母规格号” >");
 
 
-m_alsStrCurrentWBSShow.Append(strComboName02);
 m_alsStrCurrentWBSShow.Append(strComboName03);
 m_alsStrCurrentWBSShow.Append(strComboName04);
 m_alsStrCurrentWBSShow.Append(strComboName05);
