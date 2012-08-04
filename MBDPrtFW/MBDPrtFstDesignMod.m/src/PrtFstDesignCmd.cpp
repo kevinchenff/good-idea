@@ -49,6 +49,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
 	m_piDoc = PrtService::GetPrtDocument();
 	PrtService::GetPrdNumberFormDoc(m_piDoc,m_strDocName);
 
+	//
 	m_piEditor = CATFrmEditor::GetCurrentEditor();
 	if (NULL != m_piEditor)
 	{
