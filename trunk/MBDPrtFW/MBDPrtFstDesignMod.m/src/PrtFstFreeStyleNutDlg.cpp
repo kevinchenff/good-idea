@@ -195,31 +195,46 @@ m_plsStrCurrentWBSItem.Append(LstStrAtrrValue031);
 //
 CATLISTV(CATUnicodeString) *LstStrAtrrValue032 = new CATLISTV(CATUnicodeString)();
 (*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_FASTENER_MARK");
-(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_FASTENER_SPECIFICATIONS");
-(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_NOMINAL_DIAMETER");
-(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_TOTAL_THICKNESS");
-//
-(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_STRUCTURE_THICKNESS");
-(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_PLATE_THICKNESS");
-(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_NOMINAL_DIAMETER");
-(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_TOTAL_THICKNESS");
+(*LstStrAtrrValue032).Append("F_NUT_NORMAL_SPEC_INFO_DIAMETER");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue032);
 
 //
-CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue04).Append("F_NUT_SINGLE_EAR_PSL_STD_MATERIAL");
-(*LstStrAtrrValue04).Append("F_NUT_SINGLE_EAR_PSL_STD_SURFACE_TREATMENT");
-(*LstStrAtrrValue04).Append("F_NUT_SINGLE_EAR_PSL_STD_FASTENER_NAME");
-(*LstStrAtrrValue04).Append("F_NUT_SINGLE_EAR_PSL_STD_FASTENER_MARK");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue04);
+CATLISTV(CATUnicodeString) *LstStrAtrrValue041 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue041).Append("F_NUT_SINGLE_EAR_PSL_STD_MATERIAL");
+(*LstStrAtrrValue041).Append("F_NUT_SINGLE_EAR_PSL_STD_SURFACE_TREATMENT");
+(*LstStrAtrrValue041).Append("F_NUT_SINGLE_EAR_PSL_STD_FASTENER_NAME");
+(*LstStrAtrrValue041).Append("F_NUT_SINGLE_EAR_PSL_STD_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue041);
+
 //
-CATLISTV(CATUnicodeString) *LstStrAtrrValue05 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_HEAD_TYPE");
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_MATERIAL");
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_SURFACE_TREATMENT");
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_FASTENER_NAME");
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_FASTENER_MARK");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue05);
+CATLISTV(CATUnicodeString) *LstStrAtrrValue042 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue042).Append("F_NUT_SINGLE_EAR_PSL_SPEC_FASTENER_MARK");
+(*LstStrAtrrValue042).Append("F_NUT_SINGLE_EAR_PSL_SPEC_NOMINAL_DIAMETER");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue042);
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue051 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue051).Append("F_NUT_DOUBLE_EAR_PSL_STD_MATERIAL");
+(*LstStrAtrrValue051).Append("F_NUT_DOUBLE_EAR_PSL_STD_SURFACE_TREATMENT");
+(*LstStrAtrrValue051).Append("F_NUT_DOUBLE_EAR_PSL_STD_FASTENER_NAME");
+(*LstStrAtrrValue051).Append("F_NUT_DOUBLE_EAR_PSL_STD_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue051);
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue052 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue052).Append("F_NUT_DOUBLE_EAR_PSL_SPEC_FASTENER_MARK");
+(*LstStrAtrrValue052).Append("F_NUT_DOUBLE_EAR_PSL_SPEC_NOMINAL_DIAMETER");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue052);
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue061 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue061).Append("F_NUT_CORNER_SHAPE_PSL_STD_MATERIAL");
+(*LstStrAtrrValue061).Append("F_NUT_CORNER_SHAPE_PSL_STD_SURFACE_TREATMENT");
+(*LstStrAtrrValue061).Append("F_NUT_CORNER_SHAPE_PSL_STD_FASTENER_NAME");
+(*LstStrAtrrValue061).Append("F_NUT_CORNER_SHAPE_PSL_STD_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue061);
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue062 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue062).Append("F_NUT_CORNER_SHAPE_PSL_SPEC_FASTENER_MARK");
+(*LstStrAtrrValue062).Append("F_NUT_CORNER_SHAPE_PSL_SPEC_NOMINAL_DIAMETER");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue062);
 
 //
 CATUnicodeString strComboName01(" 请选择： < “螺母类型” >");
@@ -290,9 +305,8 @@ CATBoolean PrtFstFreeStyleNutDlg::MainFstComboItemCB(CATCommand* cmd, CATNotific
 		CATLISTV(CATUnicodeString) * TempLstStr01 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[1];
 		m_StrCurrentDataBaseName = (* TempLstStr01)[m_IChoosedIndex];
 		//
-		CATLISTV(CATUnicodeString) * TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[m_IChoosedIndex+2];
+		CATLISTV(CATUnicodeString) * TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[m_IChoosedIndex*2-1+2];
 		m_alsStrCurrentWBSItem = *TempLstStr02;
-
 
 		//
 		//显示COMBO控件下拉框信息
@@ -320,7 +334,6 @@ CATBoolean PrtFstFreeStyleNutDlg::MainFstComboItemCB(CATCommand* cmd, CATNotific
 
 		//对按钮状态的控制
 		_GoToSearchPB->SetSensitivity(CATDlgDisable);
-
 	}
 
 	return TRUE;

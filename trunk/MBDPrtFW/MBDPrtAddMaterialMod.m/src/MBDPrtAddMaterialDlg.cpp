@@ -436,11 +436,11 @@ void MBDPrtAddMaterialDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStr
 		strEditorValue = m_alsStrCurrentWBSItem[count] + "=" + strEditorValue;
 		listStrSearchItems.Append(strEditorValue);
 	}
-	else
+	/*else
 	{
 		strEditorValue = m_alsStrCurrentWBSItem[count] + "=########";
 		listStrSearchItems.Append(strEditorValue);
-	}
+	}*/
 
 }
 
