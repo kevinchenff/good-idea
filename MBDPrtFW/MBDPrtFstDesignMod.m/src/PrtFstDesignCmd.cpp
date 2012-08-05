@@ -2582,7 +2582,7 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 		m_pFstAccessDlg->SetVisibility(CATDlgHide);
 
 		//对按钮状态的控制
-		//m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
+		m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
 
 		//对按钮状态的控制
 		m_pFstFreeStyleDlg->_GoToSearchPB->SetSensitivity(CATDlgDisable);
@@ -2680,7 +2680,72 @@ void PrtFstDesignCmd::FstFreeStyleDlgLastStepPBCB(CATCommand* cmd, CATNotificati
 void PrtFstDesignCmd::FstFreeStyleDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
+	//初始化状态
+	//
+	m_pFstFreeStyleDlg->_SearchResultsML->ClearLine();
+	//----------------------
+	// Go and search
+	//----------------------
+	CATListValCATUnicodeString alsStrSearchItemsValue;
+	m_pFstFreeStyleDlg->GetAllWBSItemInfo(alsStrSearchItemsValue);
+
+	// 测试代码，用于显示输出
+	/*for (int i = 1; i <= m_listStrSearchItemsValue.Size(); i++)
+	{
+		cout<<"第"<<i<<"行数据："<<m_listStrSearchItemsValue[i].ConvertToChar()<<endl;
+	}*/
+	//存储搜索得到的Value 
+	CATListValCATUnicodeString strListOfSearchResult;
+	//调用查询接口
+	HRESULT hr = MBDWebservice::QueryDataWebService(alsStrSearchItemsValue,strListOfSearchResult);
 	
+	//过滤需要的信息
+	if (SUCCEEDED(hr))
+	{
+		//获得数据条目，及每条目数据个数，分别对应第二、第三，数据内容从第六条开始
+		CATUnicodeString strCount=strListOfSearchResult[2];
+		CATUnicodeString strCutNumb=strListOfSearchResult[3];
+		double dCount=0,dCutNumb=1;
+		strCount.ConvertToNum(&dCount);
+		strCutNumb.ConvertToNum(&dCutNumb);
+
+		//计算以3为倍数的循环次数
+		int cyclecount = (int)((strListOfSearchResult.Size()-5)/dCutNumb);
+		//
+		if (cyclecount==dCount)
+		{
+			//
+			for (int i=1; i<=dCutNumb; i++)
+			{
+				//首选创建实例化的数组列
+				CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+				//m_pListStrMaterialDetailInfo.Append(LstStrAtrrValue01);
+				//
+				for (int j=1; j<=cyclecount; j++)
+				{
+					//
+					CATUnicodeString strConvert = strListOfSearchResult[(j-1)*dCutNumb+i+5];
+					//
+					if (strConvert == "########")
+					{
+						strConvert = NULL;
+						(*LstStrAtrrValue01).Append(strConvert);
+					}
+					else
+						(*LstStrAtrrValue01).Append(strConvert);									
+				}
+
+				//
+				for (int k=1; k<=(*LstStrAtrrValue01).Size(); k++)
+				{
+					m_pFstFreeStyleDlg->_SearchResultsML->SetColumnItem(i-1,(*LstStrAtrrValue01)[k]);
+				}
+			}
+
+		}
+
+		//			
+	}
 }
 
 //响应函数：ML选择单项内容

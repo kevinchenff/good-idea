@@ -311,6 +311,7 @@ m_ItemComboList.Append(_Combo05);
 for (int i=1; i<=MAXCOUNT; i++)
 {
 	((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
+	((CATDlgCombo*)m_ItemComboList[i])->SetVisibleTextHeight(20);
 }
 
 //
@@ -336,6 +337,8 @@ for (int i = 1; i <= MAXCOUNT; i ++)
 //初始化选择框
 CATBoolean PrtFstFreeStyleWasherDlg::MainFstComboItemCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//
+	_RearchResultsML->ClearLine();
 	//获得第一个COMBO所选的内容
 	int tempIndex;
 	tempIndex = _Combo01->GetSelect();
@@ -384,6 +387,8 @@ CATBoolean PrtFstFreeStyleWasherDlg::MainFstComboItemCB(CATCommand* cmd, CATNoti
 
 CATBoolean PrtFstFreeStyleWasherDlg::ComboItemSearchCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//
+	_RearchResultsML->ClearLine();
 	//获得当前combo列表位置
 	int comboIndex = m_ItemComboList.Locate(cmd);
 	//cout<<"用户点选的是"<<comboIndex<<endl;
