@@ -242,6 +242,7 @@ m_ItemComboList.Append(_Editor02);
 for (int i=1; i<=MAXCOUNT; i++)
 {
 	((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
+	((CATDlgCombo*)m_ItemComboList[i])->SetVisibleTextHeight(20);
 }
 
 //
@@ -267,6 +268,9 @@ for (int i = 1; i <= MAXCOUNT; i ++)
 //初始化选择框
 CATBoolean PrtFstFreeStyleDlg::MainFstComboItemCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//清除结果内容
+	_SearchResultsML->ClearLine();
+	//
 	//获得第一个COMBO所选的内容
 	int tempIndex;
 	tempIndex = _Combo01->GetSelect();
@@ -275,13 +279,18 @@ CATBoolean PrtFstFreeStyleDlg::MainFstComboItemCB(CATCommand* cmd, CATNotificati
 	//
 	if (m_IChoosedIndex != 0)
 	{
+		//清除控件显示的信息
+		for (int i=1; i<=MAXCOUNT; i++)
+		{
+			((CATDlgCombo*)m_ItemComboList[i])->ClearLine();
+			((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
+		}
 		//
 		CATLISTV(CATUnicodeString) * TempLstStr01 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[1];
 		m_StrCurrentDataBaseName = (* TempLstStr01)[m_IChoosedIndex];
 		//
 		CATLISTV(CATUnicodeString) * TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[m_IChoosedIndex+2];
-		m_alsStrCurrentWBSItem = *TempLstStr02;
-		
+		m_alsStrCurrentWBSItem = *TempLstStr02;		
 
 		//
 		//显示COMBO控件下拉框信息
@@ -317,6 +326,8 @@ CATBoolean PrtFstFreeStyleDlg::MainFstComboItemCB(CATCommand* cmd, CATNotificati
 
 CATBoolean PrtFstFreeStyleDlg::ComboItemSearchCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//清除结果内容
+	_SearchResultsML->ClearLine();
 	//获得当前combo列表位置
 	int comboIndex = m_ItemComboList.Locate(cmd);
 	//cout<<"用户点选的是"<<comboIndex<<endl;
@@ -423,7 +434,7 @@ void PrtFstFreeStyleDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStrSe
 	//获取所有设置信息
 	int count = m_ItemComboList.Size();
 
-	for (int i = 1; i <= count-1; i ++)
+	for (int i = 1; i <= count-2; i ++)
 	{
 		int selectComboItem = ((CATDlgCombo*) m_ItemComboList[i])->GetSelect();
 
@@ -448,11 +459,11 @@ void PrtFstFreeStyleDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStrSe
 		strEditorValue = m_alsStrCurrentWBSItem[count] + "=" + strEditorValue;
 		listStrSearchItems.Append(strEditorValue);
 	}
-	else
+	/*else
 	{
 		strEditorValue = m_alsStrCurrentWBSItem[count] + "=########";
 		listStrSearchItems.Append(strEditorValue);
-	}
+	}*/
 
 }
 

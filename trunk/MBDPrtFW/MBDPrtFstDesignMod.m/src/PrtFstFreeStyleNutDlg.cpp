@@ -268,6 +268,7 @@ m_ItemComboList.Append(_Combo05);
 for (int i=1; i<=MAXCOUNT; i++)
 {
 	((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
+	((CATDlgCombo*)m_ItemComboList[i])->SetVisibleTextHeight(20);
 }
 
 //
@@ -293,6 +294,8 @@ for (int i = 1; i <= MAXCOUNT; i ++)
 //初始化选择框
 CATBoolean PrtFstFreeStyleNutDlg::MainFstComboItemCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//清除结果内容
+	_SearchResultML->ClearLine();
 	//获得第一个COMBO所选的内容
 	int tempIndex;
 	tempIndex = _Combo01->GetSelect();
@@ -301,6 +304,13 @@ CATBoolean PrtFstFreeStyleNutDlg::MainFstComboItemCB(CATCommand* cmd, CATNotific
 	//
 	if (m_IChoosedIndex != 0)
 	{
+		//
+		//清除控件显示的信息
+		for (int i=1; i<=MAXCOUNT; i++)
+		{
+			((CATDlgCombo*)m_ItemComboList[i])->ClearLine();
+			((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
+		}
 		//
 		CATLISTV(CATUnicodeString) * TempLstStr01 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[1];
 		m_StrCurrentDataBaseName = (* TempLstStr01)[m_IChoosedIndex];
@@ -341,6 +351,9 @@ CATBoolean PrtFstFreeStyleNutDlg::MainFstComboItemCB(CATCommand* cmd, CATNotific
 
 CATBoolean PrtFstFreeStyleNutDlg::ComboItemSearchCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//
+	//清除结果内容
+	_SearchResultML->ClearLine();
 	//获得当前combo列表位置
 	int comboIndex = m_ItemComboList.Locate(cmd);
 	//cout<<"用户点选的是"<<comboIndex<<endl;
@@ -472,10 +485,10 @@ void PrtFstFreeStyleNutDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listSt
 		strEditorValue = m_alsStrCurrentWBSItem[count] + "=" + strEditorValue;
 		listStrSearchItems.Append(strEditorValue);
 	}
-	else
+	/*else
 	{
 		strEditorValue = m_alsStrCurrentWBSItem[count] + "=########";
 		listStrSearchItems.Append(strEditorValue);
-	}
+	}*/
 
 }

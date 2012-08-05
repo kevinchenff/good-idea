@@ -275,6 +275,7 @@ m_ItemComboList.Append(_ResultDetailEditor);
 for (int i=1; i<=MAXCOUNT; i++)
 {
 	((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
+	((CATDlgCombo*)m_ItemComboList[i])->SetVisibleTextHeight(20);
 }
 
 //
