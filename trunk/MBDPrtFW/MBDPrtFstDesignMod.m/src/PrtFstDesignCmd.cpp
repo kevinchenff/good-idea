@@ -2683,6 +2683,9 @@ void PrtFstDesignCmd::FstFreeStyleDlgGoToSearchPBCB(CATCommand* cmd, CATNotifica
 	//初始化状态
 	//
 	m_pFstFreeStyleDlg->_SearchResultsML->ClearLine();
+	//
+	//对按钮状态的控制
+	m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
 	//----------------------
 	// Go and search
 	//----------------------
@@ -3146,7 +3149,6 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 	//
 	//获得需要的数据
 	
-
 	//
 	//设置前对话框显示
 	m_pFstAccessDlg->SetVisibility(CATDlgShow);
