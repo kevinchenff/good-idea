@@ -1,8 +1,8 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "Choose Fastener Nut";
 Frame001.Title = "Search Items";
-Frame001.Label01.Title = "Selete Nut Type: ";
-Frame001.Label02.Title = "Selete Material: ";
+Frame001.Label01.Title = "Select Nut Type: ";
+Frame001.Label02.Title = "Select Material: ";
 Frame001.Label03.Title = "Select Surface Treatment: ";
 Frame001.Label04.Title = "Select Fastener Standard Number: ";
 Frame001.GoToSearchPB.Title = "Go To Search";

@@ -268,7 +268,7 @@ m_ItemComboList.Append(_SearchCombo04);
 m_ItemComboList.Append(_SearchCombo05);
 m_ItemComboList.Append(_SearchCombo06);
 //
-m_ItemComboList.Append(_ResultDetailEditor);
+m_ItemComboList.Append(_ContentEditor);
 //
 
 //
@@ -444,5 +444,3 @@ void MBDPrtAddMaterialDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStr
 	}*/
 
 }
-
-

@@ -65,7 +65,8 @@ PrtFstFreeStyleDlg::PrtFstFreeStyleDlg() :
  m_lstStrPropertyName[5]=CATUnicodeString("边距"); 
  m_lstStrPropertyName[6]=CATUnicodeString("间距");
  m_lstStrPropertyName[7]=CATUnicodeString("单位制");
- m_lstStrPropertyName[8]=CATUnicodeString("备注");
+ m_lstStrPropertyName[8]=CATUnicodeString("长度计算类型");
+ m_lstStrPropertyName[9]=CATUnicodeString("备注");
  //
  m_IChoosedIndex = 0;
 
@@ -162,8 +163,8 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  SearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle4");
  SearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle5");
  SearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle6");*/
- _SearchResultsML -> SetColumnTitles(9, m_lstStrPropertyName);
- _SearchResultsML -> SetVisibleColumnCount( 9 );
+ _SearchResultsML -> SetColumnTitles(10, m_lstStrPropertyName);
+ _SearchResultsML -> SetVisibleColumnCount( 10 );
 _SearchResultsML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame004 = new CATDlgFrame(this, "Frame004", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame004 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
@@ -188,29 +189,52 @@ CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)()
 (*LstStrAtrrValue02).Append("F_SCREW_SPEC_INFO");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue02);
 //
-CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_HEAD_TYPE");
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_MATERIAL");
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_SURFACE_TREATMENT");
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_FASTENER_NAME");
-(*LstStrAtrrValue03).Append("F_RIVET_STD_CODE_INFO_FASTENER_MARK");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue03);
+CATLISTV(CATUnicodeString) *LstStrAtrrValue031 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue031).Append("F_RIVET_STD_CODE_INFO_HEAD_TYPE");
+(*LstStrAtrrValue031).Append("F_RIVET_STD_CODE_INFO_MATERIAL");
+(*LstStrAtrrValue031).Append("F_RIVET_STD_CODE_INFO_SURFACE_TREATMENT");
+(*LstStrAtrrValue031).Append("F_RIVET_STD_CODE_INFO_FASTENER_NAME");
+(*LstStrAtrrValue031).Append("F_RIVET_STD_CODE_INFO_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue031);
 //
-CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_HEAD_TYPE");
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_MATERIAL");
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_SURFACE_TREATMENT");
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_FASTENER_NAME");
-(*LstStrAtrrValue04).Append("F_BOLT_STD_CODE_INFO_FASTENER_MARK");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue04);
+//紧固件标准号 直径 夹持厚度
+CATLISTV(CATUnicodeString) *LstStrAtrrValue032 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_FASTENER_MARK");
+(*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_DIAMETER");
+(*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_THICKNESS_OF_PRESS");
+(*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_LENGTH");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue032);
 //
-CATLISTV(CATUnicodeString) *LstStrAtrrValue05 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_HEAD_TYPE");
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_MATERIAL");
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_SURFACE_TREATMENT");
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_FASTENER_NAME");
-(*LstStrAtrrValue05).Append("F_SCREW_STD_CODE_INFO_FASTENER_MARK");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue05);
+CATLISTV(CATUnicodeString) *LstStrAtrrValue041 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue041).Append("F_BOLT_STD_CODE_INFO_HEAD_TYPE");
+(*LstStrAtrrValue041).Append("F_BOLT_STD_CODE_INFO_MATERIAL");
+(*LstStrAtrrValue041).Append("F_BOLT_STD_CODE_INFO_SURFACE_TREATMENT");
+(*LstStrAtrrValue041).Append("F_BOLT_STD_CODE_INFO_FASTENER_NAME");
+(*LstStrAtrrValue041).Append("F_BOLT_STD_CODE_INFO_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue041);
+//
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue042 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue042).Append("F_BOLT_SPEC_INFO_FASTENER_MARK");
+(*LstStrAtrrValue042).Append("F_BOLT_SPEC_INFO_DIAMETER");
+(*LstStrAtrrValue042).Append("F_BOLT_SPEC_INFO_THICKNESS_OF_PRESS");
+(*LstStrAtrrValue042).Append("F_BOLT_SPEC_INFO_LENGTH");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue042);
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue051 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue051).Append("F_SCREW_STD_CODE_INFO_HEAD_TYPE");
+(*LstStrAtrrValue051).Append("F_SCREW_STD_CODE_INFO_MATERIAL");
+(*LstStrAtrrValue051).Append("F_SCREW_STD_CODE_INFO_SURFACE_TREATMENT");
+(*LstStrAtrrValue051).Append("F_SCREW_STD_CODE_INFO_FASTENER_NAME");
+(*LstStrAtrrValue051).Append("F_SCREW_STD_CODE_INFO_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue051);
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue052 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue052).Append("F_SCREW_SPEC_INFO_FASTENER_MARK");
+(*LstStrAtrrValue052).Append("F_SCREW_SPEC_INFO_DIAMETER");
+(*LstStrAtrrValue052).Append("F_SCREW_SPEC_INFO_THICKNESS_OF_PRESS");
+(*LstStrAtrrValue052).Append("F_SCREW_SPEC_INFO_LENGTH");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue052);
 
 //
 CATUnicodeString strComboName01(" 请选择： < “主紧固件类型” >");
@@ -271,6 +295,11 @@ CATBoolean PrtFstFreeStyleDlg::MainFstComboItemCB(CATCommand* cmd, CATNotificati
 	//清除结果内容
 	_SearchResultsML->ClearLine();
 	//
+	_Editor01->ClearLine();
+	_Editor02->ClearLine();
+	//
+	_NextStepPB->SetSensitivity(CATDlgDisable);
+	//
 	//获得第一个COMBO所选的内容
 	int tempIndex;
 	tempIndex = _Combo01->GetSelect();
@@ -289,9 +318,15 @@ CATBoolean PrtFstFreeStyleDlg::MainFstComboItemCB(CATCommand* cmd, CATNotificati
 		CATLISTV(CATUnicodeString) * TempLstStr01 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[1];
 		m_StrCurrentDataBaseName = (* TempLstStr01)[m_IChoosedIndex];
 		//
-		CATLISTV(CATUnicodeString) * TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[m_IChoosedIndex+2];
-		m_alsStrCurrentWBSItem = *TempLstStr02;		
-
+		CATLISTV(CATUnicodeString) * TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[m_IChoosedIndex*2-1+2];
+		m_alsStrCurrentWBSItem = *TempLstStr02;	
+		//
+		//
+		CATLISTV(CATUnicodeString) * TempLstStr03 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[2];
+		m_StrNextStepDataBaseName = (* TempLstStr03)[m_IChoosedIndex];
+		//
+		CATLISTV(CATUnicodeString) * TempLstStr04 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[m_IChoosedIndex*2+2];
+		m_strNextStepWBSItem = *TempLstStr04;
 		//
 		//显示COMBO控件下拉框信息
 		for (int i = 1; i <= m_ItemComboList.Size()-2; i ++)
@@ -328,6 +363,12 @@ CATBoolean PrtFstFreeStyleDlg::ComboItemSearchCB(CATCommand* cmd, CATNotificatio
 {
 	//清除结果内容
 	_SearchResultsML->ClearLine();
+	//
+	_Editor01->ClearLine();
+	_Editor02->ClearLine();
+	//
+	_NextStepPB->SetSensitivity(CATDlgDisable);
+	//
 	//获得当前combo列表位置
 	int comboIndex = m_ItemComboList.Locate(cmd);
 	//cout<<"用户点选的是"<<comboIndex<<endl;
@@ -448,16 +489,24 @@ void PrtFstFreeStyleDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStrSe
 			listStrSearchItems.Append(strValue);
 		}
 
+	}
 
+	//
+	CATUnicodeString strEditorValue01("");
+	strEditorValue01 = ((CATDlgEditor*) m_ItemComboList[count-1])->GetText();
+	if (strEditorValue01 != "")
+	{
+		strEditorValue01 = m_alsStrCurrentWBSItem[count-1] + "=" + strEditorValue01;
+		listStrSearchItems.Append(strEditorValue01);
 	}
 
 	// Append Editor Values
-	CATUnicodeString strEditorValue("");
-	strEditorValue = ((CATDlgEditor*) m_ItemComboList[count])->GetText();
-	if (strEditorValue != "")
+	CATUnicodeString strEditorValue02("");
+	strEditorValue02 = ((CATDlgEditor*) m_ItemComboList[count])->GetText();
+	if (strEditorValue02 != "")
 	{
-		strEditorValue = m_alsStrCurrentWBSItem[count] + "=" + strEditorValue;
-		listStrSearchItems.Append(strEditorValue);
+		strEditorValue02 = m_alsStrCurrentWBSItem[count] + "=" + strEditorValue02;
+		listStrSearchItems.Append(strEditorValue02);
 	}
 	/*else
 	{
@@ -466,5 +515,3 @@ void PrtFstFreeStyleDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStrSe
 	}*/
 
 }
-
-

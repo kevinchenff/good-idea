@@ -65,7 +65,14 @@ PrtFstFreeStyleNutDlg::PrtFstFreeStyleNutDlg() :
  m_lstStrPropertyName[4]=CATUnicodeString("螺母间距");
  m_lstStrPropertyName[5]=CATUnicodeString("外径"); 
  m_lstStrPropertyName[6]=CATUnicodeString("厚度");
- m_lstStrPropertyName[7]=CATUnicodeString("重量Kg");
+ m_lstStrPropertyName[7]=CATUnicodeString("重量（kg）");
+ m_lstStrPropertyName[8]=CATUnicodeString("总厚度"); 
+ m_lstStrPropertyName[9]=CATUnicodeString("结构厚度");
+ m_lstStrPropertyName[10]=CATUnicodeString("托板厚度");
+ m_lstStrPropertyName[11]=CATUnicodeString("螺母螺纹余量");
+ m_lstStrPropertyName[12]=CATUnicodeString("螺母螺纹余量");
+ m_lstStrPropertyName[13]=CATUnicodeString("螺母螺纹余量");
+ m_lstStrPropertyName[14]=CATUnicodeString("铆钉直径");
  //
  m_IChoosedIndex = 0;
  //
@@ -157,8 +164,8 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  SearchResultMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleNutDlg", "Frame002.SearchResultML.ColumnTitle6");
  SearchResultMLTitles[6] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleNutDlg", "Frame002.SearchResultML.ColumnTitle7");
  SearchResultMLTitles[7] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleNutDlg", "Frame002.SearchResultML.ColumnTitle8");*/
- _SearchResultML -> SetColumnTitles(8, m_lstStrPropertyName);
- _SearchResultML -> SetVisibleColumnCount( 8 );
+ _SearchResultML -> SetColumnTitles(15, m_lstStrPropertyName);
+ _SearchResultML -> SetVisibleColumnCount( 15 );
 _SearchResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
@@ -194,7 +201,7 @@ m_plsStrCurrentWBSItem.Append(LstStrAtrrValue031);
 ////
 //
 CATLISTV(CATUnicodeString) *LstStrAtrrValue032 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue032).Append("F_NUT_SINGLE_EAR_PSL_SPEC_FASTENER_MARK");
+(*LstStrAtrrValue032).Append("F_NUT_NORMAL_SPEC_INFO_FASTENER_MARK");
 (*LstStrAtrrValue032).Append("F_NUT_NORMAL_SPEC_INFO_DIAMETER");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue032);
 
@@ -248,8 +255,7 @@ _Combo01->SetLine("角形托板自锁螺母");
 CATUnicodeString strComboName03(" 请选择： < “材料名称” >");
 CATUnicodeString strComboName04(" 请选择： < “表面处理方法” >");
 CATUnicodeString strComboName05(" 请选择： < “螺母名称” >");
-CATUnicodeString strComboName06(" 请选择： < “螺母规格号” >");
-
+CATUnicodeString strComboName06(" 请选择： < “螺母标准号” >");
 
 m_alsStrCurrentWBSShow.Append(strComboName03);
 m_alsStrCurrentWBSShow.Append(strComboName04);
@@ -296,6 +302,10 @@ CATBoolean PrtFstFreeStyleNutDlg::MainFstComboItemCB(CATCommand* cmd, CATNotific
 {
 	//清除结果内容
 	_SearchResultML->ClearLine();
+	//
+	_NextStepPB->SetSensitivity(CATDlgDisable);
+	//
+	_GoToSearchPB->SetSensitivity(CATDlgDisable);
 	//获得第一个COMBO所选的内容
 	int tempIndex;
 	tempIndex = _Combo01->GetSelect();
@@ -317,10 +327,16 @@ CATBoolean PrtFstFreeStyleNutDlg::MainFstComboItemCB(CATCommand* cmd, CATNotific
 		//
 		CATLISTV(CATUnicodeString) * TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[m_IChoosedIndex*2-1+2];
 		m_alsStrCurrentWBSItem = *TempLstStr02;
+		//
+		CATLISTV(CATUnicodeString) * TempLstStr03 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[2];
+		m_StrNextStepDataBaseName = (* TempLstStr03)[m_IChoosedIndex];
+		//
+		CATLISTV(CATUnicodeString) * TempLstStr04 = (CATLISTV(CATUnicodeString) *)m_plsStrCurrentWBSItem[m_IChoosedIndex*2+2];
+		m_strNextStepWBSItem = *TempLstStr04;
 
 		//
 		//显示COMBO控件下拉框信息
-		for (int i = 1; i <= m_ItemComboList.Size()-2; i ++)
+		for (int i = 1; i <= m_ItemComboList.Size(); i ++)
 		{
 			CATListValCATUnicodeString astrKeyWords;
 
@@ -329,9 +345,6 @@ CATBoolean PrtFstFreeStyleNutDlg::MainFstComboItemCB(CATCommand* cmd, CATNotific
 
 			SetSearchItemComboList(astrKeyWords,(CATDlgCombo*)m_ItemComboList[i]);
 		}
-
-		//对按钮状态的控制
-		_GoToSearchPB->SetSensitivity(CATDlgEnable);
 	}
 	else//如果为零的时候，清除所有下拉框信息
 	{
@@ -341,9 +354,6 @@ CATBoolean PrtFstFreeStyleNutDlg::MainFstComboItemCB(CATCommand* cmd, CATNotific
 			((CATDlgCombo*)m_ItemComboList[i])->ClearLine();
 			((CATDlgCombo*)m_ItemComboList[i])->SetLine(m_alsStrCurrentWBSShow[i]);
 		}
-
-		//对按钮状态的控制
-		_GoToSearchPB->SetSensitivity(CATDlgDisable);
 	}
 
 	return TRUE;
@@ -357,6 +367,8 @@ CATBoolean PrtFstFreeStyleNutDlg::ComboItemSearchCB(CATCommand* cmd, CATNotifica
 	//获得当前combo列表位置
 	int comboIndex = m_ItemComboList.Locate(cmd);
 	//cout<<"用户点选的是"<<comboIndex<<endl;
+	//
+	_NextStepPB->SetSensitivity(CATDlgDisable);
 
 	//搜索关键字列表
 	CATLISTV(CATUnicodeString) aStrComboItemSelected;
@@ -382,8 +394,7 @@ CATBoolean PrtFstFreeStyleNutDlg::ComboItemSearchCB(CATCommand* cmd, CATNotifica
 	}
 
 	//更新选择该COMBO之后的COMBO的显示情况
-	//减去2的原因，最后2个为EDITOR指针，非combo
-	for (int j = comboIndex+1; j <= m_ItemComboList.Size() - 2; j++)
+	for (int j = comboIndex+1; j <= m_ItemComboList.Size(); j++)
 	{
 		CATUnicodeString strSearch = CATUnicodeString("DropdownList=") + m_alsStrCurrentWBSItem[j];
 		aStrComboItemSelected[1] = strSearch;
@@ -393,6 +404,22 @@ CATBoolean PrtFstFreeStyleNutDlg::ComboItemSearchCB(CATCommand* cmd, CATNotifica
 		CATUnicodeString strComboName = m_alsStrCurrentWBSShow[j];
 		((CATDlgCombo*) m_ItemComboList[j])->SetLine(strComboName);
 		HRESULT hr = SetSearchItemComboList(aStrComboItemSelected,(CATDlgCombo*)m_ItemComboList[j]);
+	}
+
+	//
+	//获得最后一个标准号COMBO所选的内容，用于控制gotosearch的显示状态
+	int tempIndex;
+	tempIndex = _Combo05->GetSelect();
+	//
+	if (tempIndex != 0)
+	{
+		//对按钮状态的控制
+		_GoToSearchPB->SetSensitivity(CATDlgEnable);
+	}
+	else
+	{
+		//对按钮状态的控制
+		_GoToSearchPB->SetSensitivity(CATDlgDisable);
 	}
 
 	return TRUE;
@@ -460,7 +487,7 @@ void PrtFstFreeStyleNutDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listSt
 	//获取所有设置信息
 	int count = m_ItemComboList.Size();
 
-	for (int i = 1; i <= count-1; i ++)
+	for (int i = 1; i <= count; i ++)
 	{
 		int selectComboItem = ((CATDlgCombo*) m_ItemComboList[i])->GetSelect();
 
@@ -476,19 +503,4 @@ void PrtFstFreeStyleNutDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listSt
 
 
 	}
-
-	// Append Editor Values
-	CATUnicodeString strEditorValue("");
-	strEditorValue = ((CATDlgEditor*) m_ItemComboList[count])->GetText();
-	if (strEditorValue != "")
-	{
-		strEditorValue = m_alsStrCurrentWBSItem[count] + "=" + strEditorValue;
-		listStrSearchItems.Append(strEditorValue);
-	}
-	/*else
-	{
-		strEditorValue = m_alsStrCurrentWBSItem[count] + "=########";
-		listStrSearchItems.Append(strEditorValue);
-	}*/
-
 }
