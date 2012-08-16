@@ -63,7 +63,7 @@ PrtFstFreeStyleMainBoltDlg::PrtFstFreeStyleMainBoltDlg() :
  m_lstStrPropertyName[3]=CATUnicodeString("直径");
  m_lstStrPropertyName[4]=CATUnicodeString("总长度");
  m_lstStrPropertyName[5]=CATUnicodeString("夹持厚度"); 
- m_lstStrPropertyName[6]=CATUnicodeString("重量Kg");
+ m_lstStrPropertyName[6]=CATUnicodeString("重量（kg）");
  m_lstStrPropertyName[7]=CATUnicodeString("头部直径");
  m_lstStrPropertyName[8]=CATUnicodeString("头部厚度");
  //

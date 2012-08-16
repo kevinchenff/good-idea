@@ -161,6 +161,7 @@ class PrtFstDesignCmd: public CATStateCommand
   void FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstFreeStyleNutDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstFreeStyleNutDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleNutDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
   //---------------------------------
   //对FreeStyle Washer DLG的消息响应
@@ -169,6 +170,7 @@ class PrtFstDesignCmd: public CATStateCommand
   void FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstFreeStyleWasherDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleWasherDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
   //
   //---------------------------------
@@ -177,6 +179,10 @@ class PrtFstDesignCmd: public CATStateCommand
   void CloseFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstKnowledgeBasedDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //
+
+  //根据输入的行数信息从数据列表中获取希望的字符串信息
+  void GetChoosedMLValue(int idLine,CATListPV iplstMainFstResults, CATListValCATUnicodeString &iolstStrValue);
+  CATBoolean OnWasherPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
 private:
 	PrtFstDesignDlg *m_pDlg;
@@ -235,6 +241,45 @@ private:
 	PrtFstKnowledgeMainBoltDlg *m_pFstKnowledgeMainBoltDlg;
 	PrtFstKnowledgeNutDlg *m_pFstKnowledgeNutDlg;
 	PrtFstFreeStyleWasherDlg *m_pFstKnowledgeWasherDlg;
+
+	//自由选择获取的所有紧固件属性信息
+	CATListPV m_plstMainFstResults01; //主紧固件标准号信息
+	CATListValCATUnicodeString m_lstStrMainFstTitles01;
+	CATListValCATUnicodeString m_lstStrMainFstChoosed01;
+	CATListPV m_plstMainFstResults02; //主紧固件规格号信息
+	CATListValCATUnicodeString m_lstStrMainFstTitles02;
+	CATListValCATUnicodeString m_lstStrMainFstChoosed02;
+	
+	//
+	//螺母信息
+	CATListPV m_plstNutFstResults01; //螺母标准号信息
+	CATListValCATUnicodeString m_lstStrNutFstTitles01;
+	CATListValCATUnicodeString m_lstStrNutFstChoosed01;
+	CATListPV m_plstNutFstResults02; //螺母规格号信息
+	CATListValCATUnicodeString m_lstStrNutFstTitles02;
+	CATListValCATUnicodeString m_lstStrNutFstChoosed02;
+
+	//
+	//垫圈信息
+	CATListPV m_plstWasherFstResults01; //垫圈标准号信息
+	CATListValCATUnicodeString m_lstStrWasherFstTitles01;
+	CATListValCATUnicodeString m_lstStrWasherFstChoosed01;
+	CATListPV m_plstWasherFstResults02; //垫圈规格号信息
+	CATListValCATUnicodeString m_lstStrWasherFstTitles02;
+	CATListValCATUnicodeString m_lstStrWasherFstChoosed02;
+
+	//右键context按钮对话框
+	CATDlgContextualMenu  *m_pContextMenu;
+	CATDlgPushItem * m_pPushItemSelect;
+
+	//垫圈所选信息
+	CATListPV m_plstWasherFstChoosedTitles01;  //垫圈标准号信息
+	CATListPV m_plstWasherFstChoosedResults01; //垫圈标准号信息
+	CATListPV m_plstWasherFstChoosedTitles02;  //垫圈规格号信息
+	CATListPV m_plstWasherFstChoosedResults02; //垫圈规格号信息
+	//垫圈位置信息
+	CATListValCATUnicodeString m_lstStrWasherPos;
+
 };
 
 //----------------------------------------------------------------------
