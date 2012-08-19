@@ -44,7 +44,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_dFstMaxIndex(0),m_pFstAccessDlg(NULL),m_pFstFreeStyleDlg(NULL),m_pFstKnowledgeBasedDlg(NULL)
   ,m_pFstFreeStyleMainBoltDlg(NULL),m_pFstFreeStyleNutDlg(NULL),m_pFstFreeStyleWasherDlg(NULL)
   ,m_pFstKnowledgeMainBoltDlg(NULL),m_pFstKnowledgeNutDlg(NULL),m_pFstKnowledgeWasherDlg(NULL)
-  ,m_pContextMenu(NULL),m_pPushItemSelect(NULL)
+  ,m_pContextMenu(NULL),m_pPushItemSelect(NULL),m_IndexChoosedWasher(-1)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -2859,6 +2859,31 @@ void PrtFstDesignCmd::FstFreeStyleDlgSearchResultsMLCB(CATCommand* cmd, CATNotif
 		//
 		//获得该行的信息
 		GetChoosedMLValue(ioTabRow[0]+1,m_plstMainFstResults01,m_lstStrMainFstChoosed01);
+		//
+		CATUnicodeString strType01(""),strType02(""),strType03("");
+		int selectComboItem = m_pFstFreeStyleDlg->_Combo01->GetSelect();
+		if (selectComboItem != 0)
+		{
+			m_pFstFreeStyleDlg->_Combo01->GetLine(strType01,selectComboItem);
+		}
+		//
+		for (int i=1; i<= m_lstStrMainFstTitles01.Size(); i++)
+		{
+			//
+			if (m_lstStrMainFstTitles01[i]=="紧固件名称")
+			{
+				strType02=m_lstStrMainFstTitles01[i];
+			}
+			//
+			if (m_lstStrMainFstTitles01[i]=="长度计算类型")
+			{
+				strType03=m_lstStrMainFstTitles01[i];
+			}
+		}
+		//
+		m_strMainFstTypeFlag = strType01+"|"+strType02+"|"+strType03;
+
+
 		//对按钮状态的控制
 		m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgEnable);
 	}
@@ -3347,6 +3372,24 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 		}
 	}
 	GetChoosedMLValue(dIndex,m_plstNutFstResults01,m_lstStrNutFstChoosed01);
+	//
+	CATUnicodeString strType01(""),strType02("");
+	selectComboItem = m_pFstFreeStyleNutDlg->_Combo01->GetSelect();
+	if (selectComboItem != 0)
+	{
+		m_pFstFreeStyleDlg->_Combo01->GetLine(strType01,selectComboItem);
+	}
+	//
+	for (int i=1; i<= m_lstStrNutFstTitles01.Size(); i++)
+	{
+		//
+		if (m_lstStrNutFstTitles01[i]=="紧固件名称")
+		{
+			strType02=m_lstStrNutFstTitles01[i];
+		}
+	}
+	//
+	m_strNutFstTypeFlag = strType01+"|"+strType02;
 
 	//----------------------------------------------------------------------------------------------------
 	// 第二步获得所搜索规格号信息
@@ -3461,6 +3504,7 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgNextStepPBCB(CATCommand* cmd, CATNotific
 		//
 		//
 		m_pFstFreeStyleWasherDlg->_GoToSearchPB->SetSensitivity(CATDlgDisable);
+		m_pFstFreeStyleWasherDlg->_RemovePB->SetSensitivity(CATDlgDisable);
 
 		//清除列表中的内容
 		//清除已有的指针信息
@@ -3524,6 +3568,25 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgNextStepPBCB(CATCommand* cmd, CATNotific
 		AddAnalyseNotificationCB (m_pFstFreeStyleWasherDlg->_RearchResultsML, 
 			m_pFstFreeStyleWasherDlg->_RearchResultsML->GetListSelectNotification(),
 			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleWasherDlgSearchResultsMLCB,
+			NULL);
+
+		//
+		//CHOOSED ML选择的响应
+		AddAnalyseNotificationCB (m_pFstFreeStyleWasherDlg->_ChooseWashersML, 
+			m_pFstFreeStyleWasherDlg->_ChooseWashersML->GetListSelectNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleWasherDlgChooseWashersMLCB,
+			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleWasherDlg->_RemovePB, 
+			m_pFstFreeStyleWasherDlg->_RemovePB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleWasherDlgRemovePBCB,
+			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstFreeStyleWasherDlg->_ClearAllPB, 
+			m_pFstFreeStyleWasherDlg->_ClearAllPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleWasherDlgClearAllPBCB,
 			NULL);
 	}
 	else
@@ -3644,6 +3707,25 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNo
 		}
 	}
 	GetChoosedMLValue(dIndex,m_plstWasherFstResults01,m_lstStrWasherFstChoosed01);
+	//
+	CATUnicodeString strType01(""),strType02("");
+	//
+	selectComboItem = m_pFstFreeStyleWasherDlg->_Combo01->GetSelect();
+	if (selectComboItem != 0)
+	{
+		m_pFstFreeStyleDlg->_Combo01->GetLine(strType01,selectComboItem);
+	}
+	//
+	for (int i=1; i<= m_lstStrWasherFstTitles01.Size(); i++)
+	{
+		//
+		if (m_lstStrWasherFstTitles01[i]=="紧固件名称")
+		{
+			strType02=m_lstStrWasherFstTitles01[i];
+		}
+	}
+	//
+	m_strWasherFstTypeFlag = strType01+"|"+strType02;
 
 	//----------------------------------------------------------------------------------------------------
 	// 第二步获得所搜索规格号信息
@@ -3813,6 +3895,130 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgSearchResultsMLCB(CATCommand* cmd, CA
 }
 
 //
+void PrtFstDesignCmd::FstFreeStyleWasherDlgChooseWashersMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//获取所选信息
+	int  iSize = m_pFstFreeStyleWasherDlg->_ChooseWashersML->GetSelectCount();
+	if (iSize != 0)
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pFstFreeStyleWasherDlg->_ChooseWashersML->GetSelect(ioTabRow,iSize);
+		//
+		m_IndexChoosedWasher = ioTabRow[0]+1;
+		//
+		m_pFstFreeStyleWasherDlg->_RemovePB->SetSensitivity(CATDlgEnable);
+	}
+	else
+	{
+		m_pFstFreeStyleWasherDlg->_RemovePB->SetSensitivity(CATDlgDisable);
+	}
+	
+}
+
+//
+void PrtFstDesignCmd::FstFreeStyleWasherDlgRemovePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstFreeStyleWasherDlg->_ChooseWashersML->ClearLine();
+	//
+	CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles01[m_IndexChoosedWasher];
+	m_plstWasherFstChoosedTitles01.RemovePosition(m_IndexChoosedWasher); 
+	delete TempLstStr;
+	//
+	TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults01[m_IndexChoosedWasher];
+	m_plstWasherFstChoosedResults01.RemovePosition(m_IndexChoosedWasher); 
+	delete TempLstStr;
+	//
+	TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[m_IndexChoosedWasher];
+	m_plstWasherFstChoosedTitles02.RemovePosition(m_IndexChoosedWasher);  
+	delete TempLstStr;
+	//
+	TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[m_IndexChoosedWasher];
+	m_plstWasherFstChoosedResults02.RemovePosition(m_IndexChoosedWasher); 
+	delete TempLstStr;
+	//垫圈位置信息
+	m_lstStrWasherPos.RemovePosition(m_IndexChoosedWasher);
+	m_lstStrWasherFstTypeFlag.RemovePosition(m_IndexChoosedWasher);
+	//
+	//
+	for (int i=1; i<= m_plstWasherFstChoosedTitles01.Size(); i++)
+	{
+		//
+		CATLISTV(CATUnicodeString) * TempLstStr01 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles01[i];
+		CATLISTV(CATUnicodeString) * TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[i];
+		//
+		CATLISTV(CATUnicodeString) * TempLstStr03 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults01[i];
+		CATLISTV(CATUnicodeString) * TempLstStr04 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[i];
+		//
+		CATListValCATUnicodeString alststrName,alststrValue;
+		alststrName.Append(*TempLstStr01);alststrName.Append(*TempLstStr02);
+		alststrValue.Append(*TempLstStr03);alststrValue.Append(*TempLstStr04);
+		//
+		for (int m=0; m<=12; m++)
+		{
+			for (int n=1; n<=alststrName.Size(); n++)
+			{
+				//
+				if (m_pFstFreeStyleWasherDlg->m_lstStrPropertyName02[m] == alststrName[n])
+				{
+
+					m_pFstFreeStyleWasherDlg->_ChooseWashersML->SetColumnItem(m,alststrValue[n]);
+					//
+					break;
+				}
+			}
+
+		}
+		//
+		m_pFstFreeStyleWasherDlg->_ChooseWashersML->SetColumnItem(0,m_lstStrWasherPos[i],i-1,CATDlgDataModify);
+	}
+
+	m_pFstFreeStyleWasherDlg->_RemovePB->SetSensitivity(CATDlgDisable);
+}
+
+//
+void PrtFstDesignCmd::FstFreeStyleWasherDlgClearAllPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstFreeStyleWasherDlg->_ChooseWashersML->ClearLine();
+	//
+	//垫圈位置信息
+	m_lstStrWasherPos.RemoveAll();
+	m_lstStrWasherFstTypeFlag.RemoveAll();
+	//
+	//清除列表中的内容
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedTitles01.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles01[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedTitles01.RemoveAll();
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedResults01.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults01[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedResults01.RemoveAll();
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedTitles02.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedTitles02.RemoveAll();
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedResults02.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedResults02.RemoveAll();
+}
+
+//
 CATBoolean PrtFstDesignCmd::OnWasherPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//首选创建实例化的数组列
@@ -3869,6 +4075,8 @@ CATBoolean PrtFstDesignCmd::OnWasherPushItemSelectCB(CATCommand* cmd, CATNotific
 		//
 		m_pFstFreeStyleWasherDlg->_ChooseWashersML->SetColumnItem(0,"START",m_lstStrWasherPos.Size()-1,CATDlgDataModify);
 	}
+	//
+	m_lstStrWasherFstTypeFlag.Append(m_strWasherFstTypeFlag);
 	//
 	return TRUE;
 }
