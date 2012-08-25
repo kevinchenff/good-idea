@@ -56,7 +56,7 @@ class PrtFstAccessDlg: public CATDlgDialog
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
  //ÏÔÊ¾ÐÅÏ¢×Ö·û´®
- CATUnicodeString ChoosedFastenersMLTitles [ 5 ];
+ CATUnicodeString ChoosedFastenersMLTitles [ 3 ];
 
 
 };

@@ -209,18 +209,20 @@ private:
 	//夹持厚度最大值及最小值
 	double m_dJstThickMax,m_dJstThickMin, m_dFirstPrdThickMin,m_dFirstPrdThickMax;
 
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------
 	//定义字符串列表指针，从动态DLL中获取这些信息，此值将直接写入特征属性中
 	//---------------------------------------------------------
-	CATListPV  m_pListStrPropertyName,m_pListStrPropertyValue;
-	CATListPV  m_pListStrSpecialName,m_pListStrSpecialValue;
+	CATListPV  m_pListStrPropertyName,m_pListStrPropertyValue; //标准号信息
+	CATListPV  m_pListStrSpecialName,m_pListStrSpecialValue; //规格号信息
+
 	CATListValCATUnicodeString m_alistStrFSTType; //存储紧固件类型：螺栓，螺钉，铆钉，螺母，垫片，格式：螺栓|六角螺栓
 	CATListValCATUnicodeString m_lststrCirclePositions; //螺母、垫片的安装位置，需要写入特征属性中
-
-	//
+	
 	//从交互选择中获取如下信息
 	CATListValCATUnicodeString m_alistStrFSTName; //存储紧固件规格号
 	double m_dMainFstLength, m_dMainFstThickLimit;
 	CATListOfDouble m_lstCircleRadiusValues,m_lstCircleThicks;
+	//---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	//定义标识，确认是否已经选择了紧固件
 	CATBoolean m_userChoosedFlag;
