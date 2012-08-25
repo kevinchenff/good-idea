@@ -193,6 +193,12 @@ _PointCountEditor->SetText("0 ¸ö");
 this->SetOKSensitivity(CATDlgDisable);
 this->SetAPPLYSensitivity(CATDlgDisable);
 
+//
+_ChoosedFstDetailInfoML->SetColumnTextWidth(0,20);
+_ChoosedFstDetailInfoML->SetColumnTextWidth(1,20);
+
+_ChoosedFstNormalInfoML->SetColumnTextWidth(0,20);
+_ChoosedFstNormalInfoML->SetColumnTextWidth(1,20);
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION

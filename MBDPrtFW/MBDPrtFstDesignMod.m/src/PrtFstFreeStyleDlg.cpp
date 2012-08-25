@@ -485,7 +485,7 @@ void PrtFstFreeStyleDlg::GetAllWBSItemInfo(CATLISTV(CATUnicodeString) &listStrSe
 			((CATDlgCombo*) m_ItemComboList[i])->GetLine(strComboValue,selectComboItem);
 
 			CATUnicodeString strValue("");
-			strValue = m_alsStrCurrentWBSItem[i] + "=" + strComboValue;
+			strValue = m_alsStrCurrentWBSItem[i] + "==" + strComboValue;
 			listStrSearchItems.Append(strValue);
 		}
 

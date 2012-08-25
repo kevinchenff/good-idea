@@ -2521,59 +2521,6 @@ void PrtFstDesignCmd::ChoosedFstNormalInfoMLCB(CATCommand* cmd, CATNotification*
 //选择紧固件类型
 void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-	//调用清空紧固件信息数组函数
-	ClearFstInfoLst();
-
-	//
-	//初始化测试数据
-	//
-	m_alistStrFSTType.Append("螺栓|六角头螺栓");
-	m_alistStrFSTType.Append("螺母");
-
-	//
-	m_lststrCirclePositions.Append("END");
-	m_alistStrFSTName.Append("HB0001");
-	m_alistStrFSTName.Append("NAS1252-10H");
-
-	m_dMainFstLength = 8.8;
-	m_dMainFstThickLimit = 8;
-	m_lstCircleRadiusValues.Append(6.1);
-	m_lstCircleThicks.Append(2.6);
-
-	//增加输入条件 夹持厚度
-	for (int j=1;j<=2;j++)
-	{
-		CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue01).Append("PropertyAAA");
-		m_pListStrPropertyName.Append(LstStrAtrrValue01);
-
-		//
-		CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue02).Append("Property111");
-		m_pListStrPropertyValue.Append(LstStrAtrrValue02);
-
-		CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue03).Append("SpecialBBB");
-		m_pListStrSpecialName.Append(LstStrAtrrValue03);
-
-		//
-		CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
-		(*LstStrAtrrValue04).Append("Special222");
-		m_pListStrSpecialValue.Append(LstStrAtrrValue04);
-	}
-
-	//
-	for (int i=1;i<=m_alistStrFSTName.Size();i++)
-	{
-		//
-		m_pDlg->_ChoosedFstNormalInfoML->SetColumnItem(0,m_alistStrFSTName[i]);
-		m_pDlg->_ChoosedFstNormalInfoML->SetColumnItem(1,m_alistStrFSTType[i]);
-	}
-	//
-
-	m_userChoosedFlag = TRUE;
-	ChangeOKApplyState();
-
 	//------------------------------------------------------------------------------------------
 	//弹出选择紧固件对话框，进行操作
 	//------------------------------------------------------------------------------------------
@@ -2611,6 +2558,16 @@ void PrtFstDesignCmd::ChooseFstCB(CATCommand* cmd, CATNotification* evt, CATComm
 //---------------------------------
 void PrtFstDesignCmd::OkFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	for (int i=1;i<=m_alistStrFSTName.Size();i++)
+	{
+		//
+		m_pDlg->_ChoosedFstNormalInfoML->SetColumnItem(0,m_alistStrFSTName[i]);
+		m_pDlg->_ChoosedFstNormalInfoML->SetColumnItem(1,m_alistStrFSTType[i]);
+	}
+	//
+
+	m_userChoosedFlag = TRUE;
+	ChangeOKApplyState();
 	
 	//
 	m_pFstAccessDlg->RequestDelayedDestruction();
@@ -2618,6 +2575,38 @@ void PrtFstDesignCmd::OkFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CA
 }
 void PrtFstDesignCmd::CloseFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+
+	//调用清空紧固件信息数组函数
+	ClearFstInfoLst();
+	//
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedTitles01.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles01[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedTitles01.RemoveAll();
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedResults01.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults01[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedResults01.RemoveAll();
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedTitles02.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedTitles02.RemoveAll();
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedResults02.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedResults02.RemoveAll();
 
 	//
 	m_pFstAccessDlg->RequestDelayedDestruction();
@@ -2872,18 +2861,24 @@ void PrtFstDesignCmd::FstFreeStyleDlgSearchResultsMLCB(CATCommand* cmd, CATNotif
 			//
 			if (m_lstStrMainFstTitles01[i]=="紧固件名称")
 			{
-				strType02=m_lstStrMainFstTitles01[i];
+				strType02=m_lstStrMainFstChoosed01[i];
 			}
 			//
 			if (m_lstStrMainFstTitles01[i]=="长度计算类型")
 			{
-				strType03=m_lstStrMainFstTitles01[i];
+				strType03=m_lstStrMainFstChoosed01[i];
 			}
 		}
 		//
-		m_strMainFstTypeFlag = strType01+"|"+strType02+"|"+strType03;
-
-
+		if (strType03 != "")
+		{
+			m_strMainFstTypeFlag = strType01+"|"+strType02+"|"+strType03;
+		} 
+		else
+		{
+			m_strMainFstTypeFlag = strType01+"|"+strType02;
+		}
+		
 		//对按钮状态的控制
 		m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgEnable);
 	}
@@ -3041,7 +3036,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 	strDatabase = CATUnicodeString("DatabaseName=") + m_pFstFreeStyleDlg->m_StrNextStepDataBaseName; 
 	alsStrSearchItemsValue.Append(strDatabase);
 	//
-	CATUnicodeString str01 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[1] + "=" + m_lstStrMainFstChoosed01[1];
+	CATUnicodeString str01 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[1] + "==" + m_lstStrMainFstChoosed01[1];
 	alsStrSearchItemsValue.Append(str01);	
 	// 测试代码，用于显示输出
 	/*for (int i = 1; i <= m_listStrSearchItemsValue.Size(); i++)
@@ -3136,13 +3131,52 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNo
     if (m_pFstFreeStyleDlg->m_IChoosedIndex != 2) //如果是铆钉 螺钉直接获取所选信息，退出向导
 	{
 
-		//获取所需信息
+		//清空
+		m_pFstAccessDlg->_ChoosedFastenersML->ClearLine();
+		//获得需要的数据
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strMainFstTypeFlag,0);
+		CATUnicodeString strSpecValue;
+		for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
+		{
+			if (m_lstStrMainFstTitles02[i]=="紧固件规格")
+			{
+				strSpecValue=m_lstStrMainFstChoosed02[i];
+				break;
+			}
+		}
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue,0);
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"",0);
 
-
-
+		//
+		//初始化测试数据
+		ClearFstInfoLst();
+		//
+		m_alistStrFSTType.Append(m_strMainFstTypeFlag);
+		m_alistStrFSTName.Append(strSpecValue);
+		CATUnicodeString strMainFstLength,strMainFstThickLimit;
+		//
+		for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
+		{
+			if (m_lstStrMainFstTitles02[i] == "总长度")
+			{
+				m_lstStrMainFstChoosed02[i].ConvertToNum(&m_dMainFstLength,"%lf");
+			}
+			//
+			if (m_lstStrMainFstTitles02[i] == "夹持厚度")
+			{
+				m_lstStrMainFstChoosed02[i].ConvertToNum(&m_dMainFstThickLimit,"%lf");
+			}
+		}
+		//
+		m_pListStrPropertyName.Append(&m_lstStrMainFstTitles01);
+		m_pListStrPropertyValue.Append(&m_lstStrMainFstChoosed01);
+		m_pListStrSpecialName.Append(&m_lstStrMainFstTitles02);
+		m_pListStrSpecialValue.Append(&m_lstStrMainFstChoosed02);
+		
 		//
 		//设置前对话框显示
 		m_pFstAccessDlg->SetVisibility(CATDlgShow);
+		m_pFstAccessDlg->SetOKSensitivity(CATDlgEnable);
 
 		//--------------------------------------------
 		//关闭所有过程对话框
@@ -3358,6 +3392,11 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 	//----------------------------------------------------------------------------------------------------
 	//获得该行的信息
 	//----------------------------------------------------------------------------------------------------
+	if (m_plstNutFstResults01.Size()==0)
+	{
+		return;
+	}
+	//
 	double dIndex=1;
 	CATLISTV(CATUnicodeString) * LstStrFirst = (CATLISTV(CATUnicodeString) *)m_plstNutFstResults01[1];
 	int selectComboItem = m_pFstFreeStyleNutDlg->_Combo05->GetSelect();
@@ -3377,7 +3416,7 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 	selectComboItem = m_pFstFreeStyleNutDlg->_Combo01->GetSelect();
 	if (selectComboItem != 0)
 	{
-		m_pFstFreeStyleDlg->_Combo01->GetLine(strType01,selectComboItem);
+		m_pFstFreeStyleNutDlg->_Combo01->GetLine(strType01,selectComboItem);
 	}
 	//
 	for (int i=1; i<= m_lstStrNutFstTitles01.Size(); i++)
@@ -3385,7 +3424,7 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 		//
 		if (m_lstStrNutFstTitles01[i]=="紧固件名称")
 		{
-			strType02=m_lstStrNutFstTitles01[i];
+			strType02=m_lstStrNutFstChoosed01[i];
 		}
 	}
 	//
@@ -3400,7 +3439,7 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 	strDatabase = CATUnicodeString("DatabaseName=") + m_pFstFreeStyleNutDlg->m_StrNextStepDataBaseName; 
 	alsStrSearchItemsValue.Append(strDatabase);
 	//
-	CATUnicodeString str01 = m_pFstFreeStyleNutDlg->m_strNextStepWBSItem[1] + "=" + m_lstStrNutFstChoosed01[1];
+	CATUnicodeString str01 = m_pFstFreeStyleNutDlg->m_strNextStepWBSItem[1] + "==" + m_lstStrNutFstChoosed01[1];
 	alsStrSearchItemsValue.Append(str01);
 	// 测试代码，用于显示输出
 	/*for (int i = 1; i <= alsStrSearchItemsValue.Size(); i++)
@@ -3693,6 +3732,11 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNo
 	//----------------------------------------------------------------------------------------------------
 	//获得该行的信息
 	//----------------------------------------------------------------------------------------------------
+	if (m_plstWasherFstResults01.Size()==0)
+	{
+		return;
+	}
+	//
 	double dIndex=1;
 	CATLISTV(CATUnicodeString) * LstStrFirst = (CATLISTV(CATUnicodeString) *)m_plstWasherFstResults01[1];
 	int selectComboItem = m_pFstFreeStyleWasherDlg->_Combo05->GetSelect();
@@ -3713,7 +3757,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNo
 	selectComboItem = m_pFstFreeStyleWasherDlg->_Combo01->GetSelect();
 	if (selectComboItem != 0)
 	{
-		m_pFstFreeStyleDlg->_Combo01->GetLine(strType01,selectComboItem);
+		m_pFstFreeStyleWasherDlg->_Combo01->GetLine(strType01,selectComboItem);
 	}
 	//
 	for (int i=1; i<= m_lstStrWasherFstTitles01.Size(); i++)
@@ -3721,7 +3765,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNo
 		//
 		if (m_lstStrWasherFstTitles01[i]=="紧固件名称")
 		{
-			strType02=m_lstStrWasherFstTitles01[i];
+			strType02=m_lstStrWasherFstChoosed01[i];
 		}
 	}
 	//
@@ -3736,7 +3780,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNo
 	strDatabase = CATUnicodeString("DatabaseName=") + m_pFstFreeStyleWasherDlg->m_StrNextStepDataBaseName; 
 	alsStrSearchItemsValue.Append(strDatabase);
 	//
-	CATUnicodeString str01 = m_pFstFreeStyleWasherDlg->m_strNextStepWBSItem[1] + "=" + m_lstStrWasherFstChoosed01[1];
+	CATUnicodeString str01 = m_pFstFreeStyleWasherDlg->m_strNextStepWBSItem[1] + "==" + m_lstStrWasherFstChoosed01[1];
 	alsStrSearchItemsValue.Append(str01);
 	// 测试代码，用于显示输出
 	/*for (int i = 1; i <= alsStrSearchItemsValue.Size(); i++)
@@ -3834,11 +3878,176 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgLastStepPBCB(CATCommand* cmd, CATNoti
 void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
+	//清空
+	m_pFstAccessDlg->_ChoosedFastenersML->ClearLine();
 	//获得需要的数据
-	
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strMainFstTypeFlag,0);
+	CATUnicodeString strSpecValue01;
+	for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
+	{
+		if (m_lstStrMainFstTitles02[i]=="紧固件规格")
+		{
+			strSpecValue01=m_lstStrMainFstChoosed02[i];
+			break;
+		}
+	}
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue01,0);
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"",0);
+
+
+	//
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strNutFstTypeFlag,1);
+	CATUnicodeString strSpecValue02;
+	for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
+	{
+		if (m_lstStrNutFstTitles02[i]=="紧固件规格")
+		{
+			strSpecValue02=m_lstStrNutFstChoosed02[i];
+			break;
+		}
+	}
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue02,1);
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"END",1,CATDlgDataModify);
+
+	//
+	CATUnicodeString strSpecValue03;
+	CATListValCATUnicodeString alstStrSpecValue03;
+	for (int j=1; j<=m_lstStrWasherFstTypeFlag.Size(); j++)
+	{
+		//
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_lstStrWasherFstTypeFlag[j],j+1);
+		CATLISTV(CATUnicodeString) * TempLstStrTitle = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[j];
+		CATLISTV(CATUnicodeString) * TempLstStrValue = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[j];
+		for (int i=1; i<=(*TempLstStrTitle).Size(); i++)
+		{
+			if ((*TempLstStrTitle)[i]=="紧固件规格")
+			{
+				strSpecValue03=(*TempLstStrValue)[i];
+				alstStrSpecValue03.Append(strSpecValue03);
+				break;
+			}
+		}
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue03,j+1);
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,m_lstStrWasherPos[j],j+1,CATDlgDataModify);
+	}
+
+	//
+	//
+	//初始化测试数据
+	ClearFstInfoLst();
+	//
+	m_alistStrFSTType.Append(m_strMainFstTypeFlag);
+	m_alistStrFSTName.Append(strSpecValue01);
+	if (m_lstStrWasherFstTypeFlag.Size()!=0)
+	{
+		m_alistStrFSTType.Append(m_lstStrWasherFstTypeFlag);
+		m_alistStrFSTName.Append(alstStrSpecValue03);
+	}
+	m_alistStrFSTType.Append(m_strNutFstTypeFlag);
+	m_alistStrFSTName.Append(strSpecValue02);
+	//
+	m_lststrCirclePositions.Append(m_lstStrWasherPos);
+	m_lststrCirclePositions.Append("END");
+	//
+
+	CATUnicodeString strMainFstLength,strMainFstThickLimit;
+	//
+	for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
+	{
+		if (m_lstStrMainFstTitles02[i] == "总长度")
+		{
+			m_lstStrMainFstChoosed02[i].ConvertToNum(&m_dMainFstLength,"%lf");
+		}
+		//
+		if (m_lstStrMainFstTitles02[i] == "夹持厚度")
+		{
+			m_lstStrMainFstChoosed02[i].ConvertToNum(&m_dMainFstThickLimit,"%lf");
+		}
+	}
+	//
+	m_pListStrPropertyName.Append(&m_lstStrMainFstTitles01);
+	m_pListStrPropertyValue.Append(&m_lstStrMainFstChoosed01);
+	m_pListStrSpecialName.Append(&m_lstStrMainFstTitles02);
+	m_pListStrSpecialValue.Append(&m_lstStrMainFstChoosed02);
+	//
+	for (int j=1; j<=m_lstStrWasherFstTypeFlag.Size(); j++)
+	{
+		//
+		CATLISTV(CATUnicodeString) * TempLstStrTitle = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[j];
+		CATLISTV(CATUnicodeString) * TempLstStrValue = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[j];
+		CATUnicodeString strTemp01, strTemp02;
+		for (int i=1; i<=(*TempLstStrTitle).Size(); i++)
+		{
+			if ((*TempLstStrTitle)[i]=="总厚度")
+			{
+				strTemp01=(*TempLstStrValue)[i];
+				double dvalue=0;
+				strTemp01.ConvertToNum(&dvalue,"%lf");
+				m_lstCircleThicks.Append(dvalue);
+			}
+
+			if ((*TempLstStrTitle)[i]=="直径")
+			{
+				strTemp02=(*TempLstStrValue)[i];
+				double dvalue=0;
+				strTemp02.ConvertToNum(&dvalue,"%lf");
+				m_lstCircleRadiusValues.Append(dvalue);
+			}
+		}
+	}
+	//
+	CATUnicodeString strTemp01, strTemp02;
+	for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
+	{
+		if (m_lstStrNutFstTitles02[i]=="总厚度")
+		{
+			strTemp01=m_lstStrNutFstChoosed02[i];
+			double dvalue=0;
+			strTemp01.ConvertToNum(&dvalue,"%lf");
+			m_lstCircleThicks.Append(dvalue);
+		}
+
+		if (m_lstStrNutFstTitles02[i]=="直径")
+		{
+			strTemp02=m_lstStrNutFstChoosed02[i];
+			double dvalue=0;
+			strTemp01.ConvertToNum(&dvalue,"%lf");
+			m_lstCircleThicks.Append(dvalue);
+		}
+	}
+	//
+	for (int i=1; i<=m_plstWasherFstChoosedTitles01.Size(); i++)
+	{
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
+		//
+		CATLISTV(CATUnicodeString) * TempLstStrTitle01 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles01[i];
+		CATLISTV(CATUnicodeString) * TempLstStrValue01 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults01[i];
+		CATLISTV(CATUnicodeString) * TempLstStrTitle02 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[i];
+		CATLISTV(CATUnicodeString) * TempLstStrValue02 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[i];
+		//
+		*LstStrAtrrValue01 = *TempLstStrTitle01;
+		*LstStrAtrrValue02 = *TempLstStrValue01;
+		*LstStrAtrrValue03 = *TempLstStrTitle02;
+		*LstStrAtrrValue04 = *TempLstStrValue02;
+		//
+		m_pListStrPropertyName.Append(LstStrAtrrValue01);
+		m_pListStrPropertyValue.Append(LstStrAtrrValue02);
+		m_pListStrSpecialName.Append(LstStrAtrrValue03);
+		m_pListStrSpecialValue.Append(LstStrAtrrValue04);
+	}
+	//
+	m_pListStrPropertyName.Append(&m_lstStrNutFstTitles01);
+	m_pListStrPropertyValue.Append(&m_lstStrNutFstChoosed01);
+	m_pListStrSpecialName.Append(&m_lstStrNutFstTitles02);
+	m_pListStrSpecialValue.Append(&m_lstStrNutFstChoosed02);	
 	//
 	//设置前对话框显示
 	m_pFstAccessDlg->SetVisibility(CATDlgShow);
+	m_pFstAccessDlg->SetOKSensitivity(CATDlgEnable);
+	
 
 	//--------------------------------------------
 	//关闭所有过程对话框

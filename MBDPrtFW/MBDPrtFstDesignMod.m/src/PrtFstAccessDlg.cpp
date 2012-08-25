@@ -46,11 +46,9 @@ PrtFstAccessDlg::PrtFstAccessDlg() :
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 
  //初始化显示信息
- ChoosedFastenersMLTitles[0]=CATUnicodeString("序号");
+ ChoosedFastenersMLTitles[0]=CATUnicodeString("名称");
  ChoosedFastenersMLTitles[1]=CATUnicodeString("规格号");
- ChoosedFastenersMLTitles[2]=CATUnicodeString("名称");
- ChoosedFastenersMLTitles[3]=CATUnicodeString("类型");
- ChoosedFastenersMLTitles[4]=CATUnicodeString("安装部位");
+ ChoosedFastenersMLTitles[2]=CATUnicodeString("安装部位");
 
 }
 
@@ -103,8 +101,8 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  ChoosedFastenersMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstAccessDlg", "Frame002.ChoosedFastenersML.ColumnTitle3");
  ChoosedFastenersMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstAccessDlg", "Frame002.ChoosedFastenersML.ColumnTitle4");
  ChoosedFastenersMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstAccessDlg", "Frame002.ChoosedFastenersML.ColumnTitle5");*/
- _ChoosedFastenersML -> SetColumnTitles(5, ChoosedFastenersMLTitles);
- _ChoosedFastenersML -> SetVisibleColumnCount( 5 );
+ _ChoosedFastenersML -> SetColumnTitles(3, ChoosedFastenersMLTitles);
+ _ChoosedFastenersML -> SetVisibleColumnCount( 3 );
 _ChoosedFastenersML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _SaveBackCheckB = new CATDlgCheckButton(_Frame002, "SaveBackCheckB");
 _SaveBackCheckB -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
@@ -112,7 +110,8 @@ _SaveBackCheckB -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 
 //
 _FreeStyleRadioB->SetState(CATDlgCheck,0);
-
+_ChoosedFastenersML->SetColumnTextWidth(0,15);
+_ChoosedFastenersML->SetColumnTextWidth(1,15);
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
