@@ -553,7 +553,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 	if (alststrDetailType[1] == "铆钉")
 	{
 		//再细分情况
-		if (alststrDetailType[2] == "平墩头铆钉")
+		if (alststrDetailType[3] == "1") //平墩头铆钉
 		{
 			//
 			CATListValCATUnicodeString lststrJstSpecialName,lststrJstSpecialValue;
@@ -602,7 +602,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		}
 
 		//
-		else if (alststrDetailType[2] == "压窝铆接平墩头铆钉")
+		else if (alststrDetailType[3] == "2") //压窝铆接平墩头铆钉
 		{
 			//
 			//进行判断
@@ -764,7 +764,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		}
 
 		//
-		else if (alststrDetailType[2] == "双面沉头铆钉")
+		else if (alststrDetailType[3] == "3") //双面沉头铆钉
 		{
 			//
 			CATListValCATUnicodeString lststrJstSpecialName,lststrJstSpecialValue;
@@ -806,7 +806,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		}
 
 		//
-		else if (alststrDetailType[2] == "平头大圆角铆钉")
+		else if (alststrDetailType[3] == "4") //平头大圆角铆钉
 		{
 			//
 			CATListValCATUnicodeString lststrJstSpecialName,lststrJstSpecialValue;
