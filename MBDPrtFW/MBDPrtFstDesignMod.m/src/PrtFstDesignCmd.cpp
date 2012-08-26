@@ -2452,10 +2452,8 @@ void PrtFstDesignCmd::ClearFstInfoLst()
 	//
 
 	m_alistStrFSTType.RemoveAll();
-	m_alistStrFSTType.RemoveAll();
 	//
 	m_lststrCirclePositions.RemoveAll();
-	m_alistStrFSTName.RemoveAll();
 	m_alistStrFSTName.RemoveAll();
 	//
 	m_lstCircleRadiusValues.RemoveAll();
@@ -3168,10 +3166,19 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNo
 			}
 		}
 		//
-		m_pListStrPropertyName.Append(&m_lstStrMainFstTitles01);
-		m_pListStrPropertyValue.Append(&m_lstStrMainFstChoosed01);
-		m_pListStrSpecialName.Append(&m_lstStrMainFstTitles02);
-		m_pListStrSpecialValue.Append(&m_lstStrMainFstChoosed02);
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+		*LstStrAtrrValue = m_lstStrMainFstTitles01;
+		m_pListStrPropertyName.Append(LstStrAtrrValue);
+		LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+		*LstStrAtrrValue = m_lstStrMainFstChoosed01;
+		m_pListStrPropertyValue.Append(LstStrAtrrValue);
+		LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+		*LstStrAtrrValue = m_lstStrMainFstTitles02;
+		m_pListStrSpecialName.Append(LstStrAtrrValue);
+		LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+		*LstStrAtrrValue = m_lstStrMainFstChoosed02;
+		m_pListStrSpecialValue.Append(LstStrAtrrValue);
+		
 		
 		//
 		//设置前对话框显示
@@ -3343,7 +3350,7 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 		strCount.ConvertToNum(&dCount);
 		strCutNumb.ConvertToNum(&dCutNumb);
 		//
-		m_lstStrMainFstTitles01.RemoveAll();
+		m_lstStrNutFstTitles01.RemoveAll();
 		CATUnicodeString strValue05=strListOfSearchResult[5];
 		CHandleString::StringToVector(strValue05,"|",m_lstStrNutFstTitles01);
 		
@@ -3933,7 +3940,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 
 	//
 	//
-	//初始化测试数据
+	//初始化数据
 	ClearFstInfoLst();
 	//
 	m_alistStrFSTType.Append(m_strMainFstTypeFlag);
@@ -3949,8 +3956,6 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 	m_lststrCirclePositions.Append(m_lstStrWasherPos);
 	m_lststrCirclePositions.Append("END");
 	//
-
-	CATUnicodeString strMainFstLength,strMainFstThickLimit;
 	//
 	for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
 	{
@@ -3965,10 +3970,18 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 		}
 	}
 	//
-	m_pListStrPropertyName.Append(&m_lstStrMainFstTitles01);
-	m_pListStrPropertyValue.Append(&m_lstStrMainFstChoosed01);
-	m_pListStrSpecialName.Append(&m_lstStrMainFstTitles02);
-	m_pListStrSpecialValue.Append(&m_lstStrMainFstChoosed02);
+	CATLISTV(CATUnicodeString) *LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrMainFstTitles01;
+	m_pListStrPropertyName.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrMainFstChoosed01;
+	m_pListStrPropertyValue.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrMainFstTitles02;
+	m_pListStrSpecialName.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrMainFstChoosed02;
+	m_pListStrSpecialValue.Append(LstStrAtrrValue);
 	//
 	for (int j=1; j<=m_lstStrWasherFstTypeFlag.Size(); j++)
 	{
@@ -3978,7 +3991,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 		CATUnicodeString strTemp01, strTemp02;
 		for (int i=1; i<=(*TempLstStrTitle).Size(); i++)
 		{
-			if ((*TempLstStrTitle)[i]=="总厚度")
+			if ((*TempLstStrTitle)[i]=="厚度")
 			{
 				strTemp01=(*TempLstStrValue)[i];
 				double dvalue=0;
@@ -3986,7 +3999,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 				m_lstCircleThicks.Append(dvalue);
 			}
 
-			if ((*TempLstStrTitle)[i]=="直径")
+			if ((*TempLstStrTitle)[i]=="内径")
 			{
 				strTemp02=(*TempLstStrValue)[i];
 				double dvalue=0;
@@ -3999,7 +4012,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 	CATUnicodeString strTemp01, strTemp02;
 	for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
 	{
-		if (m_lstStrNutFstTitles02[i]=="总厚度")
+		if (m_lstStrNutFstTitles02[i]=="厚度")
 		{
 			strTemp01=m_lstStrNutFstChoosed02[i];
 			double dvalue=0;
@@ -4011,8 +4024,8 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 		{
 			strTemp02=m_lstStrNutFstChoosed02[i];
 			double dvalue=0;
-			strTemp01.ConvertToNum(&dvalue,"%lf");
-			m_lstCircleThicks.Append(dvalue);
+			strTemp02.ConvertToNum(&dvalue,"%lf");
+			m_lstCircleRadiusValues.Append(dvalue);
 		}
 	}
 	//
@@ -4039,10 +4052,27 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 		m_pListStrSpecialValue.Append(LstStrAtrrValue04);
 	}
 	//
-	m_pListStrPropertyName.Append(&m_lstStrNutFstTitles01);
-	m_pListStrPropertyValue.Append(&m_lstStrNutFstChoosed01);
-	m_pListStrSpecialName.Append(&m_lstStrNutFstTitles02);
-	m_pListStrSpecialValue.Append(&m_lstStrNutFstChoosed02);	
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrNutFstTitles01;
+	m_pListStrPropertyName.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrNutFstChoosed01;
+	m_pListStrPropertyValue.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrNutFstTitles02;
+	m_pListStrSpecialName.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrNutFstChoosed02;
+	m_pListStrSpecialValue.Append(LstStrAtrrValue);
+	//
+	/*cout<<"m_pListStrPropertyName.Size() "<<m_pListStrPropertyName.Size()<<endl;
+	cout<<"m_pListStrSpecialName.Size() "<<m_pListStrSpecialName.Size()<<endl;
+	cout<<"m_alistStrFSTType.Size() "<<m_alistStrFSTType.Size()<<endl;
+	cout<<"m_lststrCirclePositions.Size() "<<m_lststrCirclePositions.Size()<<endl;
+	cout<<"m_alistStrFSTName.Size() "<<m_alistStrFSTName.Size()<<endl;
+	cout<<"m_lstCircleRadiusValues.Size() "<<m_lstCircleRadiusValues.Size()<<endl; 
+	cout<<"m_lstCircleThicks.Size() "<<m_lstCircleThicks.Size()<<endl;
+	cout<<m_dMainFstLength<<" "<<m_dMainFstThickLimit<<endl;*/
 	//
 	//设置前对话框显示
 	m_pFstAccessDlg->SetVisibility(CATDlgShow);
