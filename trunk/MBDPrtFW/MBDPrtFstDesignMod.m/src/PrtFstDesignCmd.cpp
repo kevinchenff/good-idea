@@ -3653,6 +3653,10 @@ void PrtFstDesignCmd::CloseFstFreeStyleWasherDlgCB(CATCommand* cmd, CATNotificat
 {
 	m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleWasherDlg=NULL;
+
+	//垫圈位置信息
+	m_lstStrWasherPos.RemoveAll();
+	m_lstStrWasherFstTypeFlag.RemoveAll();
 	//
 	//设置前对话框显示
 	m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
@@ -3878,6 +3882,10 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgLastStepPBCB(CATCommand* cmd, CATNoti
 	m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
 	m_pFstFreeStyleWasherDlg=NULL;
 
+	//垫圈位置信息
+	m_lstStrWasherPos.RemoveAll();
+	m_lstStrWasherFstTypeFlag.RemoveAll();
+
 	//
 	//设置前对话框显示
 	m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
@@ -4074,6 +4082,10 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 	cout<<"m_lstCircleThicks.Size() "<<m_lstCircleThicks.Size()<<endl;
 	cout<<m_dMainFstLength<<" "<<m_dMainFstThickLimit<<endl;*/
 	//
+
+	//垫圈位置信息
+	m_lstStrWasherPos.RemoveAll();
+	m_lstStrWasherFstTypeFlag.RemoveAll();
 	//设置前对话框显示
 	m_pFstAccessDlg->SetVisibility(CATDlgShow);
 	m_pFstAccessDlg->SetOKSensitivity(CATDlgEnable);
