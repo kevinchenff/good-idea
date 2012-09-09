@@ -82,6 +82,22 @@ CATDlgCombo Combo05
 CATDlgPushButton GoToSearchPB
 {
   FATHER = Frame001;
+  GRID = { 6, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label009
+{
+  FATHER = Frame001;
+  GRID = { 5, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner DiameterOffsetSpinner
+{
+  FATHER = Frame001;
+  STYLE = CATDlgSpnEntry;
+  MIN = 0.000000;
+  MAX = 10.000000;
+  STEP = 10.000000;
   GRID = { 5, 1, 1, 1, CATGRID_4SIDES };
 }
 

@@ -58,14 +58,13 @@ PrtFstFreeStyleMainBoltDlg::PrtFstFreeStyleMainBoltDlg() :
  //
  //初始化属性显示名称
  m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
- m_lstStrPropertyName[1]=CATUnicodeString("紧固件直径牌号");
- m_lstStrPropertyName[2]=CATUnicodeString("紧固件规格");
- m_lstStrPropertyName[3]=CATUnicodeString("直径");
- m_lstStrPropertyName[4]=CATUnicodeString("总长度");
- m_lstStrPropertyName[5]=CATUnicodeString("夹持厚度"); 
- m_lstStrPropertyName[6]=CATUnicodeString("重量（kg）");
- m_lstStrPropertyName[7]=CATUnicodeString("头部直径");
- m_lstStrPropertyName[8]=CATUnicodeString("头部厚度");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件规格");
+ m_lstStrPropertyName[2]=CATUnicodeString("直径");
+ m_lstStrPropertyName[3]=CATUnicodeString("总长度");
+ m_lstStrPropertyName[4]=CATUnicodeString("夹持厚度"); 
+ m_lstStrPropertyName[5]=CATUnicodeString("重量（kg）");
+ m_lstStrPropertyName[6]=CATUnicodeString("头部直径");
+ m_lstStrPropertyName[7]=CATUnicodeString("头部厚度");
  //
 
 }
@@ -154,8 +153,8 @@ _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  SearchResultMLTitles[6] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle7");
  SearchResultMLTitles[7] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle8");
  SearchResultMLTitles[8] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle9");*/
- _SearchResultML -> SetColumnTitles(9, m_lstStrPropertyName);
- _SearchResultML -> SetVisibleColumnCount( 9 );
+ _SearchResultML -> SetColumnTitles(8, m_lstStrPropertyName);
+ _SearchResultML -> SetVisibleColumnCount( 8 );
 _SearchResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame04 = new CATDlgFrame(this, "Frame04", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame04 -> SetGridConstraints(3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);

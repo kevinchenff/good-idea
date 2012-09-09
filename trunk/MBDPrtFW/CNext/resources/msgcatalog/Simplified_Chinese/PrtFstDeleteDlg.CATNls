@@ -1,15 +1,15 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Fastener Delete";
-BOK = "Delete Fasteners";
-BCancel = "Close";
-Frame001.Title = "Choosed Fasteners";
-Frame001.Frame008.Frame010.RemoveSelPB.Title = "Remove Seleted";
-Frame001.Frame008.Frame010.RemoveAllPB.Title = "Remove All";
-Frame002.Title = "Fastener Property";
-Frame002.Frame003.Title = "Instance Info";
+Title = "删除紧固件";
+BOK = "删除";
+BCancel = "关闭";
+Frame001.Title = "选择主紧固件";
+Frame001.Frame008.Frame010.RemoveSelPB.Title = "移除所选";
+Frame001.Frame008.Frame010.RemoveAllPB.Title = "移除所有";
+Frame002.Title = "紧固件属性";
+Frame002.Frame003.Title = "标准号属性";
  Frame002.Frame003.InstanceInfoML.ColumnTitle1 = "Property Name";
  Frame002.Frame003.InstanceInfoML.ColumnTitle2 = "Property Value";
-Frame002.Frame004.Title = "External Info";
+Frame002.Frame004.Title = "规格号属性";
  Frame002.Frame004.ExternalInfoML.ColumnTitle1 = "Property Name";
  Frame002.Frame004.ExternalInfoML.ColumnTitle2 = "Property Value";
 // END WIZARD REPLACEMENT ZONE

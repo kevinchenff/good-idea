@@ -1,14 +1,14 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Choose Fasteners";
-Frame001.Title = "Choose style";
-Frame001.FreeStyleRadioB.Title = "Free Style Choose";
-Frame001.KnowledgeBasedChooseRadioB.Title = "Knowledge Based Choose";
-Frame001.GoToChoosePB.Title = "Access To Choose Fasteners";
-Frame002.Title = "Choose Result";
+Title = "选择紧固件";
+Frame001.Title = "选择方式";
+Frame001.FreeStyleRadioB.Title = "自由选择模式";
+Frame001.KnowledgeBasedChooseRadioB.Title = "知识选择模式";
+Frame001.GoToChoosePB.Title = "开始选择";
+Frame002.Title = "选择结果信息";
  Frame002.ChoosedFastenersML.ColumnTitle1 = "title00";
  Frame002.ChoosedFastenersML.ColumnTitle2 = "title01";
  Frame002.ChoosedFastenersML.ColumnTitle3 = "title02";
  Frame002.ChoosedFastenersML.ColumnTitle4 = "title03";
  Frame002.ChoosedFastenersML.ColumnTitle5 = "title04";
-Frame002.SaveBackCheckB.Title = "Save to Knowledge Data Base";
+Frame002.SaveBackCheckB.Title = "保存配对信息到知识库";
 // END WIZARD REPLACEMENT ZONE

@@ -3098,7 +3098,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 				m_plstMainFstResults02.Append(LstStrAtrrValue01);
 
 				//
-				for (int m=0; m<=8; m++)
+				for (int m=0; m<=7; m++)
 				{
 					//
 					if (m_pFstFreeStyleMainBoltDlg->m_lstStrPropertyName[m] == m_lstStrMainFstTitles02[i])
@@ -3510,7 +3510,7 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 				m_plstNutFstResults02.Append(LstStrAtrrValue01);
 
 				//
-				for (int m=0; m<=14; m++)
+				for (int m=0; m<=13; m++)
 				{
 					//
 					if (m_pFstFreeStyleNutDlg->m_lstStrPropertyName[m] == m_lstStrNutFstTitles02[i])
@@ -3855,7 +3855,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNo
 				m_plstWasherFstResults02.Append(LstStrAtrrValue01);
 
 				//
-				for (int m=0; m<=6; m++)
+				for (int m=0; m<=5; m++)
 				{
 					//
 					if (m_pFstFreeStyleWasherDlg->m_lstStrPropertyName[m] == m_lstStrWasherFstTitles02[i])

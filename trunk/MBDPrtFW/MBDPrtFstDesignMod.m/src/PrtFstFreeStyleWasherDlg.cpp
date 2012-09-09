@@ -180,8 +180,8 @@ _Combo05 -> SetGridConstraints(4, 1, 1, 1, CATGRID_4SIDES);
 _GoToSearchPB -> SetGridConstraints(6, 1, 1, 1, CATGRID_4SIDES);
  _Label009 = new CATDlgLabel(_Frame001, "Label009");
 _Label009 -> SetGridConstraints(5, 0, 1, 1, CATGRID_4SIDES);
- _DiameterOffsetSpinner = new CATDlgSpinner(_Frame001, "DiameterOffsetSpinner", CATDlgSpnEntry);
- _DiameterOffsetSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+ _DiameterOffsetSpinner = new CATDlgSpinner(_Frame001, "DiameterOffsetSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+ //_DiameterOffsetSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
 _DiameterOffsetSpinner -> SetGridConstraints(5, 1, 1, 1, CATGRID_4SIDES);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
 _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
@@ -196,7 +196,7 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  //RearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle5");
  //RearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle6");
  _RearchResultsML -> SetColumnTitles(7, m_lstStrPropertyName);
- _RearchResultsML -> SetVisibleColumnCount( 6 );
+ _RearchResultsML -> SetVisibleColumnCount( 7 );
 _RearchResultsML -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame008 = new CATDlgFrame(_Frame002, "Frame008", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame008 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -217,7 +217,7 @@ _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  //ChooseWashersMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle5");
  //ChooseWashersMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle6");
  _ChooseWashersML -> SetColumnTitles(13, m_lstStrPropertyName02);
- _ChooseWashersML -> SetVisibleColumnCount( 6 );
+ _ChooseWashersML -> SetVisibleColumnCount( 13 );
 _ChooseWashersML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame005 = new CATDlgFrame(_Frame003, "Frame005", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame005 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
@@ -233,6 +233,15 @@ _NextStepPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _LastStepPB = new CATDlgPushButton(_Frame004, "LastStepPB");
 _LastStepPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+
+//设置参数
+double Start, End, StepMM;
+Start = 0.0;
+End = 1e+6;
+StepMM = 0.001;
+//
+_DiameterOffsetSpinner->SetMinMaxStep(Start, End, StepMM);
+_DiameterOffsetSpinner->SetUnit(CATDlgControl::Millimeter);
 
 
 //初始化三种类型的主紧固件查询条件，分别是：普通螺母、单耳、双耳、角型
