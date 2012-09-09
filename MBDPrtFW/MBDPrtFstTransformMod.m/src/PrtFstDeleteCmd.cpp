@@ -642,7 +642,7 @@ void PrtFstDeleteCmd::GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, C
 		PrtService::GetSepcObjectAttrEx(bIsExistKey,lststrJstSpecialName,strSpecialNameKey,spLine);
 		PrtService::GetSepcObjectAttrEx(bIsExistKey,lststrJstSpecialValue,strSpecialValueKey,spLine);	
 
-		for (int i=1; i<=lststrJstPropertyName.Size(); i++)
+		for (int i=1; i<=lststrJstSpecialName.Size(); i++)
 		{
 			m_pDlg->_InstanceInfoML->SetColumnItem(0,lststrJstSpecialName[i]);
 			m_pDlg->_InstanceInfoML->SetColumnItem(1,lststrJstSpecialValue[i]);
