@@ -1,20 +1,20 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Free Style Choose";
-Frame001.Title = "Search Items";
-Frame001.Label01.Title = "Select Head Type: ";
-Frame001.Label02.Title = "Select Material type: ";
-Frame001.Label03.Title = "Select Surface Treatment: ";
-Frame001.Label04.Title = "Select Fastener Name: ";
-Frame001.Label05.Title = "Select Fastener Code: ";
-Frame001.GoToSearchPB.Title = "Go To Search";
-Frame001.Label06.Title = "Select Main Fastener: ";
-Frame002.Title = "Search Results";
+Title = "自由选择模式";
+Frame001.Title = "搜索条件";
+Frame001.Label01.Title = "选择头部类型: ";
+Frame001.Label02.Title = "选择材料类型: ";
+Frame001.Label03.Title = "选择表面处理方式: ";
+Frame001.Label04.Title = "选择紧固件名称: ";
+Frame001.Label05.Title = "选择紧固件标准号: ";
+Frame001.GoToSearchPB.Title = "检索";
+Frame001.Label06.Title = "选择主紧固件: ";
+Frame002.Title = "检索结果";
  Frame002.SearchResultsML.ColumnTitle1 = "title00";
  Frame002.SearchResultsML.ColumnTitle2 = "title01";
  Frame002.SearchResultsML.ColumnTitle3 = "title02";
  Frame002.SearchResultsML.ColumnTitle4 = "title03";
  Frame002.SearchResultsML.ColumnTitle5 = "title04";
  Frame002.SearchResultsML.ColumnTitle6 = "title05";
-Frame004.NextStepPB.Title = "Next Step";
-Frame004.LastStepPB.Title = "Last Step";
+Frame004.NextStepPB.Title = "下一步";
+Frame004.LastStepPB.Title = "上一步";
 // END WIZARD REPLACEMENT ZONE

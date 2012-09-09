@@ -1,13 +1,13 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Choose Main Bolt";
-Frame001.Title = "Model Parameters Info";
-Frame001.Label01.Title = "Max Thickness of Interlayer: ";
-Frame001.Label02.Title = "Min Thickness of Interlayer: ";
-Frame001.Label03.Title = "Thickness of First Layer: ";
-Frame002.Title = "Search Items";
-Frame002.Label04.Title = " <= Diameter <= ";
-Frame002.GoToSearchPB.Title = "Go To Search";
-Frame003.Title = "Search Results";
+Title = "选择主紧固件";
+Frame001.Title = "安装状态信息";
+Frame001.Label01.Title = "最大夹层厚度: ";
+Frame001.Label02.Title = "最小夹层厚度: ";
+Frame001.Label03.Title = "第一安装零件厚度: ";
+Frame002.Title = "检索条件";
+Frame002.Label04.Title = " <= 直径 <= ";
+Frame002.GoToSearchPB.Title = "搜索";
+Frame003.Title = "检索结果";
  Frame003.SearchResultML.ColumnTitle1 = "title00";
  Frame003.SearchResultML.ColumnTitle2 = "title01";
  Frame003.SearchResultML.ColumnTitle3 = "title02";
@@ -17,6 +17,6 @@ Frame003.Title = "Search Results";
  Frame003.SearchResultML.ColumnTitle7 = "title06";
  Frame003.SearchResultML.ColumnTitle8 = "title07";
  Frame003.SearchResultML.ColumnTitle9 = "title08";
-Frame04.LastStepPB.Title = "Last Step";
-Frame04.NextStepPB.Title = "Next Step";
+Frame04.LastStepPB.Title = "上一步";
+Frame04.NextStepPB.Title = "下一步";
 // END WIZARD REPLACEMENT ZONE

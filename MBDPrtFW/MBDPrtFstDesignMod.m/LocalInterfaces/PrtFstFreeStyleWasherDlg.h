@@ -73,6 +73,8 @@ class PrtFstFreeStyleWasherDlg: public CATDlgDialog
  CATDlgLabel*      _Label05;
  CATDlgCombo*      _Combo05;
  CATDlgPushButton*      _GoToSearchPB;
+ CATDlgLabel*      _Label009;
+ CATDlgSpinner*      _DiameterOffsetSpinner;
  CATDlgFrame*      _Frame002;
  CATDlgMultiList*      _RearchResultsML;
  CATDlgFrame*      _Frame008;
