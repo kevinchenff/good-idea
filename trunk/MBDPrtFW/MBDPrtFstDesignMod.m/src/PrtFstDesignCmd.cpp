@@ -4305,7 +4305,7 @@ CATBoolean PrtFstDesignCmd::OnWasherPushItemSelectCB(CATCommand* cmd, CATNotific
 	alststrName.Append(m_lstStrWasherFstTitles01);alststrName.Append(m_lstStrWasherFstTitles02);
 	alststrValue.Append(m_lstStrWasherFstChoosed01);alststrValue.Append(m_lstStrWasherFstChoosed02);
 	//
-	for (int m=0; m<=12; m++)
+	for (int m=0; m<=13; m++)
 	{
 		for (int n=1; n<=alststrName.Size(); n++)
 		{

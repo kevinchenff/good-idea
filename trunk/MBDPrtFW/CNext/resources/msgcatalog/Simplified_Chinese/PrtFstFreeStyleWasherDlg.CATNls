@@ -7,7 +7,6 @@ Frame001.Label03.Title = "选择表面处理方式: ";
 Frame001.Label04.Title = "选择紧固件名称: ";
 Frame001.Label05.Title = "选择紧固件标准号: ";
 Frame001.GoToSearchPB.Title = "搜索";
-Frame001.Label009.Title = "直径偏移量:";
 Frame002.Title = "检索结果";
  Frame002.RearchResultsML.ColumnTitle1 = "title00";
  Frame002.RearchResultsML.ColumnTitle2 = "title01";
