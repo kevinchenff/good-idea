@@ -87,11 +87,12 @@ PrtFstFreeStyleWasherDlg::PrtFstFreeStyleWasherDlg() :
  m_lstStrPropertyName02[5]=CATUnicodeString("单位制"); 
  m_lstStrPropertyName02[6]=CATUnicodeString("备注");
  m_lstStrPropertyName02[7]=CATUnicodeString("紧固件规格");
- m_lstStrPropertyName02[8]=CATUnicodeString("内径");
- m_lstStrPropertyName02[9]=CATUnicodeString("外径");
- m_lstStrPropertyName02[10]=CATUnicodeString("沉槽直径"); 
- m_lstStrPropertyName02[11]=CATUnicodeString("厚度");
- m_lstStrPropertyName02[12]=CATUnicodeString("重量（kg）");
+ m_lstStrPropertyName02[8]=CATUnicodeString("公称直径");
+ m_lstStrPropertyName02[9]=CATUnicodeString("内径");
+ m_lstStrPropertyName02[10]=CATUnicodeString("外径");
+ m_lstStrPropertyName02[11]=CATUnicodeString("沉槽直径"); 
+ m_lstStrPropertyName02[12]=CATUnicodeString("厚度");
+ m_lstStrPropertyName02[13]=CATUnicodeString("重量（kg）");
 
 }
 
@@ -217,8 +218,8 @@ _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  //ChooseWashersMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle4");
  //ChooseWashersMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle5");
  //ChooseWashersMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle6");
- _ChooseWashersML -> SetColumnTitles(13, m_lstStrPropertyName02);
- _ChooseWashersML -> SetVisibleColumnCount( 13 );
+ _ChooseWashersML -> SetColumnTitles(14, m_lstStrPropertyName02);
+ _ChooseWashersML -> SetVisibleColumnCount( 14 );
 _ChooseWashersML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame005 = new CATDlgFrame(_Frame003, "Frame005", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame005 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);

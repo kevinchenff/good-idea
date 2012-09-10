@@ -102,7 +102,7 @@ class PrtFstFreeStyleWasherDlg: public CATDlgDialog
 
  // Ù–‘Õ∑√˚≥∆
  CATUnicodeString m_lstStrPropertyName[8];
- CATUnicodeString m_lstStrPropertyName02[13];
+ CATUnicodeString m_lstStrPropertyName02[14];
  //
  int m_IChoosedIndex;
  CATUnicodeString m_StrCurrentDataBaseName; 
