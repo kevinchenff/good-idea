@@ -4214,7 +4214,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgRemovePBCB(CATCommand* cmd, CATNotifi
 		alststrName.Append(*TempLstStr01);alststrName.Append(*TempLstStr02);
 		alststrValue.Append(*TempLstStr03);alststrValue.Append(*TempLstStr04);
 		//
-		for (int m=0; m<=12; m++)
+		for (int m=0; m<=13; m++)
 		{
 			for (int n=1; n<=alststrName.Size(); n++)
 			{
