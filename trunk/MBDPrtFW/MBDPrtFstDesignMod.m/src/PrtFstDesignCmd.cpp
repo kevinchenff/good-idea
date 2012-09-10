@@ -3035,11 +3035,19 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 	alsStrSearchItemsValue.Append(strDatabase);
 	//
 	CATUnicodeString str01 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[1] + "==" + m_lstStrMainFstChoosed01[1];
-	alsStrSearchItemsValue.Append(str01);	
+	alsStrSearchItemsValue.Append(str01);
+	//
+	double dMin = m_pFstFreeStyleMainBoltDlg->_MinSpinner->GetValue() * 1000;
+	double dMax = m_pFstFreeStyleMainBoltDlg->_MaxSpinner->GetValue() * 1000;
+	CATUnicodeString strdMin; strdMin.BuildFromNum(dMin,"%lf");
+	CATUnicodeString strdMax; strdMax.BuildFromNum(dMax,"%lf");
+	CATUnicodeString str02 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[2] + "=" + strdMin + "-" + strdMax;
+	alsStrSearchItemsValue.Append(str02);
+
 	// 测试代码，用于显示输出
-	/*for (int i = 1; i <= m_listStrSearchItemsValue.Size(); i++)
+	/*for (int i = 1; i <= alsStrSearchItemsValue.Size(); i++)
 	{
-		cout<<"第"<<i<<"行数据："<<m_listStrSearchItemsValue[i].ConvertToChar()<<endl;
+		cout<<"第"<<i<<"行数据："<<alsStrSearchItemsValue[i].ConvertToChar()<<endl;
 	}*/
 	//存储搜索得到的Value 
 	CATListValCATUnicodeString strListOfSearchResult;
@@ -3855,7 +3863,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNo
 				m_plstWasherFstResults02.Append(LstStrAtrrValue01);
 
 				//
-				for (int m=0; m<=5; m++)
+				for (int m=0; m<=7; m++)
 				{
 					//
 					if (m_pFstFreeStyleWasherDlg->m_lstStrPropertyName[m] == m_lstStrWasherFstTitles02[i])
