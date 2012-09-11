@@ -201,8 +201,8 @@ m_plsStrCurrentWBSItem.Append(LstStrAtrrValue031);
 CATLISTV(CATUnicodeString) *LstStrAtrrValue032 = new CATLISTV(CATUnicodeString)();
 (*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_FASTENER_MARK");
 (*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_DIAMETER");
-(*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_THICKNESS_OF_PRESS");
-(*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_LENGTH");
+(*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_THICKNESS_OF_PRESS"); //夹持厚度
+(*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_LENGTH");//长度
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue032);
 //
 CATLISTV(CATUnicodeString) *LstStrAtrrValue041 = new CATLISTV(CATUnicodeString)();
