@@ -44,7 +44,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_dFstMaxIndex(0),m_pFstAccessDlg(NULL),m_pFstFreeStyleDlg(NULL),m_pFstKnowledgeBasedDlg(NULL)
   ,m_pFstFreeStyleMainBoltDlg(NULL),m_pFstFreeStyleNutDlg(NULL),m_pFstFreeStyleWasherDlg(NULL)
   ,m_pFstKnowledgeMainBoltDlg(NULL),m_pFstKnowledgeNutDlg(NULL),m_pFstKnowledgeWasherDlg(NULL)
-  ,m_pContextMenu(NULL),m_pPushItemSelect(NULL),m_IndexChoosedWasher(-1)
+  ,m_pContextMenu(NULL),m_pPushItemSelect(NULL),m_IndexChoosedWasher(-1),m_dHeadThickness(0)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -2866,6 +2866,13 @@ void PrtFstDesignCmd::FstFreeStyleDlgSearchResultsMLCB(CATCommand* cmd, CATNotif
 			{
 				strType03=m_lstStrMainFstChoosed01[i];
 			}
+
+			//
+			if (m_lstStrMainFstTitles01[i]=="头部类型")
+			{
+				m_strMainFstHeadType=m_lstStrMainFstChoosed01[i];
+			}
+			
 		}
 		//
 		if (strType03 != "")
@@ -3007,6 +3014,19 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgSearchResultsMLCB(CATCommand* cmd, 
 		//获得该行的信息
 		GetChoosedMLValue(ioTabRow[0]+1,m_plstMainFstResults02,m_lstStrMainFstChoosed02);
 
+		//获得头部厚度
+		for (int i=1; i<= m_lstStrMainFstChoosed02.Size(); i++)
+		{
+			//
+			if (m_lstStrMainFstTitles02[i] == "头部厚度")
+			{
+				//
+				CATUnicodeString strThickness = m_lstStrMainFstChoosed02[i];
+				strThickness.ConvertToNum(&m_dHeadThickness,"%lf");
+			}
+
+		}
+
 		//对按钮状态的控制
 		m_pFstFreeStyleMainBoltDlg->_NextStepPB->SetSensitivity(CATDlgEnable);
 	}
@@ -3044,11 +3064,136 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 	CATUnicodeString str02 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[2] + "=" + strdMin + "-" + strdMax;
 	alsStrSearchItemsValue.Append(str02);
 
+	//拆分字符串 "F_ATTEX_FSTTYPE" ，获得其类型信息
+	CATListValCATUnicodeString alststrDetailType;
+	CHandleString::StringToVector(m_strMainFstTypeFlag,"|",alststrDetailType);
+	//----------------------------------------------------
+	//需要按照主紧固件的类型反算夹持信息
+	//----------------------------------------------------
+	if (alststrDetailType[1] == "螺栓")
+	{
+		//夹持厚度过滤
+		CATUnicodeString strThick;
+		strThick.BuildFromNum(m_dJstThickMax,"%lf");
+		//
+		CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
+		alsStrSearchItemsValue.Append(str03);
+	}
+
+	if (alststrDetailType[1] == "铆钉")
+	{
+		//再细分情况
+		if (alststrDetailType[3] == "1") //平墩头铆钉
+		{
+			//
+			double dSTDLengthMin=0,dSTDLengthMax=0;
+			if (dMin >= 4)
+			{
+				dSTDLengthMin = dMin + 1.1*m_dJstThickMax;
+			}
+			else
+			{
+				dSTDLengthMin = dMin + 1.3*m_dJstThickMax;
+			}
+
+			//
+			if (dMax >= 4)
+			{
+				dSTDLengthMax = dMax + 1.1*m_dJstThickMax;
+			}
+			else
+			{
+				dSTDLengthMax = dMax + 1.3*m_dJstThickMax;
+			}
+
+			//增加 5mm 的搜索余量
+			dSTDLengthMax += 5.0;
+
+			//
+			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
+			strdSTDLengthMin.BuildFromNum(dSTDLengthMin,"%lf");
+			strdSTDLengthMax.BuildFromNum(dSTDLengthMax,"%lf");
+
+			//
+			CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=" + strdSTDLengthMin + "-" + strdSTDLengthMax;
+			alsStrSearchItemsValue.Append(str03);
+
+		}
+		//
+		else if (alststrDetailType[3] == "2") //压窝铆接平墩头铆钉
+		{
+			//
+			double dSTDLengthMin=0,dSTDLengthMax=0;
+			dSTDLengthMin = 1.3*dMin + m_dJstThickMax + m_dFirstPrdThickMax;
+			dSTDLengthMax = 1.3*dMax + m_dJstThickMax + m_dFirstPrdThickMax;
+
+			//增加 5mm 的搜索余量
+			dSTDLengthMax += 5.0;
+			//
+			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
+			strdSTDLengthMin.BuildFromNum(dSTDLengthMin,"%lf");
+			strdSTDLengthMax.BuildFromNum(dSTDLengthMax,"%lf");
+
+			//
+			CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=" + strdSTDLengthMin + "-" + strdSTDLengthMax;
+			alsStrSearchItemsValue.Append(str03);
+			
+		}
+		//
+		else if (alststrDetailType[3] == "3") //双面沉头铆钉
+		{
+			//
+			double dSTDLengthMin=0,dSTDLengthMax=0;
+			dSTDLengthMin = 0.6*dMin + m_dJstThickMax;
+			dSTDLengthMax = 0.6*dMax + m_dJstThickMax;
+
+			//增加 5mm 的搜索余量
+			dSTDLengthMax += 5.0;
+			//
+			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
+			strdSTDLengthMin.BuildFromNum(dSTDLengthMin,"%lf");
+			strdSTDLengthMax.BuildFromNum(dSTDLengthMax,"%lf");
+
+			//
+			CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=" + strdSTDLengthMin + "-" + strdSTDLengthMax;
+			alsStrSearchItemsValue.Append(str03);
+
+		}
+		//
+		else if (alststrDetailType[3] == "4") //平头大圆角铆钉
+		{
+			//
+			double dSTDLengthMin=0,dSTDLengthMax=0;
+			dSTDLengthMin = 0.7*dMin + m_dJstThickMax;
+			dSTDLengthMax = 0.7*dMax + m_dJstThickMax;
+
+			//增加 5mm 的搜索余量
+			dSTDLengthMax += 5.0;
+			//
+			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
+			strdSTDLengthMin.BuildFromNum(dSTDLengthMin,"%lf");
+			strdSTDLengthMax.BuildFromNum(dSTDLengthMax,"%lf");
+
+			//
+			CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=" + strdSTDLengthMin + "-" + strdSTDLengthMax;
+			alsStrSearchItemsValue.Append(str03);
+		}
+
+		//夹持厚度过滤
+		CATUnicodeString strThick;
+		strThick.BuildFromNum(m_dJstThickMax,"%lf");
+		//
+		CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
+		alsStrSearchItemsValue.Append(str03);
+	}	
+
+
 	// 测试代码，用于显示输出
 	/*for (int i = 1; i <= alsStrSearchItemsValue.Size(); i++)
 	{
 		cout<<"第"<<i<<"行数据："<<alsStrSearchItemsValue[i].ConvertToChar()<<endl;
 	}*/
+
 	//存储搜索得到的Value 
 	CATListValCATUnicodeString strListOfSearchResult;
 	//调用查询接口
