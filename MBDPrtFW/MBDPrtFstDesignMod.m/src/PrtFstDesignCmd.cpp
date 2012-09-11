@@ -44,7 +44,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_dFstMaxIndex(0),m_pFstAccessDlg(NULL),m_pFstFreeStyleDlg(NULL),m_pFstKnowledgeBasedDlg(NULL)
   ,m_pFstFreeStyleMainBoltDlg(NULL),m_pFstFreeStyleNutDlg(NULL),m_pFstFreeStyleWasherDlg(NULL)
   ,m_pFstKnowledgeMainBoltDlg(NULL),m_pFstKnowledgeNutDlg(NULL),m_pFstKnowledgeWasherDlg(NULL)
-  ,m_pContextMenu(NULL),m_pPushItemSelect(NULL),m_IndexChoosedWasher(-1),m_dHeadThickness(0)
+  ,m_pContextMenu(NULL),m_pPushItemSelect(NULL),m_IndexChoosedWasher(-1),m_dHeadThickness(0),m_dFstDiameterValue(0)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -3025,6 +3025,13 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgSearchResultsMLCB(CATCommand* cmd, 
 				strThickness.ConvertToNum(&m_dHeadThickness,"%lf");
 			}
 
+			//需要修改部分，当名称更正后
+			if (m_lstStrMainFstTitles02[i] == "直径" || m_lstStrMainFstTitles02[i] == "公称直径")
+			{
+				//
+				m_strdFstDiameterValue = m_lstStrMainFstChoosed02[i];
+				m_strdFstDiameterValue.ConvertToNum(&m_dFstDiameterValue,"%lf");
+			}
 		}
 
 		//对按钮状态的控制
@@ -3106,9 +3113,6 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 				dSTDLengthMax = dMax + 1.3*m_dJstThickMax;
 			}
 
-			//增加 5mm 的搜索余量
-			dSTDLengthMax += 5.0;
-
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
 			strdSTDLengthMin.BuildFromNum(dSTDLengthMin,"%lf");
@@ -3127,8 +3131,6 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 			dSTDLengthMin = 1.3*dMin + m_dJstThickMax + m_dFirstPrdThickMax;
 			dSTDLengthMax = 1.3*dMax + m_dJstThickMax + m_dFirstPrdThickMax;
 
-			//增加 5mm 的搜索余量
-			dSTDLengthMax += 5.0;
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
 			strdSTDLengthMin.BuildFromNum(dSTDLengthMin,"%lf");
@@ -3147,8 +3149,6 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 			dSTDLengthMin = 0.6*dMin + m_dJstThickMax;
 			dSTDLengthMax = 0.6*dMax + m_dJstThickMax;
 
-			//增加 5mm 的搜索余量
-			dSTDLengthMax += 5.0;
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
 			strdSTDLengthMin.BuildFromNum(dSTDLengthMin,"%lf");
@@ -3167,8 +3167,6 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 			dSTDLengthMin = 0.7*dMin + m_dJstThickMax;
 			dSTDLengthMax = 0.7*dMax + m_dJstThickMax;
 
-			//增加 5mm 的搜索余量
-			dSTDLengthMax += 5.0;
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
 			strdSTDLengthMin.BuildFromNum(dSTDLengthMin,"%lf");
@@ -3186,7 +3184,6 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 		CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
 		alsStrSearchItemsValue.Append(str03);
 	}	
-
 
 	// 测试代码，用于显示输出
 	/*for (int i = 1; i <= alsStrSearchItemsValue.Size(); i++)
@@ -3457,6 +3454,19 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgSearchResultsMLCB(CATCommand* cmd, CATNo
 		//获得该行的信息
 		GetChoosedMLValue(ioTabRow[0]+1,m_plstNutFstResults02,m_lstStrNutFstChoosed02);
 
+		//
+		//获得头部厚度
+		for (int i=1; i<= m_lstStrNutFstChoosed02.Size(); i++)
+		{
+			//需要修改部分，当名称更正后
+			if (m_lstStrNutFstTitles02[i] == "厚度" || m_lstStrNutFstTitles02[i] == "总厚度")
+			{
+				//
+				m_strdNutFstThickValue = m_lstStrNutFstChoosed02[i];
+				m_strdNutFstThickValue.ConvertToNum(&m_dNutFstThickValue,"%lf");
+			}
+		}
+
 		//对按钮状态的控制
 		m_pFstFreeStyleNutDlg->_NextStepPB->SetSensitivity(CATDlgEnable);
 	}
@@ -3601,6 +3611,10 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 	//
 	CATUnicodeString str01 = m_pFstFreeStyleNutDlg->m_strNextStepWBSItem[1] + "==" + m_lstStrNutFstChoosed01[1];
 	alsStrSearchItemsValue.Append(str01);
+
+	CATUnicodeString str02 = m_pFstFreeStyleNutDlg->m_strNextStepWBSItem[2] + "=" + m_strdFstDiameterValue;
+	alsStrSearchItemsValue.Append(str02);
+
 	// 测试代码，用于显示输出
 	/*for (int i = 1; i <= alsStrSearchItemsValue.Size(); i++)
 	{

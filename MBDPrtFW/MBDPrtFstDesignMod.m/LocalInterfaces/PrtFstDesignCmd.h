@@ -260,6 +260,10 @@ private:
 	CATUnicodeString m_strMainFstHeadType;
 	double m_dHeadThickness;
 	
+	//记录所选公称直径参数值
+	CATUnicodeString m_strdFstDiameterValue;
+	double m_dFstDiameterValue;
+	
 	//
 	//螺母信息
 	CATListPV m_plstNutFstResults01; //螺母标准号信息
@@ -270,6 +274,11 @@ private:
 	CATListValCATUnicodeString m_lstStrNutFstChoosed02;
 	//
 	CATUnicodeString m_strNutFstTypeFlag;
+
+	//
+	//记录所选螺母厚度参数值
+	CATUnicodeString m_strdNutFstThickValue;
+	double m_dNutFstThickValue;
 
 	//
 	//垫圈信息
