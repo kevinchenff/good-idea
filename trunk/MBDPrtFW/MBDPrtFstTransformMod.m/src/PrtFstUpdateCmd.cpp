@@ -245,8 +245,8 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			CATListValCATISpecObject_var iolstspFoundResult04;
 			PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult03[j],iolstspFoundResult04);
 
-			CATUnicodeString strTemp;strTemp.BuildFromNum(iolstspFoundResult04.Size());
-			PrtService::ShowDlgNotify("iolstspFoundResult04",strTemp);
+			//CATUnicodeString strTemp;strTemp.BuildFromNum(iolstspFoundResult04.Size());
+			//PrtService::ShowDlgNotify("iolstspFoundResult04",strTemp);
 
 			//2.2 获得内部含有的线圈模型，得到其数量信息
 			for (int m = 1; m <= iolstspFoundResult04.Size(); m++)
@@ -254,8 +254,8 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 				CATListValCATISpecObject_var iolstspFoundResult05;
 				PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult04[m],iolstspFoundResult05,"CATISpecObject");
 				//
-				strTemp.BuildFromNum(iolstspFoundResult05.Size());
-				PrtService::ShowDlgNotify("iolstspFoundResult05",strTemp);
+				//strTemp.BuildFromNum(iolstspFoundResult05.Size());
+				//PrtService::ShowDlgNotify("iolstspFoundResult05",strTemp);
 				//每个几何图形集下面的线圈分类列表
 				CATListValCATISpecObject_var alistSpecLine,alistSpecCircle;	
 
