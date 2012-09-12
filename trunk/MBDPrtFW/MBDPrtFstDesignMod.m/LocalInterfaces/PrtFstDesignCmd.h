@@ -302,7 +302,13 @@ private:
 	CATListPV m_plstWasherFstChoosedResults02; //垫圈规格号信息
 	//垫圈位置信息
 	CATListValCATUnicodeString m_lstStrWasherPos;
-	//
+	
+	//所选时候的厚度
+	double m_dSearchedWasherThick;
+	double m_dChoosedWasherThick;
+	//垫圈厚度总值
+	double m_dWasherFstThickValueStart,m_dWasherFstThickValueEnd;
+	
 	//
 	CATListValCATUnicodeString m_lstStrWasherFstTypeFlag;
 	//

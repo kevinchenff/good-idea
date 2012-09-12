@@ -45,6 +45,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_pFstFreeStyleMainBoltDlg(NULL),m_pFstFreeStyleNutDlg(NULL),m_pFstFreeStyleWasherDlg(NULL)
   ,m_pFstKnowledgeMainBoltDlg(NULL),m_pFstKnowledgeNutDlg(NULL),m_pFstKnowledgeWasherDlg(NULL)
   ,m_pContextMenu(NULL),m_pPushItemSelect(NULL),m_IndexChoosedWasher(-1),m_dHeadThickness(0),m_dFstDiameterValue(0)
+  ,m_dNutFstThickValue(0),m_dSearchedWasherThick(0),m_dChoosedWasherThick(0),m_dWasherFstThickValueStart(0),m_dWasherFstThickValueEnd(0)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -3176,20 +3177,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 			CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=" + strdSTDLengthMin + "-" + strdSTDLengthMax;
 			alsStrSearchItemsValue.Append(str03);
 		}
-
-		//夹持厚度过滤
-		CATUnicodeString strThick;
-		strThick.BuildFromNum(m_dJstThickMax,"%lf");
-		//
-		CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
-		alsStrSearchItemsValue.Append(str03);
-	}	
-
-	// 测试代码，用于显示输出
-	/*for (int i = 1; i <= alsStrSearchItemsValue.Size(); i++)
-	{
-		cout<<"第"<<i<<"行数据："<<alsStrSearchItemsValue[i].ConvertToChar()<<endl;
-	}*/
+	}
 
 	//存储搜索得到的Value 
 	CATListValCATUnicodeString strListOfSearchResult;
@@ -4174,7 +4162,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 				m_lstCircleThicks.Append(dvalue);
 			}
 
-			if ((*TempLstStrTitle)[i]=="内径")
+			if ((*TempLstStrTitle)[i]=="内径" || (*TempLstStrTitle)[i]=="公称直径")
 			{
 				strTemp02=(*TempLstStrValue)[i];
 				double dvalue=0;
@@ -4195,7 +4183,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 			m_lstCircleThicks.Append(dvalue);
 		}
 
-		if (m_lstStrNutFstTitles02[i]=="直径")
+		if (m_lstStrNutFstTitles02[i]=="直径" || m_lstStrNutFstTitles02[i]=="公称直径")
 		{
 			strTemp02=m_lstStrNutFstChoosed02[i];
 			double dvalue=0;
@@ -4300,7 +4288,19 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgSearchResultsMLCB(CATCommand* cmd, CA
 		//获得该行的信息
 		GetChoosedMLValue(ioTabRow[0]+1,m_plstWasherFstResults02,m_lstStrWasherFstChoosed02);
 
-		// 显示ContextualMenu菜单
+		//获取所选垫圈的厚度值
+		for (int i=1; i<= m_lstStrWasherFstChoosed02.Size(); i++)
+		{
+			if (m_lstStrWasherFstTitles02[i] == "厚度")
+			{
+				//
+				m_lstStrWasherFstChoosed02[i].ConvertToNum(&m_dSearchedWasherThick,"%lf");
+				break;
+			}
+		}
+
+
+		//显示ContextualMenu菜单
 		m_pContextMenu = new CATDlgContextualMenu (m_pFstFreeStyleWasherDlg->_RearchResultsML, "Context",CATDlgCtxEmpty);
 		m_pPushItemSelect = new CATDlgPushItem(m_pContextMenu,"选择");
 
@@ -4324,6 +4324,20 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgChooseWashersMLCB(CATCommand* cmd, CA
 		m_pFstFreeStyleWasherDlg->_ChooseWashersML->GetSelect(ioTabRow,iSize);
 		//
 		m_IndexChoosedWasher = ioTabRow[0]+1;
+		//
+		//获取所选垫圈的厚度值
+		//
+		CATLISTV(CATUnicodeString) *TempLstStr01 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[m_IndexChoosedWasher];
+		CATLISTV(CATUnicodeString) *TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[m_IndexChoosedWasher];
+		for (int i=1; i<= (*TempLstStr01).Size(); i++)
+		{
+			if ((*TempLstStr01)[i] == "厚度")
+			{
+				//
+				(*TempLstStr02)[i].ConvertToNum(&m_dChoosedWasherThick,"%lf");
+				break;
+			}
+		}
 		//
 		m_pFstFreeStyleWasherDlg->_RemovePB->SetSensitivity(CATDlgEnable);
 	}
@@ -4356,6 +4370,15 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgRemovePBCB(CATCommand* cmd, CATNotifi
 	m_plstWasherFstChoosedResults02.RemovePosition(m_IndexChoosedWasher); 
 	delete TempLstStr;
 	//垫圈位置信息
+	if (m_lstStrWasherPos[m_IndexChoosedWasher] == "START")
+	{
+		m_dWasherFstThickValueStart -= m_dChoosedWasherThick;
+	}
+	else
+	{
+		m_dWasherFstThickValueEnd -= m_dChoosedWasherThick;
+	}
+	//
 	m_lstStrWasherPos.RemovePosition(m_IndexChoosedWasher);
 	m_lstStrWasherFstTypeFlag.RemovePosition(m_IndexChoosedWasher);
 	//
@@ -4404,6 +4427,10 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgClearAllPBCB(CATCommand* cmd, CATNoti
 	//垫圈位置信息
 	m_lstStrWasherPos.RemoveAll();
 	m_lstStrWasherFstTypeFlag.RemoveAll();
+	//
+	//垫圈位置信息
+	m_dWasherFstThickValueStart = 0;
+	m_dWasherFstThickValueEnd = 0;
 	//
 	//清除列表中的内容
 	//清除已有的指针信息
@@ -4485,13 +4512,17 @@ CATBoolean PrtFstDesignCmd::OnWasherPushItemSelectCB(CATCommand* cmd, CATNotific
 		m_lstStrWasherPos.Append("END");
 		//
 		m_pFstFreeStyleWasherDlg->_ChooseWashersML->SetColumnItem(0,"END",m_lstStrWasherPos.Size()-1,CATDlgDataModify);
-
+		//
+		//垫圈位置信息
+		m_dWasherFstThickValueEnd += m_dSearchedWasherThick;		
 	}
 	else
 	{
 		m_lstStrWasherPos.Append("START");
 		//
 		m_pFstFreeStyleWasherDlg->_ChooseWashersML->SetColumnItem(0,"START",m_lstStrWasherPos.Size()-1,CATDlgDataModify);
+		//
+		m_dWasherFstThickValueStart += m_dSearchedWasherThick;
 	}
 	//
 	m_lstStrWasherFstTypeFlag.Append(m_strWasherFstTypeFlag);
