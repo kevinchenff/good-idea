@@ -4382,7 +4382,6 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgRemovePBCB(CATCommand* cmd, CATNotifi
 	m_lstStrWasherPos.RemovePosition(m_IndexChoosedWasher);
 	m_lstStrWasherFstTypeFlag.RemovePosition(m_IndexChoosedWasher);
 	//
-	//
 	for (int i=1; i<= m_plstWasherFstChoosedTitles01.Size(); i++)
 	{
 		//
