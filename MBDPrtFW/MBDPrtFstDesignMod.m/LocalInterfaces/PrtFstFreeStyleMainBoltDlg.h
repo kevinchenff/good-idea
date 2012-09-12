@@ -66,7 +66,7 @@ class PrtFstFreeStyleMainBoltDlg: public CATDlgDialog
 
  //
  // Ù–‘Õ∑√˚≥∆
- CATUnicodeString m_lstStrPropertyName[8];
+ CATUnicodeString m_lstStrPropertyName[9];
 
 
 };
