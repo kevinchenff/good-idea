@@ -320,8 +320,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 				}
 
 				//调用更新函数，计算业务层次，线模型更新后是否失效
-				double dAllowance = 0;
-				CheckFstLineLengthInfo(alistSpecLine,alistSpecCircle,dAllowance);	
+				CheckFstLineLengthInfo(alistSpecLine,alistSpecCircle);	
 			}
 
 			//收起该层所有的几何图形结构树节点
@@ -397,12 +396,16 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		m_pDlg->_ErrorMultiList->SetColumnItem(0,IndexNum);
 		m_pDlg->_ErrorMultiList->SetColumnItem(1,PrtService::GetAlias(m_alistErrorSpec[i]));
 		m_pDlg->_ErrorMultiList->SetColumnItem(2,m_aliststrErrorInfo[i]);
-	}	
+	}
+	//
+	CATUnicodeString strNum;
+	strNum.BuildFromNum(m_aliststrErrorInfo.Size());
+	PrtService::ShowDlgNotify("提示",strNum);
 }
 
 
 //检查线模型的更新情况，是否超出安装长度要求，检验规则：长度-夹层厚度-n垫圈厚度-n螺母厚度
-HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &alistSpecLine,CATListValCATISpecObject_var &alistSpecCircle,double dAllowance)
+HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &alistSpecLine,CATListValCATISpecObject_var &alistSpecCircle)
 {
 
 	HRESULT rc = S_OK;
@@ -506,27 +509,27 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		//生成错误信息
 		if (dThickLimit < dThick)
 		{
-			CATUnicodeString strInfo,strTemp;
+			CATUnicodeString strInfo(""),strTemp("");
 			strTemp.BuildFromNum(dThick-dThickLimit,"%lf");
-			strInfo += "螺栓光杆凹入夹层中，凹入尺寸量为：" + strTemp + "mm";
+			strInfo += CATUnicodeString("螺栓光杆凹入夹层中，凹入尺寸量为：") + strTemp + CATUnicodeString("mm");
 			
 			alstErrorInfoItems.Append(strInfo);
 		}
 
 		if (dThickLimit > (dThick+1))
 		{
-			CATUnicodeString strInfo,strTemp;
+			CATUnicodeString strInfo(""),strTemp("");
 			strTemp.BuildFromNum(dThickLimit-dThick,"%lf");
-			strInfo += "螺栓光杆凸出夹层值超过1mm，凸出尺寸量为：" + strTemp + "mm";
+			strInfo += CATUnicodeString("螺栓光杆凸出夹层值超过1mm，凸出尺寸量为：") + strTemp + CATUnicodeString("mm");
 
 			alstErrorInfoItems.Append(strInfo);
 		}
 
 		if (dLength < (dThick+dNutsThick+2))
 		{
-			CATUnicodeString strInfo,strTemp;
+			CATUnicodeString strInfo(""),strTemp("");
 			strTemp.BuildFromNum((dThick+dNutsThick+2)-dLength,"%lf");
-			strInfo += "螺栓尾端凸出螺母的高度H不得小于2mm，凸出尺寸量为：" + strTemp + "mm";
+			strInfo += CATUnicodeString("螺栓尾端凸出螺母的高度H不得小于2mm，凸出尺寸量为：") + strTemp + CATUnicodeString("mm");
 
 			alstErrorInfoItems.Append(strInfo);
 		}
@@ -544,6 +547,12 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 			}
 		}
 		//
+		if (alstErrorInfoItems.Size()!=0)
+		{
+			//挂载错误信息
+			m_aliststrErrorInfo.Append(strErrorDetailInfo);
+			//
+		}
 		alstErrorInfoItems.RemoveAll();
 	}
 
