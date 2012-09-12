@@ -91,7 +91,7 @@ private:
 	//数据列表
 	CATListValCATISpecObject_var m_alistSuccessfulSpec, m_alistErrorSpec;
 	//失效类型
-	CATListValCATUnicodeString m_aliststrErrorInfo;
+	CATListValCATUnicodeString m_aliststrSuccessfulInfo,m_aliststrErrorInfo;
 	//
 	CATDlgFile *m_pFileDlg;
 	//

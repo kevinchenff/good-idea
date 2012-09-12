@@ -28,13 +28,16 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstUpdateCmd);
 
-//螺栓螺丝高出部分必须 大于等于 2mm
-const double cdBoltEndMinAllowence = 2;
+////螺栓螺丝高出部分必须 大于等于 2mm
+//const double cdBoltEndMinAllowence = 2;
+//
+////螺杆露出高度最小值
+//const double cdBoltStartMinAllowence = 0;
+////螺杆露出高度最大值
+//const double cdBoltStartMaxAllowence = 1;
 
-//螺杆露出高度最小值
-const double cdBoltStartMinAllowence = 0;
-//螺杆露出高度最大值
-const double cdBoltStartMaxAllowence = 1;
+// 3mm余量 
+const double ALLOWENCE = 2;
 
 
 //-------------------------------------------------------------------------
@@ -161,6 +164,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	m_alistSuccessfulSpec.RemoveAll();
 	m_alistErrorSpec.RemoveAll();
 	m_aliststrErrorInfo.RemoveAll();
+	m_aliststrSuccessfulInfo.RemoveAll();
 
 	//更新ZP模型
 	CATIPrtContainer *opiRootContainer = NULL;
@@ -321,8 +325,11 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 					}					
 				}
 
-				//调用更新函数，计算业务层次，线模型更新后是否失效
-				CheckFstLineLengthInfo(alistSpecLine,alistSpecCircle);
+				if (alistSpecLine.Size() != 0)
+				{
+					//调用更新函数，计算业务层次，线模型更新后是否失效
+					CheckFstLineLengthInfo(alistSpecLine,alistSpecCircle);
+				}				
 			}
 
 			//收起该层所有的几何图形结构树节点
@@ -386,7 +393,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		IndexNum.BuildFromNum(i);
 		m_pDlg->_SuccessMultiList->SetColumnItem(0,IndexNum);
 		m_pDlg->_SuccessMultiList->SetColumnItem(1,PrtService::GetAlias(m_alistSuccessfulSpec[i]));
-		m_pDlg->_SuccessMultiList->SetColumnItem(2,"夹持长度更新成功");
+		m_pDlg->_SuccessMultiList->SetColumnItem(2,m_aliststrSuccessfulInfo[i]);
 
 	}	
 
@@ -514,6 +521,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		if (dThickLimit >= dThick && dThickLimit <= (dThick+1) && dLength >= (dThick+dNutsThick+2))
 		{
 			m_alistSuccessfulSpec.Append(spLine);
+			m_aliststrSuccessfulInfo.Append("紧固件更新成功");
 		}
 		else
 		{
@@ -525,7 +533,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		{
 			CATUnicodeString strInfo(""),strTemp("");
 			strTemp.BuildFromNum(dThick-dThickLimit,"%lf");
-			strInfo += CATUnicodeString("螺栓光杆凹入夹层中，凹入尺寸量为：") + strTemp + CATUnicodeString("mm");
+			strInfo += CATUnicodeString("螺栓光杆凹入夹层中，凹入夹层部分尺寸值为：") + strTemp + CATUnicodeString("mm");
 			
 			alstErrorInfoItems.Append(strInfo);
 		}
@@ -533,8 +541,8 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		if (dThickLimit > (dThick+1))
 		{
 			CATUnicodeString strInfo(""),strTemp("");
-			strTemp.BuildFromNum(dThickLimit-dThick,"%lf");
-			strInfo += CATUnicodeString("螺栓光杆凸出夹层值超过1mm，凸出尺寸量为：") + strTemp + CATUnicodeString("mm");
+			strTemp.BuildFromNum(dThickLimit - dThick,"%lf");
+			strInfo += CATUnicodeString("螺栓光杆凸出夹层值超过1mm，当前尺寸值为：") + strTemp + CATUnicodeString("mm");
 
 			alstErrorInfoItems.Append(strInfo);
 		}
@@ -542,8 +550,8 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		if (dLength < (dThick+dNutsThick+2))
 		{
 			CATUnicodeString strInfo(""),strTemp("");
-			strTemp.BuildFromNum((dThick+dNutsThick+2)-dLength,"%lf");
-			strInfo += CATUnicodeString("螺栓尾端凸出螺母的高度H不得小于2mm，凸出尺寸量为：") + strTemp + CATUnicodeString("mm");
+			strTemp.BuildFromNum(dLength - (dThick+dNutsThick),"%lf");
+			strInfo += CATUnicodeString("螺栓尾端凸出螺母的高度H不得小于2mm，当前尺寸值为：") + strTemp + CATUnicodeString("mm");
 
 			alstErrorInfoItems.Append(strInfo);
 		}
@@ -609,17 +617,27 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				}
 
 				//进行判断
-				if (dLength >= dSTDLength)
+				if (dLength >= dSTDLength && dLength <= dSTDLength + ALLOWENCE)
 				{
 					m_alistSuccessfulSpec.Append(spLine);
+					CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
+					m_aliststrSuccessfulInfo.Append("紧固件更新成功，比安装规格要求长度多" + strGap);
 				}
-				else
+				else if (dLength < dSTDLength)
 				{
 					m_alistErrorSpec.Append(spLine);
 
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-					strErrorDetailInfo += "平墩头铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
+					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
+				}
+				else if (dLength > dSTDLength + ALLOWENCE)
+				{
+					m_alistErrorSpec.Append(spLine);
+
+					CATUnicodeString strInfo,strTemp;
+					strTemp.BuildFromNum(dLength-dSTDLength,"%lf");
+					strErrorDetailInfo += "铆钉长度大于安装规范要求，尺寸差量为：" + strTemp + "mm";
 				}
 			}
 		}
@@ -635,7 +653,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 				CATUnicodeString strInfo,strTemp;
 				strTemp.BuildFromNum(dThick-dLength,"%lf");
-				strErrorDetailInfo += "压窝铆接平墩头铆钉长度小于夹层厚度，尺寸差量为：" + strTemp + "mm";					
+				strErrorDetailInfo += "铆钉长度小于夹层厚度，尺寸差量为：" + strTemp + "mm";					
 			}
 			else
 			{
@@ -770,17 +788,27 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 					dSTDLength = 1.3*dvalue + dThick + dDistance;
 
 					//进行判断
-					if (dLength >= dSTDLength)
+					if (dLength >= dSTDLength && dLength <= dSTDLength + ALLOWENCE)
 					{
 						m_alistSuccessfulSpec.Append(spLine);
+						CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
+						m_aliststrSuccessfulInfo.Append("紧固件更新成功，比安装规格要求长度多" + strGap);
 					}
-					else
+					else if (dLength < dSTDLength)
 					{
 						m_alistErrorSpec.Append(spLine);
 
 						CATUnicodeString strInfo,strTemp;
 						strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-						strErrorDetailInfo += "压窝铆接平墩头铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";				
+						strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";			
+					}
+					else if (dLength > dSTDLength + ALLOWENCE)
+					{
+						m_alistErrorSpec.Append(spLine);
+
+						CATUnicodeString strInfo,strTemp;
+						strTemp.BuildFromNum(dLength-dSTDLength,"%lf");
+						strErrorDetailInfo += "铆钉长度大于安装规范要求，尺寸差量为：" + strTemp + "mm";
 					}
 				}
 			}			
@@ -813,17 +841,27 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				dSTDLength = 0.6*dvalue + dThick;
 				
 				//进行判断
-				if (dLength >= dSTDLength)
+				if (dLength >= dSTDLength && dLength <= dSTDLength + ALLOWENCE)
 				{
 					m_alistSuccessfulSpec.Append(spLine);
+					CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
+					m_aliststrSuccessfulInfo.Append("紧固件更新成功，比安装规格要求长度多" + strGap);
 				}
-				else
+				else if (dLength < dSTDLength)
 				{
 					m_alistErrorSpec.Append(spLine);
 
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-					strErrorDetailInfo += "双面沉头铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
+					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
+				}
+				else if (dLength > dSTDLength + ALLOWENCE)
+				{
+					m_alistErrorSpec.Append(spLine);
+
+					CATUnicodeString strInfo,strTemp;
+					strTemp.BuildFromNum(dLength-dSTDLength,"%lf");
+					strErrorDetailInfo += "铆钉长度大于安装规范要求，尺寸差量为：" + strTemp + "mm";
 				}
 			}
 		}
@@ -855,17 +893,27 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				dSTDLength = 0.7*dvalue + dThick;
 
 				//进行判断
-				if (dLength >= dSTDLength)
+				if (dLength >= dSTDLength && dLength <= dSTDLength + ALLOWENCE)
 				{
 					m_alistSuccessfulSpec.Append(spLine);
+					CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
+					m_aliststrSuccessfulInfo.Append("紧固件更新成功，比安装规格要求长度多" + strGap);
 				}
-				else
+				else if (dLength < dSTDLength)
 				{
 					m_alistErrorSpec.Append(spLine);
 
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-					strErrorDetailInfo += "平头大圆角铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
+					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
+				}
+				else if (dLength > dSTDLength + ALLOWENCE)
+				{
+					m_alistErrorSpec.Append(spLine);
+
+					CATUnicodeString strInfo,strTemp;
+					strTemp.BuildFromNum(dLength-dSTDLength,"%lf");
+					strErrorDetailInfo += "铆钉长度大于安装规范要求，尺寸差量为：" + strTemp + "mm";
 				}
 			}
 		}
@@ -885,6 +933,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 			else
 			{
 				m_alistSuccessfulSpec.Append(spLine);
+				m_aliststrSuccessfulInfo.Append("紧固件更新成功！");
 			}
 		}
 
