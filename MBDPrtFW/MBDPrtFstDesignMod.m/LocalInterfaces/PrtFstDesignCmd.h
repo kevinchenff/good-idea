@@ -256,7 +256,7 @@ private:
 	CATListValCATUnicodeString m_lstStrMainFstChoosed02;
 	//
 	CATUnicodeString m_strMainFstTypeFlag;
-	//记录头部类型及头部厚度值，解决：沉头、半沉头、埋头、半埋头类型安装点下移位置值
+	//记录头部类型及头部厚度值，解决：沉头、半沉头、埋头、半埋头类型安装点下移位置值，讨论后废弃
 	CATUnicodeString m_strMainFstHeadType;
 	double m_dHeadThickness;
 	
