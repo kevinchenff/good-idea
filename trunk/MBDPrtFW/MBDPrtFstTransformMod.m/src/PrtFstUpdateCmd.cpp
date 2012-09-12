@@ -161,6 +161,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	m_alistSuccessfulSpec.RemoveAll();
 	m_alistErrorSpec.RemoveAll();
 	m_aliststrErrorInfo.RemoveAll();
+
 	//更新ZP模型
 	CATIPrtContainer *opiRootContainer = NULL;
 	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
@@ -245,17 +246,12 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			CATListValCATISpecObject_var iolstspFoundResult04;
 			PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult03[j],iolstspFoundResult04);
 
-			//CATUnicodeString strTemp;strTemp.BuildFromNum(iolstspFoundResult04.Size());
-			//PrtService::ShowDlgNotify("iolstspFoundResult04",strTemp);
-
 			//2.2 获得内部含有的线圈模型，得到其数量信息
 			for (int m = 1; m <= iolstspFoundResult04.Size(); m++)
 			{
 				CATListValCATISpecObject_var iolstspFoundResult05;
 				PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult04[m],iolstspFoundResult05,"CATISpecObject");
 				//
-				//strTemp.BuildFromNum(iolstspFoundResult05.Size());
-				//PrtService::ShowDlgNotify("iolstspFoundResult05",strTemp);
 				//每个几何图形集下面的线圈分类列表
 				CATListValCATISpecObject_var alistSpecLine,alistSpecCircle;	
 
@@ -326,7 +322,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 				}
 
 				//调用更新函数，计算业务层次，线模型更新后是否失效
-				CheckFstLineLengthInfo(alistSpecLine,alistSpecCircle);	
+				CheckFstLineLengthInfo(alistSpecLine,alistSpecCircle);
 			}
 
 			//收起该层所有的几何图形结构树节点
@@ -403,13 +399,13 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		m_pDlg->_ErrorMultiList->SetColumnItem(1,PrtService::GetAlias(m_alistErrorSpec[i]));
 		m_pDlg->_ErrorMultiList->SetColumnItem(2,m_aliststrErrorInfo[i]);
 	}
+
 }
 
 
 //检查线模型的更新情况，是否超出安装长度要求，检验规则：长度-夹层厚度-n垫圈厚度-n螺母厚度
 HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &alistSpecLine,CATListValCATISpecObject_var &alistSpecCircle)
 {
-
 	HRESULT rc = S_OK;
 	//1 获取线模型特征的“夹持线”，得到其长度，如果发生变化更新“夹层厚度”，同时更新“更改时间”
 	CATIGSMLinePtDir_var spLine = alistSpecLine[1];
@@ -892,11 +888,10 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 			}
 		}
 
-	}
+		//挂载错误信息
+		m_aliststrErrorInfo.Append(strErrorDetailInfo);
 
-	//挂载错误信息
-	m_aliststrErrorInfo.Append(strErrorDetailInfo);
-	//	
+	}
 
 	return rc;
 }
