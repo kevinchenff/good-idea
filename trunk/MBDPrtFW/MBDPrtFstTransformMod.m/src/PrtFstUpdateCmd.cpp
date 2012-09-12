@@ -433,7 +433,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 	spMeasLine->GetLength(dJstLength);
 
 	//所要获得的所有长度信息: 总长度，夹持厚度，夹层厚度，螺母垫片总厚度
-	double dLength = 0, dThickLimit = 0,dThick = 0,dNutsThick = 0;
+	double dLength = 0, dThickLimit = 0,dThick = 0,dNutsThick = 0,dNutsThickStart = 0;
 	//
 	ioListStrNameValue[1].ConvertToNum(&dLength,"%lf");
 	ioListStrNameValue[2].ConvertToNum(&dThickLimit,"%lf");
@@ -465,6 +465,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 	iListStrName.Append("厚度值");
 	//
 	CATListOfDouble alistDNutThick;
+	CATListOfDouble alistDNutThickStart;
 	//
 	for (int i=1; i <= alistSpecCircle.Size(); i ++)
 	{
@@ -472,6 +473,15 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		double dTemp=0;
 		ioListStrNameValue[1].ConvertToNum(&dTemp,"%lf");
 		alistDNutThick.Append(dTemp);
+		//
+		CATUnicodeString strFSTTypeKey("F_ATTEX_POS");
+		CATUnicodeString iostrFSTType;
+		BOOL bIsExistKey;
+		PrtService::GetSepcObjectAttrEx(bIsExistKey,iostrFSTType,strFSTTypeKey,alistSpecCircle[i]);
+		if (iostrFSTType == "START")
+		{
+			alistDNutThickStart.Append(dTemp);
+		}
 	}
 	
 	//3 计算螺母垫片总厚度
@@ -479,6 +489,12 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 	{
 		dNutsThick += alistDNutThick[i];
 	}
+	for (int i=1; i<= alistDNutThickStart.Size(); i++)
+	{
+		dNutsThickStart += alistDNutThickStart[i];
+	}
+	//消减掉头部垫圈高度
+	dThickLimit -= dNutsThickStart;
 
 	//4 需要按照主紧固件类型 螺栓 螺钉 铆钉不同进行不同的处理
 	CATUnicodeString strFSTTypeKey("F_ATTEX_FSTTYPE");
