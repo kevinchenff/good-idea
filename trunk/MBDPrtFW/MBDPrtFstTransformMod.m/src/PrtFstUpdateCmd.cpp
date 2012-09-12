@@ -598,7 +598,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				CATUnicodeString strDiameterValue;
 				for (int i=1; i<=lststrJstSpecialName.Size(); i++)
 				{
-					if (lststrJstSpecialName[i] == "公称直径")
+					if (lststrJstSpecialName[i] == "公称直径" || lststrJstSpecialName[i] == "直径")
 					{
 						strDiameterValue = lststrJstSpecialValue[i];
 						break;
