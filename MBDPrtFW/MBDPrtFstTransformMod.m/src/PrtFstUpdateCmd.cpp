@@ -160,6 +160,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	//清除数据列表
 	m_alistSuccessfulSpec.RemoveAll();
 	m_alistErrorSpec.RemoveAll();
+	m_aliststrErrorInfo.RemoveAll();
 	//更新ZP模型
 	CATIPrtContainer *opiRootContainer = NULL;
 	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
@@ -244,12 +245,17 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			CATListValCATISpecObject_var iolstspFoundResult04;
 			PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult03[j],iolstspFoundResult04);
 
+			CATUnicodeString strTemp;strTemp.BuildFromNum(iolstspFoundResult04.Size());
+			PrtService::ShowDlgNotify("iolstspFoundResult04",strTemp);
+
 			//2.2 获得内部含有的线圈模型，得到其数量信息
 			for (int m = 1; m <= iolstspFoundResult04.Size(); m++)
 			{
 				CATListValCATISpecObject_var iolstspFoundResult05;
 				PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult04[m],iolstspFoundResult05,"CATISpecObject");
 				//
+				strTemp.BuildFromNum(iolstspFoundResult05.Size());
+				PrtService::ShowDlgNotify("iolstspFoundResult05",strTemp);
 				//每个几何图形集下面的线圈分类列表
 				CATListValCATISpecObject_var alistSpecLine,alistSpecCircle;	
 
@@ -397,10 +403,6 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		m_pDlg->_ErrorMultiList->SetColumnItem(1,PrtService::GetAlias(m_alistErrorSpec[i]));
 		m_pDlg->_ErrorMultiList->SetColumnItem(2,m_aliststrErrorInfo[i]);
 	}
-	//
-	CATUnicodeString strNum;
-	strNum.BuildFromNum(m_aliststrErrorInfo.Size());
-	PrtService::ShowDlgNotify("提示",strNum);
 }
 
 
