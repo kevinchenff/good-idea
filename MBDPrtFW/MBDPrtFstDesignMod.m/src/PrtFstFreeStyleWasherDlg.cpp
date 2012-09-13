@@ -31,7 +31,7 @@ const int MAXCOUNT = 4;
 PrtFstFreeStyleWasherDlg::PrtFstFreeStyleWasherDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstFreeStyleWasherDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstFreeStyleWasherDlg",CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -61,6 +61,11 @@ PrtFstFreeStyleWasherDlg::PrtFstFreeStyleWasherDlg() :
  _Frame004 = NULL;
  _NextStepPB = NULL;
  _LastStepPB = NULL;
+ _Frame009 = NULL;
+ _Label010 = NULL;
+ _Label011 = NULL;
+ _ThickLeftEditor = NULL;
+ _EndLeftEditor = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 
  //
@@ -128,6 +133,11 @@ PrtFstFreeStyleWasherDlg::~PrtFstFreeStyleWasherDlg()
  _Frame004 = NULL;
  _NextStepPB = NULL;
  _LastStepPB = NULL;
+ _Frame009 = NULL;
+ _Label010 = NULL;
+ _Label011 = NULL;
+ _ThickLeftEditor = NULL;
+ _EndLeftEditor = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 
 
@@ -149,7 +159,6 @@ void PrtFstFreeStyleWasherDlg::Build()
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
  SetGridRowResizable(1,1);
- SetGridRowResizable(2,1);
  SetGridColumnResizable(0,1);
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -181,13 +190,13 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridRowResizable(1,1);
  _Frame002 -> SetGridColumnResizable(0,1);
  _RearchResultsML = new CATDlgMultiList(_Frame002, "RearchResultsML");
- /*CATUnicodeString RearchResultsMLTitles [ 6 ];
- RearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle1");
- RearchResultsMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle2");
- RearchResultsMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle3");
- RearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle4");
- RearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle5");
- RearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle6");*/
+ //CATUnicodeString RearchResultsMLTitles [ 6 ];
+ //RearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle1");
+ //RearchResultsMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle2");
+ //RearchResultsMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle3");
+ //RearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle4");
+ //RearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle5");
+ //RearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame002.RearchResultsML.ColumnTitle6");
  _RearchResultsML -> SetColumnTitles(8, m_lstStrPropertyName);
  _RearchResultsML -> SetVisibleColumnCount( 8 );
 _RearchResultsML -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
@@ -198,17 +207,17 @@ _PosSTARTRB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _PosENDRB = new CATDlgRadioButton(_Frame008, "PosENDRB");
 _PosENDRB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgGridLayout);
-_Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+_Frame003 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 -> SetGridRowResizable(0,1);
  _Frame003 -> SetGridColumnResizable(0,1);
  _ChooseWashersML = new CATDlgMultiList(_Frame003, "ChooseWashersML");
- /*CATUnicodeString ChooseWashersMLTitles [ 6 ];
- ChooseWashersMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle1");
- ChooseWashersMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle2");
- ChooseWashersMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle3");
- ChooseWashersMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle4");
- ChooseWashersMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle5");
- ChooseWashersMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle6");*/
+ //CATUnicodeString ChooseWashersMLTitles [ 6 ];
+ //ChooseWashersMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle1");
+ //ChooseWashersMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle2");
+ //ChooseWashersMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle3");
+ //ChooseWashersMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle4");
+ //ChooseWashersMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle5");
+ //ChooseWashersMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleWasherDlg", "Frame003.ChooseWashersML.ColumnTitle6");
  _ChooseWashersML -> SetColumnTitles(14, m_lstStrPropertyName02);
  _ChooseWashersML -> SetVisibleColumnCount( 14 );
 _ChooseWashersML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -219,12 +228,23 @@ _RemovePB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _ClearAllPB = new CATDlgPushButton(_Frame005, "ClearAllPB");
 _ClearAllPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _Frame004 = new CATDlgFrame(this, "Frame004", CATDlgFraNoFrame|CATDlgGridLayout);
-_Frame004 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
+_Frame004 -> SetGridConstraints(4, 0, 1, 1, CATGRID_4SIDES);
  _Frame004 -> SetGridColumnResizable(0,1);
  _NextStepPB = new CATDlgPushButton(_Frame004, "NextStepPB");
 _NextStepPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _LastStepPB = new CATDlgPushButton(_Frame004, "LastStepPB");
 _LastStepPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
+ _Frame009 = new CATDlgFrame(this, "Frame009", CATDlgGridLayout);
+_Frame009 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Frame009 -> SetGridColumnResizable(1,1);
+ _Label010 = new CATDlgLabel(_Frame009, "Label010");
+_Label010 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Label011 = new CATDlgLabel(_Frame009, "Label011");
+_Label011 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _ThickLeftEditor = new CATDlgEditor(_Frame009, "ThickLeftEditor", CATDlgEdtReadOnly);
+_ThickLeftEditor -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _EndLeftEditor = new CATDlgEditor(_Frame009, "EndLeftEditor", CATDlgEdtReadOnly);
+_EndLeftEditor -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 //初始化三种类型的主紧固件查询条件，分别是：普通螺母、单耳、双耳、角型

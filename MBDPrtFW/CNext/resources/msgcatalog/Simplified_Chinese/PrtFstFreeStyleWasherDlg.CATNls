@@ -27,4 +27,7 @@ Frame003.Frame005.RemovePB.Title = "移除";
 Frame003.Frame005.ClearAllPB.Title = "移除所有";
 Frame004.NextStepPB.Title = "下一步";
 Frame004.LastStepPB.Title = "上一步";
+Frame009.Title = "安装状态";
+Frame009.Label010.Title = "夹持厚度余量：";
+Frame009.Label011.Title = "螺栓尾端余量：";
 // END WIZARD REPLACEMENT ZONE

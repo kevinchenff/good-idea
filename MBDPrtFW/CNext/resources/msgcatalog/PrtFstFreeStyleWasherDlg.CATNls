@@ -7,7 +7,6 @@ Frame001.Label03.Title = "Select Surface Treatment: ";
 Frame001.Label04.Title = "Select Fastener Name: ";
 Frame001.Label05.Title = "Select Fastener Standard Number: ";
 Frame001.GoToSearchPB.Title = "Go To Search";
-Frame001.Label009.Title = "Diameter offset:";
 Frame002.Title = "Search Results";
  Frame002.RearchResultsML.ColumnTitle1 = "title00";
  Frame002.RearchResultsML.ColumnTitle2 = "title01";
@@ -28,4 +27,7 @@ Frame003.Frame005.RemovePB.Title = "Remove";
 Frame003.Frame005.ClearAllPB.Title = "Clear All";
 Frame004.NextStepPB.Title = "Next Step";
 Frame004.LastStepPB.Title = "Last Step";
+Frame009.Title = "Installation Info";
+Frame009.Label010.Title = "Clamping thickness allowance:";
+Frame009.Label011.Title = "Bolt end allowance:";
 // END WIZARD REPLACEMENT ZONE
