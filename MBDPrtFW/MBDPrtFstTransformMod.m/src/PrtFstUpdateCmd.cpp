@@ -626,7 +626,10 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
+					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";	
+
+					//挂载错误信息
+					m_aliststrErrorInfo.Append(strErrorDetailInfo);
 				}
 				else if (dLength > dSTDLength + m_dUpperValue)
 				{
@@ -635,6 +638,9 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dLength-dSTDLength,"%lf");
 					strErrorDetailInfo += "铆钉长度大于安装规范要求，尺寸差量为：" + strTemp + "mm";
+
+					//挂载错误信息
+					m_aliststrErrorInfo.Append(strErrorDetailInfo);
 				}
 			}
 		}
@@ -650,7 +656,10 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 				CATUnicodeString strInfo,strTemp;
 				strTemp.BuildFromNum(dThick-dLength,"%lf");
-				strErrorDetailInfo += "铆钉长度小于夹层厚度，尺寸差量为：" + strTemp + "mm";					
+				strErrorDetailInfo += "铆钉长度小于夹层厚度，尺寸差量为：" + strTemp + "mm";	
+
+				//挂载错误信息
+				m_aliststrErrorInfo.Append(strErrorDetailInfo);
 			}
 			else
 			{
@@ -797,7 +806,9 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 						CATUnicodeString strInfo,strTemp;
 						strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-						strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";			
+						strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";	
+						//挂载错误信息
+						m_aliststrErrorInfo.Append(strErrorDetailInfo);
 					}
 					else if (dLength > dSTDLength + m_dUpperValue)
 					{
@@ -806,6 +817,8 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 						CATUnicodeString strInfo,strTemp;
 						strTemp.BuildFromNum(dLength-dSTDLength,"%lf");
 						strErrorDetailInfo += "铆钉长度大于安装规范要求，尺寸差量为：" + strTemp + "mm";
+						//挂载错误信息
+						m_aliststrErrorInfo.Append(strErrorDetailInfo);
 					}
 				}
 			}			
@@ -850,7 +863,9 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
+					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";	
+					//挂载错误信息
+					m_aliststrErrorInfo.Append(strErrorDetailInfo);
 				}
 				else if (dLength > dSTDLength + m_dUpperValue)
 				{
@@ -859,6 +874,8 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dLength-dSTDLength,"%lf");
 					strErrorDetailInfo += "铆钉长度大于安装规范要求，尺寸差量为：" + strTemp + "mm";
+					//挂载错误信息
+					m_aliststrErrorInfo.Append(strErrorDetailInfo);
 				}
 			}
 		}
@@ -902,7 +919,10 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
-					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
+					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";
+
+					//挂载错误信息
+					m_aliststrErrorInfo.Append(strErrorDetailInfo);
 				}
 				else if (dLength > dSTDLength + m_dUpperValue)
 				{
@@ -911,6 +931,9 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 					CATUnicodeString strInfo,strTemp;
 					strTemp.BuildFromNum(dLength-dSTDLength,"%lf");
 					strErrorDetailInfo += "铆钉长度大于安装规范要求，尺寸差量为：" + strTemp + "mm";
+
+					//挂载错误信息
+					m_aliststrErrorInfo.Append(strErrorDetailInfo);
 				}
 			}
 		}
@@ -924,19 +947,17 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 				CATUnicodeString strInfo,strTemp;
 				strTemp.BuildFromNum(dThick-dLength,"%lf");
-				strErrorDetailInfo += "铆钉长度小于夹层厚度，尺寸差量为：" + strTemp + "mm";					
+				strErrorDetailInfo += "铆钉长度小于夹层厚度，尺寸差量为：" + strTemp + "mm";	
+				//
+				//挂载错误信息
+				m_aliststrErrorInfo.Append(strErrorDetailInfo);
 			}
-
 			else
 			{
 				m_alistSuccessfulSpec.Append(spLine);
 				m_aliststrSuccessfulInfo.Append("紧固件更新成功！");
 			}
 		}
-
-		//挂载错误信息
-		m_aliststrErrorInfo.Append(strErrorDetailInfo);
-
 	}
 
 	return rc;
