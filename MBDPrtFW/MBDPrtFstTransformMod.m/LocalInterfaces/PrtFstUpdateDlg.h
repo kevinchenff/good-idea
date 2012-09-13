@@ -52,6 +52,11 @@ class PrtFstUpdateDlg: public CATDlgDialog
  CATDlgFrame*      _Frame005;
  CATDlgPushButton*      _ReportAndMarkPB;
  CATDlgPushButton*      _DeleteAllErrorPB;
+ CATDlgFrame*      _Frame006;
+ CATDlgLabel*      _Label007;
+ CATDlgLabel*      _Label008;
+ CATDlgSpinner*      _LowerSpinner;
+ CATDlgSpinner*      _UpperSpinner;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 };

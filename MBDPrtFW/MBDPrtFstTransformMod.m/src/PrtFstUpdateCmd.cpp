@@ -28,14 +28,6 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstUpdateCmd);
 
-////螺栓螺丝高出部分必须 大于等于 2mm
-//const double cdBoltEndMinAllowence = 2;
-//
-////螺杆露出高度最小值
-//const double cdBoltStartMinAllowence = 0;
-////螺杆露出高度最大值
-//const double cdBoltStartMaxAllowence = 1;
-
 // 3mm余量 
 const double ALLOWENCE = 2;
 
@@ -47,6 +39,7 @@ PrtFstUpdateCmd::PrtFstUpdateCmd() :
   CATStateCommand ("PrtFstUpdateCmd", CATDlgEngOneShot, CATCommandModeExclusive) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
 ,m_pDlg(NULL),m_piDoc(NULL),m_piEditor(NULL),m_piHSO(NULL),m_piISO(NULL),m_strFilePath("")
+,m_dLowerValue(0),m_dUpperValue(0)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -165,6 +158,10 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 	m_alistErrorSpec.RemoveAll();
 	m_aliststrErrorInfo.RemoveAll();
 	m_aliststrSuccessfulInfo.RemoveAll();
+
+	//用户自定义上下检验容差
+	m_dLowerValue = m_pDlg->_LowerSpinner->GetValue() * 1000.0;
+	m_dUpperValue = m_pDlg->_UpperSpinner->GetValue() * 1000.0;
 
 	//更新ZP模型
 	CATIPrtContainer *opiRootContainer = NULL;
@@ -542,7 +539,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		{
 			CATUnicodeString strInfo(""),strTemp("");
 			strTemp.BuildFromNum(dThickLimit - dThick,"%lf");
-			strInfo += CATUnicodeString("螺栓光杆凸出夹层值超过1mm，当前尺寸值为：") + strTemp + CATUnicodeString("mm");
+			strInfo += CATUnicodeString("螺栓光杆凸出夹层值不能超过1mm，当前尺寸值为：") + strTemp + CATUnicodeString("mm");
 
 			alstErrorInfoItems.Append(strInfo);
 		}
@@ -617,13 +614,13 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				}
 
 				//进行判断
-				if (dLength >= dSTDLength && dLength <= dSTDLength + ALLOWENCE)
+				if (dLength >= dSTDLength - m_dLowerValue && dLength <= dSTDLength + m_dUpperValue)
 				{
 					m_alistSuccessfulSpec.Append(spLine);
 					CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
-					m_aliststrSuccessfulInfo.Append("紧固件更新成功，比安装规格要求长度多" + strGap);
+					m_aliststrSuccessfulInfo.Append("紧固件更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
 				}
-				else if (dLength < dSTDLength)
+				else if (dLength < dSTDLength - m_dLowerValue)
 				{
 					m_alistErrorSpec.Append(spLine);
 
@@ -631,7 +628,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
 					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
 				}
-				else if (dLength > dSTDLength + ALLOWENCE)
+				else if (dLength > dSTDLength + m_dUpperValue)
 				{
 					m_alistErrorSpec.Append(spLine);
 
@@ -788,13 +785,13 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 					dSTDLength = 1.3*dvalue + dThick + dDistance;
 
 					//进行判断
-					if (dLength >= dSTDLength && dLength <= dSTDLength + ALLOWENCE)
+					if (dLength >= dSTDLength - m_dLowerValue && dLength <= dSTDLength + m_dUpperValue)
 					{
 						m_alistSuccessfulSpec.Append(spLine);
 						CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
-						m_aliststrSuccessfulInfo.Append("紧固件更新成功，比安装规格要求长度多" + strGap);
+						m_aliststrSuccessfulInfo.Append("紧固件更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
 					}
-					else if (dLength < dSTDLength)
+					else if (dLength < dSTDLength - m_dLowerValue)
 					{
 						m_alistErrorSpec.Append(spLine);
 
@@ -802,7 +799,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 						strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
 						strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";			
 					}
-					else if (dLength > dSTDLength + ALLOWENCE)
+					else if (dLength > dSTDLength + m_dUpperValue)
 					{
 						m_alistErrorSpec.Append(spLine);
 
@@ -841,13 +838,13 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				dSTDLength = 0.6*dvalue + dThick;
 				
 				//进行判断
-				if (dLength >= dSTDLength && dLength <= dSTDLength + ALLOWENCE)
+				if (dLength >= dSTDLength-m_dLowerValue && dLength <= dSTDLength + m_dUpperValue)
 				{
 					m_alistSuccessfulSpec.Append(spLine);
 					CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
-					m_aliststrSuccessfulInfo.Append("紧固件更新成功，比安装规格要求长度多" + strGap);
+					m_aliststrSuccessfulInfo.Append("紧固件更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
 				}
-				else if (dLength < dSTDLength)
+				else if (dLength < dSTDLength-m_dLowerValue)
 				{
 					m_alistErrorSpec.Append(spLine);
 
@@ -855,7 +852,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
 					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
 				}
-				else if (dLength > dSTDLength + ALLOWENCE)
+				else if (dLength > dSTDLength + m_dUpperValue)
 				{
 					m_alistErrorSpec.Append(spLine);
 
@@ -893,13 +890,13 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				dSTDLength = 0.7*dvalue + dThick;
 
 				//进行判断
-				if (dLength >= dSTDLength && dLength <= dSTDLength + ALLOWENCE)
+				if (dLength >= dSTDLength-m_dLowerValue && dLength <= dSTDLength + m_dUpperValue)
 				{
 					m_alistSuccessfulSpec.Append(spLine);
 					CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
-					m_aliststrSuccessfulInfo.Append("紧固件更新成功，比安装规格要求长度多" + strGap);
+					m_aliststrSuccessfulInfo.Append("紧固件更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
 				}
-				else if (dLength < dSTDLength)
+				else if (dLength < dSTDLength-m_dLowerValue)
 				{
 					m_alistErrorSpec.Append(spLine);
 
@@ -907,7 +904,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 					strTemp.BuildFromNum(dSTDLength-dLength,"%lf");
 					strErrorDetailInfo += "铆钉长度小于安装规范要求，尺寸差量为：" + strTemp + "mm";					
 				}
-				else if (dLength > dSTDLength + ALLOWENCE)
+				else if (dLength > dSTDLength + m_dUpperValue)
 				{
 					m_alistErrorSpec.Append(spLine);
 
@@ -986,7 +983,15 @@ void PrtFstUpdateCmd::OpenOK(CATCommand * iSendingCommand, CATNotification * iSe
 	CEEndExcel.SetItemText(1,5,"夹层厚度mm");
 	CEEndExcel.SetItemText(1,6,"更改时间");
 	CEEndExcel.SetItemText(1,7,"错误信息");
-	
+	//
+	CATUnicodeString strUpperValue, strLowerValue;
+	strUpperValue.BuildFromNum(m_dUpperValue);
+	strLowerValue.BuildFromNum(m_dLowerValue);
+	strUpperValue = "有效性检查上限容差为： " + strUpperValue + "mm";
+	strLowerValue = "有效性检查下限容差为： " + strLowerValue + "mm";
+	//
+	CEEndExcel.SetItemText(1,8,strUpperValue);
+	CEEndExcel.SetItemText(1,9,strLowerValue);	
 	//
 	for(int i=1;i<=m_alistErrorSpec.Size();i++)
 	{

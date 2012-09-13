@@ -12,4 +12,7 @@ Frame003.Title = "Update Error";
 Frame005.Title = "Operation with Error";
 Frame005.ReportAndMarkPB.Title = "Report And Mark";
 Frame005.DeleteAllErrorPB.Title = "Delete All Error";
+Frame006.Title = "Checkout parameter";
+Frame006.Label007.Title = "Lower variation : ";
+Frame006.Label008.Title = "Upper variation : ";
 // END WIZARD REPLACEMENT ZONE
