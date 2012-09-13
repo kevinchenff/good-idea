@@ -96,6 +96,9 @@ private:
 	CATDlgFile *m_pFileDlg;
 	//
 	CATUnicodeString m_strFilePath;
+
+	//用户自定义上下检验容差
+	double m_dLowerValue,m_dUpperValue;
 };
 
 //----------------------------------------------------------------------

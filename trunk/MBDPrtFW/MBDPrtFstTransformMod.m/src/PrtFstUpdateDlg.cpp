@@ -43,6 +43,11 @@ PrtFstUpdateDlg::PrtFstUpdateDlg() :
  _Frame005 = NULL;
  _ReportAndMarkPB = NULL;
  _DeleteAllErrorPB = NULL;
+ _Frame006 = NULL;
+ _Label007 = NULL;
+ _Label008 = NULL;
+ _LowerSpinner = NULL;
+ _UpperSpinner = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -62,6 +67,11 @@ PrtFstUpdateDlg::~PrtFstUpdateDlg()
  _Frame005 = NULL;
  _ReportAndMarkPB = NULL;
  _DeleteAllErrorPB = NULL;
+ _Frame006 = NULL;
+ _Label007 = NULL;
+ _Label008 = NULL;
+ _LowerSpinner = NULL;
+ _UpperSpinner = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -74,7 +84,6 @@ void PrtFstUpdateDlg::Build()
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
  SetGridRowResizable(0,1);
- SetGridRowResizable(1,1);
  SetGridColumnResizable(0,1);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
 _Frame002 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -90,7 +99,7 @@ _Frame002 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _SuccessMultiList -> SetVisibleColumnCount( 3 );
 _SuccessMultiList -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgGridLayout);
-_Frame003 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+_Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 -> SetGridRowResizable(0,1);
  _Frame003 -> SetGridColumnResizable(0,1);
  _ErrorMultiList = new CATDlgMultiList(_Frame003, "ErrorMultiList");
@@ -102,12 +111,25 @@ _Frame003 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _ErrorMultiList -> SetVisibleColumnCount( 3 );
 _ErrorMultiList -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame005 = new CATDlgFrame(this, "Frame005", CATDlgGridLayout);
-_Frame005 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+_Frame005 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
  _Frame005 -> SetGridColumnResizable(1,1);
  _ReportAndMarkPB = new CATDlgPushButton(_Frame005, "ReportAndMarkPB");
 _ReportAndMarkPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _DeleteAllErrorPB = new CATDlgPushButton(_Frame005, "DeleteAllErrorPB");
 _DeleteAllErrorPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
+ _Frame006 = new CATDlgFrame(this, "Frame006", CATDlgGridLayout);
+_Frame006 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame006 -> SetGridColumnResizable(1,1);
+ _Label007 = new CATDlgLabel(_Frame006, "Label007");
+_Label007 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Label008 = new CATDlgLabel(_Frame006, "Label008");
+_Label008 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _LowerSpinner = new CATDlgSpinner(_Frame006, "LowerSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+ //_LowerSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+_LowerSpinner -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _UpperSpinner = new CATDlgSpinner(_Frame006, "UpperSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+ //_UpperSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+_UpperSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 _SuccessMultiList->SetColumnTextWidth(0,10);
@@ -117,6 +139,18 @@ _SuccessMultiList->SetColumnTextWidth(2,50);
 _ErrorMultiList->SetColumnTextWidth(0,10);
 _ErrorMultiList->SetColumnTextWidth(1,13);
 _ErrorMultiList->SetColumnTextWidth(2,50);
+
+//ÉèÖÃ²ÎÊý
+double Start, End, StepMM;
+Start = 0.0;
+End = 1e+6;
+StepMM = 0.001;
+//
+_LowerSpinner->SetMinMaxStep(Start, End, StepMM);
+_UpperSpinner->SetMinMaxStep(Start, End, StepMM);
+//
+_LowerSpinner->SetUnit(CATDlgControl::Millimeter);
+_UpperSpinner->SetUnit(CATDlgControl::Millimeter);
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION

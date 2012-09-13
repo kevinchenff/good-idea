@@ -2,7 +2,7 @@
 CATDlgDialog PrtFstUpdateDlg
 {
   STYLE = CATDlgWndBtnOKCancel|CATDlgGridLayout;
-  ROWRES = { 0, 1 };
+  ROWRES = { 0 };
   COLRES = { 0 };
 }
 
@@ -28,7 +28,7 @@ CATDlgFrame Frame003
 {
   FATHER = PrtFstUpdateDlg;
   STYLE = CATDlgGridLayout;
-  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
   ROWRES = { 0 };
   COLRES = { 0 };
 }
@@ -45,7 +45,7 @@ CATDlgFrame Frame005
 {
   FATHER = PrtFstUpdateDlg;
   STYLE = CATDlgGridLayout;
-  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
   COLRES = { 1 };
 }
 
@@ -59,6 +59,46 @@ CATDlgPushButton DeleteAllErrorPB
 {
   FATHER = Frame005;
   GRID = { 0, 1, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgFrame Frame006
+{
+  FATHER = PrtFstUpdateDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgLabel Label007
+{
+  FATHER = Frame006;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label008
+{
+  FATHER = Frame006;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner LowerSpinner
+{
+  FATHER = Frame006;
+  STYLE = CATDlgSpnEntry;
+  MIN = 0.000000;
+  MAX = 10.000000;
+  STEP = 10.000000;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner UpperSpinner
+{
+  FATHER = Frame006;
+  STYLE = CATDlgSpnEntry;
+  MIN = 0.000000;
+  MAX = 10.000000;
+  STEP = 10.000000;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

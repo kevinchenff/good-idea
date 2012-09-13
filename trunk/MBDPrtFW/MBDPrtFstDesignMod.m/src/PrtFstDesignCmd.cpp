@@ -4420,6 +4420,9 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgGoToSearchPBCB(CATCommand* cmd, CATNo
 	//
 	CATUnicodeString str01 = m_pFstFreeStyleWasherDlg->m_strNextStepWBSItem[1] + "==" + m_lstStrWasherFstChoosed01[1];
 	alsStrSearchItemsValue.Append(str01);
+
+	CATUnicodeString str02 = m_pFstFreeStyleWasherDlg->m_strNextStepWBSItem[2] + "=" + m_strdFstDiameterValue;
+	alsStrSearchItemsValue.Append(str02);
 	// 测试代码，用于显示输出
 	/*for (int i = 1; i <= alsStrSearchItemsValue.Size(); i++)
 	{
