@@ -1,8 +1,8 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 CATDlgDialog PrtFstFreeStyleWasherDlg
 {
-  STYLE = CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout;
-  ROWRES = { 1, 2 };
+  STYLE = CATDlgWndBtnClose|CATDlgGridLayout;
+  ROWRES = { 1 };
   COLRES = { 0 };
 }
 
@@ -125,7 +125,7 @@ CATDlgFrame Frame003
 {
   FATHER = PrtFstFreeStyleWasherDlg;
   STYLE = CATDlgGridLayout;
-  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
   ROWRES = { 0 };
   COLRES = { 0 };
 }
@@ -161,7 +161,7 @@ CATDlgFrame Frame004
 {
   FATHER = PrtFstFreeStyleWasherDlg;
   STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
-  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 4, 0, 1, 1, CATGRID_4SIDES };
   COLRES = { 0 };
 }
 
@@ -175,6 +175,40 @@ CATDlgPushButton LastStepPB
 {
   FATHER = Frame004;
   GRID = { 0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgFrame Frame009
+{
+  FATHER = PrtFstFreeStyleWasherDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgLabel Label010
+{
+  FATHER = Frame009;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label011
+{
+  FATHER = Frame009;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor ThickLeftEditor
+{
+  FATHER = Frame009;
+  STYLE = CATDlgEdtReadOnly;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor EndLeftEditor
+{
+  FATHER = Frame009;
+  STYLE = CATDlgEdtReadOnly;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

@@ -86,6 +86,11 @@ class PrtFstFreeStyleWasherDlg: public CATDlgDialog
  CATDlgFrame*      _Frame004;
  CATDlgPushButton*      _NextStepPB;
  CATDlgPushButton*      _LastStepPB;
+ CATDlgFrame*      _Frame009;
+ CATDlgLabel*      _Label010;
+ CATDlgLabel*      _Label011;
+ CATDlgEditor*      _ThickLeftEditor;
+ CATDlgEditor*      _EndLeftEditor;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
  //
