@@ -263,6 +263,8 @@ private:
 	//记录所选公称直径参数值
 	CATUnicodeString m_strdFstDiameterValue;
 	double m_dFstDiameterValue;
+	//记录所选的**余量**
+	double m_dLeftCheck;
 	
 	//
 	//螺母信息
