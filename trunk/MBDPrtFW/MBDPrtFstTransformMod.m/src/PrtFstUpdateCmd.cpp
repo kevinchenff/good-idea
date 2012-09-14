@@ -124,6 +124,14 @@ void PrtFstUpdateCmd::BuildGraph()
 		m_pDlg->_ErrorMultiList->GetListSelectNotification(),
 		(CATCommandMethod)&PrtFstUpdateCmd::GetSeletedFSTLine,
 		NULL);
+
+
+	//
+	//增加对 紧固件线列表的响应控制
+	AddAnalyseNotificationCB (m_pDlg->_SuccessMultiList, 
+		m_pDlg->_SuccessMultiList->GetListSelectNotification(),
+		(CATCommandMethod)&PrtFstUpdateCmd::GetSeletedFSTLineSuccess,
+		NULL);
 }
 
 
@@ -512,13 +520,20 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 	//----------------------------------------------------
 	//螺栓
 	//----------------------------------------------------
+	if (alststrDetailType[1] == "螺钉")
+	{
+		//螺钉不进行有效性检查
+		m_alistSuccessfulSpec.Append(spLine);
+		m_aliststrSuccessfulInfo.Append("螺钉更新成功");
+	}
+
 	if (alststrDetailType[1] == "螺栓")
 	{
 		//光杆应凸出夹层最大至1mm，不允许螺纹进入夹层
 		if (dThickLimit >= dThick && dThickLimit <= (dThick+1) && dLength >= (dThick+dNutsThick+2))
 		{
 			m_alistSuccessfulSpec.Append(spLine);
-			m_aliststrSuccessfulInfo.Append("紧固件更新成功");
+			m_aliststrSuccessfulInfo.Append("螺栓更新成功");
 		}
 		else
 		{
@@ -618,7 +633,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				{
 					m_alistSuccessfulSpec.Append(spLine);
 					CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
-					m_aliststrSuccessfulInfo.Append("紧固件更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
+					m_aliststrSuccessfulInfo.Append("铆钉更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
 				}
 				else if (dLength < dSTDLength - m_dLowerValue)
 				{
@@ -798,7 +813,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 					{
 						m_alistSuccessfulSpec.Append(spLine);
 						CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
-						m_aliststrSuccessfulInfo.Append("紧固件更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
+						m_aliststrSuccessfulInfo.Append("铆钉更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
 					}
 					else if (dLength < dSTDLength - m_dLowerValue)
 					{
@@ -855,7 +870,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				{
 					m_alistSuccessfulSpec.Append(spLine);
 					CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
-					m_aliststrSuccessfulInfo.Append("紧固件更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
+					m_aliststrSuccessfulInfo.Append("铆钉更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
 				}
 				else if (dLength < dSTDLength-m_dLowerValue)
 				{
@@ -911,7 +926,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				{
 					m_alistSuccessfulSpec.Append(spLine);
 					CATUnicodeString strGap;strGap.BuildFromNum(dLength-dSTDLength);strGap += " mm";
-					m_aliststrSuccessfulInfo.Append("紧固件更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
+					m_aliststrSuccessfulInfo.Append("铆钉更新成功，相对安装规范要求计算长度的尺寸差量为" + strGap);
 				}
 				else if (dLength < dSTDLength-m_dLowerValue)
 				{
@@ -955,7 +970,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 			else
 			{
 				m_alistSuccessfulSpec.Append(spLine);
-				m_aliststrSuccessfulInfo.Append("紧固件更新成功！");
+				m_aliststrSuccessfulInfo.Append("铆钉更新成功！");
 			}
 		}
 	}
@@ -1329,6 +1344,71 @@ void PrtFstUpdateCmd::GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, C
 
 		//获得线对应的端点
 		CATISpecObject_var spLine = m_alistErrorSpec[ioTabRow[0]+1];
+		CATIMeasurableLine_var spMeasLine = spLine;
+		CATMathPoint  ioOrigin, ioTopPoint;
+		spMeasLine->GetOrigin(ioOrigin);
+		//
+		CATLISTV(CATMathPoint) lstMathPoints;
+		lstMathPoints.Append(ioOrigin);
+
+		//获得顶点信息
+		CATIGSMLinePtDir_var spGSMLine = spLine;
+		CATISpecObject_var spTopPoint;
+		spGSMLine->GetStartingPoint(spTopPoint);
+		CATIMeasurablePoint_var spMeasPoint = spTopPoint;
+		spMeasPoint->GetPoint(ioTopPoint);
+
+
+		//使其居中，高亮显示模型信息
+		PrtService::CenterViewPoints(lstMathPoints,100);
+		PrtService::HighlightHSO(spLine);
+
+		//
+		//
+		CATListValCATUnicodeString iListStrName;
+		iListStrName.Append("ID");
+		CATListValCATUnicodeString ioListStrNameValue;
+		PrtService::GetSpecObjCertainParams(spLine,iListStrName,ioListStrNameValue);
+		//
+		CATUnicodeString StrTextValue(""); StrTextValue += "ID = " + ioListStrNameValue[1];
+		//
+
+		CATMathPointf TextPosNode;
+		TextPosNode.x = (float)(ioTopPoint.GetX());
+		TextPosNode.y = (float)(ioTopPoint.GetY());
+		TextPosNode.z = (float)(ioTopPoint.GetZ());
+
+		CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
+		CATGraphicAttributeSet   TextGaNode ;
+		TextGaNode.SetColor(RED);
+		CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
+		pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
+		CATModelForRep3D *piRepPtAlias = new CATModelForRep3D() ;
+		piRepPtAlias->SetRep(pRepForTextStart) ;
+		m_piISO->AddElement(piRepPtAlias);
+
+		piRepPtAlias->Release();
+		piRepPtAlias=NULL;
+	}
+}
+
+//
+void PrtFstUpdateCmd::GetSeletedFSTLineSuccess(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//获得并清空ISO
+	m_piISO->Empty();
+	m_piHSO->Empty();
+
+	//获取所选信息
+	int  iSize = m_pDlg->_SuccessMultiList->GetSelectCount();
+	if (iSize != 0 )
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pDlg->_SuccessMultiList->GetSelect(ioTabRow,iSize);
+
+		//获得线对应的端点
+		CATISpecObject_var spLine = m_alistSuccessfulSpec[ioTabRow[0]+1];
 		CATIMeasurableLine_var spMeasLine = spLine;
 		CATMathPoint  ioOrigin, ioTopPoint;
 		spMeasLine->GetOrigin(ioOrigin);
