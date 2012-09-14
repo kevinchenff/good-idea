@@ -75,7 +75,8 @@ class PrtFstUpdateCmd: public CATStateCommand
 
   //
   void GetSeletedFSTLine(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
-
+  void GetSeletedFSTLineSuccess(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  
 private:
 
 	//∂‘ª∞øÚ÷∏’Î
