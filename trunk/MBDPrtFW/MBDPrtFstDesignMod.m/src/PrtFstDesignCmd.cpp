@@ -3010,6 +3010,11 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgSearchResultsMLCB(CATCommand* cmd, 
 		//得到当前所选行的具体信息：行号
 		int * ioTabRow = new int[iSize];
 		m_pFstFreeStyleMainBoltDlg->_SearchResultML->GetSelect(ioTabRow,iSize);
+		//
+		//
+		CATUnicodeString strLeftValue;
+		m_pFstFreeStyleMainBoltDlg->_SearchResultML->GetColumnItem(8,strLeftValue,ioTabRow[0]);
+		strLeftValue.ConvertToNum(&m_dLeftCheck,"%lf");
 
 		//获得该行的信息
 		GetChoosedMLValue(ioTabRow[0]+1,m_plstMainFstResults02,m_lstStrMainFstChoosed02);
@@ -3850,6 +3855,12 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNo
 	//写判断方法，如果非螺栓，则不显示螺母 垫圈向导
     if (m_pFstFreeStyleDlg->m_IChoosedIndex != 2) //如果是铆钉 螺钉直接获取所选信息，退出向导
 	{
+		//如果是铆钉，并且余量值为负值，则
+		if (m_pFstFreeStyleDlg->m_IChoosedIndex == 1 && m_dLeftCheck <0 )
+		{
+			PrtService::ShowDlgNotify("提示信息","所选铆钉长度不满足安装规范要求，请重新选择！");
+			return;
+		}
 
 		//清空
 		m_pFstAccessDlg->_ChoosedFastenersML->ClearLine();
@@ -3922,7 +3933,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNo
 			m_pFstFreeStyleMainBoltDlg=NULL;
 		}
 	} 
-	else 
+	else
 	{
 		//
 		if (m_pFstFreeStyleNutDlg == NULL)
