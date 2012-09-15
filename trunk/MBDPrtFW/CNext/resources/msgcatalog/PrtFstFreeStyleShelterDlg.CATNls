@@ -1,0 +1,14 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "Choose Shelter";
+Frame001.Title = "Search Items";
+Frame001.Label006.Title = "Selete Shelter: ";
+Frame001.Label007.Title = "Selete Material: ";
+Frame001.Label008.Title = "Selete Surface Treatment: ";
+Frame001.Label009.Title = "Selete Shelter Name: ";
+Frame001.Label010.Title = "Selete Shelter Standard Number: ";
+Frame001.GoToSearchPB.Title = "Go To Search";
+Frame002.Title = "Search Results";
+ Frame002.SearchResultML.ColumnTitle1 = "title00";
+Frame003.LastStepPB.Title = "Last Step";
+Frame003.NextStepPB.Title = "Next Step";
+// END WIZARD REPLACEMENT ZONE

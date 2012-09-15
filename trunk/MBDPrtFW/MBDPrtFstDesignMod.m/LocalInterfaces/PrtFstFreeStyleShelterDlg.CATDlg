@@ -1,0 +1,125 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog PrtFstFreeStyleShelterDlg
+{
+  STYLE = CATDlgWndBtnClose|CATDlgGridLayout;
+  ROWRES = { 1 };
+  COLRES = { 0 };
+}
+
+CATDlgFrame Frame001
+{
+  FATHER = PrtFstFreeStyleShelterDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgLabel Label006
+{
+  FATHER = Frame001;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label007
+{
+  FATHER = Frame001;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label008
+{
+  FATHER = Frame001;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label009
+{
+  FATHER = Frame001;
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label010
+{
+  FATHER = Frame001;
+  GRID = { 4, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo Combo01
+{
+  FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo Combo02
+{
+  FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo Combo03
+{
+  FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 2, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo Combo04
+{
+  FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 3, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo Combo05
+{
+  FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 4, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton GoToSearchPB
+{
+  FATHER = Frame001;
+  GRID = { 5, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame002
+{
+  FATHER = PrtFstFreeStyleShelterDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList SearchResultML
+{
+  FATHER = Frame002;
+  CC = 1;
+  VCC = 1;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame003
+{
+  FATHER = PrtFstFreeStyleShelterDlg;
+  STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+  COLRES = { 0, 1 };
+}
+
+CATDlgPushButton LastStepPB
+{
+  FATHER = Frame003;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton NextStepPB
+{
+  FATHER = Frame003;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+// END WIZARD REPLACEMENT ZONE
