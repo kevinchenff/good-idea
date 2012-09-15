@@ -1,5 +1,5 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "选择垫圈&保护罩";
+Title = "选择垫圈";
 Frame001.Title = "检索条件";
 Frame001.Label01.Title = "选择类型: ";
 Frame001.Label02.Title = "选择材料类型: ";
