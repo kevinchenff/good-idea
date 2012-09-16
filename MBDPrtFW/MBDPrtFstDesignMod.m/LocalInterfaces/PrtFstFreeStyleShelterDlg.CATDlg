@@ -106,7 +106,7 @@ CATDlgFrame Frame003
 {
   FATHER = PrtFstFreeStyleShelterDlg;
   STYLE = CATDlgFraNoFrame|CATDlgGridLayout;
-  GRID = { 2, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+  GRID = { 3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
   COLRES = { 0, 1 };
 }
 
@@ -120,6 +120,35 @@ CATDlgPushButton NextStepPB
 {
   FATHER = Frame003;
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame011
+{
+  FATHER = PrtFstFreeStyleShelterDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 0 };
+}
+
+CATDlgMultiList MultiList012
+{
+  FATHER = Frame011;
+  CC = 1;
+  VCC = 1;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame014
+{
+  FATHER = Frame011;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton RemoveAllPB
+{
+  FATHER = Frame014;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

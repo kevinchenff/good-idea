@@ -79,6 +79,10 @@ class PrtFstFreeStyleShelterDlg: public CATDlgDialog
  CATDlgFrame*      _Frame003;
  CATDlgPushButton*      _LastStepPB;
  CATDlgPushButton*      _NextStepPB;
+ CATDlgFrame*      _Frame011;
+ CATDlgMultiList*      _MultiList012;
+ CATDlgFrame*      _Frame014;
+ CATDlgPushButton*      _RemoveAllPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
  //
@@ -93,6 +97,8 @@ class PrtFstFreeStyleShelterDlg: public CATDlgDialog
 
  // Ù–‘Õ∑√˚≥∆
  CATUnicodeString m_lstStrPropertyName[14];
+ CATUnicodeString m_lstStrPropertyName02[14];
+
  //
  int m_IChoosedIndex;
  CATUnicodeString m_StrCurrentDataBaseName; 

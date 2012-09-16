@@ -54,6 +54,10 @@ PrtFstFreeStyleShelterDlg::PrtFstFreeStyleShelterDlg() :
  _Frame003 = NULL;
  _LastStepPB = NULL;
  _NextStepPB = NULL;
+ _Frame011 = NULL;
+ _MultiList012 = NULL;
+ _Frame014 = NULL;
+ _RemoveAllPB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 
  //
@@ -74,6 +78,21 @@ PrtFstFreeStyleShelterDlg::PrtFstFreeStyleShelterDlg() :
  //
  m_IChoosedIndex = 0;
  //
+ m_lstStrPropertyName02[0]=CATUnicodeString("安装部位");
+ m_lstStrPropertyName02[1]=CATUnicodeString("紧固件标准号");
+ m_lstStrPropertyName02[2]=CATUnicodeString("紧固件名称");
+ m_lstStrPropertyName02[3]=CATUnicodeString("材料");
+ m_lstStrPropertyName02[4]=CATUnicodeString("表面处理");
+ m_lstStrPropertyName02[5]=CATUnicodeString("单位制"); 
+ m_lstStrPropertyName02[6]=CATUnicodeString("备注");
+ m_lstStrPropertyName02[7]=CATUnicodeString("紧固件规格");
+ m_lstStrPropertyName02[8]=CATUnicodeString("公称直径");
+ m_lstStrPropertyName02[9]=CATUnicodeString("内径");
+ m_lstStrPropertyName02[10]=CATUnicodeString("外径");
+ m_lstStrPropertyName02[11]=CATUnicodeString("沉槽直径"); 
+ m_lstStrPropertyName02[12]=CATUnicodeString("厚度");
+ m_lstStrPropertyName02[13]=CATUnicodeString("重量（kg）");
+
 }
 
 //-------------------------------------------------------------------------
@@ -102,6 +121,10 @@ PrtFstFreeStyleShelterDlg::~PrtFstFreeStyleShelterDlg()
  _Frame003 = NULL;
  _LastStepPB = NULL;
  _NextStepPB = NULL;
+ _Frame011 = NULL;
+ _MultiList012 = NULL;
+ _Frame014 = NULL;
+ _RemoveAllPB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 
  //清除内存
@@ -153,19 +176,32 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridRowResizable(0,1);
  _Frame002 -> SetGridColumnResizable(0,1);
  _SearchResultML = new CATDlgMultiList(_Frame002, "SearchResultML");
- //CATUnicodeString SearchResultMLTitles [ 1 ];
- //SearchResultMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleShelterDlg", "Frame002.SearchResultML.ColumnTitle1");
- _SearchResultML -> SetColumnTitles(14, m_lstStrPropertyName);
- _SearchResultML -> SetVisibleColumnCount( 14 );
+ CATUnicodeString SearchResultMLTitles [ 1 ];
+ SearchResultMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleShelterDlg", "Frame002.SearchResultML.ColumnTitle1");
+ _SearchResultML -> SetColumnTitles(1, SearchResultMLTitles);
+ _SearchResultML -> SetVisibleColumnCount( 1 );
 _SearchResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgFraNoFrame|CATDlgGridLayout);
-_Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
+_Frame003 -> SetGridConstraints(3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
  _Frame003 -> SetGridColumnResizable(0,1);
  _Frame003 -> SetGridColumnResizable(1,1);
  _LastStepPB = new CATDlgPushButton(_Frame003, "LastStepPB");
 _LastStepPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _NextStepPB = new CATDlgPushButton(_Frame003, "NextStepPB");
 _NextStepPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _Frame011 = new CATDlgFrame(this, "Frame011", CATDlgGridLayout);
+_Frame011 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Frame011 -> SetGridColumnResizable(0,1);
+ _MultiList012 = new CATDlgMultiList(_Frame011, "MultiList012");
+ CATUnicodeString MultiList012Titles [ 1 ];
+ MultiList012Titles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleShelterDlg", "Frame011.MultiList012.ColumnTitle1");
+ _MultiList012 -> SetColumnTitles(1, MultiList012Titles);
+ _MultiList012 -> SetVisibleColumnCount( 1 );
+_MultiList012 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame014 = new CATDlgFrame(_Frame011, "Frame014", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame014 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _RemoveAllPB = new CATDlgPushButton(_Frame014, "RemoveAllPB");
+_RemoveAllPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 //初始化三种类型的主紧固件查询条件，分别是：普通螺母、单耳、双耳、角型
