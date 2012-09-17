@@ -12,6 +12,6 @@ Frame002.Title = "Search Results";
 Frame003.LastStepPB.Title = "Last Step";
 Frame003.NextStepPB.Title = "Next Step";
 Frame011.Title = "Choosed Shelter";
- Frame011.MultiList012.ColumnTitle1 = "title00";
+ Frame011.ChooseSheltersML.ColumnTitle1 = "title00";
 Frame011.Frame014.RemoveAllPB.Title = "Remove All";
 // END WIZARD REPLACEMENT ZONE

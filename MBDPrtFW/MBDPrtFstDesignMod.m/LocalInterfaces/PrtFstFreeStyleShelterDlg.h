@@ -80,7 +80,7 @@ class PrtFstFreeStyleShelterDlg: public CATDlgDialog
  CATDlgPushButton*      _LastStepPB;
  CATDlgPushButton*      _NextStepPB;
  CATDlgFrame*      _Frame011;
- CATDlgMultiList*      _MultiList012;
+ CATDlgMultiList*      _ChooseSheltersML;
  CATDlgFrame*      _Frame014;
  CATDlgPushButton*      _RemoveAllPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION

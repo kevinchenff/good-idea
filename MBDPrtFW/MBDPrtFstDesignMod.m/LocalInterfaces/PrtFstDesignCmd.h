@@ -40,6 +40,8 @@
 #include "PrtFstKnowledgeMainBoltDlg.h"
 #include "PrtFstKnowledgeNutDlg.h"
 
+#include "PrtFstFreeStyleShelterDlg.h"
+
 //----------------------------------------------------------------------
 
 /**
@@ -174,6 +176,20 @@ class PrtFstDesignCmd: public CATStateCommand
   void FstFreeStyleWasherDlgChooseWashersMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstFreeStyleWasherDlgRemovePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstFreeStyleWasherDlgClearAllPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  CATBoolean OnWasherPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+
+  //---------------------------------
+  //对FreeStyle Shelter DLG的消息响应
+  //---------------------------------
+  void CloseFstFreeStyleShelterDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleShelterDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleShelterDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstFreeStyleShelterDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  void FstFreeStyleShelterDlgClearAllPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  CATBoolean OnShelterPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+	
 
   //
   //---------------------------------
@@ -185,7 +201,6 @@ class PrtFstDesignCmd: public CATStateCommand
 
   //根据输入的行数信息从数据列表中获取希望的字符串信息
   void GetChoosedMLValue(int idLine,CATListPV iplstMainFstResults, CATListValCATUnicodeString &iolstStrValue);
-  CATBoolean OnWasherPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
 private:
 	PrtFstDesignDlg *m_pDlg;
@@ -246,6 +261,9 @@ private:
 	PrtFstKnowledgeMainBoltDlg *m_pFstKnowledgeMainBoltDlg;
 	PrtFstKnowledgeNutDlg *m_pFstKnowledgeNutDlg;
 	PrtFstFreeStyleWasherDlg *m_pFstKnowledgeWasherDlg;
+
+	//
+	PrtFstFreeStyleShelterDlg *m_pFstFreeStyleShelterDlg;
 
 	//自由选择获取的所有紧固件属性信息
 	CATListPV m_plstMainFstResults01; //主紧固件标准号信息
@@ -310,11 +328,33 @@ private:
 	double m_dChoosedWasherThick;
 	//垫圈厚度总值
 	double m_dWasherFstThickValueStart,m_dWasherFstThickValueEnd;
-	
 	//
 	CATListValCATUnicodeString m_lstStrWasherFstTypeFlag;
 	//
 	int m_IndexChoosedWasher;
+
+	//保护罩
+	CATListPV m_plstShelterFstResults01; //保护罩标准号信息
+	CATListValCATUnicodeString m_lstStrShelterFstTitles01;
+	CATListValCATUnicodeString m_lstStrShelterFstChoosed01;
+	CATListPV m_plstShelterFstResults02; //保护罩规格号信息
+	CATListValCATUnicodeString m_lstStrShelterFstTitles02;
+	CATListValCATUnicodeString m_lstStrShelterFstChoosed02;
+	//
+	CATUnicodeString m_strShelterFstTypeFlag;
+
+	//右键context按钮对话框
+	CATDlgContextualMenu  *m_pShelterContextMenu;
+	CATDlgPushItem * m_pShelterPushItemSelect;
+
+	//垫圈所选信息
+	CATListValCATUnicodeString m_lstShelterFstChoosedTitles01;  //保护罩标准号信息
+	CATListValCATUnicodeString m_lstShelterFstChoosedResults01; //保护罩标准号信息
+	CATListValCATUnicodeString m_lstShelterFstChoosedTitles02;  //保护罩规格号信息
+	CATListValCATUnicodeString m_lstShelterFstChoosedResults02; //保护罩规格号信息
+	//保护罩位置信息
+	CATUnicodeString m_strShelterPos;
+	CATUnicodeString m_strChoosedShelterFstTypeFlag;
 
 };
 
