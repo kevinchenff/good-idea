@@ -130,7 +130,7 @@ CATDlgFrame Frame011
   COLRES = { 0 };
 }
 
-CATDlgMultiList MultiList012
+CATDlgMultiList ChooseSheltersML
 {
   FATHER = Frame011;
   CC = 1;
