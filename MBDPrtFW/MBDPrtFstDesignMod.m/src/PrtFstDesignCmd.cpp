@@ -4672,55 +4672,66 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 	if (m_pFstFreeStyleNutDlg->m_IChoosedIndex != 1) //如果非普通螺母
 	{
 		//
-		m_pFstFreeStyleShelterDlg = new PrtFstFreeStyleShelterDlg();
-		m_pFstFreeStyleShelterDlg->Build();
-		m_pFstFreeStyleShelterDlg->SetVisibility(CATDlgShow);
 		//
-		//设置前对话框隐藏
-		m_pFstFreeStyleWasherDlg->SetVisibility(CATDlgHide);
-		//
-		m_pFstFreeStyleShelterDlg->_GoToSearchPB->SetSensitivity(CATDlgDisable);
-		m_pFstFreeStyleShelterDlg->_RemoveAllPB->SetSensitivity(CATDlgDisable);
+		double dCheck01=0,dCheck02=0;
+		dCheck01 = m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
+		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
+		if (dCheck02 >=0 && dCheck02 <= 1 && dCheck01 >= 2)
+		{
+			//
+			m_pFstFreeStyleShelterDlg = new PrtFstFreeStyleShelterDlg();
+			m_pFstFreeStyleShelterDlg->Build();
+			m_pFstFreeStyleShelterDlg->SetVisibility(CATDlgShow);
+			//
+			//设置前对话框隐藏
+			m_pFstFreeStyleWasherDlg->SetVisibility(CATDlgHide);
+			//
+			m_pFstFreeStyleShelterDlg->_GoToSearchPB->SetSensitivity(CATDlgDisable);
+			// 主对话框的消息响应
+			AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg, 
+				m_pFstFreeStyleShelterDlg->GetWindCloseNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleShelterDlgCB,
+				NULL);
 
-		// 主对话框的消息响应
-		AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg, 
-			m_pFstFreeStyleShelterDlg->GetWindCloseNotification(),
-			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleShelterDlgCB,
-			NULL);
+			AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg, 
+				m_pFstFreeStyleShelterDlg->GetDiaCLOSENotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleShelterDlgCB,
+				NULL);
+			//
+			AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_GoToSearchPB, 
+				m_pFstFreeStyleShelterDlg->_GoToSearchPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgGoToSearchPBCB,
+				NULL);
 
-		AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg, 
-			m_pFstFreeStyleShelterDlg->GetDiaCLOSENotification(),
-			(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleShelterDlgCB,
-			NULL);
-		//
-		AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_GoToSearchPB, 
-			m_pFstFreeStyleShelterDlg->_GoToSearchPB->GetPushBActivateNotification(),
-			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgGoToSearchPBCB,
-			NULL);
+			//
+			AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_LastStepPB, 
+				m_pFstFreeStyleShelterDlg->_LastStepPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgLastStepPBCB,
+				NULL);
+			AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_NextStepPB, 
+				m_pFstFreeStyleShelterDlg->_NextStepPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB,
+				NULL);
 
-		//
-		AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_LastStepPB, 
-			m_pFstFreeStyleShelterDlg->_LastStepPB->GetPushBActivateNotification(),
-			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgLastStepPBCB,
-			NULL);
-		AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_NextStepPB, 
-			m_pFstFreeStyleShelterDlg->_NextStepPB->GetPushBActivateNotification(),
-			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB,
-			NULL);
+			//
+			//ML选择的响应
+			AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_SearchResultML, 
+				m_pFstFreeStyleShelterDlg->_SearchResultML->GetListSelectNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgSearchResultsMLCB,
+				NULL);
 
-		//
-		//ML选择的响应
-		AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_SearchResultML, 
-			m_pFstFreeStyleShelterDlg->_SearchResultML->GetListSelectNotification(),
-			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgSearchResultsMLCB,
-			NULL);
-
-		//
-		//
-		AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_RemoveAllPB, 
-			m_pFstFreeStyleShelterDlg->_RemoveAllPB->GetPushBActivateNotification(),
-			(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgClearAllPBCB,
-			NULL);
+			//
+			//
+			AddAnalyseNotificationCB (m_pFstFreeStyleShelterDlg->_RemoveAllPB, 
+				m_pFstFreeStyleShelterDlg->_RemoveAllPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgClearAllPBCB,
+				NULL);
+		}
+		else
+		{
+			//提示信息
+			PrtService::ShowDlgNotify("提示信息","当前组合不满足螺栓安装条件，请调整所选信息！");
+		}
 	} 
 	else //如果是普通螺母
 	{
@@ -4844,7 +4855,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 			CATUnicodeString strTemp01, strTemp02;
 			for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
 			{
-				if (m_lstStrNutFstTitles02[i]=="厚度")
+				if (m_lstStrNutFstTitles02[i]=="厚度" || m_lstStrNutFstTitles02[i]=="总厚度")
 				{
 					strTemp01=m_lstStrNutFstChoosed02[i];
 					double dvalue=0;
@@ -5433,7 +5444,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgGoToSearchPBCB(CATCommand* cmd, CATN
 				m_plstShelterFstResults02.Append(LstStrAtrrValue01);
 
 				//
-				for (int m=0; m<=7; m++)
+				for (int m=0; m<=13; m++)
 				{
 					//
 					if (m_pFstFreeStyleShelterDlg->m_lstStrPropertyName[m] == m_lstStrShelterFstTitles02[i])
@@ -5459,7 +5470,8 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 {
 	//清空
 	m_pFstAccessDlg->_ChoosedFastenersML->ClearLine();
-	//获得需要的数据
+	
+	//显示主紧固件
 	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strMainFstTypeFlag,0);
 	CATUnicodeString strSpecValue01;
 	for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
@@ -5474,7 +5486,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"",0);
 
 
-	//
+	//显示螺母
 	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strNutFstTypeFlag,1);
 	CATUnicodeString strSpecValue02;
 	for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
@@ -5488,7 +5500,8 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue02,1);
 	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"END",1,CATDlgDataModify);
 
-	//
+	
+	//显示垫圈
 	CATUnicodeString strSpecValue03;
 	CATListValCATUnicodeString alstStrSpecValue03;
 	for (int j=1; j<=m_lstStrWasherFstTypeFlag.Size(); j++)
@@ -5510,8 +5523,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,m_lstStrWasherPos[j],j+1,CATDlgDataModify);
 	}
 
-	//
-	//如果存在保护罩
+	//如果存在保护罩，显示
 	CATUnicodeString strSpecValue04;
 	if (m_lstShelterFstChoosedTitles02.Size()!=0)
 	{	
@@ -5524,28 +5536,31 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 				break;
 			}
 		}
-		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue02,1);
-		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"START",1,CATDlgDataModify);
-
-	}
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strChoosedShelterFstTypeFlag);
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue04);
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,m_strShelterPos);
+	}	
+	
 	//
 	//初始化数据
 	ClearFstInfoLst();
 	//
 	m_alistStrFSTType.Append(m_strMainFstTypeFlag);
 	m_alistStrFSTName.Append(strSpecValue01);
+	//
 	if (m_lstStrWasherFstTypeFlag.Size()!=0)
 	{
 		m_alistStrFSTType.Append(m_lstStrWasherFstTypeFlag);
 		m_alistStrFSTName.Append(alstStrSpecValue03);
 	}
+	//
 	m_alistStrFSTType.Append(m_strNutFstTypeFlag);
 	m_alistStrFSTName.Append(strSpecValue02);
 	//
 	m_lststrCirclePositions.Append(m_lstStrWasherPos);
 	m_lststrCirclePositions.Append("END");
 	//
-	////如果存在保护罩
+	//如果存在保护罩
 	if (m_lstShelterFstChoosedTitles02.Size()!=0)
 	{
 		m_alistStrFSTType.Append(m_strChoosedShelterFstTypeFlag);
@@ -5595,7 +5610,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 	CATUnicodeString strTemp01, strTemp02;
 	for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
 	{
-		if (m_lstStrNutFstTitles02[i]=="厚度")
+		if (m_lstStrNutFstTitles02[i]=="厚度" || m_lstStrNutFstTitles02[i]=="总厚度")
 		{
 			strTemp01=m_lstStrNutFstChoosed02[i];
 			double dvalue=0;
@@ -5626,6 +5641,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 				double dvalue=0;
 				strTemp03.ConvertToNum(&dvalue,"%lf");
 				m_lstCircleRadiusValues.Append(dvalue);
+				break;
 			}
 		}
 	}
@@ -5719,6 +5735,12 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 		m_pFstFreeStyleWasherDlg->RequestDelayedDestruction();
 		m_pFstFreeStyleWasherDlg=NULL;
 	}
+
+	if (m_pFstFreeStyleShelterDlg != NULL)
+	{
+		m_pFstFreeStyleShelterDlg->RequestDelayedDestruction();
+		m_pFstFreeStyleShelterDlg=NULL;
+	}
 }
 void PrtFstDesignCmd::FstFreeStyleShelterDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
@@ -5755,6 +5777,8 @@ CATBoolean PrtFstDesignCmd::OnShelterPushItemSelectCB(CATCommand* cmd, CATNotifi
 	m_lstShelterFstChoosedTitles02.RemoveAll(); 
 	m_lstShelterFstChoosedResults02.RemoveAll(); 
 	//
+	m_pFstFreeStyleShelterDlg->_ChooseSheltersML->ClearLine();
+	//
 	CATListValCATUnicodeString alststrName,alststrValue;
 	alststrName.Append(m_lstStrShelterFstTitles01);alststrName.Append(m_lstStrShelterFstTitles02);
 	alststrValue.Append(m_lstStrShelterFstChoosed01);alststrValue.Append(m_lstStrShelterFstChoosed02);
@@ -5780,7 +5804,7 @@ CATBoolean PrtFstDesignCmd::OnShelterPushItemSelectCB(CATCommand* cmd, CATNotifi
 	m_lstShelterFstChoosedTitles02.Append(m_lstStrShelterFstTitles02);  //保护罩规格号信息
 	m_lstShelterFstChoosedResults02.Append(m_lstStrShelterFstChoosed02); //保护罩规格号信息
 	//
-	m_strShelterPos="START";
+	m_strShelterPos="END";
 	m_strChoosedShelterFstTypeFlag=m_strShelterFstTypeFlag;
 	//
 	return TRUE;

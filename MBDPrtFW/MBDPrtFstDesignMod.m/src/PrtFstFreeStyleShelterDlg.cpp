@@ -331,8 +331,6 @@ CATBoolean PrtFstFreeStyleShelterDlg::MainFstComboItemCB(CATCommand* cmd, CATNot
 	//清除结果内容
 	_SearchResultML->ClearLine();
 	//
-	_NextStepPB->SetSensitivity(CATDlgDisable);
-	//
 	_GoToSearchPB->SetSensitivity(CATDlgDisable);
 	//获得第一个COMBO所选的内容
 	int tempIndex;
@@ -396,8 +394,6 @@ CATBoolean PrtFstFreeStyleShelterDlg::ComboItemSearchCB(CATCommand* cmd, CATNoti
 	int comboIndex = m_ItemComboList.Locate(cmd);
 	//cout<<"用户点选的是"<<comboIndex<<endl;
 	//
-	_NextStepPB->SetSensitivity(CATDlgDisable);
-
 	//搜索关键字列表
 	CATLISTV(CATUnicodeString) aStrComboItemSelected;
 	aStrComboItemSelected.Append(""); //添加一个空字符，占住位置，后面再修改它
