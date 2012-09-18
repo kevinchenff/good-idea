@@ -467,20 +467,26 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		//
 		PrtService::ModifySpecObjCertainParams(m_piDoc,spLine,iListStrName,ioListStrNameValue);
 	}
-	
-	//2 获取垫圈及螺母的“厚度值”
 	iListStrName.RemoveAll(); ioListStrNameValue.RemoveAll();
-	iListStrName.Append("厚度值");
+
+	//2 获取垫圈及螺母的“厚度值”
+	CATListValCATUnicodeString iListCircleStrName,ioListCircleStrNameValue;
+	iListCircleStrName.Append("厚度值");
 	//
 	CATListOfDouble alistDNutThick;
 	CATListOfDouble alistDNutThickStart;
 	//
 	for (int i=1; i <= alistSpecCircle.Size(); i ++)
 	{
-		PrtService::GetSpecObjCertainParams(alistSpecCircle[i],iListStrName,ioListStrNameValue);
+		//
+		ioListCircleStrNameValue.RemoveAll();
+		//
+		PrtService::GetSpecObjCertainParams(alistSpecCircle[i],iListCircleStrName,ioListCircleStrNameValue);
 		double dTemp=0;
-		ioListStrNameValue[1].ConvertToNum(&dTemp,"%lf");
+		ioListCircleStrNameValue[1].ConvertToNum(&dTemp,"%lf");
 		alistDNutThick.Append(dTemp);
+		//
+		//PrtService::ShowDlgNotify("alistDNutThick",ioListStrNameValue[1]);
 		//
 		CATUnicodeString strFSTTypeKey("F_ATTEX_POS");
 		CATUnicodeString iostrFSTType;
