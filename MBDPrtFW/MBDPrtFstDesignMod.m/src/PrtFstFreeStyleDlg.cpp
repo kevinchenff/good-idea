@@ -197,7 +197,7 @@ CATLISTV(CATUnicodeString) *LstStrAtrrValue031 = new CATLISTV(CATUnicodeString)(
 (*LstStrAtrrValue031).Append("F_RIVET_STD_CODE_INFO_FASTENER_MARK");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue031);
 //
-//紧固件标准号 直径 夹持厚度
+//紧固件标准号 公称直径 夹持厚度
 CATLISTV(CATUnicodeString) *LstStrAtrrValue032 = new CATLISTV(CATUnicodeString)();
 (*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_FASTENER_MARK");
 (*LstStrAtrrValue032).Append("F_RIVET_SPEC_INFO_DIAMETER");

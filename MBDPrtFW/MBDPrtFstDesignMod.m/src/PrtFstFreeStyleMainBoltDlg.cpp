@@ -58,8 +58,8 @@ PrtFstFreeStyleMainBoltDlg::PrtFstFreeStyleMainBoltDlg() :
  //
  //初始化属性显示名称
  m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
- m_lstStrPropertyName[1]=CATUnicodeString("紧固件规格");
- m_lstStrPropertyName[2]=CATUnicodeString("直径");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName[2]=CATUnicodeString("公称直径");
  m_lstStrPropertyName[3]=CATUnicodeString("总长度");
  m_lstStrPropertyName[4]=CATUnicodeString("夹持厚度"); 
  m_lstStrPropertyName[5]=CATUnicodeString("重量（kg）");

@@ -2725,7 +2725,7 @@ void PrtFstDesignCmd::FstFreeStyleDlgLastStepPBCB(CATCommand* cmd, CATNotificati
 }
 
 //
-//响应函数：计算自由选择模式主紧固件规格信息
+//响应函数：计算自由选择模式主紧固件标识信息
 void PrtFstDesignCmd::FstFreeStyleDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
@@ -3037,7 +3037,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgSearchResultsMLCB(CATCommand* cmd, 
 			}
 
 			//需要修改部分，当名称更正后
-			if (m_lstStrMainFstTitles02[i] == "直径" || m_lstStrMainFstTitles02[i] == "公称直径")
+			if (/*m_lstStrMainFstTitles02[i] == "直径" ||*/ m_lstStrMainFstTitles02[i] == "公称直径")
 			{
 				//
 				m_strdFstDiameterValue = m_lstStrMainFstChoosed02[i];
@@ -3437,7 +3437,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					for (int j=1; j<=m_lstStrMainFstTitles02.Size(); j++)
 					{
 						//
-						if (m_lstStrMainFstTitles02[j] == "直径" || m_lstStrMainFstTitles02[j] == "公称直径")
+						if (/*m_lstStrMainFstTitles02[j] == "直径" ||*/ m_lstStrMainFstTitles02[j] == "公称直径")
 						{
 							lststrMainFstValue[j].ConvertToNum(&dDiaValue,"%lf");
 						}
@@ -3573,7 +3573,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					for (int j=1; j<=m_lstStrMainFstTitles02.Size(); j++)
 					{
 						//
-						if (m_lstStrMainFstTitles02[j] == "直径" || m_lstStrMainFstTitles02[j] == "公称直径")
+						if (/*m_lstStrMainFstTitles02[j] == "直径" ||*/ m_lstStrMainFstTitles02[j] == "公称直径")
 						{
 							lststrMainFstValue[j].ConvertToNum(&dDiaValue,"%lf");
 						}
@@ -3701,7 +3701,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					for (int j=1; j<=m_lstStrMainFstTitles02.Size(); j++)
 					{
 						//
-						if (m_lstStrMainFstTitles02[j] == "直径" || m_lstStrMainFstTitles02[j] == "公称直径")
+						if (/*m_lstStrMainFstTitles02[j] == "直径" ||*/ m_lstStrMainFstTitles02[j] == "公称直径")
 						{
 							lststrMainFstValue[j].ConvertToNum(&dDiaValue,"%lf");
 						}
@@ -3829,7 +3829,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					for (int j=1; j<=m_lstStrMainFstTitles02.Size(); j++)
 					{
 						//
-						if (m_lstStrMainFstTitles02[j] == "直径" || m_lstStrMainFstTitles02[j] == "公称直径")
+						if (/*m_lstStrMainFstTitles02[j] == "直径" ||*/ m_lstStrMainFstTitles02[j] == "公称直径")
 						{
 							lststrMainFstValue[j].ConvertToNum(&dDiaValue,"%lf");
 						}
@@ -3875,7 +3875,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNo
 		CATUnicodeString strSpecValue;
 		for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
 		{
-			if (m_lstStrMainFstTitles02[i]=="紧固件规格")
+			if (m_lstStrMainFstTitles02[i]=="紧固件标识")
 			{
 				strSpecValue=m_lstStrMainFstChoosed02[i];
 				break;
@@ -4749,7 +4749,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 			CATUnicodeString strSpecValue01;
 			for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
 			{
-				if (m_lstStrMainFstTitles02[i]=="紧固件规格")
+				if (m_lstStrMainFstTitles02[i]=="紧固件标识")
 				{
 					strSpecValue01=m_lstStrMainFstChoosed02[i];
 					break;
@@ -4764,7 +4764,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 			CATUnicodeString strSpecValue02;
 			for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
 			{
-				if (m_lstStrNutFstTitles02[i]=="紧固件规格")
+				if (m_lstStrNutFstTitles02[i]=="紧固件标识")
 				{
 					strSpecValue02=m_lstStrNutFstChoosed02[i];
 					break;
@@ -4784,7 +4784,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 				CATLISTV(CATUnicodeString) * TempLstStrValue = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[j];
 				for (int i=1; i<=(*TempLstStrTitle).Size(); i++)
 				{
-					if ((*TempLstStrTitle)[i]=="紧固件规格")
+					if ((*TempLstStrTitle)[i]=="紧固件标识")
 					{
 						strSpecValue03=(*TempLstStrValue)[i];
 						alstStrSpecValue03.Append(strSpecValue03);
@@ -4842,7 +4842,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 						m_lstCircleThicks.Append(dvalue);
 					}
 
-					if ((*TempLstStrTitle)[i]=="内径" || (*TempLstStrTitle)[i]=="公称直径")
+					if (/*(*TempLstStrTitle)[i]=="内径" ||*/ (*TempLstStrTitle)[i]=="公称直径")
 					{
 						strTemp02=(*TempLstStrValue)[i];
 						double dvalue=0;
@@ -4863,7 +4863,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 					m_lstCircleThicks.Append(dvalue);
 				}
 
-				if (m_lstStrNutFstTitles02[i]=="直径" || m_lstStrNutFstTitles02[i]=="公称直径")
+				if (/*m_lstStrNutFstTitles02[i]=="直径" || */m_lstStrNutFstTitles02[i]=="公称直径")
 				{
 					strTemp02=m_lstStrNutFstChoosed02[i];
 					double dvalue=0;
@@ -5476,7 +5476,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 	CATUnicodeString strSpecValue01;
 	for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
 	{
-		if (m_lstStrMainFstTitles02[i]=="紧固件规格")
+		if (m_lstStrMainFstTitles02[i]=="紧固件标识")
 		{
 			strSpecValue01=m_lstStrMainFstChoosed02[i];
 			break;
@@ -5491,7 +5491,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 	CATUnicodeString strSpecValue02;
 	for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
 	{
-		if (m_lstStrNutFstTitles02[i]=="紧固件规格")
+		if (m_lstStrNutFstTitles02[i]=="紧固件标识")
 		{
 			strSpecValue02=m_lstStrNutFstChoosed02[i];
 			break;
@@ -5512,7 +5512,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 		CATLISTV(CATUnicodeString) * TempLstStrValue = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[j];
 		for (int i=1; i<=(*TempLstStrTitle).Size(); i++)
 		{
-			if ((*TempLstStrTitle)[i]=="紧固件规格")
+			if ((*TempLstStrTitle)[i]=="紧固件标识")
 			{
 				strSpecValue03=(*TempLstStrValue)[i];
 				alstStrSpecValue03.Append(strSpecValue03);
@@ -5530,7 +5530,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 		//
 		for (int i=1; i<=m_lstShelterFstChoosedTitles02.Size(); i++)
 		{
-			if (m_lstShelterFstChoosedTitles02[i]=="紧固件规格")
+			if (m_lstShelterFstChoosedTitles02[i]=="紧固件标识")
 			{
 				strSpecValue04=m_lstShelterFstChoosedResults02[i];
 				break;
@@ -5597,7 +5597,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 				m_lstCircleThicks.Append(dvalue);
 			}
 
-			if ((*TempLstStrTitle)[i]=="内径" || (*TempLstStrTitle)[i]=="公称直径")
+			if (/*(*TempLstStrTitle)[i]=="内径" ||*/ (*TempLstStrTitle)[i]=="公称直径")
 			{
 				strTemp02=(*TempLstStrValue)[i];
 				double dvalue=0;
@@ -5618,7 +5618,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 			m_lstCircleThicks.Append(dvalue);
 		}
 
-		if (m_lstStrNutFstTitles02[i]=="直径" || m_lstStrNutFstTitles02[i]=="公称直径")
+		if (/*m_lstStrNutFstTitles02[i]=="直径" ||*/ m_lstStrNutFstTitles02[i]=="公称直径")
 		{
 			strTemp02=m_lstStrNutFstChoosed02[i];
 			double dvalue=0;
@@ -5635,7 +5635,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 		CATUnicodeString strTemp03;
 		for (int i=1; i<=m_lstShelterFstChoosedTitles02.Size(); i++)
 		{
-			if (m_lstShelterFstChoosedTitles02[i]=="直径" || m_lstStrNutFstTitles02[i]=="公称直径")
+			if (/*m_lstShelterFstChoosedTitles02[i]=="直径" ||*/ m_lstStrNutFstTitles02[i]=="公称直径")
 			{
 				strTemp03=m_lstShelterFstChoosedResults02[i];
 				double dvalue=0;

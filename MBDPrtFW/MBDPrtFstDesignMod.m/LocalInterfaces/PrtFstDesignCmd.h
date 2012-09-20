@@ -234,7 +234,7 @@ private:
 	CATListValCATUnicodeString m_lststrCirclePositions; //螺母、垫片的安装位置，需要写入特征属性中
 	
 	//从交互选择中获取如下信息
-	CATListValCATUnicodeString m_alistStrFSTName; //存储紧固件规格号
+	CATListValCATUnicodeString m_alistStrFSTName; //存储紧固件标识号
 	double m_dMainFstLength, m_dMainFstThickLimit;
 	CATListOfDouble m_lstCircleRadiusValues,m_lstCircleThicks;
 	//---------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -269,7 +269,7 @@ private:
 	CATListPV m_plstMainFstResults01; //主紧固件标准号信息
 	CATListValCATUnicodeString m_lstStrMainFstTitles01;
 	CATListValCATUnicodeString m_lstStrMainFstChoosed01;
-	CATListPV m_plstMainFstResults02; //主紧固件规格号信息
+	CATListPV m_plstMainFstResults02; //主紧固件标识号信息
 	CATListValCATUnicodeString m_lstStrMainFstTitles02;
 	CATListValCATUnicodeString m_lstStrMainFstChoosed02;
 	//

@@ -59,8 +59,8 @@ PrtFstFreeStyleNutDlg::PrtFstFreeStyleNutDlg() :
 
  //
  m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
- m_lstStrPropertyName[1]=CATUnicodeString("紧固件规格");
- m_lstStrPropertyName[2]=CATUnicodeString("直径");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName[2]=CATUnicodeString("公称直径");
  m_lstStrPropertyName[3]=CATUnicodeString("螺母间距");
  m_lstStrPropertyName[4]=CATUnicodeString("外径"); 
  m_lstStrPropertyName[5]=CATUnicodeString("厚度");
