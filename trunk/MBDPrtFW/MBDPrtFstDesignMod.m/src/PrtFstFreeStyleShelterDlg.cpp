@@ -62,8 +62,8 @@ PrtFstFreeStyleShelterDlg::PrtFstFreeStyleShelterDlg() :
 
  //
  m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
- m_lstStrPropertyName[1]=CATUnicodeString("紧固件规格");
- m_lstStrPropertyName[2]=CATUnicodeString("直径");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName[2]=CATUnicodeString("公称直径");
  m_lstStrPropertyName[3]=CATUnicodeString("螺母间距");
  m_lstStrPropertyName[4]=CATUnicodeString("外径"); 
  m_lstStrPropertyName[5]=CATUnicodeString("厚度");
@@ -85,7 +85,7 @@ PrtFstFreeStyleShelterDlg::PrtFstFreeStyleShelterDlg() :
  m_lstStrPropertyName02[4]=CATUnicodeString("表面处理");
  m_lstStrPropertyName02[5]=CATUnicodeString("单位制"); 
  m_lstStrPropertyName02[6]=CATUnicodeString("备注");
- m_lstStrPropertyName02[7]=CATUnicodeString("紧固件规格");
+ m_lstStrPropertyName02[7]=CATUnicodeString("紧固件标识");
  m_lstStrPropertyName02[8]=CATUnicodeString("公称直径");
  m_lstStrPropertyName02[9]=CATUnicodeString("内径");
  m_lstStrPropertyName02[10]=CATUnicodeString("外径");

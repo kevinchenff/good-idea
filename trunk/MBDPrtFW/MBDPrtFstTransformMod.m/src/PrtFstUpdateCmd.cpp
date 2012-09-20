@@ -616,7 +616,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				CATUnicodeString strDiameterValue;
 				for (int i=1; i<=lststrJstSpecialName.Size(); i++)
 				{
-					if (lststrJstSpecialName[i] == "公称直径" || lststrJstSpecialName[i] == "直径")
+					if (lststrJstSpecialName[i] == "公称直径" /*|| lststrJstSpecialName[i] == "直径"*/)
 					{
 						strDiameterValue = lststrJstSpecialValue[i];
 						break;
@@ -1018,7 +1018,7 @@ void PrtFstUpdateCmd::OpenOK(CATCommand * iSendingCommand, CATNotification * iSe
 	CEEndExcel.OpenSheet("Sheet1");
 	//
 	//输出EXCEL头
-	CEEndExcel.SetItemText(1,1,"紧固件规格号");
+	CEEndExcel.SetItemText(1,1,"紧固件标识");
 	CEEndExcel.SetItemText(1,2,"紧固件ID");
 	CEEndExcel.SetItemText(1,3,"总长度mm");	
 	CEEndExcel.SetItemText(1,4,"夹持厚度mm");
