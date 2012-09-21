@@ -47,7 +47,7 @@ PrtFstAccessDlg::PrtFstAccessDlg() :
 
  //初始化显示信息
  ChoosedFastenersMLTitles[0]=CATUnicodeString("名称");
- ChoosedFastenersMLTitles[1]=CATUnicodeString("规格号");
+ ChoosedFastenersMLTitles[1]=CATUnicodeString("紧固件标识");
  ChoosedFastenersMLTitles[2]=CATUnicodeString("安装部位");
 
 }

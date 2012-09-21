@@ -1873,7 +1873,8 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 				spiDistance->SetUserAccess(CATICkeParm::ReadOnly);
 				CATISpecObject_var spPosPoint = spGSMFac->CreatePoint(spResultLine,ispPoint01,spiDistance,CATGSMOrientation::CATGSMSameOrientation);
 				PrtService::SetAlias(spPosPoint,"安装位置点");
-				CATICkeParm_var  spidCircleValue = PrtService::LocalInstLitteral(&(m_lstCircleRadiusValues[i]), 1, "Length","半径");
+				double dradius = m_lstCircleRadiusValues[i]*0.5;
+				CATICkeParm_var  spidCircleValue = PrtService::LocalInstLitteral(&dradius, 1, "Length","半径");
 				spidCircleValue->SetUserAccess(CATICkeParm::ReadOnly);
 				CATISpecObject_var spCircle = spGSMFac->CreateCircle(spResultLine,spPosPoint,spidCircleValue,FALSE);
 				//挂载，改名
@@ -1920,7 +1921,8 @@ void PrtFstDesignCmd::CreateFstLinesAndCircles(CATISpecObject_var ispPoint01,CAT
 				spiDistance->SetUserAccess(CATICkeParm::ReadOnly);
 				CATISpecObject_var spPosPoint = spGSMFac->CreatePoint(spResultLine,ispPoint02,spiDistance,CATGSMOrientation::CATGSMSameOrientation);
 				PrtService::SetAlias(spPosPoint,"安装位置点");
-				CATICkeParm_var  spidCircleValue = PrtService::LocalInstLitteral(&(m_lstCircleRadiusValues[i]), 1, "Length","半径");
+				double dradius = m_lstCircleRadiusValues[i]*0.5;
+				CATICkeParm_var  spidCircleValue = PrtService::LocalInstLitteral(&dradius, 1, "Length","半径");
 				spidCircleValue->SetUserAccess(CATICkeParm::ReadOnly);
 				CATISpecObject_var spCircle = spGSMFac->CreateCircle(spResultLine,spPosPoint,spidCircleValue,FALSE);
 				//挂载，改名
@@ -5635,7 +5637,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 		CATUnicodeString strTemp03;
 		for (int i=1; i<=m_lstShelterFstChoosedTitles02.Size(); i++)
 		{
-			if (/*m_lstShelterFstChoosedTitles02[i]=="直径" ||*/ m_lstStrNutFstTitles02[i]=="公称直径")
+			if (/*m_lstShelterFstChoosedTitles02[i]=="直径" ||*/ m_lstShelterFstChoosedTitles02[i]=="公称直径")
 			{
 				strTemp03=m_lstShelterFstChoosedResults02[i];
 				double dvalue=0;

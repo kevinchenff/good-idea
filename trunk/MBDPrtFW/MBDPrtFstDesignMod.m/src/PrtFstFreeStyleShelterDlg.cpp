@@ -32,7 +32,7 @@ const int MAXCOUNT = 4;
 PrtFstFreeStyleShelterDlg::PrtFstFreeStyleShelterDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstFreeStyleShelterDlg",CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstFreeStyleShelterDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -204,86 +204,39 @@ _Frame014 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 _RemoveAllPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
-//初始化三种类型的主紧固件查询条件，分别是：普通螺母、单耳、双耳、角型
+//初始化三种类型的主紧固件查询条件
 //记录标注号索引
 CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue01).Append("F_NUT_NORMAL_STD_CODE_INFO");
-(*LstStrAtrrValue01).Append("F_NUT_SINGLE_EAR_PSL_STD");
-(*LstStrAtrrValue01).Append("F_NUT_DOUBLE_EAR_PSL_STD"); 
-(*LstStrAtrrValue01).Append("F_NUT_CORNER_SHAPE_PSL_STD");
+(*LstStrAtrrValue01).Append("F_NUT_PROT_COVER_STD_CODE_INFO");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue01);
 //记录规格号索引
 CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue02).Append("F_NUT_NORMAL_SPEC_INFO");
-(*LstStrAtrrValue02).Append("F_NUT_SINGLE_EAR_PSL_SPEC");
-(*LstStrAtrrValue02).Append("F_NUT_DOUBLE_EAR_PSL_SPEC");
-(*LstStrAtrrValue02).Append("F_NUT_CORNER_SHAPE_PSL_SPEC");
+(*LstStrAtrrValue02).Append("F_NUT_PROT_COVER_SPEC_INFO");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue02);
 //
 CATLISTV(CATUnicodeString) *LstStrAtrrValue031 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue031).Append("F_NUT_NORMAL_STD_CODE_INFO_MATERIAL");
-(*LstStrAtrrValue031).Append("F_NUT_NORMAL_STD_CODE_INFO_SURFACE_TREATMENT");
-(*LstStrAtrrValue031).Append("F_NUT_NORMAL_STD_CODE_INFO_FASTENER_NAME");
-(*LstStrAtrrValue031).Append("F_NUT_NORMAL_STD_CODE_INFO_FASTENER_MARK");
+(*LstStrAtrrValue031).Append("F_NUT_PROT_COVER_STD_CODE_INFO_MATERIAL");
+(*LstStrAtrrValue031).Append("F_NUT_PROT_COVER_STD_CODE_INFO_SURFACE_TREATMENT");
+(*LstStrAtrrValue031).Append("F_NUT_PROT_COVER_STD_CODE_INFO_FASTENER_NAME");
+(*LstStrAtrrValue031).Append("F_NUT_PROT_COVER_STD_CODE_INFO_FASTENER_MARK");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue031);
 ////
 //
 CATLISTV(CATUnicodeString) *LstStrAtrrValue032 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue032).Append("F_NUT_NORMAL_SPEC_INFO_FASTENER_MARK");
-(*LstStrAtrrValue032).Append("F_NUT_NORMAL_SPEC_INFO_DIAMETER");
+(*LstStrAtrrValue032).Append("F_NUT_PROT_COVER_SPEC_INFO_FASTENER_MARK");
+(*LstStrAtrrValue032).Append("F_NUT_PROT_COVER_SPEC_INFO_DIAMETER");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue032);
 
 //
-CATLISTV(CATUnicodeString) *LstStrAtrrValue041 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue041).Append("F_NUT_SINGLE_EAR_PSL_STD_MATERIAL");
-(*LstStrAtrrValue041).Append("F_NUT_SINGLE_EAR_PSL_STD_SURFACE_TREATMENT");
-(*LstStrAtrrValue041).Append("F_NUT_SINGLE_EAR_PSL_STD_FASTENER_NAME");
-(*LstStrAtrrValue041).Append("F_NUT_SINGLE_EAR_PSL_STD_FASTENER_MARK");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue041);
-
-//
-CATLISTV(CATUnicodeString) *LstStrAtrrValue042 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue042).Append("F_NUT_SINGLE_EAR_PSL_SPEC_FASTENER_MARK");
-(*LstStrAtrrValue042).Append("F_NUT_SINGLE_EAR_PSL_SPEC_NOMINAL_DIAMETER");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue042);
-//
-CATLISTV(CATUnicodeString) *LstStrAtrrValue051 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue051).Append("F_NUT_DOUBLE_EAR_PSL_STD_MATERIAL");
-(*LstStrAtrrValue051).Append("F_NUT_DOUBLE_EAR_PSL_STD_SURFACE_TREATMENT");
-(*LstStrAtrrValue051).Append("F_NUT_DOUBLE_EAR_PSL_STD_FASTENER_NAME");
-(*LstStrAtrrValue051).Append("F_NUT_DOUBLE_EAR_PSL_STD_FASTENER_MARK");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue051);
-//
-CATLISTV(CATUnicodeString) *LstStrAtrrValue052 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue052).Append("F_NUT_DOUBLE_EAR_PSL_SPEC_FASTENER_MARK");
-(*LstStrAtrrValue052).Append("F_NUT_DOUBLE_EAR_PSL_SPEC_NOMINAL_DIAMETER");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue052);
-//
-CATLISTV(CATUnicodeString) *LstStrAtrrValue061 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue061).Append("F_NUT_CORNER_SHAPE_PSL_STD_MATERIAL");
-(*LstStrAtrrValue061).Append("F_NUT_CORNER_SHAPE_PSL_STD_SURFACE_TREATMENT");
-(*LstStrAtrrValue061).Append("F_NUT_CORNER_SHAPE_PSL_STD_FASTENER_NAME");
-(*LstStrAtrrValue061).Append("F_NUT_CORNER_SHAPE_PSL_STD_FASTENER_MARK");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue061);
-//
-CATLISTV(CATUnicodeString) *LstStrAtrrValue062 = new CATLISTV(CATUnicodeString)();
-(*LstStrAtrrValue062).Append("F_NUT_CORNER_SHAPE_PSL_SPEC_FASTENER_MARK");
-(*LstStrAtrrValue062).Append("F_NUT_CORNER_SHAPE_PSL_SPEC_NOMINAL_DIAMETER");
-m_plsStrCurrentWBSItem.Append(LstStrAtrrValue062);
-
-//
-CATUnicodeString strComboName01(" 请选择： < “螺母类型” >");
+CATUnicodeString strComboName01(" 请选择： < “类型” >");
 _Combo01->SetLine(strComboName01);
-_Combo01->SetLine("普通螺母");
-_Combo01->SetLine("单耳托板自锁螺母");
-_Combo01->SetLine("双耳托板自锁螺母");
-_Combo01->SetLine("角形托板自锁螺母");
+_Combo01->SetLine("托板螺母保护罩");
 
 //初始化显示界面
 CATUnicodeString strComboName03(" 请选择： < “材料名称” >");
 CATUnicodeString strComboName04(" 请选择： < “表面处理方法” >");
-CATUnicodeString strComboName05(" 请选择： < “螺母名称” >");
-CATUnicodeString strComboName06(" 请选择： < “螺母标准号” >");
+CATUnicodeString strComboName05(" 请选择： < “保护罩名称” >");
+CATUnicodeString strComboName06(" 请选择： < “保护罩标准号” >");
 
 m_alsStrCurrentWBSShow.Append(strComboName03);
 m_alsStrCurrentWBSShow.Append(strComboName04);

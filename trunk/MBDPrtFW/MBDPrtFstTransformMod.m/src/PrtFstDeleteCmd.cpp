@@ -298,6 +298,13 @@ void PrtFstDeleteCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			CATListValCATISpecObject_var iolstspFoundResult04;
 			PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult03[j],iolstspFoundResult04);
 
+			//
+			if (iolstspFoundResult04.Size()==0)
+			{
+				iolstspFoundResult02[i]->Remove(iolstspFoundResult03[j]);
+				continue;
+			}
+
 			//2.2 获得内部含有的线圈模型，得到其数量信息
 			for (int m = 1; m <= iolstspFoundResult04.Size(); m++)
 			{
