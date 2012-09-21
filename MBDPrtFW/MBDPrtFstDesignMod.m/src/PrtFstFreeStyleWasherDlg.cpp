@@ -31,7 +31,7 @@ const int MAXCOUNT = 4;
 PrtFstFreeStyleWasherDlg::PrtFstFreeStyleWasherDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstFreeStyleWasherDlg",CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstFreeStyleWasherDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -251,10 +251,12 @@ _EndLeftEditor -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 //记录标注号索引
 CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
 (*LstStrAtrrValue01).Append("F_WASHER_STD_CODE_INFO");
+(*LstStrAtrrValue01).Append("F_SPACER_STD_CODE_INFO");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue01);
 //记录规格号索引
 CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
 (*LstStrAtrrValue02).Append("F_WASHER_SPEC_INFO");
+(*LstStrAtrrValue02).Append("F_SPACER_SPEC_INFO");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue02);
 //
 CATLISTV(CATUnicodeString) *LstStrAtrrValue031 = new CATLISTV(CATUnicodeString)();
@@ -270,17 +272,31 @@ CATLISTV(CATUnicodeString) *LstStrAtrrValue032 = new CATLISTV(CATUnicodeString)(
 (*LstStrAtrrValue032).Append("F_WASHER_SPEC_INFO_DIAMETER");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue032);
 
+CATLISTV(CATUnicodeString) *LstStrAtrrValue041 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue041).Append("F_SPACER_STD_CODE_INFO_MATERIAL");
+(*LstStrAtrrValue041).Append("F_SPACER_STD_CODE_INFO_SURFACE_TREATMENT");
+(*LstStrAtrrValue041).Append("F_SPACER_STD_CODE_INFO_FASTENER_NAME");
+(*LstStrAtrrValue041).Append("F_SPACER_STD_CODE_INFO_FASTENER_MARK");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue041);
+////
+//
+CATLISTV(CATUnicodeString) *LstStrAtrrValue042 = new CATLISTV(CATUnicodeString)();
+(*LstStrAtrrValue042).Append("F_SPACER_SPEC_INFO_FASTENER_MARK");
+(*LstStrAtrrValue042).Append("F_SPACER_SPEC_INFO_DIAMETER");
+m_plsStrCurrentWBSItem.Append(LstStrAtrrValue042);
+
 //
 CATUnicodeString strComboName01(" 请选择： < “垫圈类型” >");
 _Combo01->SetLine(strComboName01);
 _Combo01->SetLine("垫圈");
+_Combo01->SetLine("垫片");
 
 
 //初始化显示界面
 CATUnicodeString strComboName03(" 请选择： < “材料名称” >");
 CATUnicodeString strComboName04(" 请选择： < “表面处理方法” >");
-CATUnicodeString strComboName05(" 请选择： < “螺母名称” >");
-CATUnicodeString strComboName06(" 请选择： < “螺母规格号” >");
+CATUnicodeString strComboName05(" 请选择： < “紧固件名称” >");
+CATUnicodeString strComboName06(" 请选择： < “紧固件标准号” >");
 
 m_alsStrCurrentWBSShow.Append(strComboName03);
 m_alsStrCurrentWBSShow.Append(strComboName04);

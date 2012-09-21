@@ -16,8 +16,8 @@ Frame002.Title = "检索结果";
  Frame002.SearchResultML.ColumnTitle6 = "title05";
  Frame002.SearchResultML.ColumnTitle7 = "title06";
  Frame002.SearchResultML.ColumnTitle8 = "title07";
-Frame003.NextStepPB.Title = "上一步";
-Frame003.LastStepPB.Title = "下一步";
+Frame003.NextStepPB.Title = "下一步";
+Frame003.LastStepPB.Title = "上一步";
 // END WIZARD REPLACEMENT ZONE
 
 

@@ -1,18 +1,18 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Fastener Update";
-BOK = "Update";
-Frame002.Title = "Update Successful";
- Frame002.SuccessMultiList.ColumnTitle1 = "Serial Number";
- Frame002.SuccessMultiList.ColumnTitle2 = "Trademark";
- Frame002.SuccessMultiList.ColumnTitle3 = "Update Content";
-Frame003.Title = "Update Error";
- Frame003.ErrorMultiList.ColumnTitle1 = "Serial Number";
- Frame003.ErrorMultiList.ColumnTitle2 = "Trademark";
- Frame003.ErrorMultiList.ColumnTitle3 = "Error Reason";
-Frame005.Title = "Operation with Error";
-Frame005.ReportAndMarkPB.Title = "Report And Mark";
-Frame005.DeleteAllErrorPB.Title = "Delete All Error";
-Frame006.Title = "Checkout parameter";
-Frame006.Label007.Title = "Lower variation : ";
-Frame006.Label008.Title = "Upper variation : ";
+Title = "紧固件更新";
+BOK = "更新";
+Frame002.Title = "更新成功";
+ Frame002.SuccessMultiList.ColumnTitle1 = "序列号";
+ Frame002.SuccessMultiList.ColumnTitle2 = "紧固件标识";
+ Frame002.SuccessMultiList.ColumnTitle3 = "更新信息";
+Frame003.Title = "更新错误";
+ Frame003.ErrorMultiList.ColumnTitle1 = "序列号";
+ Frame003.ErrorMultiList.ColumnTitle2 = "紧固件标识";
+ Frame003.ErrorMultiList.ColumnTitle3 = "错误原因";
+Frame005.Title = "更新错误处理";
+Frame005.ReportAndMarkPB.Title = "输出报告并标记";
+Frame005.DeleteAllErrorPB.Title = "删除所有错误紧固件";
+Frame006.Title = "检查参数设置";
+Frame006.Label007.Title = "下限值 : ";
+Frame006.Label008.Title = "上限值 : ";
 // END WIZARD REPLACEMENT ZONE
