@@ -68,10 +68,13 @@ PrtFstFreeStyleNutDlg::PrtFstFreeStyleNutDlg() :
  m_lstStrPropertyName[7]=CATUnicodeString("×Üºñ¶È"); 
  m_lstStrPropertyName[8]=CATUnicodeString("½á¹¹ºñ¶È");
  m_lstStrPropertyName[9]=CATUnicodeString("ÍÐ°åºñ¶È");
- m_lstStrPropertyName[10]=CATUnicodeString("ÂÝÄ¸ÂÝÎÆÓàÁ¿");
- m_lstStrPropertyName[11]=CATUnicodeString("ÂÝÄ¸ÂÝÎÆÓàÁ¿");
- m_lstStrPropertyName[12]=CATUnicodeString("ÂÝÄ¸ÂÝÎÆÓàÁ¿");
- m_lstStrPropertyName[13]=CATUnicodeString("Ã­¶¤Ö±¾¶");
+ m_lstStrPropertyName[10]=CATUnicodeString("Ã­¶¤Ö±¾¶");
+ m_lstStrPropertyName[11]=CATUnicodeString("Ã­¶¤Êý");
+ m_lstStrPropertyName[12]=CATUnicodeString("ÖÐÐÄ¶¨Î»µãÊý");
+ m_lstStrPropertyName[13]=CATUnicodeString("ÂÝÄ¸ÂÝÎÆÓàÁ¿");
+ m_lstStrPropertyName[14]=CATUnicodeString("ÂÝÄ¸ÂÝÎÆÓàÁ¿");
+ m_lstStrPropertyName[15]=CATUnicodeString("ÂÝÄ¸ÂÝÎÆÓàÁ¿");
+
  //
  m_IChoosedIndex = 0;
  //
@@ -163,7 +166,7 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  SearchResultMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleNutDlg", "Frame002.SearchResultML.ColumnTitle6");
  SearchResultMLTitles[6] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleNutDlg", "Frame002.SearchResultML.ColumnTitle7");
  SearchResultMLTitles[7] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleNutDlg", "Frame002.SearchResultML.ColumnTitle8");*/
- _SearchResultML -> SetColumnTitles(14, m_lstStrPropertyName);
+ _SearchResultML -> SetColumnTitles(16, m_lstStrPropertyName);
  _SearchResultML -> SetVisibleColumnCount( 14 );
 _SearchResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgFraNoFrame|CATDlgGridLayout);

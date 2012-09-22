@@ -4299,7 +4299,7 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 				m_plstNutFstResults02.Append(LstStrAtrrValue01);
 
 				//
-				for (int m=0; m<=13; m++)
+				for (int m=0; m<=15; m++)
 				{
 					//
 					if (m_pFstFreeStyleNutDlg->m_lstStrPropertyName[m] == m_lstStrNutFstTitles02[i])
@@ -4314,7 +4314,28 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgGoToSearchPBCB(CATCommand* cmd, CATNotif
 					}				
 				}			
 
-			}			
+			}
+
+			for (int m=0; m<=15; m++)
+			{
+				//
+				for (int n=1; n<= m_lstStrNutFstTitles01.Size(); n++)
+				{
+					//
+					if (m_pFstFreeStyleNutDlg->m_lstStrPropertyName[m] == m_lstStrNutFstTitles01[n] && m_pFstFreeStyleNutDlg->m_lstStrPropertyName[m] != "紧固件标准号")
+					{
+						for (int k=1; k<=cyclecount; k++)
+						{
+							m_pFstFreeStyleNutDlg->_SearchResultML->SetColumnItem(m,m_lstStrNutFstChoosed01[n]);
+						}
+						//
+						break;
+					}
+				}
+
+			}
+			//-----------------------------------------------------------------------------
+
 		}
 
 		//			
@@ -5513,7 +5534,7 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgGoToSearchPBCB(CATCommand* cmd, CATN
 				m_plstShelterFstResults02.Append(LstStrAtrrValue01);
 
 				//
-				for (int m=0; m<=13; m++)
+				for (int m=0; m<=15; m++)
 				{
 					//
 					if (m_pFstFreeStyleShelterDlg->m_lstStrPropertyName[m] == m_lstStrShelterFstTitles02[i])
@@ -5526,9 +5547,29 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgGoToSearchPBCB(CATCommand* cmd, CATN
 						//
 						break;
 					}				
-				}			
+				}
+			}
 
-			}			
+			//-----------------------------------------------------------------------------
+			for (int m=0; m<=15; m++)
+			{
+				//
+				for (int n=1; n<= m_lstStrShelterFstTitles01.Size(); n++)
+				{
+					//
+					if (m_pFstFreeStyleShelterDlg->m_lstStrPropertyName[m] == m_lstStrShelterFstTitles01[n] && m_pFstFreeStyleShelterDlg->m_lstStrPropertyName[m] != "紧固件标准号")
+					{
+						for (int k=1; k<=cyclecount; k++)
+						{
+							m_pFstFreeStyleShelterDlg->_SearchResultML->SetColumnItem(m,m_lstStrShelterFstChoosed01[n]);
+						}
+						//
+						break;
+					}
+				}
+				
+			}
+			//-----------------------------------------------------------------------------
 		}
 
 		//			

@@ -62,36 +62,41 @@ PrtFstFreeStyleShelterDlg::PrtFstFreeStyleShelterDlg() :
 
  //
  m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
- m_lstStrPropertyName[1]=CATUnicodeString("紧固件标识");
- m_lstStrPropertyName[2]=CATUnicodeString("公称直径");
- m_lstStrPropertyName[3]=CATUnicodeString("螺母间距");
- m_lstStrPropertyName[4]=CATUnicodeString("外径"); 
- m_lstStrPropertyName[5]=CATUnicodeString("厚度");
- m_lstStrPropertyName[6]=CATUnicodeString("重量（kg）");
- m_lstStrPropertyName[7]=CATUnicodeString("总厚度"); 
- m_lstStrPropertyName[8]=CATUnicodeString("结构厚度");
- m_lstStrPropertyName[9]=CATUnicodeString("托板厚度");
- m_lstStrPropertyName[10]=CATUnicodeString("螺母螺纹余量");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件名称");
+ m_lstStrPropertyName[2]=CATUnicodeString("材料");
+ m_lstStrPropertyName[3]=CATUnicodeString("表面处理");
+ m_lstStrPropertyName[4]=CATUnicodeString("铆钉数"); 
+ m_lstStrPropertyName[5]=CATUnicodeString("中心定位点数");
+ m_lstStrPropertyName[6]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName[7]=CATUnicodeString("公称直径"); 
+ m_lstStrPropertyName[8]=CATUnicodeString("总厚度");
+ m_lstStrPropertyName[9]=CATUnicodeString("结构厚度");
+ m_lstStrPropertyName[10]=CATUnicodeString("托板厚度");
  m_lstStrPropertyName[11]=CATUnicodeString("螺母螺纹余量");
- m_lstStrPropertyName[12]=CATUnicodeString("螺母螺纹余量");
- m_lstStrPropertyName[13]=CATUnicodeString("铆钉直径");
+ m_lstStrPropertyName[12]=CATUnicodeString("铆钉距离螺母");
+ m_lstStrPropertyName[13]=CATUnicodeString("铆钉距离铆钉");
+ m_lstStrPropertyName[14]=CATUnicodeString("铆钉直径");
+ m_lstStrPropertyName[15]=CATUnicodeString("重量（kg）");
+
  //
  m_IChoosedIndex = 0;
  //
- m_lstStrPropertyName02[0]=CATUnicodeString("安装部位");
- m_lstStrPropertyName02[1]=CATUnicodeString("紧固件标准号");
- m_lstStrPropertyName02[2]=CATUnicodeString("紧固件名称");
- m_lstStrPropertyName02[3]=CATUnicodeString("材料");
- m_lstStrPropertyName02[4]=CATUnicodeString("表面处理");
- m_lstStrPropertyName02[5]=CATUnicodeString("单位制"); 
- m_lstStrPropertyName02[6]=CATUnicodeString("备注");
- m_lstStrPropertyName02[7]=CATUnicodeString("紧固件标识");
- m_lstStrPropertyName02[8]=CATUnicodeString("公称直径");
- m_lstStrPropertyName02[9]=CATUnicodeString("内径");
- m_lstStrPropertyName02[10]=CATUnicodeString("外径");
- m_lstStrPropertyName02[11]=CATUnicodeString("沉槽直径"); 
- m_lstStrPropertyName02[12]=CATUnicodeString("厚度");
- m_lstStrPropertyName02[13]=CATUnicodeString("重量（kg）");
+ m_lstStrPropertyName02[0]=CATUnicodeString("紧固件标准号");
+ m_lstStrPropertyName02[1]=CATUnicodeString("紧固件名称");
+ m_lstStrPropertyName02[2]=CATUnicodeString("材料");
+ m_lstStrPropertyName02[3]=CATUnicodeString("表面处理");
+ m_lstStrPropertyName02[4]=CATUnicodeString("铆钉数"); 
+ m_lstStrPropertyName02[5]=CATUnicodeString("中心定位点数");
+ m_lstStrPropertyName02[6]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName02[7]=CATUnicodeString("公称直径"); 
+ m_lstStrPropertyName02[8]=CATUnicodeString("总厚度");
+ m_lstStrPropertyName02[9]=CATUnicodeString("结构厚度");
+ m_lstStrPropertyName02[10]=CATUnicodeString("托板厚度");
+ m_lstStrPropertyName02[11]=CATUnicodeString("螺母螺纹余量");
+ m_lstStrPropertyName02[12]=CATUnicodeString("铆钉距离螺母");
+ m_lstStrPropertyName02[13]=CATUnicodeString("铆钉距离铆钉");
+ m_lstStrPropertyName02[14]=CATUnicodeString("铆钉直径");
+ m_lstStrPropertyName02[15]=CATUnicodeString("重量（kg）");
 
 }
 
@@ -178,7 +183,7 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _SearchResultML = new CATDlgMultiList(_Frame002, "SearchResultML");
  //CATUnicodeString SearchResultMLTitles [ 1 ];
  //SearchResultMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleShelterDlg", "Frame002.SearchResultML.ColumnTitle1");
- _SearchResultML -> SetColumnTitles(14, m_lstStrPropertyName);
+ _SearchResultML -> SetColumnTitles(16, m_lstStrPropertyName);
  _SearchResultML -> SetVisibleColumnCount( 1 );
 _SearchResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgFraNoFrame|CATDlgGridLayout);
@@ -195,7 +200,7 @@ _Frame011 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  _ChooseSheltersML = new CATDlgMultiList(_Frame011, "ChooseSheltersML");
  //CATUnicodeString ChooseSheltersMLTitles [ 1 ];
  //ChooseSheltersMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleShelterDlg", "Frame011.ChooseSheltersML.ColumnTitle1");
- _ChooseSheltersML -> SetColumnTitles(14, m_lstStrPropertyName02);
+ _ChooseSheltersML -> SetColumnTitles(16, m_lstStrPropertyName02);
  _ChooseSheltersML -> SetVisibleColumnCount( 14 );
 _ChooseSheltersML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame014 = new CATDlgFrame(_Frame011, "Frame014", CATDlgFraNoTitle|CATDlgGridLayout);
@@ -224,7 +229,7 @@ m_plsStrCurrentWBSItem.Append(LstStrAtrrValue031);
 //
 CATLISTV(CATUnicodeString) *LstStrAtrrValue032 = new CATLISTV(CATUnicodeString)();
 (*LstStrAtrrValue032).Append("F_NUT_PROT_COVER_SPEC_INFO_FASTENER_MARK");
-(*LstStrAtrrValue032).Append("F_NUT_PROT_COVER_SPEC_INFO_DIAMETER");
+(*LstStrAtrrValue032).Append("F_NUT_PROT_COVER_SPEC_INFO_NOMINAL_DIAMETER");
 m_plsStrCurrentWBSItem.Append(LstStrAtrrValue032);
 
 //
