@@ -2571,6 +2571,29 @@ void PrtFstDesignCmd::OkFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CA
 		m_pDlg->_ChoosedFstNormalInfoML->SetColumnItem(0,m_alistStrFSTName[i]);
 		m_pDlg->_ChoosedFstNormalInfoML->SetColumnItem(1,m_alistStrFSTType[i]);
 	}
+	//存入数据库，所选组合
+	if (m_pFstAccessDlg->_SaveBackCheckB->GetState() == CATDlgCheck)
+	{
+		//
+		CATListValCATUnicodeString alsstrSendBackToKnow;
+		alsstrSendBackToKnow.Append("KnowledgeBase=~");
+		alsstrSendBackToKnow.Append(m_strSendKnowMainFst);
+		alsstrSendBackToKnow.Append(m_strSendKnowNutFst);
+		alsstrSendBackToKnow.Append(m_lststrSendKnowWasherFst);
+		//
+		//调用查询接口
+		HRESULT hr = MBDWebservice::InsertDataWebService(alsstrSendBackToKnow);
+
+		if (SUCCEEDED(hr))
+		{
+			PrtService::ShowDlgNotify("入库提示","已成功存入知识库！");
+		}
+		else
+		{
+			PrtService::ShowDlgNotify("入库提示","未成功存入知识库！");
+		}
+	}
+
 	//
 
 	m_userChoosedFlag = TRUE;
@@ -4311,6 +4334,8 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgNextStepPBCB(CATCommand* cmd, CATNotific
 		m_pFstFreeStyleWasherDlg->Build();
 		m_pFstFreeStyleWasherDlg->SetVisibility(CATDlgShow);
 		//
+		m_lststrSendKnowWasherFst.RemoveAll();
+		//
 		//设置前对话框隐藏
 		m_pFstFreeStyleNutDlg->SetVisibility(CATDlgHide);
 		//
@@ -4432,6 +4457,7 @@ void PrtFstDesignCmd::CloseFstFreeStyleWasherDlgCB(CATCommand* cmd, CATNotificat
 	//垫圈位置信息
 	m_lstStrWasherPos.RemoveAll();
 	m_lstStrWasherFstTypeFlag.RemoveAll();
+	m_lststrSendKnowWasherFst.RemoveAll();
 	//
 	//设置前对话框显示
 	m_pFstFreeStyleNutDlg->SetVisibility(CATDlgShow);
@@ -4663,6 +4689,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgLastStepPBCB(CATCommand* cmd, CATNoti
 	//垫圈位置信息
 	m_lstStrWasherPos.RemoveAll();
 	m_lstStrWasherFstTypeFlag.RemoveAll();
+	m_lststrSendKnowWasherFst.RemoveAll();
 
 	//
 	//设置前对话框显示
@@ -4917,6 +4944,28 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 			m_pFstAccessDlg->SetVisibility(CATDlgShow);
 			m_pFstAccessDlg->SetOKSensitivity(CATDlgEnable);
 
+			//-----------------------------------------------------------------------------------------------
+			//获得所选信息的知识模式
+			//-----------------------------------------------------------------------------------------------
+			m_strSendKnowMainFst = m_pFstFreeStyleDlg->m_StrCurrentDataBaseName + "=";
+			for (int i=1; i<= m_lstStrMainFstTitles01.Size(); i++)
+			{
+				if (m_lstStrMainFstTitles01[i] == "紧固件标准号")
+				{
+					m_strSendKnowMainFst += m_lstStrMainFstChoosed01[i];
+					break;
+				}
+			}
+			//
+			m_strSendKnowNutFst = m_pFstFreeStyleNutDlg->m_StrCurrentDataBaseName + "=";
+			for (int i=1; i<= m_lstStrNutFstTitles01.Size(); i++)
+			{
+				if (m_lstStrNutFstTitles01[i] == "紧固件标准号")
+				{
+					m_strSendKnowNutFst += m_lstStrNutFstChoosed01[i];
+					break;
+				}
+			}
 
 			//--------------------------------------------
 			//关闭所有过程对话框
@@ -5068,6 +5117,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgRemovePBCB(CATCommand* cmd, CATNotifi
 	//
 	m_lstStrWasherPos.RemovePosition(m_IndexChoosedWasher);
 	m_lstStrWasherFstTypeFlag.RemovePosition(m_IndexChoosedWasher);
+	m_lststrSendKnowWasherFst.RemovePosition(m_IndexChoosedWasher);
 	//
 	for (int i=1; i<= m_plstWasherFstChoosedTitles01.Size(); i++)
 	{
@@ -5113,6 +5163,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgClearAllPBCB(CATCommand* cmd, CATNoti
 	//垫圈位置信息
 	m_lstStrWasherPos.RemoveAll();
 	m_lstStrWasherFstTypeFlag.RemoveAll();
+	m_lststrSendKnowWasherFst.RemoveAll();
 	//
 	//垫圈位置信息
 	m_dWasherFstThickValueStart = 0;
@@ -5156,6 +5207,22 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgClearAllPBCB(CATCommand* cmd, CATNoti
 //
 CATBoolean PrtFstDesignCmd::OnWasherPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//--------------------------------------------------------------------------------
+	//
+	//--------------------------------------------------------------------------------
+	CATUnicodeString strWBItem;
+	strWBItem = m_pFstFreeStyleWasherDlg->m_StrCurrentDataBaseName + "=";
+	for (int i=1; i<= m_lstStrWasherFstTitles01.Size(); i++)
+	{
+		if (m_lstStrWasherFstTitles01[i] == "紧固件标准号")
+		{
+			//
+			strWBItem += m_lstStrWasherFstChoosed01[i];
+			break;
+		}
+	}
+	m_lststrSendKnowWasherFst.Append(strWBItem);
+
 	//首选创建实例化的数组列
 	CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
 	//首选创建实例化的数组列
@@ -5710,6 +5777,28 @@ void PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB(CATCommand* cmd, CATNot
 	m_pFstAccessDlg->SetVisibility(CATDlgShow);
 	m_pFstAccessDlg->SetOKSensitivity(CATDlgEnable);
 
+	//-----------------------------------------------------------------------------------------------
+	//获得所选信息的知识模式
+	//-----------------------------------------------------------------------------------------------
+	m_strSendKnowMainFst = m_pFstFreeStyleDlg->m_StrCurrentDataBaseName + "=";
+	for (int i=1; i<= m_lstStrMainFstTitles01.Size(); i++)
+	{
+		if (m_lstStrMainFstTitles01[i] == "紧固件标准号")
+		{
+			m_strSendKnowMainFst += m_lstStrMainFstChoosed01[i];
+			break;
+		}
+	}
+	//
+	m_strSendKnowNutFst = m_pFstFreeStyleNutDlg->m_StrCurrentDataBaseName + "=";
+	for (int i=1; i<= m_lstStrNutFstTitles01.Size(); i++)
+	{
+		if (m_lstStrNutFstTitles01[i] == "紧固件标准号")
+		{
+			m_strSendKnowNutFst += m_lstStrNutFstChoosed01[i];
+			break;
+		}
+	}
 
 	//--------------------------------------------
 	//关闭所有过程对话框
