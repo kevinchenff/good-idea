@@ -89,7 +89,7 @@ class PrtFstFreeStyleNutDlg: public CATDlgDialog
  CATLISTV(CATUnicodeString) m_alsStrCurrentWBSShow;
 
  // Ù–‘Õ∑√˚≥∆
- CATUnicodeString m_lstStrPropertyName[14];
+ CATUnicodeString m_lstStrPropertyName[16];
  //
  int m_IChoosedIndex;
  CATUnicodeString m_StrCurrentDataBaseName; 

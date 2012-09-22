@@ -1,17 +1,17 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Choose Shelter";
-Frame001.Title = "Search Items";
-Frame001.Label006.Title = "Selete Shelter: ";
-Frame001.Label007.Title = "Selete Material: ";
-Frame001.Label008.Title = "Selete Surface Treatment: ";
-Frame001.Label009.Title = "Selete Shelter Name: ";
-Frame001.Label010.Title = "Selete Shelter Standard Number: ";
-Frame001.GoToSearchPB.Title = "Go To Search";
-Frame002.Title = "Search Results";
+Title = "选择保护罩";
+Frame001.Title = "检索条件";
+Frame001.Label006.Title = "选择类型: ";
+Frame001.Label007.Title = "选择材料: ";
+Frame001.Label008.Title = "选择表面处理方式: ";
+Frame001.Label009.Title = "选择紧固件名称: ";
+Frame001.Label010.Title = "选择紧固件标准号: ";
+Frame001.GoToSearchPB.Title = "搜索";
+Frame002.Title = "检索结果";
  Frame002.SearchResultML.ColumnTitle1 = "title00";
-Frame003.LastStepPB.Title = "Last Step";
-Frame003.NextStepPB.Title = "Next Step";
-Frame011.Title = "Choosed Shelter";
+Frame003.LastStepPB.Title = "上一步";
+Frame003.NextStepPB.Title = "下一步";
+Frame011.Title = "选择结果";
  Frame011.ChooseSheltersML.ColumnTitle1 = "title00";
-Frame011.Frame014.RemoveAllPB.Title = "Remove All";
+Frame011.Frame014.RemoveAllPB.Title = "移除";
 // END WIZARD REPLACEMENT ZONE

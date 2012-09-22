@@ -96,8 +96,8 @@ class PrtFstFreeStyleShelterDlg: public CATDlgDialog
  CATLISTV(CATUnicodeString) m_alsStrCurrentWBSShow;
 
  // Ù–‘Õ∑√˚≥∆
- CATUnicodeString m_lstStrPropertyName[14];
- CATUnicodeString m_lstStrPropertyName02[14];
+ CATUnicodeString m_lstStrPropertyName[16];
+ CATUnicodeString m_lstStrPropertyName02[16];
 
  //
  int m_IChoosedIndex;
