@@ -356,6 +356,15 @@ private:
 	CATUnicodeString m_strShelterPos;
 	CATUnicodeString m_strChoosedShelterFstTypeFlag;
 
+	//[9/22/2012 xyuser]
+	//添加知识捕获功能
+	CATUnicodeString m_strSendKnowMainFst;
+	CATUnicodeString m_strSendKnowNutFst;
+	CATListValCATUnicodeString m_lststrSendKnowWasherFst;
+
+	//
+
+
 };
 
 //----------------------------------------------------------------------
