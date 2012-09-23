@@ -1,12 +1,12 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Choose Fastener Nut";
-Frame002.Title = "Search Results";
+Title = "选择螺母";
+Frame002.Title = "检索结果";
  Frame002.SearchResultsML.ColumnTitle1 = "title00";
  Frame002.SearchResultsML.ColumnTitle2 = "title01";
  Frame002.SearchResultsML.ColumnTitle3 = "title02";
  Frame002.SearchResultsML.ColumnTitle4 = "title03";
  Frame002.SearchResultsML.ColumnTitle5 = "title04";
  Frame002.SearchResultsML.ColumnTitle6 = "title05";
-Frame003.NextStepPB.Title = "Next Step";
-Frame003.LastStepPB.Title = "Last Step";
+Frame003.NextStepPB.Title = "下一步";
+Frame003.LastStepPB.Title = "上一步";
 // END WIZARD REPLACEMENT ZONE

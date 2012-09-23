@@ -2584,14 +2584,14 @@ void PrtFstDesignCmd::OkFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CA
 		//调用查询接口
 		HRESULT hr = MBDWebservice::InsertDataWebService(alsstrSendBackToKnow);
 
-		if (SUCCEEDED(hr))
+		/*if (SUCCEEDED(hr))
 		{
 			PrtService::ShowDlgNotify("入库提示","已成功存入知识库！");
 		}
 		else
 		{
 			PrtService::ShowDlgNotify("入库提示","未成功存入知识库！");
-		}
+		}*/
 	}
 
 	//
