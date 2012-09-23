@@ -1,13 +1,13 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Knowledge Based Choose";
-Frame001.Title = "Search Items";
+Title = "基于知识配合选择";
+Frame001.Title = "检索条件";
 Frame001.Label01.Title = "请选择头部类型：";
 Frame001.Label02.Title = "请选择材料：";
 Frame001.Label03.Title = "请选择表面处理：";
 Frame001.Label04.Title = "请选择紧固件名称：";
 Frame001.Label05.Title = "请选择紧固件标准号：";
-Frame001.GoToSearchPB.Title = "Go To Search";
-Frame002.Title = "Search Results";
-Frame005.NextStepPB.Title = "Next Step";
-Frame005.LastStepPB.Title = "Last Step";
+Frame001.GoToSearchPB.Title = "搜索";
+Frame002.Title = "检索结果";
+Frame005.NextStepPB.Title = "下一步";
+Frame005.LastStepPB.Title = "上一步";
 // END WIZARD REPLACEMENT ZONE
