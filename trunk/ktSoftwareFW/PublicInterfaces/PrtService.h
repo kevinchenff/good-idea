@@ -380,7 +380,7 @@ class ExportedByktPrtService PrtService: public CATBaseUnknown
 
   // 功能：修改特征下某些参数，如果参数不存在将自动添加
   static
-  void ModifySpecObjCertainParams(CATDocument * piDoc,CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue);
+  void ModifySpecObjCertainParams(CATDocument * piDoc,CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue,int iType = 0);
 
   // 功能：修改特征下某些参数状态
   static
