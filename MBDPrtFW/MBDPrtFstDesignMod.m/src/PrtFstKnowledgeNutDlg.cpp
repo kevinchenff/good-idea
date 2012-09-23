@@ -31,7 +31,7 @@
 PrtFstKnowledgeNutDlg::PrtFstKnowledgeNutDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstKnowledgeNutDlg",CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstKnowledgeNutDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -42,6 +42,25 @@ PrtFstKnowledgeNutDlg::PrtFstKnowledgeNutDlg() :
  _NextStepPB = NULL;
  _LastStepPB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+
+ //
+ m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName[2]=CATUnicodeString("公称直径");
+ m_lstStrPropertyName[3]=CATUnicodeString("螺母间距");
+ m_lstStrPropertyName[4]=CATUnicodeString("外径"); 
+ m_lstStrPropertyName[5]=CATUnicodeString("厚度");
+ m_lstStrPropertyName[6]=CATUnicodeString("重量（kg）");
+ m_lstStrPropertyName[7]=CATUnicodeString("总厚度"); 
+ m_lstStrPropertyName[8]=CATUnicodeString("结构厚度");
+ m_lstStrPropertyName[9]=CATUnicodeString("托板厚度");
+ m_lstStrPropertyName[10]=CATUnicodeString("铆钉直径");
+ m_lstStrPropertyName[11]=CATUnicodeString("铆钉数");
+ m_lstStrPropertyName[12]=CATUnicodeString("中心定位点数");
+ m_lstStrPropertyName[13]=CATUnicodeString("螺母螺纹余量");
+ m_lstStrPropertyName[14]=CATUnicodeString("螺母螺纹余量");
+ m_lstStrPropertyName[15]=CATUnicodeString("螺母螺纹余量");
+
 }
 
 //-------------------------------------------------------------------------
@@ -76,15 +95,15 @@ _Frame002 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridRowResizable(0,1);
  _Frame002 -> SetGridColumnResizable(0,1);
  _SearchResultsML = new CATDlgMultiList(_Frame002, "SearchResultsML");
- CATUnicodeString SearchResultsMLTitles [ 6 ];
- SearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle1");
- SearchResultsMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle2");
- SearchResultsMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle3");
- SearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle4");
- SearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle5");
- SearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle6");
- _SearchResultsML -> SetColumnTitles(6, SearchResultsMLTitles);
- _SearchResultsML -> SetVisibleColumnCount( 6 );
+ //CATUnicodeString SearchResultsMLTitles [ 6 ];
+ //SearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle1");
+ //SearchResultsMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle2");
+ //SearchResultsMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle3");
+ //SearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle4");
+ //SearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle5");
+ //SearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeNutDlg", "Frame002.SearchResultsML.ColumnTitle6");
+ _SearchResultsML -> SetColumnTitles(16, m_lstStrPropertyName);
+ _SearchResultsML -> SetVisibleColumnCount( 16 );
 _SearchResultsML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame003 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);

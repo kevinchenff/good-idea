@@ -1,16 +1,16 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Choose Washers";
-Frame001.Title = "Search Results";
+Title = "选择垫圈&垫片";
+Frame001.Title = "检索结果";
  Frame001.SearchResultsML.ColumnTitle1 = "title00";
-Frame001.Frame006.PosSTARTRB.Title = "Pos START";
-Frame001.Frame006.PosENDRB.Title = "Pos END";
-Frame002.Title = "Install Info";
-Frame002.Label009.Title = "Clamping thickness allowance:";
-Frame002.Label010.Title = "Bolt end allowance:";
-Frame003.Title = "Choose Result";
+Frame001.Frame006.PosSTARTRB.Title = "顶部";
+Frame001.Frame006.PosENDRB.Title = "尾部";
+Frame002.Title = "安装状态";
+Frame002.Label009.Title = "夹持厚度余量：";
+Frame002.Label010.Title = "螺栓尾端余量：";
+Frame003.Title = "选用结果";
  Frame003.ChooseWashersML.ColumnTitle1 = "title00";
-Frame003.Frame014.RemovePB.Title = "Remove";
-Frame003.Frame014.ClearAllPB.Title = "Clear All";
-Frame004.LastStepPB.Title = "Last Step";
-Frame004.NextStepPB.Title = "Next Step";
+Frame003.Frame014.RemovePB.Title = "移除";
+Frame003.Frame014.ClearAllPB.Title = "移除所有";
+Frame004.LastStepPB.Title = "上一步";
+Frame004.NextStepPB.Title = "下一步";
 // END WIZARD REPLACEMENT ZONE
