@@ -64,6 +64,14 @@ class PrtFstKnowledgeWasherDlg: public CATDlgDialog
  CATDlgPushButton*      _LastStepPB;
  CATDlgPushButton*      _NextStepPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
+
+
+ // Ù–‘Õ∑√˚≥∆
+ CATUnicodeString m_lstStrPropertyName[8];
+ CATUnicodeString m_lstStrPropertyName02[14];
+
+
+
 };
 
 //----------------------------------------------------------------------

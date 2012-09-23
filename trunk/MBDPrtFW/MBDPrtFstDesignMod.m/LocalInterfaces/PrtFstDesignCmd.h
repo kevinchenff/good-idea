@@ -189,15 +189,56 @@ class PrtFstDesignCmd: public CATStateCommand
   void FstFreeStyleShelterDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
   void FstFreeStyleShelterDlgClearAllPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   CATBoolean OnShelterPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
-	
-
+  
   //
   //---------------------------------
   //对KnowledgeBased DLG的消息响应
   //---------------------------------
   void CloseFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstKnowledgeBasedDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //
+  //
+  //---------------------------------
+  //对KnowledgeBased MainBolt DLG的消息响应
+  //---------------------------------
+  void CloseFstKnowledgeBasedMainBoltDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedMainBoltDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedMainBoltDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+  //---------------------------------
+  //对KnowledgeBased Nut DLG的消息响应
+  //---------------------------------
+  void CloseFstKnowledgeBasedNutDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedNutDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedNutDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedNutDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+  //---------------------------------
+  //对KnowledgeBased Washer DLG的消息响应
+  //---------------------------------
+  void CloseFstKnowledgeBasedWasherDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedWasherDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedWasherDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedWasherDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  void FstKnowledgeBasedWasherDlgChooseWashersMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedWasherDlgRemovePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedWasherDlgClearAllPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  CATBoolean OnKnowledgeBasedWasherPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+
+  //---------------------------------
+  //对KnowledgeBased Shelter DLG的消息响应
+  //---------------------------------
+  void CloseFstKnowledgeBasedShelterDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedShelterDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedShelterDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedShelterDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  void FstKnowledgeBasedShelterDlgClearAllPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  CATBoolean OnKnowledgeBasedShelterPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
 
   //根据输入的行数信息从数据列表中获取希望的字符串信息
   void GetChoosedMLValue(int idLine,CATListPV iplstMainFstResults, CATListValCATUnicodeString &iolstStrValue);

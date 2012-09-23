@@ -31,7 +31,7 @@
 PrtFstKnowledgeWasherDlg::PrtFstKnowledgeWasherDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-"PrtFstKnowledgeWasherDlg",CATDlgWndBtnClose|CATDlgGridLayout
+"PrtFstKnowledgeWasherDlg",CATDlgWndModal|CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
@@ -57,13 +57,32 @@ PrtFstKnowledgeWasherDlg::PrtFstKnowledgeWasherDlg() :
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 
 
-//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+ //
+ m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName[2]=CATUnicodeString("公称直径");
+ m_lstStrPropertyName[3]=CATUnicodeString("内径");
+ m_lstStrPropertyName[4]=CATUnicodeString("外径");
+ m_lstStrPropertyName[5]=CATUnicodeString("沉槽直径"); 
+ m_lstStrPropertyName[6]=CATUnicodeString("厚度");
+ m_lstStrPropertyName[7]=CATUnicodeString("重量（kg）");
+ //
+ m_lstStrPropertyName02[0]=CATUnicodeString("安装部位");
+ m_lstStrPropertyName02[1]=CATUnicodeString("紧固件标准号");
+ m_lstStrPropertyName02[2]=CATUnicodeString("紧固件名称");
+ m_lstStrPropertyName02[3]=CATUnicodeString("材料");
+ m_lstStrPropertyName02[4]=CATUnicodeString("表面处理");
+ m_lstStrPropertyName02[5]=CATUnicodeString("单位制"); 
+ m_lstStrPropertyName02[6]=CATUnicodeString("备注");
+ m_lstStrPropertyName02[7]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName02[8]=CATUnicodeString("公称直径");
+ m_lstStrPropertyName02[9]=CATUnicodeString("内径");
+ m_lstStrPropertyName02[10]=CATUnicodeString("外径");
+ m_lstStrPropertyName02[11]=CATUnicodeString("沉槽直径"); 
+ m_lstStrPropertyName02[12]=CATUnicodeString("厚度");
+ m_lstStrPropertyName02[13]=CATUnicodeString("重量（kg）");
 
 
-//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
-
-
-//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
 //-------------------------------------------------------------------------
@@ -120,10 +139,10 @@ _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame001 -> SetGridRowResizable(1,1);
  _Frame001 -> SetGridColumnResizable(0,1);
  _SearchResultsML = new CATDlgMultiList(_Frame001, "SearchResultsML");
- CATUnicodeString SearchResultsMLTitles [ 1 ];
- SearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeWasherDlg", "Frame001.SearchResultsML.ColumnTitle1");
- _SearchResultsML -> SetColumnTitles(1, SearchResultsMLTitles);
- _SearchResultsML -> SetVisibleColumnCount( 1 );
+ //CATUnicodeString SearchResultsMLTitles [ 1 ];
+ //SearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeWasherDlg", "Frame001.SearchResultsML.ColumnTitle1");
+ _SearchResultsML -> SetColumnTitles(8, m_lstStrPropertyName);
+ _SearchResultsML -> SetVisibleColumnCount( 8 );
 _SearchResultsML -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame006 = new CATDlgFrame(_Frame001, "Frame006", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame006 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -147,10 +166,10 @@ _EndLeftEditor -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 -> SetGridColumnResizable(0,1);
  _ChooseWashersML = new CATDlgMultiList(_Frame003, "ChooseWashersML");
- CATUnicodeString ChooseWashersMLTitles [ 1 ];
- ChooseWashersMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeWasherDlg", "Frame003.ChooseWashersML.ColumnTitle1");
- _ChooseWashersML -> SetColumnTitles(1, ChooseWashersMLTitles);
- _ChooseWashersML -> SetVisibleColumnCount( 1 );
+ //CATUnicodeString ChooseWashersMLTitles [ 1 ];
+ //ChooseWashersMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeWasherDlg", "Frame003.ChooseWashersML.ColumnTitle1");
+ _ChooseWashersML -> SetColumnTitles(14, m_lstStrPropertyName02);
+ _ChooseWashersML -> SetVisibleColumnCount( 14 );
 _ChooseWashersML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame014 = new CATDlgFrame(_Frame003, "Frame014", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame014 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
@@ -166,15 +185,8 @@ _LastStepPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _NextStepPB = new CATDlgPushButton(_Frame004, "NextStepPB");
 _NextStepPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
-
-
-//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
-
-
-//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
-
-
-//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+//
+_PosENDRB->SetState(CATDlgCheck);
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION

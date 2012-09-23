@@ -2726,6 +2726,22 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 			m_pFstKnowledgeBasedDlg->_GoToSearchPB->GetPushBActivateNotification(),
 			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedDlgGoToSearchPBCB,
 			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg->_LastStepPB, 
+			m_pFstKnowledgeBasedDlg->_LastStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedDlgLastStepPBCB,
+			NULL);
+		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg->_NextStepPB, 
+			m_pFstKnowledgeBasedDlg->_NextStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedDlgNextStepPBCB,
+			NULL);
+
+		//ML选择的响应
+		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg->_SearchResultSL, 
+			m_pFstKnowledgeBasedDlg->_SearchResultSL->GetListSelectNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedDlgSearchResultsMLCB,
+			NULL);
 	}
 }
 
@@ -5971,9 +5987,993 @@ void PrtFstDesignCmd::CloseFstKnowledgeBasedDlgCB(CATCommand* cmd, CATNotificati
 	m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
 	m_pFstKnowledgeBasedDlg=NULL;
 
+	//
+	//设置主对话框显示
+	m_pFstAccessDlg->SetVisibility(CATDlgShow);
+
 }
+
+void PrtFstDesignCmd::FstKnowledgeBasedDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeBasedDlg=NULL;
+
+	//
+	//设置主对话框显示
+	m_pFstAccessDlg->SetVisibility(CATDlgShow);
+}
+
 void PrtFstDesignCmd::FstKnowledgeBasedDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
 	
+}
+
+void PrtFstDesignCmd::FstKnowledgeBasedDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	if (m_pFstKnowledgeMainBoltDlg == NULL)
+	{
+		m_pFstKnowledgeMainBoltDlg = new PrtFstKnowledgeMainBoltDlg();
+		m_pFstKnowledgeMainBoltDlg->Build();
+		m_pFstKnowledgeMainBoltDlg->SetVisibility(CATDlgShow);
+
+		//显示计算的相关参数信息
+		CATUnicodeString strValue01;
+		strValue01.BuildFromNum(m_dJstThickMax);
+		strValue01 += "mm";
+		m_pFstKnowledgeMainBoltDlg->_MaxLayerThicknessEditor->SetText(strValue01);
+		//
+		CATUnicodeString strValue02;
+		strValue02.BuildFromNum(m_dJstThickMin);
+		strValue02 += "mm";
+		m_pFstKnowledgeMainBoltDlg->_MinLayerThicknessEditor->SetText(strValue02);
+		//
+		CATUnicodeString strValue03;
+		strValue03.BuildFromNum(m_dFirstPrdThickMax);
+		strValue03 += "mm";
+		m_pFstKnowledgeMainBoltDlg->_FirstLayerThicknessEditor->SetText(strValue03);
+
+		//
+		//设置前对话框隐藏
+		m_pFstKnowledgeBasedDlg->SetVisibility(CATDlgHide);
+
+		//对按钮状态的控制
+		//m_pFstKnowledgeMainBoltDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
+
+		//
+		// 主对话框的消息响应
+		AddAnalyseNotificationCB (m_pFstKnowledgeMainBoltDlg, 
+			m_pFstKnowledgeMainBoltDlg->GetWindCloseNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstKnowledgeBasedMainBoltDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstKnowledgeMainBoltDlg, 
+			m_pFstKnowledgeMainBoltDlg->GetDiaCLOSENotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstKnowledgeBasedMainBoltDlgCB,
+			NULL);
+		//
+		AddAnalyseNotificationCB (m_pFstKnowledgeMainBoltDlg->_GoToSearchPB, 
+			m_pFstKnowledgeMainBoltDlg->_GoToSearchPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgGoToSearchPBCB,
+			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstKnowledgeMainBoltDlg->_LastStepPB, 
+			m_pFstKnowledgeMainBoltDlg->_LastStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgLastStepPBCB,
+			NULL);
+		AddAnalyseNotificationCB (m_pFstKnowledgeMainBoltDlg->_NextStepPB, 
+			m_pFstKnowledgeMainBoltDlg->_NextStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgNextStepPBCB,
+			NULL);
+
+		//
+		//ML选择的响应
+		AddAnalyseNotificationCB (m_pFstKnowledgeMainBoltDlg->_SearchResultsML, 
+			m_pFstKnowledgeMainBoltDlg->_SearchResultsML->GetListSelectNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgSearchResultsMLCB,
+			NULL);
+	}
+	else
+	{
+		m_pFstKnowledgeMainBoltDlg->SetVisibility(CATDlgShow);
+		//
+		//设置前对话框隐藏
+		m_pFstKnowledgeBasedDlg->SetVisibility(CATDlgHide);
+	}
+}
+//
+void PrtFstDesignCmd::FstKnowledgeBasedDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+
+//---------------------------------
+//对KnowledgeBased MainBolt DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::CloseFstKnowledgeBasedMainBoltDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeMainBoltDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeMainBoltDlg=NULL;
+
+	//
+	//设置主对话框显示
+	m_pFstKnowledgeBasedDlg->SetVisibility(CATDlgShow);
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeMainBoltDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeMainBoltDlg=NULL;
+
+	//
+	//设置主对话框显示
+	m_pFstKnowledgeBasedDlg->SetVisibility(CATDlgShow);
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+
+void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	if (m_pFstKnowledgeNutDlg == NULL)
+	{
+		m_pFstKnowledgeNutDlg = new PrtFstKnowledgeNutDlg();
+		m_pFstKnowledgeNutDlg->Build();
+		m_pFstKnowledgeNutDlg->SetVisibility(CATDlgShow);
+		//
+		//对按钮状态的控制
+		//m_pFstKnowledgeNutDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
+		//
+		//设置前对话框隐藏
+		m_pFstKnowledgeMainBoltDlg->SetVisibility(CATDlgHide);
+		//
+		//
+		for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
+		{
+			if (m_lstStrMainFstTitles02[i] == "总长度")
+			{
+				m_lstStrMainFstChoosed02[i].ConvertToNum(&m_dMainFstLength,"%lf");
+			}
+			//
+			if (m_lstStrMainFstTitles02[i] == "夹持厚度")
+			{
+				m_lstStrMainFstChoosed02[i].ConvertToNum(&m_dMainFstThickLimit,"%lf");
+			}
+		}
+
+		//
+		// 主对话框的消息响应
+		AddAnalyseNotificationCB (m_pFstKnowledgeNutDlg, 
+			m_pFstKnowledgeNutDlg->GetWindCloseNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstKnowledgeBasedNutDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstKnowledgeNutDlg, 
+			m_pFstKnowledgeNutDlg->GetDiaCLOSENotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstKnowledgeBasedNutDlgCB,
+			NULL);
+		//
+		AddAnalyseNotificationCB (m_pFstKnowledgeNutDlg->_LastStepPB, 
+			m_pFstKnowledgeNutDlg->_LastStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedNutDlgLastStepPBCB,
+			NULL);
+		AddAnalyseNotificationCB (m_pFstKnowledgeNutDlg->_NextStepPB, 
+			m_pFstKnowledgeNutDlg->_NextStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedNutDlgNextStepPBCB,
+			NULL);
+
+		//
+		//ML选择的响应
+		AddAnalyseNotificationCB (m_pFstKnowledgeNutDlg->_SearchResultsML, 
+			m_pFstKnowledgeNutDlg->_SearchResultsML->GetListSelectNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedNutDlgSearchResultsMLCB,
+			NULL);
+	}
+	else
+	{
+		m_pFstKnowledgeNutDlg->SetVisibility(CATDlgShow);
+
+		//
+		//设置前对话框隐藏
+		m_pFstKnowledgeMainBoltDlg->SetVisibility(CATDlgHide);
+	}	
+}
+
+//
+void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+
+//---------------------------------
+//对KnowledgeBased Nut DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::CloseFstKnowledgeBasedNutDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeNutDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeNutDlg=NULL;
+	//
+	//设置前对话框显示
+	m_pFstKnowledgeMainBoltDlg->SetVisibility(CATDlgShow);
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedNutDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeNutDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeNutDlg=NULL;
+	//
+	//设置前对话框显示
+	m_pFstKnowledgeMainBoltDlg->SetVisibility(CATDlgShow);
+}
+void PrtFstDesignCmd::FstKnowledgeBasedNutDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	//
+	if (m_pFstKnowledgeWasherDlg == NULL)
+	{
+		m_pFstKnowledgeWasherDlg = new PrtFstKnowledgeWasherDlg();
+		m_pFstKnowledgeWasherDlg->Build();
+		m_pFstKnowledgeWasherDlg->SetVisibility(CATDlgShow);
+		//
+		m_lststrSendKnowWasherFst.RemoveAll();
+		//
+		//设置前对话框隐藏
+		m_pFstKnowledgeNutDlg->SetVisibility(CATDlgHide);
+		//
+		m_pFstKnowledgeWasherDlg->_RemovePB->SetSensitivity(CATDlgDisable);
+
+		//清除列表中的内容
+		//清除已有的指针信息
+		for (int k=1;k<=m_plstWasherFstChoosedTitles01.Size();k++)
+		{
+			CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles01[k];
+			delete TempLstStr;
+		}
+		m_plstWasherFstChoosedTitles01.RemoveAll();
+		//清除已有的指针信息
+		for (int k=1;k<=m_plstWasherFstChoosedResults01.Size();k++)
+		{
+			CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults01[k];
+			delete TempLstStr;
+		}
+		m_plstWasherFstChoosedResults01.RemoveAll();
+		//清除已有的指针信息
+		for (int k=1;k<=m_plstWasherFstChoosedTitles02.Size();k++)
+		{
+			CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[k];
+			delete TempLstStr;
+		}
+		m_plstWasherFstChoosedTitles02.RemoveAll();
+		//清除已有的指针信息
+		for (int k=1;k<=m_plstWasherFstChoosedResults02.Size();k++)
+		{
+			CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[k];
+			delete TempLstStr;
+		}
+		m_plstWasherFstChoosedResults02.RemoveAll();
+
+		//
+		m_dWasherFstThickValueStart=0;
+		m_dWasherFstThickValueEnd=0;
+		//
+		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+
+
+		// 主对话框的消息响应
+		AddAnalyseNotificationCB (m_pFstKnowledgeWasherDlg, 
+			m_pFstKnowledgeWasherDlg->GetWindCloseNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstKnowledgeBasedWasherDlgCB,
+			NULL);
+
+		AddAnalyseNotificationCB (m_pFstKnowledgeWasherDlg, 
+			m_pFstKnowledgeWasherDlg->GetDiaCLOSENotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::CloseFstKnowledgeBasedWasherDlgCB,
+			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstKnowledgeWasherDlg->_LastStepPB, 
+			m_pFstKnowledgeWasherDlg->_LastStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedWasherDlgLastStepPBCB,
+			NULL);
+		AddAnalyseNotificationCB (m_pFstKnowledgeWasherDlg->_NextStepPB, 
+			m_pFstKnowledgeWasherDlg->_NextStepPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedWasherDlgNextStepPBCB,
+			NULL);
+
+		//
+		//ML选择的响应
+		AddAnalyseNotificationCB (m_pFstKnowledgeWasherDlg->_SearchResultsML, 
+			m_pFstKnowledgeWasherDlg->_SearchResultsML->GetListSelectNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedWasherDlgSearchResultsMLCB,
+			NULL);
+
+		//
+		//CHOOSED ML选择的响应
+		AddAnalyseNotificationCB (m_pFstKnowledgeWasherDlg->_ChooseWashersML, 
+			m_pFstKnowledgeWasherDlg->_ChooseWashersML->GetListSelectNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedWasherDlgChooseWashersMLCB,
+			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstKnowledgeWasherDlg->_RemovePB, 
+			m_pFstKnowledgeWasherDlg->_RemovePB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedWasherDlgRemovePBCB,
+			NULL);
+
+		//
+		AddAnalyseNotificationCB (m_pFstKnowledgeWasherDlg->_ClearAllPB, 
+			m_pFstKnowledgeWasherDlg->_ClearAllPB->GetPushBActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedWasherDlgClearAllPBCB,
+			NULL);
+	}
+	else
+	{
+		m_pFstKnowledgeWasherDlg->SetVisibility(CATDlgShow);
+		//
+		//设置前对话框隐藏
+		m_pFstKnowledgeNutDlg->SetVisibility(CATDlgHide);
+
+	}
+}
+void PrtFstDesignCmd::FstKnowledgeBasedNutDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+
+//---------------------------------
+//对KnowledgeBased Washer DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::CloseFstKnowledgeBasedWasherDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeWasherDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeWasherDlg=NULL;
+	//
+	//设置前对话框显示
+	m_pFstKnowledgeNutDlg->SetVisibility(CATDlgShow);
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeWasherDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeWasherDlg=NULL;
+	//
+	//设置前对话框显示
+	m_pFstKnowledgeNutDlg->SetVisibility(CATDlgShow);
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	//如果选择的是其它螺母类型，则跳出选择保护罩的选项
+	if (0) //如果非普通螺母
+	{
+		//
+		//
+		double dCheck01=0,dCheck02=0;
+		dCheck01 = m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
+		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
+		if (dCheck02 >=0 && dCheck02 <= 1 && dCheck01 >= 2)
+		{
+			//
+			m_pFstKnowledgeShelterDlg = new PrtFstFreeStyleShelterDlg();
+			m_pFstKnowledgeShelterDlg->Build();
+			m_pFstKnowledgeShelterDlg->SetVisibility(CATDlgShow);
+			//
+			//设置前对话框隐藏
+			m_pFstKnowledgeWasherDlg->SetVisibility(CATDlgHide);
+			//
+			m_pFstKnowledgeShelterDlg->_GoToSearchPB->SetSensitivity(CATDlgDisable);
+			// 主对话框的消息响应
+			AddAnalyseNotificationCB (m_pFstKnowledgeShelterDlg, 
+				m_pFstKnowledgeShelterDlg->GetWindCloseNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleShelterDlgCB,
+				NULL);
+
+			AddAnalyseNotificationCB (m_pFstKnowledgeShelterDlg, 
+				m_pFstKnowledgeShelterDlg->GetDiaCLOSENotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::CloseFstFreeStyleShelterDlgCB,
+				NULL);
+			//
+			AddAnalyseNotificationCB (m_pFstKnowledgeShelterDlg->_GoToSearchPB, 
+				m_pFstKnowledgeShelterDlg->_GoToSearchPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgGoToSearchPBCB,
+				NULL);
+
+			//
+			AddAnalyseNotificationCB (m_pFstKnowledgeShelterDlg->_LastStepPB, 
+				m_pFstKnowledgeShelterDlg->_LastStepPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgLastStepPBCB,
+				NULL);
+			AddAnalyseNotificationCB (m_pFstKnowledgeShelterDlg->_NextStepPB, 
+				m_pFstKnowledgeShelterDlg->_NextStepPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgNextStepPBCB,
+				NULL);
+
+			//
+			//ML选择的响应
+			AddAnalyseNotificationCB (m_pFstKnowledgeShelterDlg->_SearchResultML, 
+				m_pFstKnowledgeShelterDlg->_SearchResultML->GetListSelectNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgSearchResultsMLCB,
+				NULL);
+
+			//
+			//
+			AddAnalyseNotificationCB (m_pFstKnowledgeShelterDlg->_RemoveAllPB, 
+				m_pFstKnowledgeShelterDlg->_RemoveAllPB->GetPushBActivateNotification(),
+				(CATCommandMethod)&PrtFstDesignCmd::FstFreeStyleShelterDlgClearAllPBCB,
+				NULL);
+		}
+		else
+		{
+			//提示信息
+			PrtService::ShowDlgNotify("提示信息","当前组合不满足螺栓安装条件，请调整所选信息！");
+		}
+	} 
+	else //如果是普通螺母
+	{
+		//
+		double dCheck01=0,dCheck02=0;
+		dCheck01 = m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
+		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
+		if (dCheck02 >=0 && dCheck02 <= 1 && dCheck01 >= 2)
+		{
+			//
+			//清空
+			m_pFstAccessDlg->_ChoosedFastenersML->ClearLine();
+			//获得需要的数据
+			m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strMainFstTypeFlag,0);
+			CATUnicodeString strSpecValue01;
+			for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
+			{
+				if (m_lstStrMainFstTitles02[i]=="紧固件标识")
+				{
+					strSpecValue01=m_lstStrMainFstChoosed02[i];
+					break;
+				}
+			}
+			m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue01,0);
+			m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"",0);
+
+
+			//
+			m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strNutFstTypeFlag,1);
+			CATUnicodeString strSpecValue02;
+			for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
+			{
+				if (m_lstStrNutFstTitles02[i]=="紧固件标识")
+				{
+					strSpecValue02=m_lstStrNutFstChoosed02[i];
+					break;
+				}
+			}
+			m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue02,1);
+			m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"END",1,CATDlgDataModify);
+
+			//
+			CATUnicodeString strSpecValue03;
+			CATListValCATUnicodeString alstStrSpecValue03;
+			for (int j=1; j<=m_lstStrWasherFstTypeFlag.Size(); j++)
+			{
+				//
+				m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_lstStrWasherFstTypeFlag[j],j+1);
+				CATLISTV(CATUnicodeString) * TempLstStrTitle = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[j];
+				CATLISTV(CATUnicodeString) * TempLstStrValue = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[j];
+				for (int i=1; i<=(*TempLstStrTitle).Size(); i++)
+				{
+					if ((*TempLstStrTitle)[i]=="紧固件标识")
+					{
+						strSpecValue03=(*TempLstStrValue)[i];
+						alstStrSpecValue03.Append(strSpecValue03);
+						break;
+					}
+				}
+				m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue03,j+1);
+				m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,m_lstStrWasherPos[j],j+1,CATDlgDataModify);
+			}
+
+			//
+			//
+			//初始化数据
+			ClearFstInfoLst();
+			//
+			m_alistStrFSTType.Append(m_strMainFstTypeFlag);
+			m_alistStrFSTName.Append(strSpecValue01);
+			if (m_lstStrWasherFstTypeFlag.Size()!=0)
+			{
+				m_alistStrFSTType.Append(m_lstStrWasherFstTypeFlag);
+				m_alistStrFSTName.Append(alstStrSpecValue03);
+			}
+			m_alistStrFSTType.Append(m_strNutFstTypeFlag);
+			m_alistStrFSTName.Append(strSpecValue02);
+			//
+			m_lststrCirclePositions.Append(m_lstStrWasherPos);
+			m_lststrCirclePositions.Append("END");
+			//
+			CATLISTV(CATUnicodeString) *LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+			*LstStrAtrrValue = m_lstStrMainFstTitles01;
+			m_pListStrPropertyName.Append(LstStrAtrrValue);
+			LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+			*LstStrAtrrValue = m_lstStrMainFstChoosed01;
+			m_pListStrPropertyValue.Append(LstStrAtrrValue);
+			LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+			*LstStrAtrrValue = m_lstStrMainFstTitles02;
+			m_pListStrSpecialName.Append(LstStrAtrrValue);
+			LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+			*LstStrAtrrValue = m_lstStrMainFstChoosed02;
+			m_pListStrSpecialValue.Append(LstStrAtrrValue);
+			//
+			for (int j=1; j<=m_lstStrWasherFstTypeFlag.Size(); j++)
+			{
+				//
+				CATLISTV(CATUnicodeString) * TempLstStrTitle = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[j];
+				CATLISTV(CATUnicodeString) * TempLstStrValue = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[j];
+				CATUnicodeString strTemp01, strTemp02;
+				for (int i=1; i<=(*TempLstStrTitle).Size(); i++)
+				{
+					if ((*TempLstStrTitle)[i]=="厚度")
+					{
+						strTemp01=(*TempLstStrValue)[i];
+						double dvalue=0;
+						strTemp01.ConvertToNum(&dvalue,"%lf");
+						m_lstCircleThicks.Append(dvalue);
+					}
+
+					if (/*(*TempLstStrTitle)[i]=="内径" ||*/ (*TempLstStrTitle)[i]=="公称直径")
+					{
+						strTemp02=(*TempLstStrValue)[i];
+						double dvalue=0;
+						strTemp02.ConvertToNum(&dvalue,"%lf");
+						m_lstCircleRadiusValues.Append(dvalue);
+					}
+				}
+			}
+			//
+			CATUnicodeString strTemp01, strTemp02;
+			for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
+			{
+				if (m_lstStrNutFstTitles02[i]=="厚度" || m_lstStrNutFstTitles02[i]=="总厚度")
+				{
+					strTemp01=m_lstStrNutFstChoosed02[i];
+					double dvalue=0;
+					strTemp01.ConvertToNum(&dvalue,"%lf");
+					m_lstCircleThicks.Append(dvalue);
+				}
+
+				if (/*m_lstStrNutFstTitles02[i]=="直径" || */m_lstStrNutFstTitles02[i]=="公称直径")
+				{
+					strTemp02=m_lstStrNutFstChoosed02[i];
+					double dvalue=0;
+					strTemp02.ConvertToNum(&dvalue,"%lf");
+					m_lstCircleRadiusValues.Append(dvalue);
+				}
+			}
+			//
+			for (int i=1; i<=m_plstWasherFstChoosedTitles01.Size(); i++)
+			{
+				CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+				CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
+				CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
+				CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
+				//
+				CATLISTV(CATUnicodeString) * TempLstStrTitle01 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles01[i];
+				CATLISTV(CATUnicodeString) * TempLstStrValue01 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults01[i];
+				CATLISTV(CATUnicodeString) * TempLstStrTitle02 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[i];
+				CATLISTV(CATUnicodeString) * TempLstStrValue02 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[i];
+				//
+				*LstStrAtrrValue01 = *TempLstStrTitle01;
+				*LstStrAtrrValue02 = *TempLstStrValue01;
+				*LstStrAtrrValue03 = *TempLstStrTitle02;
+				*LstStrAtrrValue04 = *TempLstStrValue02;
+				//
+				m_pListStrPropertyName.Append(LstStrAtrrValue01);
+				m_pListStrPropertyValue.Append(LstStrAtrrValue02);
+				m_pListStrSpecialName.Append(LstStrAtrrValue03);
+				m_pListStrSpecialValue.Append(LstStrAtrrValue04);
+			}
+			//
+			LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+			*LstStrAtrrValue = m_lstStrNutFstTitles01;
+			m_pListStrPropertyName.Append(LstStrAtrrValue);
+			LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+			*LstStrAtrrValue = m_lstStrNutFstChoosed01;
+			m_pListStrPropertyValue.Append(LstStrAtrrValue);
+			LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+			*LstStrAtrrValue = m_lstStrNutFstTitles02;
+			m_pListStrSpecialName.Append(LstStrAtrrValue);
+			LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+			*LstStrAtrrValue = m_lstStrNutFstChoosed02;
+			m_pListStrSpecialValue.Append(LstStrAtrrValue);
+			//
+			//垫圈位置信息
+			m_lstStrWasherPos.RemoveAll();
+			m_lstStrWasherFstTypeFlag.RemoveAll();
+			//设置前对话框显示
+			m_pFstAccessDlg->SetVisibility(CATDlgShow);
+			m_pFstAccessDlg->SetOKSensitivity(CATDlgEnable);
+			
+			//--------------------------------------------
+			//关闭所有过程对话框
+			//--------------------------------------------
+			if (m_pFstKnowledgeBasedDlg != NULL)
+			{
+				m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
+				m_pFstKnowledgeBasedDlg=NULL;
+			}
+
+			if (m_pFstKnowledgeMainBoltDlg != NULL)
+			{
+				m_pFstKnowledgeMainBoltDlg->RequestDelayedDestruction();
+				m_pFstKnowledgeMainBoltDlg=NULL;
+			}
+
+			if (m_pFstKnowledgeNutDlg != NULL)
+			{
+				m_pFstKnowledgeNutDlg->RequestDelayedDestruction();
+				m_pFstKnowledgeNutDlg=NULL;
+			}
+
+			if (m_pFstKnowledgeWasherDlg != NULL)
+			{
+				m_pFstKnowledgeWasherDlg->RequestDelayedDestruction();
+				m_pFstKnowledgeWasherDlg=NULL;
+			}
+		} 
+		else
+		{
+			//提示信息
+			PrtService::ShowDlgNotify("提示信息","当前组合不满足螺栓安装条件，请调整所选信息！");
+		}
+	}//普通螺母的情况	
+}
+void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgChooseWashersMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgRemovePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgClearAllPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+CATBoolean PrtFstDesignCmd::OnKnowledgeBasedWasherPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+
+	return TRUE;
+}
+
+//---------------------------------
+//对KnowledgeBased Shelter DLG的消息响应
+//---------------------------------
+void PrtFstDesignCmd::CloseFstKnowledgeBasedShelterDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeShelterDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeShelterDlg=NULL;
+	//
+	//设置前对话框显示
+	m_pFstKnowledgeWasherDlg->SetVisibility(CATDlgShow);
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedShelterDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_pFstKnowledgeShelterDlg->RequestDelayedDestruction();
+	m_pFstKnowledgeShelterDlg=NULL;
+	//
+	//设置前对话框显示
+	m_pFstKnowledgeWasherDlg->SetVisibility(CATDlgShow);
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedShelterDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//清空
+	m_pFstAccessDlg->_ChoosedFastenersML->ClearLine();
+
+	//显示主紧固件
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strMainFstTypeFlag,0);
+	CATUnicodeString strSpecValue01;
+	for (int i=1; i<=m_lstStrMainFstTitles02.Size(); i++)
+	{
+		if (m_lstStrMainFstTitles02[i]=="紧固件标识")
+		{
+			strSpecValue01=m_lstStrMainFstChoosed02[i];
+			break;
+		}
+	}
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue01,0);
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"",0);
+
+
+	//显示螺母
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strNutFstTypeFlag,1);
+	CATUnicodeString strSpecValue02;
+	for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
+	{
+		if (m_lstStrNutFstTitles02[i]=="紧固件标识")
+		{
+			strSpecValue02=m_lstStrNutFstChoosed02[i];
+			break;
+		}
+	}
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue02,1);
+	m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,"END",1,CATDlgDataModify);
+
+
+	//显示垫圈
+	CATUnicodeString strSpecValue03;
+	CATListValCATUnicodeString alstStrSpecValue03;
+	for (int j=1; j<=m_lstStrWasherFstTypeFlag.Size(); j++)
+	{
+		//
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_lstStrWasherFstTypeFlag[j],j+1);
+		CATLISTV(CATUnicodeString) * TempLstStrTitle = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[j];
+		CATLISTV(CATUnicodeString) * TempLstStrValue = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[j];
+		for (int i=1; i<=(*TempLstStrTitle).Size(); i++)
+		{
+			if ((*TempLstStrTitle)[i]=="紧固件标识")
+			{
+				strSpecValue03=(*TempLstStrValue)[i];
+				alstStrSpecValue03.Append(strSpecValue03);
+				break;
+			}
+		}
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue03,j+1);
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,m_lstStrWasherPos[j],j+1,CATDlgDataModify);
+	}
+
+	//如果存在保护罩，显示
+	CATUnicodeString strSpecValue04;
+	if (m_lstShelterFstChoosedTitles02.Size()!=0)
+	{	
+		//
+		for (int i=1; i<=m_lstShelterFstChoosedTitles02.Size(); i++)
+		{
+			if (m_lstShelterFstChoosedTitles02[i]=="紧固件标识")
+			{
+				strSpecValue04=m_lstShelterFstChoosedResults02[i];
+				break;
+			}
+		}
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(0,m_strChoosedShelterFstTypeFlag);
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(1,strSpecValue04);
+		m_pFstAccessDlg->_ChoosedFastenersML->SetColumnItem(2,m_strShelterPos);
+	}	
+
+	//
+	//初始化数据
+	ClearFstInfoLst();
+	//
+	m_alistStrFSTType.Append(m_strMainFstTypeFlag);
+	m_alistStrFSTName.Append(strSpecValue01);
+	//
+	if (m_lstStrWasherFstTypeFlag.Size()!=0)
+	{
+		m_alistStrFSTType.Append(m_lstStrWasherFstTypeFlag);
+		m_alistStrFSTName.Append(alstStrSpecValue03);
+	}
+	//
+	m_alistStrFSTType.Append(m_strNutFstTypeFlag);
+	m_alistStrFSTName.Append(strSpecValue02);
+	//
+	m_lststrCirclePositions.Append(m_lstStrWasherPos);
+	m_lststrCirclePositions.Append("END");
+	//
+	//如果存在保护罩
+	if (m_lstShelterFstChoosedTitles02.Size()!=0)
+	{
+		m_alistStrFSTType.Append(m_strChoosedShelterFstTypeFlag);
+		m_alistStrFSTName.Append(strSpecValue04);
+		m_lststrCirclePositions.Append(m_strShelterPos);
+	}
+	//
+	CATLISTV(CATUnicodeString) *LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrMainFstTitles01;
+	m_pListStrPropertyName.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrMainFstChoosed01;
+	m_pListStrPropertyValue.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrMainFstTitles02;
+	m_pListStrSpecialName.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrMainFstChoosed02;
+	m_pListStrSpecialValue.Append(LstStrAtrrValue);
+	//
+	for (int j=1; j<=m_lstStrWasherFstTypeFlag.Size(); j++)
+	{
+		//
+		CATLISTV(CATUnicodeString) * TempLstStrTitle = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[j];
+		CATLISTV(CATUnicodeString) * TempLstStrValue = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[j];
+		CATUnicodeString strTemp01, strTemp02;
+		for (int i=1; i<=(*TempLstStrTitle).Size(); i++)
+		{
+			if ((*TempLstStrTitle)[i]=="厚度")
+			{
+				strTemp01=(*TempLstStrValue)[i];
+				double dvalue=0;
+				strTemp01.ConvertToNum(&dvalue,"%lf");
+				m_lstCircleThicks.Append(dvalue);
+			}
+
+			if (/*(*TempLstStrTitle)[i]=="内径" ||*/ (*TempLstStrTitle)[i]=="公称直径")
+			{
+				strTemp02=(*TempLstStrValue)[i];
+				double dvalue=0;
+				strTemp02.ConvertToNum(&dvalue,"%lf");
+				m_lstCircleRadiusValues.Append(dvalue);
+			}
+		}
+	}
+	//
+	CATUnicodeString strTemp01, strTemp02;
+	for (int i=1; i<=m_lstStrNutFstTitles02.Size(); i++)
+	{
+		if (m_lstStrNutFstTitles02[i]=="厚度" || m_lstStrNutFstTitles02[i]=="总厚度")
+		{
+			strTemp01=m_lstStrNutFstChoosed02[i];
+			double dvalue=0;
+			strTemp01.ConvertToNum(&dvalue,"%lf");
+			m_lstCircleThicks.Append(dvalue);
+		}
+
+		if (/*m_lstStrNutFstTitles02[i]=="直径" ||*/ m_lstStrNutFstTitles02[i]=="公称直径")
+		{
+			strTemp02=m_lstStrNutFstChoosed02[i];
+			double dvalue=0;
+			strTemp02.ConvertToNum(&dvalue,"%lf");
+			m_lstCircleRadiusValues.Append(dvalue);
+		}
+	}
+
+	//如果存在保护罩
+	if (m_lstShelterFstChoosedTitles02.Size()!=0)
+	{
+		m_lstCircleThicks.Append(0);
+		//
+		CATUnicodeString strTemp03;
+		for (int i=1; i<=m_lstShelterFstChoosedTitles02.Size(); i++)
+		{
+			if (/*m_lstShelterFstChoosedTitles02[i]=="直径" ||*/ m_lstShelterFstChoosedTitles02[i]=="公称直径")
+			{
+				strTemp03=m_lstShelterFstChoosedResults02[i];
+				double dvalue=0;
+				strTemp03.ConvertToNum(&dvalue,"%lf");
+				m_lstCircleRadiusValues.Append(dvalue);
+				break;
+			}
+		}
+	}
+	//
+
+	//
+	for (int i=1; i<=m_plstWasherFstChoosedTitles01.Size(); i++)
+	{
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
+		CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
+		//
+		CATLISTV(CATUnicodeString) * TempLstStrTitle01 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles01[i];
+		CATLISTV(CATUnicodeString) * TempLstStrValue01 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults01[i];
+		CATLISTV(CATUnicodeString) * TempLstStrTitle02 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[i];
+		CATLISTV(CATUnicodeString) * TempLstStrValue02 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[i];
+		//
+		*LstStrAtrrValue01 = *TempLstStrTitle01;
+		*LstStrAtrrValue02 = *TempLstStrValue01;
+		*LstStrAtrrValue03 = *TempLstStrTitle02;
+		*LstStrAtrrValue04 = *TempLstStrValue02;
+		//
+		m_pListStrPropertyName.Append(LstStrAtrrValue01);
+		m_pListStrPropertyValue.Append(LstStrAtrrValue02);
+		m_pListStrSpecialName.Append(LstStrAtrrValue03);
+		m_pListStrSpecialValue.Append(LstStrAtrrValue04);
+	}
+	//
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrNutFstTitles01;
+	m_pListStrPropertyName.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrNutFstChoosed01;
+	m_pListStrPropertyValue.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrNutFstTitles02;
+	m_pListStrSpecialName.Append(LstStrAtrrValue);
+	LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+	*LstStrAtrrValue = m_lstStrNutFstChoosed02;
+	m_pListStrSpecialValue.Append(LstStrAtrrValue);
+	////如果存在保护罩
+	if (m_lstShelterFstChoosedTitles02.Size()!=0)
+	{
+		LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+		*LstStrAtrrValue = m_lstShelterFstChoosedTitles01;
+		m_pListStrPropertyName.Append(LstStrAtrrValue);
+		LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+		*LstStrAtrrValue = m_lstShelterFstChoosedResults01;
+		m_pListStrPropertyValue.Append(LstStrAtrrValue);
+		LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+		*LstStrAtrrValue = m_lstShelterFstChoosedTitles02;
+		m_pListStrSpecialName.Append(LstStrAtrrValue);
+		LstStrAtrrValue = new CATLISTV(CATUnicodeString)();
+		*LstStrAtrrValue = m_lstShelterFstChoosedResults02;
+		m_pListStrSpecialValue.Append(LstStrAtrrValue);
+	}
+
+	//
+	//垫圈位置信息
+	m_lstStrWasherPos.RemoveAll();
+	m_lstStrWasherFstTypeFlag.RemoveAll();
+	//设置前对话框显示
+	m_pFstAccessDlg->SetVisibility(CATDlgShow);
+	m_pFstAccessDlg->SetOKSensitivity(CATDlgEnable);
+
+	//--------------------------------------------
+	//关闭所有过程对话框
+	//--------------------------------------------
+	//--------------------------------------------
+	//关闭所有过程对话框
+	//--------------------------------------------
+	if (m_pFstKnowledgeBasedDlg != NULL)
+	{
+		m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeBasedDlg=NULL;
+	}
+
+	if (m_pFstKnowledgeMainBoltDlg != NULL)
+	{
+		m_pFstKnowledgeMainBoltDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeMainBoltDlg=NULL;
+	}
+
+	if (m_pFstKnowledgeNutDlg != NULL)
+	{
+		m_pFstKnowledgeNutDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeNutDlg=NULL;
+	}
+
+	if (m_pFstKnowledgeWasherDlg != NULL)
+	{
+		m_pFstKnowledgeWasherDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeWasherDlg=NULL;
+	}
+
+	if (m_pFstKnowledgeShelterDlg != NULL)
+	{
+		m_pFstKnowledgeShelterDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeShelterDlg=NULL;
+	}
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedShelterDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+void PrtFstDesignCmd::FstKnowledgeBasedShelterDlgClearAllPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+CATBoolean PrtFstDesignCmd::OnKnowledgeBasedShelterPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+	return TRUE;
 }

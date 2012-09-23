@@ -53,8 +53,8 @@ class PrtFstKnowledgeNutDlg: public CATDlgDialog
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
+ // Ù–‘Õ∑√˚≥∆
+ CATUnicodeString m_lstStrPropertyName[16];
 
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
