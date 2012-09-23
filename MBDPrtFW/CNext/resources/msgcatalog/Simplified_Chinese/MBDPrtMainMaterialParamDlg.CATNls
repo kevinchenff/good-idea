@@ -1,9 +1,6 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Auxiliary Parameter";
-Frame001.Label01.Title = "Blank Length :     ";
-Frame001.Label02.Title = "Blank Width :     ";
-Frame001.Label03.Title = "Blank Height :     ";
-// END WIZARD REPLACEMENT ZONE
-
-
+Title = "毛料尺寸信息";
+Frame001.Label01.Title = "毛料长度 :     ";
+Frame001.Label02.Title = "毛料宽度 :     ";
+Frame001.Label03.Title = "毛料高度（厚度） :     ";
 // END WIZARD REPLACEMENT ZONE
