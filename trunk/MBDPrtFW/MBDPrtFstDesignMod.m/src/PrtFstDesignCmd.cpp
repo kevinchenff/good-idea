@@ -2582,24 +2582,14 @@ void PrtFstDesignCmd::OkFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CA
 	{
 		//
 		CATListValCATUnicodeString alsstrSendBackToKnow;
-		alsstrSendBackToKnow.Append("KnowledgeBase=~");
+		alsstrSendBackToKnow.Append("KnowledgeBase=KnowledgeBase");
 		alsstrSendBackToKnow.Append(m_strSendKnowMainFst);
 		alsstrSendBackToKnow.Append(m_strSendKnowNutFst);
 		alsstrSendBackToKnow.Append(m_lststrSendKnowWasherFst);
 		//
 		//调用查询接口
 		HRESULT hr = MBDWebservice::InsertDataWebService(alsstrSendBackToKnow);
-
-		/*if (SUCCEEDED(hr))
-		{
-			PrtService::ShowDlgNotify("入库提示","已成功存入知识库！");
-		}
-		else
-		{
-			PrtService::ShowDlgNotify("入库提示","未成功存入知识库！");
-		}*/
 	}
-
 	//
 
 	m_userChoosedFlag = TRUE;
@@ -2611,7 +2601,6 @@ void PrtFstDesignCmd::OkFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CA
 }
 void PrtFstDesignCmd::CloseFstAccessDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-
 	//调用清空紧固件信息数组函数
 	ClearFstInfoLst();
 	//
@@ -2651,6 +2640,43 @@ void PrtFstDesignCmd::CloseFstAccessDlgCB(CATCommand* cmd, CATNotification* evt,
 
 void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//调用清空紧固件信息数组函数
+	ClearFstInfoLst();
+	//
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedTitles01.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles01[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedTitles01.RemoveAll();
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedResults01.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults01[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedResults01.RemoveAll();
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedTitles02.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedTitles02.RemoveAll();
+	//清除已有的指针信息
+	for (int k=1;k<=m_plstWasherFstChoosedResults02.Size();k++)
+	{
+		CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[k];
+		delete TempLstStr;
+	}
+	m_plstWasherFstChoosedResults02.RemoveAll();
+	//
+	m_pFstAccessDlg->_ChoosedFastenersML->ClearLine();
+	//
+	m_pFstAccessDlg->SetOKSensitivity(CATDlgDisable);
+
+
 	//
 	if (m_pFstAccessDlg->_FreeStyleRadioB->GetState() == CATDlgCheck)
 	{
