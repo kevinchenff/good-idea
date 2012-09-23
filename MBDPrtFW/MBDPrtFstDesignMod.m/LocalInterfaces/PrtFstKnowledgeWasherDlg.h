@@ -44,14 +44,25 @@ class PrtFstKnowledgeWasherDlg: public CATDlgDialog
 
   void Build ();
 
-
-  protected:
-
-  private:
-
-
 //CAA2 WIZARD WIDGET DECLARATION SECTION
-
+ CATDlgFrame*      _Frame001;
+ CATDlgMultiList*      _SearchResultsML;
+ CATDlgFrame*      _Frame006;
+ CATDlgRadioButton*      _PosSTARTRB;
+ CATDlgRadioButton*      _PosENDRB;
+ CATDlgFrame*      _Frame002;
+ CATDlgLabel*      _Label009;
+ CATDlgLabel*      _Label010;
+ CATDlgEditor*      _ThickLeftEditor;
+ CATDlgEditor*      _EndLeftEditor;
+ CATDlgFrame*      _Frame003;
+ CATDlgMultiList*      _ChooseWashersML;
+ CATDlgFrame*      _Frame014;
+ CATDlgPushButton*      _RemovePB;
+ CATDlgPushButton*      _ClearAllPB;
+ CATDlgFrame*      _Frame004;
+ CATDlgPushButton*      _LastStepPB;
+ CATDlgPushButton*      _NextStepPB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
 

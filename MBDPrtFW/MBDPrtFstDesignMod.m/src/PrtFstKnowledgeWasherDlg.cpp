@@ -31,11 +31,38 @@
 PrtFstKnowledgeWasherDlg::PrtFstKnowledgeWasherDlg() :
   CATDlgDialog ((CATApplicationFrame::GetApplicationFrame())->GetMainWindow(),
 //CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
-          "PrtFstKnowledgeWasherDlg", CATDlgGridLayout
+"PrtFstKnowledgeWasherDlg",CATDlgWndBtnClose|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
 {
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+ _Frame001 = NULL;
+ _SearchResultsML = NULL;
+ _Frame006 = NULL;
+ _PosSTARTRB = NULL;
+ _PosENDRB = NULL;
+ _Frame002 = NULL;
+ _Label009 = NULL;
+ _Label010 = NULL;
+ _ThickLeftEditor = NULL;
+ _EndLeftEditor = NULL;
+ _Frame003 = NULL;
+ _ChooseWashersML = NULL;
+ _Frame014 = NULL;
+ _RemovePB = NULL;
+ _ClearAllPB = NULL;
+ _Frame004 = NULL;
+ _LastStepPB = NULL;
+ _NextStepPB = NULL;
+//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+
+
+//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+
+
+//END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
+
+
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -48,6 +75,33 @@ PrtFstKnowledgeWasherDlg::~PrtFstKnowledgeWasherDlg()
 //     this is done automatically
 //  --------------------------------------------------
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+ _Frame001 = NULL;
+ _SearchResultsML = NULL;
+ _Frame006 = NULL;
+ _PosSTARTRB = NULL;
+ _PosENDRB = NULL;
+ _Frame002 = NULL;
+ _Label009 = NULL;
+ _Label010 = NULL;
+ _ThickLeftEditor = NULL;
+ _EndLeftEditor = NULL;
+ _Frame003 = NULL;
+ _ChooseWashersML = NULL;
+ _Frame014 = NULL;
+ _RemovePB = NULL;
+ _ClearAllPB = NULL;
+ _Frame004 = NULL;
+ _LastStepPB = NULL;
+ _NextStepPB = NULL;
+//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+
+
+//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+
+
+//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
+
+
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -59,6 +113,67 @@ void PrtFstKnowledgeWasherDlg::Build()
 //  -------------------------------------------------------------------
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+ SetGridRowResizable(0,1);
+ SetGridColumnResizable(0,1);
+ _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgGridLayout);
+_Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame001 -> SetGridRowResizable(1,1);
+ _Frame001 -> SetGridColumnResizable(0,1);
+ _SearchResultsML = new CATDlgMultiList(_Frame001, "SearchResultsML");
+ CATUnicodeString SearchResultsMLTitles [ 1 ];
+ SearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeWasherDlg", "Frame001.SearchResultsML.ColumnTitle1");
+ _SearchResultsML -> SetColumnTitles(1, SearchResultsMLTitles);
+ _SearchResultsML -> SetVisibleColumnCount( 1 );
+_SearchResultsML -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame006 = new CATDlgFrame(_Frame001, "Frame006", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame006 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _PosSTARTRB = new CATDlgRadioButton(_Frame006, "PosSTARTRB");
+_PosSTARTRB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _PosENDRB = new CATDlgRadioButton(_Frame006, "PosENDRB");
+_PosENDRB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgGridLayout);
+_Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame002 -> SetGridColumnResizable(1,1);
+ _Label009 = new CATDlgLabel(_Frame002, "Label009");
+_Label009 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Label010 = new CATDlgLabel(_Frame002, "Label010");
+_Label010 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _ThickLeftEditor = new CATDlgEditor(_Frame002, "ThickLeftEditor", CATDlgEdtReadOnly);
+ _ThickLeftEditor -> SetVisibleTextWidth(25);
+_ThickLeftEditor -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _EndLeftEditor = new CATDlgEditor(_Frame002, "EndLeftEditor", CATDlgEdtReadOnly);
+_EndLeftEditor -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgGridLayout);
+_Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Frame003 -> SetGridColumnResizable(0,1);
+ _ChooseWashersML = new CATDlgMultiList(_Frame003, "ChooseWashersML");
+ CATUnicodeString ChooseWashersMLTitles [ 1 ];
+ ChooseWashersMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeWasherDlg", "Frame003.ChooseWashersML.ColumnTitle1");
+ _ChooseWashersML -> SetColumnTitles(1, ChooseWashersMLTitles);
+ _ChooseWashersML -> SetVisibleColumnCount( 1 );
+_ChooseWashersML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame014 = new CATDlgFrame(_Frame003, "Frame014", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame014 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _RemovePB = new CATDlgPushButton(_Frame014, "RemovePB");
+_RemovePB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _ClearAllPB = new CATDlgPushButton(_Frame014, "ClearAllPB");
+_ClearAllPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _Frame004 = new CATDlgFrame(this, "Frame004", CATDlgFraNoFrame|CATDlgGridLayout);
+_Frame004 -> SetGridConstraints(3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
+ _Frame004 -> SetGridColumnResizable(1,1);
+ _LastStepPB = new CATDlgPushButton(_Frame004, "LastStepPB");
+_LastStepPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _NextStepPB = new CATDlgPushButton(_Frame004, "NextStepPB");
+_NextStepPB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+
+
+//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+
+
+//END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
+
+
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION

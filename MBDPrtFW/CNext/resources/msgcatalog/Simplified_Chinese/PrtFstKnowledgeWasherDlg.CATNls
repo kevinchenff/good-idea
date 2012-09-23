@@ -1,3 +1,16 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-
+Title = "Choose Washers";
+Frame001.Title = "Search Results";
+ Frame001.SearchResultsML.ColumnTitle1 = "title00";
+Frame001.Frame006.PosSTARTRB.Title = "Pos START";
+Frame001.Frame006.PosENDRB.Title = "Pos END";
+Frame002.Title = "Install Info";
+Frame002.Label009.Title = "Clamping thickness allowance:";
+Frame002.Label010.Title = "Bolt end allowance:";
+Frame003.Title = "Choose Result";
+ Frame003.ChooseWashersML.ColumnTitle1 = "title00";
+Frame003.Frame014.RemovePB.Title = "Remove";
+Frame003.Frame014.ClearAllPB.Title = "Clear All";
+Frame004.LastStepPB.Title = "Last Step";
+Frame004.NextStepPB.Title = "Next Step";
 // END WIZARD REPLACEMENT ZONE
