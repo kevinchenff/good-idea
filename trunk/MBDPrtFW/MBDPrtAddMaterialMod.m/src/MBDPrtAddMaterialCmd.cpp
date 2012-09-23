@@ -770,7 +770,7 @@ void MBDPrtAddMaterialCmd::OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt
 	if (SUCCEEDED(rc))
 	{
 		//获得尺寸参数
-		double dLength = m_pMatParamDlg->_HeigthSpinner->GetValue();
+		double dLength = m_pMatParamDlg->_LengthSpinner->GetValue();
 		dLength *= 1000;
 		double dWidth = m_pMatParamDlg->_WidthSpinner->GetValue();
 		dWidth *= 1000;
@@ -814,6 +814,8 @@ void MBDPrtAddMaterialCmd::OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt
 				//
 				PrtService::SetSpecGraphProperty(spMainBody,Attribut,CATVPColor,CATVPMesh);
 			}
+			//
+			PrtService::ObjectUpdate(spPart);
 			//
 			RequestDelayedDestruction();
 		}

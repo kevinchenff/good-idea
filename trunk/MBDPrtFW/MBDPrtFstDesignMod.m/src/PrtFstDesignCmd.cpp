@@ -5915,7 +5915,7 @@ CATBoolean PrtFstDesignCmd::OnShelterPushItemSelectCB(CATCommand* cmd, CATNotifi
 	alststrName.Append(m_lstStrShelterFstTitles01);alststrName.Append(m_lstStrShelterFstTitles02);
 	alststrValue.Append(m_lstStrShelterFstChoosed01);alststrValue.Append(m_lstStrShelterFstChoosed02);
 	//
-	for (int m=0; m<=13; m++)
+	for (int m=0; m<=15; m++)
 	{
 		for (int n=1; n<=alststrName.Size(); n++)
 		{

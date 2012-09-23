@@ -1,30 +1,9 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Add Material";
-Frame001.Frame002.Title = "Search Item";
-Frame001.Frame002.LabelContent.Title = "Content Search:";
-Frame001.Frame002.SearchPB.Title = "Search Material";
-Frame001.Frame003.Title = "Search Result";
- Frame001.Frame003.ResultML.ColumnTitle1 = "Material Code";
- Frame001.Frame003.ResultML.ColumnTitle2 = "Major Category";
- Frame001.Frame003.ResultML.ColumnTitle3 = "Small Category";
- Frame001.Frame003.ResultML.ColumnTitle4 = "Material Identification";
- Frame001.Frame003.ResultML.ColumnTitle5 = "Material Name";
- Frame001.Frame003.ResultML.ColumnTitle6 = "Material Grade";
- Frame001.Frame003.ResultML.ColumnTitle7 = "Technical conditions";
- Frame001.Frame003.ResultML.ColumnTitle8 = "Supply status";
- Frame001.Frame003.ResultML.ColumnTitle9 = "Variety";
- Frame001.Frame003.ResultML.ColumnTitle10 = "Variety Code";
- Frame001.Frame003.ResultML.ColumnTitle11 = "Varieties of technical conditions";
- Frame001.Frame003.ResultML.ColumnTitle12 = "Imported or new materials";
- Frame001.Frame003.ResultML.ColumnTitle13 = "title12";
- Frame001.Frame003.ResultML.ColumnTitle14 = "title13";
- Frame001.Frame003.ResultML.ColumnTitle15 = "title14";
- Frame001.Frame003.ResultML.ColumnTitle16 = "title15";
- Frame001.Frame003.ResultML.ColumnTitle17 = "title16";
- Frame001.Frame003.ResultML.ColumnTitle18 = "title17";
- Frame001.Frame003.ResultML.ColumnTitle19 = "title18";
- Frame001.Frame003.ResultML.ColumnTitle20 = "title19";
- Frame001.Frame003.ResultML.ColumnTitle21 = "title20";
-Frame001.Frame003.Frame007.AddMainMaterialPB.Title = "Add Main Material";
-Frame001.Frame003.Frame007.AddAuxiliaryMaterialPB.Title = "Add Auxiliary material";
+Title = "添加材料信息";
+Frame001.Frame002.Title = "检索条件";
+Frame001.Frame002.LabelContent.Title = "材料标识关键字:";
+Frame001.Frame002.SearchPB.Title = "搜索";
+Frame001.Frame003.Title = "检索结果";
+Frame001.Frame003.Frame007.AddMainMaterialPB.Title = "添加主材质信息";
+Frame001.Frame003.Frame007.AddAuxiliaryMaterialPB.Title = "添加消耗辅助材料信息";
 // END WIZARD REPLACEMENT ZONE
