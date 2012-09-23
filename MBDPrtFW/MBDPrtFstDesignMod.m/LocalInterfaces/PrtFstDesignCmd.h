@@ -36,11 +36,11 @@
 #include "PrtFstFreeStyleMainBoltDlg.h"
 #include "PrtFstFreeStyleNutDlg.h"
 #include "PrtFstFreeStyleWasherDlg.h"
+#include "PrtFstFreeStyleShelterDlg.h"
 
 #include "PrtFstKnowledgeMainBoltDlg.h"
 #include "PrtFstKnowledgeNutDlg.h"
-
-#include "PrtFstFreeStyleShelterDlg.h"
+#include "PrtFstKnowledgeWasherDlg.h"
 
 //----------------------------------------------------------------------
 
@@ -249,19 +249,12 @@ private:
 	//紧固件选择对话框
 	//--------------------------------------------------------
 	PrtFstAccessDlg *m_pFstAccessDlg;
+	//
 	PrtFstFreeStyleDlg *m_pFstFreeStyleDlg;
-	PrtFstKnowledgeBasedDlg *m_pFstKnowledgeBasedDlg;
-
 	//
 	PrtFstFreeStyleMainBoltDlg *m_pFstFreeStyleMainBoltDlg;
 	PrtFstFreeStyleNutDlg *m_pFstFreeStyleNutDlg;
 	PrtFstFreeStyleWasherDlg *m_pFstFreeStyleWasherDlg;
-
-	//
-	PrtFstKnowledgeMainBoltDlg *m_pFstKnowledgeMainBoltDlg;
-	PrtFstKnowledgeNutDlg *m_pFstKnowledgeNutDlg;
-	PrtFstFreeStyleWasherDlg *m_pFstKnowledgeWasherDlg;
-
 	//
 	PrtFstFreeStyleShelterDlg *m_pFstFreeStyleShelterDlg;
 
@@ -362,8 +355,14 @@ private:
 	CATUnicodeString m_strSendKnowNutFst;
 	CATListValCATUnicodeString m_lststrSendKnowWasherFst;
 
-	//
-
+	//-----------------------------------------------------------------------------
+	//知识选择对话框
+	//-----------------------------------------------------------------------------
+	PrtFstKnowledgeBasedDlg *m_pFstKnowledgeBasedDlg;
+	PrtFstKnowledgeMainBoltDlg *m_pFstKnowledgeMainBoltDlg;
+	PrtFstKnowledgeNutDlg *m_pFstKnowledgeNutDlg;
+	PrtFstKnowledgeWasherDlg *m_pFstKnowledgeWasherDlg;
+	PrtFstFreeStyleShelterDlg *m_pFstKnowledgeShelterDlg;
 
 };
 

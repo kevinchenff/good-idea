@@ -46,7 +46,7 @@ PrtFstDesignCmd::PrtFstDesignCmd() :
   ,m_pFstKnowledgeMainBoltDlg(NULL),m_pFstKnowledgeNutDlg(NULL),m_pFstKnowledgeWasherDlg(NULL)
   ,m_pContextMenu(NULL),m_pPushItemSelect(NULL),m_IndexChoosedWasher(-1),m_dHeadThickness(0),m_dFstDiameterValue(0)
   ,m_dNutFstThickValue(0),m_dSearchedWasherThick(0),m_dChoosedWasherThick(0),m_dWasherFstThickValueStart(0),m_dWasherFstThickValueEnd(0)
-  ,m_pFstFreeStyleShelterDlg(NULL),m_pShelterContextMenu(NULL),m_pShelterPushItemSelect(NULL)
+  ,m_pFstFreeStyleShelterDlg(NULL),m_pShelterContextMenu(NULL),m_pShelterPushItemSelect(NULL),m_pFstKnowledgeShelterDlg(NULL)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -233,12 +233,6 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 		m_pFstFreeStyleDlg=NULL;
 	}
 
-	if (m_pFstKnowledgeBasedDlg != NULL)
-	{
-		m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
-		m_pFstKnowledgeBasedDlg=NULL;
-	}
-
 	//
 	if (m_pFstFreeStyleMainBoltDlg != NULL)
 	{
@@ -265,6 +259,12 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 	}
 
 	//
+	if (m_pFstKnowledgeBasedDlg != NULL)
+	{
+		m_pFstKnowledgeBasedDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeBasedDlg=NULL;
+	}
+
 	if (m_pFstKnowledgeMainBoltDlg != NULL)
 	{
 		m_pFstKnowledgeMainBoltDlg->RequestDelayedDestruction();
@@ -281,6 +281,12 @@ PrtFstDesignCmd::~PrtFstDesignCmd()
 	{
 		m_pFstKnowledgeWasherDlg->RequestDelayedDestruction();
 		m_pFstKnowledgeWasherDlg=NULL;
+	}
+
+	if (m_pFstKnowledgeShelterDlg != NULL)
+	{
+		m_pFstKnowledgeShelterDlg->RequestDelayedDestruction();
+		m_pFstKnowledgeShelterDlg=NULL;
 	}	
 }
 
