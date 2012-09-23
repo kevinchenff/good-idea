@@ -3718,7 +3718,7 @@ void PrtService::AddSpecObjParams(CATDocument * ipDoc,CATISpecObject_var const &
 }
 
 //功能：修改特征下某些参数，如果参数不存在将自动添加
-void PrtService::ModifySpecObjCertainParams(CATDocument * piDoc,CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue)
+void PrtService::ModifySpecObjCertainParams(CATDocument * piDoc,CATISpecObject_var const &spSpecObj,CATListValCATUnicodeString  &ListStrName,CATListValCATUnicodeString  &ListStrNameValue,int iType)
 {
 	// 获得容器
 	CATInit_var spInitOnDoc = piDoc;
@@ -3777,6 +3777,13 @@ void PrtService::ModifySpecObjCertainParams(CATDocument * piDoc,CATISpecObject_v
 			if (StrParaName == ListStrName[i])
 			{
 				spCkeParm->Valuate(ListStrNameValue[i]);
+				//
+				if (iType == 0)
+				{
+					spCkeParm->SetConst(CATCke::True);
+					//spCkeParm->SetUserAccess(CATICkeParm::ReadOnly);
+				}
+				//
 				existFlag = TRUE;
 				continue;
 			}
