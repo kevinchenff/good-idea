@@ -8,19 +8,19 @@ MBDPrtWb.Title="MBD支撑工具系统";
 //MBDPrtWbFastenerTktTlb.Title = "Fastener Info";
 //MBDPrtWbMBDAnnotateTktTlb.Title = "MBD Annotation";
 
-MBDPrtWbMBDMaterialTktTlb.Title = "MBD Material";
-MBDPrtWbFDADesignTktTlb.Title = "Fastener Design";
-MBDPrtWbFDATransformTktTlb.Title = "Fastener Transform";
+MBDPrtWbMBDMaterialTktTlb.Title = "MBD材料信息";
+MBDPrtWbFDADesignTktTlb.Title = "紧固件设计工具";
+MBDPrtWbFDATransformTktTlb.Title = "紧固件处理工具";
 
 // -------------------------------------------------
 // Menu
 // -------------------------------------------------
-MBDPrtWbTktMnu.Title = "MBD Part Designer" ;
+MBDPrtWbTktMnu.Title = "MBD支撑工具集" ;
 //MBDPrtWbFastenerTktMbr.Title = "Fastener Info" ;
 //MBDPrtWbMBDAnnotateTktMbr.Title = "MBD Annotation" ;
 
-MBDPrtWbMBDMaterialTktMbr.Title = "MBD Material";
-MBDPrtWbFDADesignTktMbr.Title = "Fastener Design" ;
-MBDPrtWbFDATransformTktMbr.Title = "Fastener Transform";
+MBDPrtWbMBDMaterialTktMbr.Title = "MBD材料信息";
+MBDPrtWbFDADesignTktMbr.Title = "紧固件设计工具" ;
+MBDPrtWbFDATransformTktMbr.Title = "紧固件处理工具";
 
 // END WIZARD EDITION ZONE
