@@ -59,14 +59,18 @@ PrtFstKnowledgeMainBoltDlg::PrtFstKnowledgeMainBoltDlg() :
  //
  //初始化属性显示名称
  m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
- m_lstStrPropertyName[1]=CATUnicodeString("紧固件标识");
- m_lstStrPropertyName[2]=CATUnicodeString("公称直径");
- m_lstStrPropertyName[3]=CATUnicodeString("总长度");
- m_lstStrPropertyName[4]=CATUnicodeString("夹持厚度"); 
- m_lstStrPropertyName[5]=CATUnicodeString("重量（kg）");
- m_lstStrPropertyName[6]=CATUnicodeString("头部直径");
- m_lstStrPropertyName[7]=CATUnicodeString("头部厚度");
- m_lstStrPropertyName[8]=CATUnicodeString("**余量**");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件名称");
+ m_lstStrPropertyName[2]=CATUnicodeString("头部类型");
+ m_lstStrPropertyName[3]=CATUnicodeString("材料");
+ m_lstStrPropertyName[4]=CATUnicodeString("表面处理"); 
+ m_lstStrPropertyName[5]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName[6]=CATUnicodeString("公称直径");
+ m_lstStrPropertyName[7]=CATUnicodeString("总长度");
+ m_lstStrPropertyName[8]=CATUnicodeString("夹持厚度"); 
+ m_lstStrPropertyName[9]=CATUnicodeString("重量（kg）");
+ m_lstStrPropertyName[10]=CATUnicodeString("头部直径");
+ m_lstStrPropertyName[11]=CATUnicodeString("头部厚度");
+ m_lstStrPropertyName[12]=CATUnicodeString("**余量**");
  //
 
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
@@ -98,12 +102,6 @@ PrtFstKnowledgeMainBoltDlg::~PrtFstKnowledgeMainBoltDlg()
  _Frame004 = NULL;
  _NextStepPB = NULL;
  _LastStepPB = NULL;
-//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
-
-
-//END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
-
-
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -159,8 +157,8 @@ _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  //SearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeMainBoltDlg", "Frame003.SearchResultsML.ColumnTitle4");
  //SearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeMainBoltDlg", "Frame003.SearchResultsML.ColumnTitle5");
  //SearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeMainBoltDlg", "Frame003.SearchResultsML.ColumnTitle6");
- _SearchResultsML -> SetColumnTitles(9, m_lstStrPropertyName);
- _SearchResultsML -> SetVisibleColumnCount( 9 );
+ _SearchResultsML -> SetColumnTitles(13, m_lstStrPropertyName);
+ _SearchResultsML -> SetVisibleColumnCount( 13 );
 _SearchResultsML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame004 = new CATDlgFrame(this, "Frame004", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame004 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);

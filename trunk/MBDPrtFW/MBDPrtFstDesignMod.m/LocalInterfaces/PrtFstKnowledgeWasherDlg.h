@@ -67,7 +67,7 @@ class PrtFstKnowledgeWasherDlg: public CATDlgDialog
 
 
  // Ù–‘Õ∑√˚≥∆
- CATUnicodeString m_lstStrPropertyName[8];
+ CATUnicodeString m_lstStrPropertyName[11];
  CATUnicodeString m_lstStrPropertyName02[14];
 
 

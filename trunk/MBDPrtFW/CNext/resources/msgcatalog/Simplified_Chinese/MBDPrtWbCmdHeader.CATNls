@@ -11,17 +11,17 @@ MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Title = "CATIA MBD Annotation To XML";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.Help = "CATIA MBD Annotation To XML";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr03.ShortHelp = "CATIA MBD Annotation To XML";
 
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Title = "Add MBD Material";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Help = "Add MBD Material";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.ShortHelp = "Add MBD Material";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Title = "添加材料信息";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.Help = "添加材料信息";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr04.ShortHelp = "添加材料信息";
 
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Title = "Create Fastener Points";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Help = "Create Fastener Points";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.ShortHelp = "Create Fastener Points";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Title = "创建紧固件安装点";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.Help = "创建紧固件安装点";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr05.ShortHelp = "创建紧固件安装点";
 
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Title = "Fastener Design";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Help = "Fastener Design";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.ShortHelp = "Fastener Design";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Title = "紧固件定义";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.Help = "紧固件定义";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr06.ShortHelp = "紧固件定义";
 
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Title = "Magic Fastener Design";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr07.Help = "Magic Fastener Design";
@@ -35,12 +35,12 @@ MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Title = "Edit Fastener";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.Help = "Edit Fastener";
 MBDPrtWbCmdHeader.MBDPrtWbCmdHdr09.ShortHelp = "Edit Fastener";
 
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Title = "Delete Fastener";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Help = "Delete Fastener";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.ShortHelp = "Delete Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Title = "删除紧固件";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.Help = "删除紧固件";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr10.ShortHelp = "删除紧固件";
 
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Title = "Update Fastener";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Help = "Update Fastener";
-MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.ShortHelp = "Update Fastener";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Title = "更新紧固件";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.Help = "更新紧固件";
+MBDPrtWbCmdHeader.MBDPrtWbCmdHdr11.ShortHelp = "更新紧固件";
 
 // END WIZARD EDITION ZONE

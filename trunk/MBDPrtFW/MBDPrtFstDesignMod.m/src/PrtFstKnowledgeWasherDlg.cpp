@@ -59,13 +59,16 @@ PrtFstKnowledgeWasherDlg::PrtFstKnowledgeWasherDlg() :
 
  //
  m_lstStrPropertyName[0]=CATUnicodeString("紧固件标准号");
- m_lstStrPropertyName[1]=CATUnicodeString("紧固件标识");
- m_lstStrPropertyName[2]=CATUnicodeString("公称直径");
- m_lstStrPropertyName[3]=CATUnicodeString("内径");
- m_lstStrPropertyName[4]=CATUnicodeString("外径");
- m_lstStrPropertyName[5]=CATUnicodeString("沉槽直径"); 
- m_lstStrPropertyName[6]=CATUnicodeString("厚度");
- m_lstStrPropertyName[7]=CATUnicodeString("重量（kg）");
+ m_lstStrPropertyName[1]=CATUnicodeString("紧固件名称");
+ m_lstStrPropertyName[2]=CATUnicodeString("材料");
+ m_lstStrPropertyName[3]=CATUnicodeString("表面处理");
+ m_lstStrPropertyName[4]=CATUnicodeString("紧固件标识");
+ m_lstStrPropertyName[5]=CATUnicodeString("公称直径");
+ m_lstStrPropertyName[6]=CATUnicodeString("内径");
+ m_lstStrPropertyName[7]=CATUnicodeString("外径");
+ m_lstStrPropertyName[8]=CATUnicodeString("沉槽直径"); 
+ m_lstStrPropertyName[9]=CATUnicodeString("厚度");
+ m_lstStrPropertyName[10]=CATUnicodeString("重量（kg）");
  //
  m_lstStrPropertyName02[0]=CATUnicodeString("安装部位");
  m_lstStrPropertyName02[1]=CATUnicodeString("紧固件标准号");
@@ -141,8 +144,8 @@ _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _SearchResultsML = new CATDlgMultiList(_Frame001, "SearchResultsML");
  //CATUnicodeString SearchResultsMLTitles [ 1 ];
  //SearchResultsMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeWasherDlg", "Frame001.SearchResultsML.ColumnTitle1");
- _SearchResultsML -> SetColumnTitles(8, m_lstStrPropertyName);
- _SearchResultsML -> SetVisibleColumnCount( 8 );
+ _SearchResultsML -> SetColumnTitles(11, m_lstStrPropertyName);
+ _SearchResultsML -> SetVisibleColumnCount( 11 );
 _SearchResultsML -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame006 = new CATDlgFrame(_Frame001, "Frame006", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame006 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
