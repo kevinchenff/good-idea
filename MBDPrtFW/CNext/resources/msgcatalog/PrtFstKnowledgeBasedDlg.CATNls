@@ -1,6 +1,7 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
 Title = "Knowledge Based Choose";
 Frame001.Title = "Search Items";
+Frame001.Label006.Title = "Please Select Fastener Type: ";
 Frame001.Label01.Title = "Please Select Head Type: ";
 Frame001.Label02.Title = "Please Select Material type: ";
 Frame001.Label03.Title = "Please Select Surface Treatment: ";
