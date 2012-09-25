@@ -405,6 +405,9 @@ private:
 	PrtFstKnowledgeWasherDlg *m_pFstKnowledgeWasherDlg;
 	PrtFstFreeStyleShelterDlg *m_pFstKnowledgeShelterDlg;
 
+	CATListValCATUnicodeString m_lstStrKnowledgeFstTitles;
+	CATListPV m_plstKnowledgeFstResults;
+
 };
 
 //----------------------------------------------------------------------

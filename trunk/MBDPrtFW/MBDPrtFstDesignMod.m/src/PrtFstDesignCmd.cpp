@@ -2764,8 +2764,8 @@ void PrtFstDesignCmd::AccessDlgGoToChoosePBCB(CATCommand* cmd, CATNotification* 
 			NULL);
 
 		//ML选择的响应
-		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg->_SearchResultSL, 
-			m_pFstKnowledgeBasedDlg->_SearchResultSL->GetListSelectNotification(),
+		AddAnalyseNotificationCB (m_pFstKnowledgeBasedDlg->_SearchResultML, 
+			m_pFstKnowledgeBasedDlg->_SearchResultML->GetListSelectNotification(),
 			(CATCommandMethod)&PrtFstDesignCmd::FstKnowledgeBasedDlgSearchResultsMLCB,
 			NULL);
 	}
@@ -6032,6 +6032,102 @@ void PrtFstDesignCmd::FstKnowledgeBasedDlgLastStepPBCB(CATCommand* cmd, CATNotif
 void PrtFstDesignCmd::FstKnowledgeBasedDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
+	//
+	//初始化状态
+	//
+	m_pFstKnowledgeBasedDlg->_SearchResultML->ClearLine();
+	//
+	//对按钮状态的控制
+	m_pFstKnowledgeBasedDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
+	//----------------------
+	// Go and search
+	//----------------------
+	CATListValCATUnicodeString alsStrSearchItemsValue;
+	m_pFstKnowledgeBasedDlg->GetAllWBSItemInfo(alsStrSearchItemsValue);
+
+	// 测试代码，用于显示输出
+	/*for (int i = 1; i <= m_listStrSearchItemsValue.Size(); i++)
+	{
+		cout<<"第"<<i<<"行数据："<<m_listStrSearchItemsValue[i].ConvertToChar()<<endl;
+	}*/
+	//存储搜索得到的Value 
+	CATListValCATUnicodeString strListOfSearchResult;
+	//调用查询接口
+	HRESULT hr = MBDWebservice::QueryDataWebService(alsStrSearchItemsValue,strListOfSearchResult);
+	
+	//过滤需要的信息
+	if (SUCCEEDED(hr))
+	{
+		//获得数据条目，及每条目数据个数，分别对应第二、第三，数据内容从第六条开始
+		CATUnicodeString strCount=strListOfSearchResult[2];
+		CATUnicodeString strCutNumb=strListOfSearchResult[3];
+		double dCount=0,dCutNumb=1;
+		strCount.ConvertToNum(&dCount);
+		strCutNumb.ConvertToNum(&dCutNumb);
+		//
+		//
+		CATListValCATUnicodeString lstStrKnowledgeFstTitles;
+		CATUnicodeString strValue05=strListOfSearchResult[5];
+		CHandleString::StringToVector(strValue05,"|",lstStrKnowledgeFstTitles);
+		
+		//清除已有的指针信息
+		for (int k=1;k<=m_plstKnowledgeFstResults.Size();k++)
+		{
+			CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstKnowledgeFstResults[k];
+			delete TempLstStr;
+		}
+		m_plstKnowledgeFstResults.RemoveAll();
+
+		//计算以倍数的循环次数
+		int cyclecount = (int)((strListOfSearchResult.Size()-5)/dCutNumb);
+		//
+		if (cyclecount==dCount && dCount!=0)
+		{
+			//
+			for (int i=1; i<=dCutNumb; i++)
+			{
+				//首选创建实例化的数组列
+				CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+				//m_pListStrMaterialDetailInfo.Append(LstStrAtrrValue01);
+				//
+				for (int j=1; j<=cyclecount; j++)
+				{
+					//
+					CATUnicodeString strConvert = strListOfSearchResult[(j-1)*dCutNumb+i+5];
+					//
+					if (strConvert == "########")
+					{
+						strConvert = NULL;
+						(*LstStrAtrrValue01).Append(strConvert);
+					}
+					else
+						(*LstStrAtrrValue01).Append(strConvert);
+				}
+				
+				//
+				m_plstKnowledgeFstResults.Append(LstStrAtrrValue01);
+
+				//
+				for (int m=0; m<=6; m++)
+				{
+					//
+					if (m_pFstKnowledgeBasedDlg->m_lstStrPropertyName[m] == lstStrKnowledgeFstTitles[i])
+					{
+						for (int k=1; k<=(*LstStrAtrrValue01).Size(); k++)
+						{
+							m_pFstKnowledgeBasedDlg->_SearchResultML->SetColumnItem(m,(*LstStrAtrrValue01)[k]);
+						}
+
+						//
+						break;
+					}				
+				}			
+
+			}			
+		}
+
+		//			
+	}
 	
 }
 

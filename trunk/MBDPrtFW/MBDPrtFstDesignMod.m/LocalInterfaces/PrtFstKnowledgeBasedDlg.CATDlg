@@ -17,38 +17,31 @@ CATDlgFrame Frame001
 CATDlgLabel Label01
 {
   FATHER = Frame001;
-  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgLabel Label02
 {
   FATHER = Frame001;
-  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgLabel Label03
 {
   FATHER = Frame001;
-  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgLabel Label04
 {
   FATHER = Frame001;
-  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 4, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgLabel Label05
 {
   FATHER = Frame001;
-  GRID = { 4, 0, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgCombo Combo01
-{
-  FATHER = Frame001;
-  STYLE = CATDlgCmbDropDown;
-  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+  GRID = { 5, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgCombo Combo02
@@ -65,22 +58,42 @@ CATDlgCombo Combo03
   GRID = { 2, 1, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgEditor Editor01
+CATDlgCombo Combo04
 {
   FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
   GRID = { 3, 1, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgEditor Editor02
+CATDlgEditor Editor01
 {
   FATHER = Frame001;
   GRID = { 4, 1, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgPushButton GoToSearchPB
+CATDlgEditor Editor02
 {
   FATHER = Frame001;
   GRID = { 5, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton GoToSearchPB
+{
+  FATHER = Frame001;
+  GRID = { 6, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label006
+{
+  FATHER = Frame001;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo Combo01
+{
+  FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgFrame Frame002
@@ -92,11 +105,11 @@ CATDlgFrame Frame002
   COLRES = { 0 };
 }
 
-CATDlgSelectorList SearchResultSL
+CATDlgMultiList SearchResultML
 {
   FATHER = Frame002;
-  TH = 12;
-  TW = 40;
+  CC = 1;
+  VCC = 1;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
