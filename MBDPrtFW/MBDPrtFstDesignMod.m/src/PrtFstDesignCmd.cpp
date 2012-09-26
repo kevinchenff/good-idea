@@ -6585,7 +6585,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgNextStepPBCB(CATCommand* cmd, 
 		//----------------------
 		CATListValCATUnicodeString alsStrSearchItemsValue;
 		alsStrSearchItemsValue.Append("KnowledgeBase=Nut");
-		alsStrSearchItemsValue.Append("KnowledgeBaseResult=SpecInfo");
+		alsStrSearchItemsValue.Append("KnowledgeBaseResult=StdCodeInfo");
 		CATUnicodeString strTemp02 = "FASTENER_RELATIONS_INFO_AUTOID=" + m_lstStrKnowledgeFstChoosed[1];
 		alsStrSearchItemsValue.Append(strTemp02);
 
@@ -6676,13 +6676,14 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgNextStepPBCB(CATCommand* cmd, 
 		}
 		//
 		m_strNutFstTypeFlag = strType01+"|"+strType02;
+		//PrtService::ShowDlgNotify("测试提示",m_strNutFstTypeFlag);
 
 		//--------------------------------------------------------------------------------------------------------------------------------------
 		//获得规格信息
 		//----------------------
 		alsStrSearchItemsValue.RemoveAll();
 		alsStrSearchItemsValue.Append("KnowledgeBase=Nut");
-		alsStrSearchItemsValue.Append("KnowledgeBaseResult=StdCodeInfo");
+		alsStrSearchItemsValue.Append("KnowledgeBaseResult=SpecInfo");
 		CATUnicodeString strTemp01 = "FASTENER_RELATIONS_INFO_AUTOID=" + m_lstStrKnowledgeFstChoosed[1];
 		alsStrSearchItemsValue.Append(strTemp01);
 		//存储搜索得到的Value 
@@ -6955,7 +6956,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedNutDlgNextStepPBCB(CATCommand* cmd, CATNo
 
 		//初始化状态
 		//
-		m_pFstFreeStyleWasherDlg->_RearchResultsML->ClearLine();
+		m_pFstKnowledgeWasherDlg->_SearchResultsML->ClearLine();
 		//
 		if (m_lstStrKnowledgeFstChoosed[6] != "")
 		{
@@ -6964,7 +6965,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedNutDlgNextStepPBCB(CATCommand* cmd, CATNo
 			//-----------------------------------------------------------------------------------------------
 			CATListValCATUnicodeString alsStrSearchItemsValue;
 			alsStrSearchItemsValue.Append("KnowledgeBase=Sub");
-			alsStrSearchItemsValue.Append("KnowledgeBaseResult=SpecInfo");
+			alsStrSearchItemsValue.Append("KnowledgeBaseResult=StdCodeInfo");
 			CATUnicodeString strTemp02 = "FASTENER_RELATIONS_INFO_AUTOID=" + m_lstStrKnowledgeFstChoosed[1];
 			alsStrSearchItemsValue.Append(strTemp02);
 
@@ -7060,7 +7061,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedNutDlgNextStepPBCB(CATCommand* cmd, CATNo
 			//----------------------------------------------------------------------------------------------------
 			alsStrSearchItemsValue.RemoveAll();
 			alsStrSearchItemsValue.Append("KnowledgeBase=Sub");
-			alsStrSearchItemsValue.Append("KnowledgeBaseResult=StdCodeInfo");
+			alsStrSearchItemsValue.Append("KnowledgeBaseResult=SpecInfo");
 			CATUnicodeString strTemp01 = "FASTENER_RELATIONS_INFO_AUTOID=" + m_lstStrKnowledgeFstChoosed[1];
 			alsStrSearchItemsValue.Append(strTemp01);
 			//存储搜索得到的Value 
@@ -7161,7 +7162,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedNutDlgNextStepPBCB(CATCommand* cmd, CATNo
 				}
 				
 			}
-			}
+		}
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -7278,6 +7279,11 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgLastStepPBCB(CATCommand* cmd, CA
 	m_pFstKnowledgeWasherDlg->RequestDelayedDestruction();
 	m_pFstKnowledgeWasherDlg=NULL;
 	//
+	//垫圈位置信息
+	m_lstStrWasherPos.RemoveAll();
+	m_lstStrWasherFstTypeFlag.RemoveAll();
+	m_lststrSendKnowWasherFst.RemoveAll();
+	//
 	//设置前对话框显示
 	m_pFstKnowledgeNutDlg->SetVisibility(CATDlgShow);
 
@@ -7286,9 +7292,8 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgNextStepPBCB(CATCommand* cmd, CA
 {
 	//
 	//如果选择的是其它螺母类型，则跳出选择保护罩的选项
-	if (0) //如果非普通螺母
+	if (1) //如果非普通螺母
 	{
-		//
 		//
 		double dCheck01=0,dCheck02=0;
 		dCheck01 = m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
@@ -7566,13 +7571,78 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgNextStepPBCB(CATCommand* cmd, CA
 		}
 	}//普通螺母的情况	
 }
+
 void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//
+	//
+	//获取所选信息
+	int  iSize = m_pFstKnowledgeWasherDlg->_SearchResultsML->GetSelectCount();
+	if (iSize != 0)
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pFstKnowledgeWasherDlg->_SearchResultsML->GetSelect(ioTabRow,iSize);
 
+		//获得该行的信息
+		GetChoosedMLValue(ioTabRow[0]+1,m_plstWasherFstResults02,m_lstStrWasherFstChoosed02);
+
+		//获取所选垫圈的厚度值
+		for (int i=1; i<= m_lstStrWasherFstChoosed02.Size(); i++)
+		{
+			if (m_lstStrWasherFstTitles02[i] == "厚度")
+			{
+				//
+				m_lstStrWasherFstChoosed02[i].ConvertToNum(&m_dSearchedWasherThick,"%lf");
+				break;
+			}
+		}
+
+
+		//显示ContextualMenu菜单
+		m_pKnowWasherContextMenu = new CATDlgContextualMenu (m_pFstKnowledgeWasherDlg->_SearchResultsML, "Context",CATDlgCtxEmpty);
+		m_pKnowWasherPushItemSelect = new CATDlgPushItem(m_pKnowWasherContextMenu,"选择");
+
+		//
+		AddAnalyseNotificationCB(m_pKnowWasherPushItemSelect,
+			m_pKnowWasherPushItemSelect->GetMenuIActivateNotification(),
+			(CATCommandMethod)&PrtFstDesignCmd::OnKnowledgeBasedWasherPushItemSelectCB,
+			NULL);
+	}
 }
+
 void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgChooseWashersMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-
+	//获取所选信息
+	int  iSize = m_pFstKnowledgeWasherDlg->_ChooseWashersML->GetSelectCount();
+	if (iSize != 0)
+	{
+		//得到当前所选行的具体信息：行号
+		int * ioTabRow = new int[iSize];
+		m_pFstKnowledgeWasherDlg->_ChooseWashersML->GetSelect(ioTabRow,iSize);
+		//
+		m_IndexChoosedWasher = ioTabRow[0]+1;
+		//
+		//获取所选垫圈的厚度值
+		//
+		CATLISTV(CATUnicodeString) *TempLstStr01 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedTitles02[m_IndexChoosedWasher];
+		CATLISTV(CATUnicodeString) *TempLstStr02 = (CATLISTV(CATUnicodeString) *)m_plstWasherFstChoosedResults02[m_IndexChoosedWasher];
+		for (int i=1; i<= (*TempLstStr01).Size(); i++)
+		{
+			if ((*TempLstStr01)[i] == "厚度")
+			{
+				//
+				(*TempLstStr02)[i].ConvertToNum(&m_dChoosedWasherThick,"%lf");
+				break;
+			}
+		}
+		//
+		m_pFstKnowledgeWasherDlg->_RemovePB->SetSensitivity(CATDlgEnable);
+	}
+	else
+	{
+		m_pFstKnowledgeWasherDlg->_RemovePB->SetSensitivity(CATDlgDisable);
+	}
 }
 void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgRemovePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
@@ -7584,8 +7654,77 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgClearAllPBCB(CATCommand* cmd, CA
 }
 CATBoolean PrtFstDesignCmd::OnKnowledgeBasedWasherPushItemSelectCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	//首选创建实例化的数组列
+	CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+	//首选创建实例化的数组列
+	CATLISTV(CATUnicodeString) *LstStrAtrrValue02 = new CATLISTV(CATUnicodeString)();
+	//首选创建实例化的数组列
+	CATLISTV(CATUnicodeString) *LstStrAtrrValue03 = new CATLISTV(CATUnicodeString)();
+	//首选创建实例化的数组列
+	CATLISTV(CATUnicodeString) *LstStrAtrrValue04 = new CATLISTV(CATUnicodeString)();
 
+	//
+	*LstStrAtrrValue01 = m_lstStrWasherFstTitles01;
+	*LstStrAtrrValue02 = m_lstStrWasherFstChoosed01;
+	*LstStrAtrrValue03 = m_lstStrWasherFstTitles02;
+	*LstStrAtrrValue04 = m_lstStrWasherFstChoosed02;
 
+	//
+	m_plstWasherFstChoosedTitles01.Append(LstStrAtrrValue01);  
+	m_plstWasherFstChoosedResults01.Append(LstStrAtrrValue02); 
+	m_plstWasherFstChoosedTitles02.Append(LstStrAtrrValue03);  
+	m_plstWasherFstChoosedResults02.Append(LstStrAtrrValue04);
+	//
+	CATListValCATUnicodeString alststrName,alststrValue;
+	alststrName.Append(m_lstStrWasherFstTitles01);alststrName.Append(m_lstStrWasherFstTitles02);
+	alststrValue.Append(m_lstStrWasherFstChoosed01);alststrValue.Append(m_lstStrWasherFstChoosed02);
+	//
+	for (int m=0; m<=13; m++)
+	{
+		for (int n=1; n<=alststrName.Size(); n++)
+		{
+			//
+			if (m_pFstKnowledgeWasherDlg->m_lstStrPropertyName02[m] == alststrName[n])
+			{
+
+				m_pFstKnowledgeWasherDlg->_ChooseWashersML->SetColumnItem(m,alststrValue[n]);
+				//
+				break;
+			}
+		}
+
+	}
+	//
+	if (m_pFstKnowledgeWasherDlg->_PosENDRB->GetState() == CATDlgCheck)
+	{
+		m_lstStrWasherPos.Append("END");
+		//
+		m_pFstKnowledgeWasherDlg->_ChooseWashersML->SetColumnItem(0,"END",m_lstStrWasherPos.Size()-1,CATDlgDataModify);
+		//
+		//垫圈位置信息
+		m_dWasherFstThickValueEnd += m_dSearchedWasherThick;
+		//
+		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+	}
+	else
+	{
+		m_lstStrWasherPos.Append("START");
+		//
+		m_pFstKnowledgeWasherDlg->_ChooseWashersML->SetColumnItem(0,"START",m_lstStrWasherPos.Size()-1,CATDlgDataModify);
+		//
+		m_dWasherFstThickValueStart += m_dSearchedWasherThick;
+		//
+		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+	}
+	//
+	m_lstStrWasherFstTypeFlag.Append(m_strWasherFstTypeFlag);
+	//
 	return TRUE;
 }
 
