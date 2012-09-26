@@ -409,6 +409,15 @@ private:
 	CATListValCATUnicodeString m_lstStrKnowledgeFstTitles, m_lstStrKnowledgeFstChoosed;
 	CATListPV m_plstKnowledgeFstResults;
 
+	//右键context按钮对话框
+	CATDlgContextualMenu  *m_pKnowWasherContextMenu;
+	CATDlgPushItem * m_pKnowWasherPushItemSelect;
+
+	//右键context按钮对话框
+	CATDlgContextualMenu  *m_pKnowShelterContextMenu;
+	CATDlgPushItem * m_pKnowShelterPushItemSelect;
+
+
 };
 
 //----------------------------------------------------------------------
