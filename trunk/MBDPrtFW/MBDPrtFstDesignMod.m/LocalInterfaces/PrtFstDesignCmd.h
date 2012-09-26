@@ -405,7 +405,8 @@ private:
 	PrtFstKnowledgeWasherDlg *m_pFstKnowledgeWasherDlg;
 	PrtFstFreeStyleShelterDlg *m_pFstKnowledgeShelterDlg;
 
-	CATListValCATUnicodeString m_lstStrKnowledgeFstTitles;
+	//知识库选取信息
+	CATListValCATUnicodeString m_lstStrKnowledgeFstTitles, m_lstStrKnowledgeFstChoosed;
 	CATListPV m_plstKnowledgeFstResults;
 
 };

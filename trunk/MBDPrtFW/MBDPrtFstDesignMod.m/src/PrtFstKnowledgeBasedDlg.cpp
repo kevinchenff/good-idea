@@ -170,6 +170,8 @@ _LastStepPB -> SetGridConstraints(0, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
 
+_GoToSearchPB->SetSensitivity(CATDlgDisable);
+
 //初始化三种类型的主紧固件查询条件，分别是：铆钉 螺栓 螺钉
 //记录标注号索引
 CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
