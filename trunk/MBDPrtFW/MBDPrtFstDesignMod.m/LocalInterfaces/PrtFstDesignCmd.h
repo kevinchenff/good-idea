@@ -234,6 +234,7 @@ class PrtFstDesignCmd: public CATStateCommand
   //对KnowledgeBased Shelter DLG的消息响应
   //---------------------------------
   void CloseFstKnowledgeBasedShelterDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  void FstKnowledgeBasedShelterDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstKnowledgeBasedShelterDlgLastStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstKnowledgeBasedShelterDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void FstKnowledgeBasedShelterDlgSearchResultsMLCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
