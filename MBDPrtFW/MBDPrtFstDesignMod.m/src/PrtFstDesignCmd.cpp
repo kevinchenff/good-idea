@@ -6685,6 +6685,9 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgNextStepPBCB(CATCommand* cmd, 
 		alsStrSearchItemsValue.Append("KnowledgeBaseResult=SpecInfo");
 		CATUnicodeString strTemp01 = "FASTENER_RELATIONS_INFO_AUTOID=" + m_lstStrKnowledgeFstChoosed[1];
 		alsStrSearchItemsValue.Append(strTemp01);
+		CATUnicodeString strTemp02 = "KnowledgeNominalDiameter=" + m_strdFstDiameterValue;
+		alsStrSearchItemsValue.Append(strTemp02);
+
 		//存储搜索得到的Value 
 		CATListValCATUnicodeString strListOfSearchResult02;
 		//调用查询接口
@@ -7063,6 +7066,8 @@ void PrtFstDesignCmd::FstKnowledgeBasedNutDlgNextStepPBCB(CATCommand* cmd, CATNo
 			alsStrSearchItemsValue.Append("KnowledgeBaseResult=SpecInfo");
 			CATUnicodeString strTemp01 = "FASTENER_RELATIONS_INFO_AUTOID=" + m_lstStrKnowledgeFstChoosed[1];
 			alsStrSearchItemsValue.Append(strTemp01);
+			CATUnicodeString strTemp02 = "KnowledgeNominalDiameter=" + m_strdFstDiameterValue;
+			alsStrSearchItemsValue.Append(strTemp02);
 			//存储搜索得到的Value 
 			CATListValCATUnicodeString strListOfSearchResult02;
 			//调用查询接口
