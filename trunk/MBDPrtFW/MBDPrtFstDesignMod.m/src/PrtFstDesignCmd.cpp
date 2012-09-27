@@ -7873,6 +7873,9 @@ void PrtFstDesignCmd::FstKnowledgeBasedShelterDlgLastStepPBCB(CATCommand* cmd, C
 }
 void PrtFstDesignCmd::FstKnowledgeBasedShelterDlgGoToSearchPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	m_strSendKnowMainFst = "";
+	m_strSendKnowNutFst = "";
+	m_lststrSendKnowWasherFst.RemoveAll();
 	//³õÊ¼»¯×´Ì¬
 	//
 	m_pFstKnowledgeShelterDlg->_SearchResultML->ClearLine();
@@ -8107,6 +8110,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedShelterDlgGoToSearchPBCB(CATCommand* cmd,
 
 		//			
 	}
+
 }
 void PrtFstDesignCmd::FstKnowledgeBasedShelterDlgNextStepPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
