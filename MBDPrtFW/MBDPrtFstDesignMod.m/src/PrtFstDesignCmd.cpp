@@ -3403,7 +3403,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
-			if (dMin >= 4)
+			if (dMin > 4)
 			{
 				dSTDLengthMin = dMin + 1.1*m_dJstThickMax;
 			}
@@ -3413,7 +3413,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 			}
 
 			//
-			if (dMax >= 4)
+			if (dMax > 4)
 			{
 				dSTDLengthMax = dMax + 1.1*m_dJstThickMax;
 			}
@@ -3532,7 +3532,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					}
 					//
 					//
-					if (dDiaValue>=4)
+					if (dDiaValue>4)
 					{
 						dSTDThick = dDiaValue + 1.1*m_dJstThickMax;
 					}

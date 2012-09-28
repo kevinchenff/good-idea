@@ -633,7 +633,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 				//
 				double dSTDLength=0,dvalue=0;
 				strDiameterValue.ConvertToNum(&dvalue,"%lf");
-				if (dvalue >= 4)
+				if (dvalue > 4)
 				{
 				   dSTDLength = dvalue + 1.1*dThick;
 				}

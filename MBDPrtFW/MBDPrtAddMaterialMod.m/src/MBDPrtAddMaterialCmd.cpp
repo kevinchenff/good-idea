@@ -27,7 +27,7 @@ MBDPrtAddMaterialCmd::MBDPrtAddMaterialCmd() :
   CATStateCommand ("MBDPrtAddMaterialCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
 ,m_piDoc(NULL),m_pDlg(NULL),m_pMatParamDlg(NULL)
-,m_dDensity(0),m_dPoissonRatio(0),m_dYieldStrength(0),m_iSelectedIndex(-1)
+,m_dDensity(1000),m_dPoissonRatio(0),m_dYieldStrength(0),m_iSelectedIndex(-1)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -544,10 +544,25 @@ HRESULT MBDPrtAddMaterialCmd::GetSelectedMaterialInfo()
 	m_alsStrMatInfoCATIAValue.Append(strContent);
 	m_pDlg->_ResultML->GetColumnItem(4,strContent,m_iSelectedIndex);
 	m_alsStrMatInfoCATIAValue.Append(strContent);
-	m_pDlg->_ResultML->GetColumnItem(9,strContent,m_iSelectedIndex);
-	m_alsStrMatInfoCATIAValue.Append(strContent);
+
+	//
+	CATUnicodeString str01, str02;
+	m_pDlg->_ResultML->GetColumnItem(8,str01,m_iSelectedIndex);
+	m_pDlg->_ResultML->GetColumnItem(9,str02,m_iSelectedIndex);
+	m_alsStrMatInfoCATIAValue.Append(str01 + str02);
+
+	//
 	m_pDlg->_ResultML->GetColumnItem(5,strContent,m_iSelectedIndex);
 	m_alsStrMatInfoCATIAValue.Append(strContent);
+
+	//进口或者新材料
+	CATUnicodeString strNewMaterial;
+	m_pDlg->_ResultML->GetColumnItem(11,strNewMaterial,m_iSelectedIndex);
+
+	if (strNewMaterial == "N")
+	{
+		m_alsStrMatInfoCATIAValue[4] = "";
+	}
 
 	//获取颜色
 	m_pDlg->_ResultML->GetColumnItem(17,strContent,m_iSelectedIndex);
