@@ -262,9 +262,10 @@ void MBDFAINewPrdCmd::InitialMBDInfo()
 				//------------------------------------------------------------------
 				// 3 自动创建MBD装配模板文档
 				//------------------------------------------------------------------
-				CATUnicodeString strNum("1");
+				CATUnicodeString strNum("01");
 				int Num = m_listARMInstancePrd.Size();
 				cout<<"ZP个数："<<Num<<endl;
+				int dMax=0;
 				if (Num >= 1)
 				{
 					//获取ARM编号最大值
@@ -273,22 +274,37 @@ void MBDFAINewPrdCmd::InitialMBDInfo()
 
 						CATIProduct_var spPrdAlias = ((CATIProduct_var)m_listARMInstancePrd[i])->GetReferenceProduct();
 						CATUnicodeString strAlias = spPrdAlias->GetPartNumber();
-						CATUnicodeString strTempNum = strAlias.SubString(strAlias.GetLengthInChar()-1,1);
-						
-						if (strNum < strTempNum)
+						CATUnicodeString strTempNum = strAlias.SubString(strAlias.GetLengthInChar()-2,2);
+
+						//获取数字部分
+						int start = strTempNum.SearchSubString("0");
+						while (start == 0)
 						{
-							strNum = strTempNum;					
+							strTempNum = strTempNum.SubString(1,strTempNum.GetLengthInChar()-1);
+							start = strTempNum.SearchSubString("0");
 						}
-					}
+						//转换成数字
+						int NumTemp;
+						strTempNum.ConvertToNum(&NumTemp);
+						//
+						if (dMax < NumTemp)
+						{
+							dMax = NumTemp;			
+						}
+					}				
 
-					//转换成数字
-					int NumTemp;
-					strNum.ConvertToNum(&NumTemp);
-					cout<<"ZP编号："<<strNum<<endl;
-
-					NumTemp ++;
-					strNum.BuildFromNum(NumTemp);
-					cout<<"下一个ZP编号："<<strNum<<endl;
+					//生成编号
+					int NumSize = 2; //两位数字
+					dMax ++;
+					strNum.BuildFromNum(dMax);
+					int NumiSize = (int)log10((double)(dMax))+1;
+					if (NumSize >= 2&& NumiSize < NumSize)//增加0
+					{
+						for (int k=1; k <= NumSize-NumiSize; k++)
+						{
+							strNum = "0"+strNum;
+						}
+					}			
 				}
 				//
 				CATUnicodeString strChangeARMName = _strDocName + "-ZP" + strNum;

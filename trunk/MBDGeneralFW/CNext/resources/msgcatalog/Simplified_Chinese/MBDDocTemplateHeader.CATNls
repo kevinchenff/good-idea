@@ -11,9 +11,9 @@ MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.Title = "MBD 添加标准几何集";
 MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.Help = "MBD 添加标准几何集";
 MBDDocTemplateHeader.MBDAddinAddMBDGSMToolHdr.ShortHelp = "MBD 添加标准几何集";
 
-MBDDocTemplateHeader.MBDAddinNewPrdHdr.Title = "MBD 添加ARM模型";
-MBDDocTemplateHeader.MBDAddinNewPrdHdr.Help = "MBD 添加ARM模型";
-MBDDocTemplateHeader.MBDAddinNewPrdHdr.ShortHelp = "MBD 添加ARM模型";
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.Title = "MBD 添加ZP模型";
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.Help = "MBD 添加ZP模型";
+MBDDocTemplateHeader.MBDAddinNewPrdHdr.ShortHelp = "MBD 添加ZP模型";
 
 MBDDocTemplateHeader.MBDTechnicInfoHdr.Title = "MBD 技术附注助手";
 MBDDocTemplateHeader.MBDTechnicInfoHdr.Help = "MBD 技术附注助手";
