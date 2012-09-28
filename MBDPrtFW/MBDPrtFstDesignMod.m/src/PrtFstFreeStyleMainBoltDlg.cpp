@@ -65,7 +65,9 @@ PrtFstFreeStyleMainBoltDlg::PrtFstFreeStyleMainBoltDlg() :
  m_lstStrPropertyName[5]=CATUnicodeString("重量（kg）");
  m_lstStrPropertyName[6]=CATUnicodeString("头部直径");
  m_lstStrPropertyName[7]=CATUnicodeString("头部厚度");
- m_lstStrPropertyName[8]=CATUnicodeString("**余量**");
+ m_lstStrPropertyName[8]=CATUnicodeString("边距"); 
+ m_lstStrPropertyName[9]=CATUnicodeString("间距");
+ m_lstStrPropertyName[10]=CATUnicodeString("**余量**");
  //
 
 }
@@ -154,8 +156,8 @@ _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  SearchResultMLTitles[6] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle7");
  SearchResultMLTitles[7] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle8");
  SearchResultMLTitles[8] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle9");*/
- _SearchResultML -> SetColumnTitles(9, m_lstStrPropertyName);
- _SearchResultML -> SetVisibleColumnCount( 9 );
+ _SearchResultML -> SetColumnTitles(11, m_lstStrPropertyName);
+ _SearchResultML -> SetVisibleColumnCount( 11 );
 _SearchResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame04 = new CATDlgFrame(this, "Frame04", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame04 -> SetGridConstraints(3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);

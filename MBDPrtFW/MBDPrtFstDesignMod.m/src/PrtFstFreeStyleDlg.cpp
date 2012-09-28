@@ -62,11 +62,9 @@ PrtFstFreeStyleDlg::PrtFstFreeStyleDlg() :
  m_lstStrPropertyName[2]=CATUnicodeString("头部类型");
  m_lstStrPropertyName[3]=CATUnicodeString("材料");
  m_lstStrPropertyName[4]=CATUnicodeString("表面处理");
- m_lstStrPropertyName[5]=CATUnicodeString("边距"); 
- m_lstStrPropertyName[6]=CATUnicodeString("间距");
- m_lstStrPropertyName[7]=CATUnicodeString("单位制");
- m_lstStrPropertyName[8]=CATUnicodeString("长度计算类型");
- m_lstStrPropertyName[9]=CATUnicodeString("备注");
+ m_lstStrPropertyName[5]=CATUnicodeString("单位制");
+ m_lstStrPropertyName[6]=CATUnicodeString("长度计算类型");
+ m_lstStrPropertyName[7]=CATUnicodeString("备注");
  //
  m_IChoosedIndex = 0;
 
@@ -163,8 +161,8 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  SearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle4");
  SearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle5");
  SearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleDlg", "Frame002.SearchResultsML.ColumnTitle6");*/
- _SearchResultsML -> SetColumnTitles(10, m_lstStrPropertyName);
- _SearchResultsML -> SetVisibleColumnCount( 10 );
+ _SearchResultsML -> SetColumnTitles(8, m_lstStrPropertyName);
+ _SearchResultsML -> SetVisibleColumnCount( 8 );
 _SearchResultsML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame004 = new CATDlgFrame(this, "Frame004", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame004 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
