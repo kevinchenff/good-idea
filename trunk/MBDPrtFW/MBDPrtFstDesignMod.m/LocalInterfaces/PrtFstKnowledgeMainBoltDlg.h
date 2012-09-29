@@ -66,7 +66,7 @@ class PrtFstKnowledgeMainBoltDlg: public CATDlgDialog
 
 
  // Ù–‘Õ∑√˚≥∆
- CATUnicodeString m_lstStrPropertyName[13];
+ CATUnicodeString m_lstStrPropertyName[15];
 
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 };

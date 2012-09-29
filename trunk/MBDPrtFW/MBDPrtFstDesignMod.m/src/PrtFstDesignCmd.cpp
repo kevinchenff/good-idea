@@ -3101,7 +3101,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgSearchResultsMLCB(CATCommand* cmd, 
 		//
 		//
 		CATUnicodeString strLeftValue;
-		m_pFstFreeStyleMainBoltDlg->_SearchResultML->GetColumnItem(8,strLeftValue,ioTabRow[0]);
+		m_pFstFreeStyleMainBoltDlg->_SearchResultML->GetColumnItem(10,strLeftValue,ioTabRow[0]);
 		strLeftValue.ConvertToNum(&m_dLeftCheck,"%lf");
 
 		//获得该行的信息
@@ -6483,7 +6483,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgGoToSearchPBCB(CATCommand* cmd
 					m_plstMainFstResults02.Append(LstStrAtrrValue01);
 
 					//
-					for (int m=0; m<=12; m++)
+					for (int m=0; m<=14; m++)
 					{
 						//
 						if (m_pFstKnowledgeMainBoltDlg->m_lstStrPropertyName[m] == m_lstStrMainFstTitles02[i])
@@ -6501,7 +6501,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgGoToSearchPBCB(CATCommand* cmd
 				}			
 			}
 
-			for (int m=0; m<=12; m++)
+			for (int m=0; m<=14; m++)
 			{
 				//
 				for (int n=1; n<= m_lstStrMainFstTitles01.Size(); n++)
@@ -6543,7 +6543,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgGoToSearchPBCB(CATCommand* cmd
 				double dLeft = dThickLimit-m_dJstThickMax;
 				CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 				//
-				m_pFstKnowledgeMainBoltDlg->_SearchResultsML->SetColumnItem(12,strdLeft,i-1);
+				m_pFstKnowledgeMainBoltDlg->_SearchResultsML->SetColumnItem(14,strdLeft,i-1);
 			}
 		}
 	}
@@ -6839,7 +6839,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgSearchResultsMLCB(CATCommand* 
 		//
 		//
 		CATUnicodeString strLeftValue;
-		m_pFstKnowledgeMainBoltDlg->_SearchResultsML->GetColumnItem(8,strLeftValue,ioTabRow[0]);
+		m_pFstKnowledgeMainBoltDlg->_SearchResultsML->GetColumnItem(14,strLeftValue,ioTabRow[0]);
 		strLeftValue.ConvertToNum(&m_dLeftCheck,"%lf");
 
 		//获得该行的信息
