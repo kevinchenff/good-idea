@@ -70,7 +70,9 @@ PrtFstKnowledgeMainBoltDlg::PrtFstKnowledgeMainBoltDlg() :
  m_lstStrPropertyName[9]=CATUnicodeString("重量（kg）");
  m_lstStrPropertyName[10]=CATUnicodeString("头部直径");
  m_lstStrPropertyName[11]=CATUnicodeString("头部厚度");
- m_lstStrPropertyName[12]=CATUnicodeString("**余量**");
+ m_lstStrPropertyName[12]=CATUnicodeString("边距");
+ m_lstStrPropertyName[13]=CATUnicodeString("间距");
+ m_lstStrPropertyName[14]=CATUnicodeString("**余量**");
  //
 
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
@@ -157,8 +159,8 @@ _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  //SearchResultsMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeMainBoltDlg", "Frame003.SearchResultsML.ColumnTitle4");
  //SearchResultsMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeMainBoltDlg", "Frame003.SearchResultsML.ColumnTitle5");
  //SearchResultsMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstKnowledgeMainBoltDlg", "Frame003.SearchResultsML.ColumnTitle6");
- _SearchResultsML -> SetColumnTitles(13, m_lstStrPropertyName);
- _SearchResultsML -> SetVisibleColumnCount( 13 );
+ _SearchResultsML -> SetColumnTitles(15, m_lstStrPropertyName);
+ _SearchResultsML -> SetVisibleColumnCount( 15 );
 _SearchResultsML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame004 = new CATDlgFrame(this, "Frame004", CATDlgFraNoFrame|CATDlgGridLayout);
 _Frame004 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
