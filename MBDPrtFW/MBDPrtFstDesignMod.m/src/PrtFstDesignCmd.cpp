@@ -3489,7 +3489,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 						m_plstMainFstResults02.Append(LstStrAtrrValue01);
 
 						//
-						for (int m=0; m<=7; m++)
+						for (int m=0; m<=9; m++)
 						{
 							//
 							if (m_pFstFreeStyleMainBoltDlg->m_lstStrPropertyName[m] == m_lstStrMainFstTitles02[i])
@@ -3544,7 +3544,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					double dLeft = dThickLimit-dSTDThick;
 					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 					//
-					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(8,strdLeft,i-1);
+					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
 				}
 			}
 
@@ -3624,7 +3624,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 						m_plstMainFstResults02.Append(LstStrAtrrValue01);
 
 						//
-						for (int m=0; m<=7; m++)
+						for (int m=0; m<=9; m++)
 						{
 							//
 							if (m_pFstFreeStyleMainBoltDlg->m_lstStrPropertyName[m] == m_lstStrMainFstTitles02[i])
@@ -3672,7 +3672,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					double dLeft = dThickLimit-dSTDThick;
 					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 					//
-					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(8,strdLeft,i-1);
+					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
 				}
 			}
 			
@@ -3752,7 +3752,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 						m_plstMainFstResults02.Append(LstStrAtrrValue01);
 
 						//
-						for (int m=0; m<=7; m++)
+						for (int m=0; m<=9; m++)
 						{
 							//
 							if (m_pFstFreeStyleMainBoltDlg->m_lstStrPropertyName[m] == m_lstStrMainFstTitles02[i])
@@ -3800,7 +3800,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					double dLeft = dThickLimit-dSTDThick;
 					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 					//
-					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(8,strdLeft,i-1);
+					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
 				}
 			}
 
@@ -3880,7 +3880,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 						m_plstMainFstResults02.Append(LstStrAtrrValue01);
 
 						//
-						for (int m=0; m<=7; m++)
+						for (int m=0; m<=9; m++)
 						{
 							//
 							if (m_pFstFreeStyleMainBoltDlg->m_lstStrPropertyName[m] == m_lstStrMainFstTitles02[i])
@@ -3928,7 +3928,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					double dLeft = dThickLimit-dSTDThick;
 					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 					//
-					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(8,strdLeft,i-1);
+					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
 				}
 			}
 		}
