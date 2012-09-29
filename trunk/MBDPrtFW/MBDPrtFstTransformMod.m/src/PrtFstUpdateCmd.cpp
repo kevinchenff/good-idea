@@ -547,7 +547,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		if (dThickLimit >= dThick && dThickLimit <= (dThick+1) && dLength >= (dThick+dNutsThick+2))
 		{
 			m_alistSuccessfulSpec.Append(spLine);
-			m_aliststrSuccessfulInfo.Append("螺栓更新成功");
+			m_aliststrSuccessfulInfo.Append("螺栓更新成功，满足安装要求");
 		}
 		else
 		{
