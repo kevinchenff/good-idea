@@ -794,9 +794,39 @@ void MBDPrtAddMaterialCmd::OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt
 		//
 		CATUnicodeString strSize,strTemp01,strTemp02,strTemp03;
 		strTemp01.BuildFromNum(dLength);
+		strTemp01+="mm";
 		strTemp02.BuildFromNum(dWidth);
+		strTemp02+="mm";
 		strTemp03.BuildFromNum(dHeight);
-		strSize = strTemp01+"mm"+"x"+strTemp02+"mm"+"x"+strTemp03 +"mm";
+		strTemp03+="mm";
+		//
+		CATListValCATUnicodeString alststrValue;
+		if (strTemp01 != "0mm")
+		{
+			alststrValue.Append(strTemp01);
+		}
+		if (strTemp02 != "0mm")
+		{
+			alststrValue.Append(strTemp02);
+		}
+		if (strTemp03 != "0mm")
+		{
+			alststrValue.Append(strTemp03);
+		}
+		//
+		for (int i=1; i<=alststrValue.Size(); i++)
+		{
+			//
+			if (i != alststrValue.Size())
+			{
+				strSize += alststrValue[i] + "x";
+			}
+
+			if (i == alststrValue.Size())
+			{
+				strSize += alststrValue[i];
+			}
+		}
 		//
 		m_alsStrMatInfoCATIAValue.Append(strSize);
 		//
