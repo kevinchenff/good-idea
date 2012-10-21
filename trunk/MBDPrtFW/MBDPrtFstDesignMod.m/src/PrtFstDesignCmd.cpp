@@ -2885,7 +2885,7 @@ void PrtFstDesignCmd::FstFreeStyleDlgGoToSearchPBCB(CATCommand* cmd, CATNotifica
 				m_plstMainFstResults01.Append(LstStrAtrrValue01);
 
 				//
-				for (int m=0; m<=7; m++)
+				for (int m=0; m<=6; m++)
 				{
 					//
 					if (m_pFstFreeStyleDlg->m_lstStrPropertyName[m] == m_lstStrMainFstTitles01[i])
@@ -3286,11 +3286,11 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 	if (alststrDetailType[1] == "螺钉")
 	{
 		//夹持厚度过滤
-		CATUnicodeString strThick;
-		strThick.BuildFromNum(m_dJstThickMax+10,"%lf");
-		//
-		CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=<" + strThick;
-		alsStrSearchItemsValue.Append(str03);
+		//CATUnicodeString strThick;
+		//strThick.BuildFromNum(m_dJstThickMax+10,"%lf");
+		////
+		//CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=<" + strThick;
+		//alsStrSearchItemsValue.Append(str03);
 
 		//-------------------------------------------------------------------------------------------------------------
 		//存储搜索得到的Value 
@@ -3405,21 +3405,21 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 			double dSTDLengthMin=0,dSTDLengthMax=0;
 			if (dMin > 4)
 			{
-				dSTDLengthMin = dMin + 1.1*m_dJstThickMax;
+				dSTDLengthMin = (dMin + 1.1*m_dJstThickMax);
 			}
 			else
 			{
-				dSTDLengthMin = dMin + 1.3*m_dJstThickMax;
+				dSTDLengthMin = (dMin + 1.3*m_dJstThickMax);
 			}
 
 			//
 			if (dMax > 4)
 			{
-				dSTDLengthMax = dMax + 1.1*m_dJstThickMax;
+				dSTDLengthMax = (dMax + 1.1*m_dJstThickMax) * 1.2;
 			}
 			else
 			{
-				dSTDLengthMax = dMax + 1.3*m_dJstThickMax;
+				dSTDLengthMax = (dMax + 1.3*m_dJstThickMax) * 1.2;
 			}
 
 			//
@@ -3554,8 +3554,8 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
-			dSTDLengthMin = 1.3*dMin + m_dJstThickMax + m_dFirstPrdThickMax;
-			dSTDLengthMax = 1.3*dMax + m_dJstThickMax + m_dFirstPrdThickMax;
+			dSTDLengthMin = (1.3*dMin + m_dJstThickMax + m_dFirstPrdThickMax);
+			dSTDLengthMax = (1.3*dMax + m_dJstThickMax + m_dFirstPrdThickMax) * 1.2;
 
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
@@ -3682,8 +3682,8 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
-			dSTDLengthMin = 0.6*dMin + m_dJstThickMax;
-			dSTDLengthMax = 0.6*dMax + m_dJstThickMax;
+			dSTDLengthMin = (0.6*dMin + m_dJstThickMax);
+			dSTDLengthMax = (0.6*dMax + m_dJstThickMax) * 1.2;
 
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
@@ -3810,8 +3810,8 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
-			dSTDLengthMin = 0.7*dMin + m_dJstThickMax;
-			dSTDLengthMax = 0.7*dMax + m_dJstThickMax;
+			dSTDLengthMin = (0.7*dMin + m_dJstThickMax);
+			dSTDLengthMax = (0.7*dMax + m_dJstThickMax) * 1.2;
 
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
