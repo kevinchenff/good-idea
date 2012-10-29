@@ -7,6 +7,7 @@ Frame001.Label03.Title = "Thickness of First Layer: ";
 Frame002.Title = "Search Items";
 Frame002.Label04.Title = " <= Diameter <= ";
 Frame002.GoToSearchPB.Title = "Go To Search";
+Frame002.CalLabel.Title = "Revit Length Rule";
 Frame003.Title = "Search Results";
  Frame003.SearchResultML.ColumnTitle1 = "title00";
  Frame003.SearchResultML.ColumnTitle2 = "title01";

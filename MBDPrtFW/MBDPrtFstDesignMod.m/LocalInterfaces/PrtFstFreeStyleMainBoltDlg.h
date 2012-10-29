@@ -57,6 +57,8 @@ class PrtFstFreeStyleMainBoltDlg: public CATDlgDialog
  CATDlgSpinner*      _MinSpinner;
  CATDlgSpinner*      _MaxSpinner;
  CATDlgPushButton*      _GoToSearchPB;
+ CATDlgLabel*      _CalLabel;
+ CATDlgCombo*      _CalCombo;
  CATDlgFrame*      _Frame003;
  CATDlgMultiList*      _SearchResultML;
  CATDlgFrame*      _Frame04;

@@ -48,6 +48,8 @@ PrtFstFreeStyleMainBoltDlg::PrtFstFreeStyleMainBoltDlg() :
  _MinSpinner = NULL;
  _MaxSpinner = NULL;
  _GoToSearchPB = NULL;
+ _CalLabel = NULL;
+ _CalCombo = NULL;
  _Frame003 = NULL;
  _SearchResultML = NULL;
  _Frame04 = NULL;
@@ -93,6 +95,8 @@ PrtFstFreeStyleMainBoltDlg::~PrtFstFreeStyleMainBoltDlg()
  _MinSpinner = NULL;
  _MaxSpinner = NULL;
  _GoToSearchPB = NULL;
+ _CalLabel = NULL;
+ _CalCombo = NULL;
  _Frame003 = NULL;
  _SearchResultML = NULL;
  _Frame04 = NULL;
@@ -134,28 +138,32 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Label04 = new CATDlgLabel(_Frame002, "Label04");
 _Label04 -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _MinSpinner = new CATDlgSpinner(_Frame002, "MinSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
- //_MinSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+//_MinSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
 _MinSpinner -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _MaxSpinner = new CATDlgSpinner(_Frame002, "MaxSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
- //_MaxSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+//_MaxSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
 _MaxSpinner -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
  _GoToSearchPB = new CATDlgPushButton(_Frame002, "GoToSearchPB");
-_GoToSearchPB -> SetGridConstraints(1, 2, 1, 1, CATGRID_4SIDES);
+_GoToSearchPB -> SetGridConstraints(2, 2, 1, 1, CATGRID_4SIDES);
+ _CalLabel = new CATDlgLabel(_Frame002, "CalLabel");
+_CalLabel -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _CalCombo = new CATDlgCombo(_Frame002, "CalCombo", CATDlgCmbDropDown);
+_CalCombo -> SetGridConstraints(1, 2, 1, 1, CATGRID_4SIDES);
  _Frame003 = new CATDlgFrame(this, "Frame003", CATDlgGridLayout);
 _Frame003 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  _Frame003 -> SetGridRowResizable(0,1);
  _Frame003 -> SetGridColumnResizable(0,1);
  _SearchResultML = new CATDlgMultiList(_Frame003, "SearchResultML");
- /*CATUnicodeString SearchResultMLTitles [ 9 ];
- SearchResultMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle1");
- SearchResultMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle2");
- SearchResultMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle3");
- SearchResultMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle4");
- SearchResultMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle5");
- SearchResultMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle6");
- SearchResultMLTitles[6] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle7");
- SearchResultMLTitles[7] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle8");
- SearchResultMLTitles[8] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle9");*/
+ //CATUnicodeString SearchResultMLTitles [ 9 ];
+ //SearchResultMLTitles[0] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle1");
+ //SearchResultMLTitles[1] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle2");
+ //SearchResultMLTitles[2] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle3");
+ //SearchResultMLTitles[3] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle4");
+ //SearchResultMLTitles[4] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle5");
+ //SearchResultMLTitles[5] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle6");
+ //SearchResultMLTitles[6] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle7");
+ //SearchResultMLTitles[7] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle8");
+ //SearchResultMLTitles[8] = CATMsgCatalog::BuildMessage("PrtFstFreeStyleMainBoltDlg", "Frame003.SearchResultML.ColumnTitle9");
  _SearchResultML -> SetColumnTitles(11, m_lstStrPropertyName);
  _SearchResultML -> SetVisibleColumnCount( 11 );
 _SearchResultML -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -181,6 +189,14 @@ _MaxSpinner->SetMinMaxStep(Start, End, StepMM);
 //
 _MinSpinner->SetUnit(CATDlgControl::Millimeter);
 _MaxSpinner->SetUnit(CATDlgControl::Millimeter);
+
+
+//设置铆钉长度计算规格类型
+_CalCombo->SetLine("0-无计算规则");
+_CalCombo->SetLine("1-平墩头铆钉");
+_CalCombo->SetLine("2-");
+_CalCombo->SetLine("3-");
+_CalCombo->SetLine("4-");
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION

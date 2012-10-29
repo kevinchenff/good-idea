@@ -91,6 +91,19 @@ CATDlgSpinner MaxSpinner
 CATDlgPushButton GoToSearchPB
 {
   FATHER = Frame002;
+  GRID = { 2, 2, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel CalLabel
+{
+  FATHER = Frame002;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo CalCombo
+{
+  FATHER = Frame002;
+  STYLE = CATDlgCmbDropDown;
   GRID = { 1, 2, 1, 1, CATGRID_4SIDES };
 }
 
