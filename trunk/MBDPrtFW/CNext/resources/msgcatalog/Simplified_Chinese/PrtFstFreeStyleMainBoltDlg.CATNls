@@ -7,7 +7,17 @@ Frame001.Label03.Title = "第一安装零件厚度: ";
 Frame002.Title = "检索条件";
 Frame002.Label04.Title = " <= 直径 <= ";
 Frame002.GoToSearchPB.Title = "搜索";
+Frame002.CalLabel.Title = "铆钉长度规则";
 Frame003.Title = "检索结果";
+ Frame003.SearchResultML.ColumnTitle1 = "title00";
+ Frame003.SearchResultML.ColumnTitle2 = "title01";
+ Frame003.SearchResultML.ColumnTitle3 = "title02";
+ Frame003.SearchResultML.ColumnTitle4 = "title03";
+ Frame003.SearchResultML.ColumnTitle5 = "title04";
+ Frame003.SearchResultML.ColumnTitle6 = "title05";
+ Frame003.SearchResultML.ColumnTitle7 = "title06";
+ Frame003.SearchResultML.ColumnTitle8 = "title07";
+ Frame003.SearchResultML.ColumnTitle9 = "title08";
 Frame04.LastStepPB.Title = "上一步";
 Frame04.NextStepPB.Title = "下一步";
 // END WIZARD REPLACEMENT ZONE
