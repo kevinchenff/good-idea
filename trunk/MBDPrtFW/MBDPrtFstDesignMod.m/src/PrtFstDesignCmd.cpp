@@ -2936,7 +2936,7 @@ void PrtFstDesignCmd::FstFreeStyleDlgSearchResultsMLCB(CATCommand* cmd, CATNotif
 		//获得该行的信息
 		GetChoosedMLValue(ioTabRow[0]+1,m_plstMainFstResults01,m_lstStrMainFstChoosed01);
 		//
-		CATUnicodeString strType01(""),strType02(""),strType03("");
+		CATUnicodeString strType01(""),strType02("");
 		int selectComboItem = m_pFstFreeStyleDlg->_Combo01->GetSelect();
 		if (selectComboItem != 0)
 		{
@@ -2951,10 +2951,10 @@ void PrtFstDesignCmd::FstFreeStyleDlgSearchResultsMLCB(CATCommand* cmd, CATNotif
 				strType02=m_lstStrMainFstChoosed01[i];
 			}
 			//
-			if (m_lstStrMainFstTitles01[i]=="长度计算类型")
+			/*if (m_lstStrMainFstTitles01[i]=="长度计算类型")
 			{
 				strType03=m_lstStrMainFstChoosed01[i];
-			}
+			}*/
 
 			//
 			if (m_lstStrMainFstTitles01[i]=="头部类型")
@@ -2964,14 +2964,14 @@ void PrtFstDesignCmd::FstFreeStyleDlgSearchResultsMLCB(CATCommand* cmd, CATNotif
 			
 		}
 		//
-		if (strType03 != "")
+	/*	if (strType03 != "")
 		{
 			m_strMainFstTypeFlag = strType01+"|"+strType02+"|"+strType03;
 		} 
 		else
-		{
+		{*/
 			m_strMainFstTypeFlag = strType01+"|"+strType02;
-		}
+		//}
 		
 		//对按钮状态的控制
 		m_pFstFreeStyleDlg->_NextStepPB->SetSensitivity(CATDlgEnable);
@@ -3167,6 +3167,10 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 	//拆分字符串 "F_ATTEX_FSTTYPE" ，获得其类型信息
 	CATListValCATUnicodeString alststrDetailType;
 	CHandleString::StringToVector(m_strMainFstTypeFlag,"|",alststrDetailType);
+	//
+	int iSeleIndex = m_pFstFreeStyleMainBoltDlg->_CalCombo->GetSelect();
+	CATUnicodeString strIndex; strIndex.BuildFromNum(iSeleIndex);
+
 	//----------------------------------------------------
 	//需要按照主紧固件的类型反算夹持信息
 	//----------------------------------------------------
@@ -3398,8 +3402,143 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 
 	if (alststrDetailType[1] == "铆钉")
 	{
+		//
+		CATListValCATUnicodeString alststrDetailTypeTemp;
+		CHandleString::StringToVector(m_strMainFstTypeFlag,"|",alststrDetailTypeTemp);
+		if (alststrDetailTypeTemp.Size() == 2)
+		{
+			//
+			m_strMainFstTypeFlag += "|" + strIndex;
+		} 
+		else
+		{
+			m_strMainFstTypeFlag = "";
+			//
+			for (int i = 1; i < alststrDetailTypeTemp.Size(); i++)
+			{
+				m_strMainFstTypeFlag += alststrDetailTypeTemp[i] + "|";
+			}
+			//
+			m_strMainFstTypeFlag += strIndex;
+
+		}
+
+		//
 		//再细分情况
-		if (alststrDetailType[3] == "1") //平墩头铆钉
+		if (strIndex == "0") //无计算规则
+		{
+			//夹持厚度过滤
+			CATUnicodeString strThick;
+			strThick.BuildFromNum(m_dJstThickMax,"%lf");
+			//
+			CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
+			alsStrSearchItemsValue.Append(str03);
+			//------------------------------------------------------------------------------------------------------
+			//存储搜索得到的Value 
+			CATListValCATUnicodeString strListOfSearchResult;
+			//调用查询接口
+			HRESULT hr = MBDWebservice::QueryDataWebService(alsStrSearchItemsValue,strListOfSearchResult);
+
+			//过滤需要的信息
+			if (SUCCEEDED(hr))
+			{
+				//获得数据条目，及每条目数据个数，分别对应第二、第三，数据内容从第六条开始
+				CATUnicodeString strCount=strListOfSearchResult[2];
+				CATUnicodeString strCutNumb=strListOfSearchResult[3];
+				double dCount=0,dCutNumb=1;
+				strCount.ConvertToNum(&dCount);
+				strCutNumb.ConvertToNum(&dCutNumb);
+				//
+				m_lstStrMainFstTitles02.RemoveAll();
+				CATUnicodeString strValue05=strListOfSearchResult[5];
+				CHandleString::StringToVector(strValue05,"|",m_lstStrMainFstTitles02);
+
+				//清除已有的指针信息
+				for (int k=1;k<=m_plstMainFstResults02.Size();k++)
+				{
+					CATLISTV(CATUnicodeString) * TempLstStr = (CATLISTV(CATUnicodeString) *)m_plstMainFstResults02[k];
+					delete TempLstStr;
+				}
+				m_plstMainFstResults02.RemoveAll();
+
+				//计算以倍数的循环次数
+				int cyclecount = (int)((strListOfSearchResult.Size()-5)/dCutNumb);
+				//
+				if (cyclecount==dCount && dCount!=0)
+				{
+					//
+					for (int i=1; i<=dCutNumb; i++)
+					{
+						//首选创建实例化的数组列
+						CATLISTV(CATUnicodeString) *LstStrAtrrValue01 = new CATLISTV(CATUnicodeString)();
+						//m_pListStrMaterialDetailInfo.Append(LstStrAtrrValue01);
+						//
+						for (int j=1; j<=cyclecount; j++)
+						{
+							//
+							CATUnicodeString strConvert = strListOfSearchResult[(j-1)*dCutNumb+i+5];
+							//
+							if (strConvert == "########")
+							{
+								strConvert = NULL;
+								(*LstStrAtrrValue01).Append(strConvert);
+							}
+							else
+								(*LstStrAtrrValue01).Append(strConvert);
+						}
+
+						//
+						m_plstMainFstResults02.Append(LstStrAtrrValue01);
+
+						//
+						for (int m=0; m<=9; m++)
+						{
+							//
+							if (m_pFstFreeStyleMainBoltDlg->m_lstStrPropertyName[m] == m_lstStrMainFstTitles02[i])
+							{
+								for (int k=1; k<=(*LstStrAtrrValue01).Size(); k++)
+								{
+									m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(m,(*LstStrAtrrValue01)[k]);
+								}
+
+								//
+								break;
+							}				
+						}			
+
+					}			
+				}
+
+				//根据个数，开展循环，计算每一条数据的“**余量**”信息
+				for (int i=1; i<=dCount; i++)
+				{
+					//获得该行的信息
+					CATListValCATUnicodeString lststrMainFstValue;
+					GetChoosedMLValue(i,m_plstMainFstResults02,lststrMainFstValue);
+					//
+					double dThickLimit;
+					//
+					for (int j=1; j<=m_lstStrMainFstTitles02.Size(); j++)
+					{
+						//
+						if (m_lstStrMainFstTitles02[j] == "夹持厚度")
+						{
+							lststrMainFstValue[j].ConvertToNum(&dThickLimit,"%lf");
+							break;
+						}
+
+					}
+					//
+					double dLeft = dThickLimit-m_dJstThickMax;
+					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+					//
+					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+				}
+			}
+		}
+
+		//
+		else if (strIndex == "1") //平墩头铆钉
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
@@ -3550,7 +3689,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 
 		}
 		//
-		else if (alststrDetailType[3] == "2") //压窝铆接平墩头铆钉
+		else if (strIndex == "2") //压窝铆接平墩头铆钉
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
@@ -3678,7 +3817,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 			
 		}
 		//
-		else if (alststrDetailType[3] == "3") //双面沉头铆钉
+		else if (strIndex == "3") //双面沉头铆钉
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
@@ -3806,7 +3945,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 
 		}
 		//
-		else if (alststrDetailType[3] == "4") //平头大圆角铆钉
+		else if (strIndex == "4") //平头大圆角铆钉
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
