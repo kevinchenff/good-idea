@@ -194,9 +194,9 @@ _MaxSpinner->SetUnit(CATDlgControl::Millimeter);
 //设置铆钉长度计算规格类型
 _CalCombo->SetLine("0-无计算规则");
 _CalCombo->SetLine("1-平墩头铆钉");
-_CalCombo->SetLine("2-");
-_CalCombo->SetLine("3-");
-_CalCombo->SetLine("4-");
+_CalCombo->SetLine("2-压窝铆接平墩头铆钉");
+_CalCombo->SetLine("3-双面沉头铆钉");
+_CalCombo->SetLine("4-平头大圆角铆钉");
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
