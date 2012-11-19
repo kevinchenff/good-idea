@@ -1725,7 +1725,25 @@ void PrtFstDesignCmd::CreateFstLineAndCircle()
 		GetStrlistFromListPV(i,m_pListStrSpecialName,lststrJstTypeInfoName);
 		GetStrlistFromListPV(i,m_pListStrSpecialValue,lststrJstTypeInfoValue);
 		//
-		SetOrChangeJstTypeInfo(iospJointGSMTool,m_alistStrFSTName[i],dCountResult, lststrJstTypeInfoName, lststrJstTypeInfoValue);
+		CATListValCATUnicodeString alsstrInfoName,alsstrInfoValue;
+		alsstrInfoName.Append("紧固件标准号");
+		alsstrInfoName.Append("紧固件名称");
+		alsstrInfoName.Append("重量（kg）");
+		//
+		for (int m=1; m<=alsstrInfoName.Size(); m++)
+		{
+			for (int n=1; n<=lststrJstTypeInfoName.Size(); n++)
+			{
+				if (alsstrInfoName[m] == lststrJstTypeInfoName[n])
+				{
+					alsstrInfoValue.Append(lststrJstTypeInfoValue[n]);
+					break;
+				}
+
+			}
+		}
+		//
+		SetOrChangeJstTypeInfo(iospJointGSMTool,m_alistStrFSTName[i],dCountResult, alsstrInfoName, alsstrInfoValue);
 	}
 
 	//提示信息
@@ -4922,7 +4940,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 		double dCheck01=0,dCheck02=0;
 		dCheck01 = m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
 		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
-		if (dCheck02 >=0 && dCheck02 <= 1 && dCheck01 >= 2)
+		if (dCheck02 >=-5 && dCheck02 <= 1 && dCheck01 >= 2)
 		{
 			//
 			m_pFstFreeStyleShelterDlg = new PrtFstFreeStyleShelterDlg();
@@ -4985,7 +5003,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 		double dCheck01=0,dCheck02=0;
 		dCheck01 = m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
 		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
-		if (dCheck02 >=0 && dCheck02 <= 1 && dCheck01 >= 2)
+		if (dCheck02 >=-5 && dCheck02 <= 1 && dCheck01 >= 2)
 		{
 			//
 			//清空
@@ -7441,7 +7459,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgNextStepPBCB(CATCommand* cmd, CA
 		double dCheck01=0,dCheck02=0;
 		dCheck01 = m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
 		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
-		if (dCheck02 >=0 && dCheck02 <= 1 && dCheck01 >= 2)
+		if (dCheck02 >=-5 && dCheck02 <= 1 && dCheck01 >= 2)
 		{
 			//
 			m_pFstKnowledgeShelterDlg = new PrtFstFreeStyleShelterDlg();
@@ -7504,7 +7522,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgNextStepPBCB(CATCommand* cmd, CA
 		double dCheck01=0,dCheck02=0;
 		dCheck01 = m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
 		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
-		if (dCheck02 >=0 && dCheck02 <= 1 && dCheck01 >= 2)
+		if (dCheck02 >=-5 && dCheck02 <= 1 && dCheck01 >= 2)
 		{
 			//
 			//清空
