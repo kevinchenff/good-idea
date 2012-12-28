@@ -468,17 +468,17 @@ HRESULT MBDPrtAddMaterialCmd::SetMaterialProperty(CATIMaterialFeature * &pIMater
 		cout <<"Name: "<<StrParaName<<" "<<"Value: "<<strShow<<endl;
 
 		//
-		if (StrParaName == "Density")
+		if (StrParaName == "Density" || StrParaName == "密度")
 		{
 			spConverter->Valuate(idDensity);
 		}
 		//
-		if (StrParaName == "Poisson Ratio")
+		if (StrParaName == "Poisson Ratio" || StrParaName == "泊松比")
 		{
 			spConverter->Valuate(idPoissonRatio);
 		}
 		//
-		if (StrParaName == "Yield Strength")
+		if (StrParaName == "Yield Strength" || StrParaName == "屈服强度")
 		{
 			spConverter->Valuate(idYieldStrength);
 		}
@@ -561,7 +561,7 @@ HRESULT MBDPrtAddMaterialCmd::GetSelectedMaterialInfo()
 
 	if (strNewMaterial == "N")
 	{
-		m_alsStrMatInfoCATIAValue[4] = "";
+		m_alsStrMatInfoCATIAValue[4] = "无";
 	}
 
 	//获取颜色
@@ -717,10 +717,13 @@ void MBDPrtAddMaterialCmd::AddAuxiliaryMaterialCB(CATCommand* cmd, CATNotificati
 		CATUnicodeString strNewValue;
 		for (int i1=1; i1 <= lststrResult.Size(); i1++)
 		{
-			strNewValue += lststrResult[i1];
-			if (i1 != lststrResult.Size())
+			if (lststrResult[i1] != "无")
 			{
-				strNewValue += "|";
+				strNewValue += lststrResult[i1];
+				if (i1 != lststrResult.Size())
+				{
+					strNewValue += "|";
+				}
 			}
 		}
 		//
@@ -794,22 +797,22 @@ void MBDPrtAddMaterialCmd::OkMatParamDlgCB(CATCommand* cmd, CATNotification* evt
 		//
 		CATUnicodeString strSize,strTemp01,strTemp02,strTemp03;
 		strTemp01.BuildFromNum(dLength);
-		strTemp01+="mm";
+		
 		strTemp02.BuildFromNum(dWidth);
-		strTemp02+="mm";
+		
 		strTemp03.BuildFromNum(dHeight);
-		strTemp03+="mm";
+		
 		//
 		CATListValCATUnicodeString alststrValue;
-		if (strTemp01 != "0mm")
+		if (strTemp01 != "0")
 		{
 			alststrValue.Append(strTemp01);
 		}
-		if (strTemp02 != "0mm")
+		if (strTemp02 != "0")
 		{
 			alststrValue.Append(strTemp02);
 		}
-		if (strTemp03 != "0mm")
+		if (strTemp03 != "0")
 		{
 			alststrValue.Append(strTemp03);
 		}

@@ -3035,6 +3035,22 @@ void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotificati
 		//对按钮状态的控制
 		m_pFstFreeStyleMainBoltDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
 
+		//设置铆钉计算规则按钮的显隐
+		CATUnicodeString strType01("");
+		int selectComboItem = m_pFstFreeStyleDlg->_Combo01->GetSelect();
+		if (selectComboItem != 0)
+		{
+			m_pFstFreeStyleDlg->_Combo01->GetLine(strType01,selectComboItem);
+		}
+		if (strType01 != "铆钉")
+		{
+			m_pFstFreeStyleMainBoltDlg->_CalCombo->SetSensitivity(CATDlgDisable);
+		} 
+		else
+		{
+			m_pFstFreeStyleMainBoltDlg->_CalCombo->SetSensitivity(CATDlgEnable);
+		}
+
 		//
 		// 主对话框的消息响应
 		AddAnalyseNotificationCB (m_pFstFreeStyleMainBoltDlg, 
