@@ -41,7 +41,7 @@ using namespace std;
 PrtFstPointsCmd::PrtFstPointsCmd() :
   CATStateCommand ("PrtFstPointsCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-  ,m_pDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL)
+  ,m_pDlg(NULL),m_pRepeatPanelDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL)
   ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var)
   ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1)
 {
@@ -83,6 +83,12 @@ PrtFstPointsCmd::~PrtFstPointsCmd()
 		m_pDlg=NULL;
 	}
 
+	if (NULL!=m_pRepeatPanelDlg)
+	{
+		m_pRepeatPanelDlg->RequestDelayedDestruction();
+		m_pRepeatPanelDlg=NULL;
+	}
+	
 	if (NULL!=m_pCurveAgt)
 	{
 		m_pCurveAgt->RequestDelayedDestruction();
@@ -118,6 +124,11 @@ void PrtFstPointsCmd::BuildGraph()
 	m_pDlg = new PrtFstPointsDlg();
 	m_pDlg->Build();
 	m_pDlg->SetVisibility(CATDlgShow); 
+	
+	//
+	m_pRepeatPanelDlg = new PrtFstPointRepeatPanelDlg();
+	m_pRepeatPanelDlg->Build();
+	m_pRepeatPanelDlg->SetVisibility(CATDlgShow);
 
 	// 主对话框的消息响应
 	AddAnalyseNotificationCB (m_pDlg, 
@@ -437,6 +448,7 @@ void PrtFstPointsCmd::OnReverseDirePBCB(CATCommand* cmd, CATNotification* evt, C
 
 void PrtFstPointsCmd::CreatePoints()
 {
+	/*
 	//获得状态的所有值
 	//如果选择 间距模式
 	double odGapValue = 0;
@@ -847,4 +859,5 @@ void PrtFstPointsCmd::CreatePoints()
 		//隐藏面
 		PrtService::SetSpecObjShowAttr(m_SpecSurfs,"Hide");
 	}
+	*/
 }

@@ -121,10 +121,10 @@ _CurveSL -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 _SurfSL -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
  _Label007 = new CATDlgLabel(_Frame001, "Label007");
 _Label007 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
- _DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntry);
- _DistanceSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
- _DistanceSpinner -> SetFormat("%d");
-_DistanceSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
+// _DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntry);
+// _DistanceSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+// _DistanceSpinner -> SetFormat("%d");
+//_DistanceSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
  _ReverseDirePB = new CATDlgPushButton(_Frame001, "ReverseDirePB");
 _ReverseDirePB -> SetGridConstraints(2, 2, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
  _Frame010 = new CATDlgFrame(this, "Frame010", CATDlgGridLayout);
@@ -148,9 +148,9 @@ _ExtremityPB -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
 _MiddlePB -> SetGridConstraints(0, 3, 1, 1, CATGRID_4SIDES);
  _Label018 = new CATDlgLabel(_Frame013, "Label018");
 _Label018 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
- _DisToRefSpinner = new CATDlgSpinner(_Frame013, "DisToRefSpinner", CATDlgSpnEntry);
- _DisToRefSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
-_DisToRefSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+// _DisToRefSpinner = new CATDlgSpinner(_Frame013, "DisToRefSpinner", CATDlgSpnEntry);
+// _DisToRefSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+//_DisToRefSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
  _DisToRefInvertPushB = new CATDlgPushButton(_Frame013, "DisToRefInvertPushB");
 _DisToRefInvertPushB -> SetGridConstraints(1, 2, 1, 1, CATGRID_4SIDES);
  _Frame021 = new CATDlgFrame(this, "Frame021", CATDlgFraNoTitle|CATDlgGridLayout);
@@ -165,13 +165,18 @@ _DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntr
 _DistanceSpinner -> SetFormat("%d");
 _DistanceSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
 
-_NumSpinner = new CATDlgSpinner(_Frame009, "NumSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
-_NumSpinner -> SetFormat("%d");
-_NumSpinner -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+_DisToRefSpinner = new CATDlgSpinner(_Frame013, "DisToRefSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+_DisToRefSpinner -> SetFormat("%d");
+_DisToRefSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 
-_PointDistSpinner = new CATDlgSpinner(_Frame009, "PointDistSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
-_PointDistSpinner -> SetFormat("%d");
-_PointDistSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+
+//_NumSpinner = new CATDlgSpinner(_Frame009, "NumSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+//_NumSpinner -> SetFormat("%d");
+//_NumSpinner -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+//
+//_PointDistSpinner = new CATDlgSpinner(_Frame009, "PointDistSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+//_PointDistSpinner -> SetFormat("%d");
+//_PointDistSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 
 //ÉèÖÃ²ÎÊý
 double Start, End, StepMM,StepNum;
@@ -180,60 +185,19 @@ End = 1e+6;
 StepMM = 0.001;
 StepNum = 1;
 //
-_NumSpinner->SetMinMaxStep(Start, End, StepNum);
 _DistanceSpinner->SetMinMaxStep(Start, End, StepMM);
-_PointDistSpinner->SetMinMaxStep(Start, End, StepMM);
+_DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
+
 //
 //_DistanceSpinner->SetMagnitude (CATDlgControl::Length);
 //_PointDistSpinner->SetMagnitude (CATDlgControl::Length);
 //
 _DistanceSpinner->SetUnit(CATDlgControl::Millimeter);
-_PointDistSpinner->SetUnit(CATDlgControl::Millimeter);
+_DisToRefSpinner->SetUnit(CATDlgControl::Millimeter);
 
 _SurfSL->SetLine("No Selection");
 _CurveSL->SetLine("No Selection");
 
-_NumPointRB->SetState(CATDlgCheck,0);
-_PointDistSpinner->SetSensitivity(CATDlgDisable);
-
-//CAA2 WIZARD CALLBACK DECLARATION SECTION
-     AddAnalyseNotificationCB (_DistanceRB, 
-                               _DistanceRB->GetRadBModifyNotification(),
-                               (CATCommandMethod)&PrtFstPointsDlg::OnDistanceRBRadBModifyNotification,
-                               NULL);
-     AddAnalyseNotificationCB (_NumPointRB, 
-                               _NumPointRB->GetRadBModifyNotification(),
-                               (CATCommandMethod)&PrtFstPointsDlg::OnNumPointRBRadBModifyNotification,
-                               NULL);
-//END CAA2 WIZARD CALLBACK DECLARATION SECTION
+_LengthRadioB->SetState(CATDlgCheck,0);
 
 }
-//-------------------------------------------------------------------------
-// Callback on RadBModify of _NumPointRB
-//-------------------------------------------------------------------------
-void PrtFstPointsDlg::OnNumPointRBRadBModifyNotification(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
-{
-  // Add your code here
-	if (_NumPointRB->GetState()==CATDlgCheck)
-	{
-		_PointDistSpinner->SetSensitivity(CATDlgDisable);
-		_NumSpinner->SetSensitivity(CATDlgEnable);
-
-	}
-}
-
-
-//-------------------------------------------------------------------------
-// Callback on RadBModify of _DistanceRB
-//-------------------------------------------------------------------------
-void PrtFstPointsDlg::OnDistanceRBRadBModifyNotification(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
-{
-  // Add your code here
-	if (_DistanceRB->GetState()==CATDlgCheck)
-	{
-		_PointDistSpinner->SetSensitivity(CATDlgEnable);
-		_NumSpinner->SetSensitivity(CATDlgDisable);
-
-	}
-}
-
