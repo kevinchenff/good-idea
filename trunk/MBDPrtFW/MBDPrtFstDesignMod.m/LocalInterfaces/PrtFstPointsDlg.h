@@ -92,12 +92,20 @@ class PrtFstPointsDlg: public CATDlgDialog
  CATDlgSelectorList*      _SurfSL;
  CATDlgLabel*      _Label007;
  CATDlgSpinner*      _DistanceSpinner;
- CATDlgFrame*      _Frame009;
- CATDlgRadioButton*      _NumPointRB;
- CATDlgRadioButton*      _DistanceRB;
- CATDlgSpinner*      _NumSpinner;
- CATDlgSpinner*      _PointDistSpinner;
  CATDlgPushButton*      _ReverseDirePB;
+ CATDlgFrame*      _Frame010;
+ CATDlgSelectorList*      _ContextSelectorList;
+ CATDlgFrame*      _Frame013;
+ CATDlgLabel*      _Label014;
+ CATDlgEditor*      _RefPointEditor;
+ CATDlgPushButton*      _ExtremityPB;
+ CATDlgPushButton*      _MiddlePB;
+ CATDlgLabel*      _Label018;
+ CATDlgSpinner*      _DisToRefSpinner;
+ CATDlgPushButton*      _DisToRefInvertPushB;
+ CATDlgFrame*      _Frame021;
+ CATDlgRadioButton*      _LengthRadioB;
+ CATDlgRadioButton*      _RatioRadioB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 

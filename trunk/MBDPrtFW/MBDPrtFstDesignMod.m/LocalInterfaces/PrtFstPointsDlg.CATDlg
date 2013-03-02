@@ -2,7 +2,7 @@
 CATDlgDialog PrtFstPointsDlg
 {
   STYLE = CATDlgWndBtnOKCancelPreview|CATDlgGridLayout;
-  ROWRES = { 0, 1 };
+  ROWRES = { 0 };
   COLRES = { 0 };
 }
 
@@ -10,7 +10,7 @@ CATDlgFrame Frame001
 {
   FATHER = PrtFstPointsDlg;
   STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
-  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
   COLRES = { 0 };
 }
 
@@ -59,52 +59,100 @@ CATDlgSpinner DistanceSpinner
   GRID = { 2, 1, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgFrame Frame009
+CATDlgPushButton ReverseDirePB
 {
-  FATHER = PrtFstPointsDlg;
-  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
-  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
-  COLRES = { 0, 1 };
+  FATHER = Frame001;
+  GRID = { 2, 2, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM };
 }
 
-CATDlgRadioButton NumPointRB
+CATDlgFrame Frame010
 {
-  FATHER = Frame009;
+  FATHER = PrtFstPointsDlg;
+  STYLE = CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+  ROWRES = { 0 };
+  COLRES = { 0 };
+}
+
+CATDlgSelectorList ContextSelectorList
+{
+  FATHER = Frame010;
+  TH = 4;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgRadioButton DistanceRB
+CATDlgFrame Frame013
 {
-  FATHER = Frame009;
-  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  FATHER = PrtFstPointsDlg;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 2, 3 };
 }
 
-CATDlgSpinner NumSpinner
+CATDlgLabel Label014
 {
-  FATHER = Frame009;
-  STYLE = CATDlgSpnEntry;
-  MIN = 0.000000;
-  MAX = 10.000000;
-  STEP = 10.000000;
-  FORM = "%d";
+  FATHER = Frame013;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor RefPointEditor
+{
+  FATHER = Frame013;
+  STYLE = CATDlgEdtReadOnly;
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgSpinner PointDistSpinner
+CATDlgPushButton ExtremityPB
 {
-  FATHER = Frame009;
+  FATHER = Frame013;
+  GRID = { 0, 2, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton MiddlePB
+{
+  FATHER = Frame013;
+  GRID = { 0, 3, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label018
+{
+  FATHER = Frame013;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner DisToRefSpinner
+{
+  FATHER = Frame013;
   STYLE = CATDlgSpnEntry;
   MIN = 0.000000;
   MAX = 10.000000;
   STEP = 10.000000;
-  FORM = "%d";
   GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgPushButton ReverseDirePB
+CATDlgPushButton DisToRefInvertPushB
+{
+  FATHER = Frame013;
+  GRID = { 1, 2, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame021
 {
   FATHER = PrtFstPointsDlg;
-  GRID = { 2, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM };
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgRadioButton LengthRadioB
+{
+  FATHER = Frame021;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgRadioButton RatioRadioB
+{
+  FATHER = Frame021;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

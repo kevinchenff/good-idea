@@ -44,12 +44,20 @@ PrtFstPointsDlg::PrtFstPointsDlg() :
  _SurfSL = NULL;
  _Label007 = NULL;
  _DistanceSpinner = NULL;
- _Frame009 = NULL;
- _NumPointRB = NULL;
- _DistanceRB = NULL;
- _NumSpinner = NULL;
- _PointDistSpinner = NULL;
  _ReverseDirePB = NULL;
+ _Frame010 = NULL;
+ _ContextSelectorList = NULL;
+ _Frame013 = NULL;
+ _Label014 = NULL;
+ _RefPointEditor = NULL;
+ _ExtremityPB = NULL;
+ _MiddlePB = NULL;
+ _Label018 = NULL;
+ _DisToRefSpinner = NULL;
+ _DisToRefInvertPushB = NULL;
+ _Frame021 = NULL;
+ _LengthRadioB = NULL;
+ _RatioRadioB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -69,12 +77,20 @@ PrtFstPointsDlg::~PrtFstPointsDlg()
  _SurfSL = NULL;
  _Label007 = NULL;
  _DistanceSpinner = NULL;
- _Frame009 = NULL;
- _NumPointRB = NULL;
- _DistanceRB = NULL;
- _NumSpinner = NULL;
- _PointDistSpinner = NULL;
  _ReverseDirePB = NULL;
+ _Frame010 = NULL;
+ _ContextSelectorList = NULL;
+ _Frame013 = NULL;
+ _Label014 = NULL;
+ _RefPointEditor = NULL;
+ _ExtremityPB = NULL;
+ _MiddlePB = NULL;
+ _Label018 = NULL;
+ _DisToRefSpinner = NULL;
+ _DisToRefInvertPushB = NULL;
+ _Frame021 = NULL;
+ _LengthRadioB = NULL;
+ _RatioRadioB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -87,10 +103,9 @@ void PrtFstPointsDlg::Build()
 
 //CAA2 WIZARD WIDGET CONSTRUCTION SECTION
  SetGridRowResizable(0,1);
- SetGridRowResizable(1,1);
  SetGridColumnResizable(0,1);
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgFraNoTitle|CATDlgGridLayout);
-_Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+_Frame001 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame001 -> SetGridColumnResizable(0,1);
  _Label002 = new CATDlgLabel(_Frame001, "Label002");
 _Label002 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
@@ -106,16 +121,44 @@ _CurveSL -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 _SurfSL -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
  _Label007 = new CATDlgLabel(_Frame001, "Label007");
 _Label007 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
- _Frame009 = new CATDlgFrame(this, "Frame009", CATDlgFraNoTitle|CATDlgGridLayout);
-_Frame009 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
- _Frame009 -> SetGridColumnResizable(0,1);
- _Frame009 -> SetGridColumnResizable(1,1);
- _NumPointRB = new CATDlgRadioButton(_Frame009, "NumPointRB");
-_NumPointRB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _DistanceRB = new CATDlgRadioButton(_Frame009, "DistanceRB");
-_DistanceRB -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
- _ReverseDirePB = new CATDlgPushButton(this, "ReverseDirePB");
-_ReverseDirePB -> SetGridConstraints(2, 0, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
+ _DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntry);
+ _DistanceSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+ _DistanceSpinner -> SetFormat("%d");
+_DistanceSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
+ _ReverseDirePB = new CATDlgPushButton(_Frame001, "ReverseDirePB");
+_ReverseDirePB -> SetGridConstraints(2, 2, 1, 1, CATGRID_LEFT|CATGRID_TOP|CATGRID_BOTTOM);
+ _Frame010 = new CATDlgFrame(this, "Frame010", CATDlgGridLayout);
+_Frame010 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame010 -> SetGridRowResizable(0,1);
+ _Frame010 -> SetGridColumnResizable(0,1);
+ _ContextSelectorList = new CATDlgSelectorList(_Frame010, "ContextSelectorList");
+ _ContextSelectorList -> SetVisibleTextHeight(4);
+_ContextSelectorList -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _Frame013 = new CATDlgFrame(this, "Frame013", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame013 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Frame013 -> SetGridColumnResizable(2,1);
+ _Frame013 -> SetGridColumnResizable(3,1);
+ _Label014 = new CATDlgLabel(_Frame013, "Label014");
+_Label014 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _RefPointEditor = new CATDlgEditor(_Frame013, "RefPointEditor", CATDlgEdtReadOnly);
+_RefPointEditor -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
+ _ExtremityPB = new CATDlgPushButton(_Frame013, "ExtremityPB");
+_ExtremityPB -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
+ _MiddlePB = new CATDlgPushButton(_Frame013, "MiddlePB");
+_MiddlePB -> SetGridConstraints(0, 3, 1, 1, CATGRID_4SIDES);
+ _Label018 = new CATDlgLabel(_Frame013, "Label018");
+_Label018 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _DisToRefSpinner = new CATDlgSpinner(_Frame013, "DisToRefSpinner", CATDlgSpnEntry);
+ _DisToRefSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+_DisToRefSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _DisToRefInvertPushB = new CATDlgPushButton(_Frame013, "DisToRefInvertPushB");
+_DisToRefInvertPushB -> SetGridConstraints(1, 2, 1, 1, CATGRID_4SIDES);
+ _Frame021 = new CATDlgFrame(this, "Frame021", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame021 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
+ _LengthRadioB = new CATDlgRadioButton(_Frame021, "LengthRadioB");
+_LengthRadioB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _RatioRadioB = new CATDlgRadioButton(_Frame021, "RatioRadioB");
+_RatioRadioB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 _DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
