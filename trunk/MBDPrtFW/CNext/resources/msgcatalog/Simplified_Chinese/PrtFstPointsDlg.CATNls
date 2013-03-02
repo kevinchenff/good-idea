@@ -10,6 +10,4 @@ Frame013.ExtremityPB.Title = "Extremity";
 Frame013.MiddlePB.Title = "Middle";
 Frame013.Label018.Title = "Dis. To Reference";
 Frame013.DisToRefInvertPushB.Title = "Invert";
-Frame021.LengthRadioB.Title = "Length";
-Frame021.RatioRadioB.Title = "Ratio";
 // END WIZARD REPLACEMENT ZONE

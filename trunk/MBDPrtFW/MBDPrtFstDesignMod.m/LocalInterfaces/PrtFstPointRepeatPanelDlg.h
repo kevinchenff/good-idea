@@ -52,12 +52,10 @@ class PrtFstPointRepeatPanelDlg: public CATDlgDialog
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
- CATDlgLabel*      _Label003;
- CATDlgCombo*      _RepeatTypeCombo;
- CATDlgLabel*      _Label005;
  CATDlgSpinner*      _InstancesSpinner;
- CATDlgLabel*      _Label008;
  CATDlgSpinner*      _PitchSpinner;
+ CATDlgRadioButton*      _InstancesRB;
+ CATDlgRadioButton*      _PitchRB;
  CATDlgFrame*      _Frame002;
  CATDlgLabel*      _Label011;
  CATDlgLabel*      _Label012;

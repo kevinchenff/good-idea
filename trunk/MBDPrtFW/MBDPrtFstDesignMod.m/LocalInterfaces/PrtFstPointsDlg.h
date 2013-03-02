@@ -67,9 +67,6 @@ class PrtFstPointsDlg: public CATDlgDialog
  CATDlgLabel*      _Label018;
  CATDlgSpinner*      _DisToRefSpinner;
  CATDlgPushButton*      _DisToRefInvertPushB;
- CATDlgFrame*      _Frame021;
- CATDlgRadioButton*      _LengthRadioB;
- CATDlgRadioButton*      _RatioRadioB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 
