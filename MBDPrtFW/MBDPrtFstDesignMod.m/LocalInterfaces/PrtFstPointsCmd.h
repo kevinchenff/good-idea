@@ -23,6 +23,7 @@
 #include "CATBoolean.h"
 #include "PrtFstPointsDlg.h"
 #include "CATFeatureImportAgent.h"
+#include "PrtFstPointRepeatPanelDlg.h"
 
 
 //----------------------------------------------------------------------
@@ -74,6 +75,7 @@ class PrtFstPointsCmd: public CATStateCommand
   private:
 
 	  PrtFstPointsDlg *m_pDlg;
+	  PrtFstPointRepeatPanelDlg *m_pRepeatPanelDlg;
 
 	  //ÎÄµµÖ¸Õë
 	  CATDocument *m_piDoc;
