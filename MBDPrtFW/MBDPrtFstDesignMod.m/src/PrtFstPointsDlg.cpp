@@ -55,9 +55,6 @@ PrtFstPointsDlg::PrtFstPointsDlg() :
  _Label018 = NULL;
  _DisToRefSpinner = NULL;
  _DisToRefInvertPushB = NULL;
- _Frame021 = NULL;
- _LengthRadioB = NULL;
- _RatioRadioB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -88,9 +85,6 @@ PrtFstPointsDlg::~PrtFstPointsDlg()
  _Label018 = NULL;
  _DisToRefSpinner = NULL;
  _DisToRefInvertPushB = NULL;
- _Frame021 = NULL;
- _LengthRadioB = NULL;
- _RatioRadioB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -153,12 +147,6 @@ _Label018 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 //_DisToRefSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
  _DisToRefInvertPushB = new CATDlgPushButton(_Frame013, "DisToRefInvertPushB");
 _DisToRefInvertPushB -> SetGridConstraints(1, 2, 1, 1, CATGRID_4SIDES);
- _Frame021 = new CATDlgFrame(this, "Frame021", CATDlgFraNoTitle|CATDlgGridLayout);
-_Frame021 -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
- _LengthRadioB = new CATDlgRadioButton(_Frame021, "LengthRadioB");
-_LengthRadioB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _RatioRadioB = new CATDlgRadioButton(_Frame021, "RatioRadioB");
-_RatioRadioB -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 _DistanceSpinner = new CATDlgSpinner(_Frame001, "DistanceSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
@@ -197,7 +185,5 @@ _DisToRefSpinner->SetUnit(CATDlgControl::Millimeter);
 
 _SurfSL->SetLine("No Selection");
 _CurveSL->SetLine("No Selection");
-
-_LengthRadioB->SetState(CATDlgCheck,0);
 
 }

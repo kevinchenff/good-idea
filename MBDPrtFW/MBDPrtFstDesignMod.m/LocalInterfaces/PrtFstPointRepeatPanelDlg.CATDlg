@@ -10,25 +10,7 @@ CATDlgFrame Frame001
   FATHER = PrtFstPointRepeatPanelDlg;
   STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
   GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgLabel Label003
-{
-  FATHER = Frame001;
-  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgCombo RepeatTypeCombo
-{
-  FATHER = Frame001;
-  STYLE = CATDlgCmbDropDown;
-  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgLabel Label005
-{
-  FATHER = Frame001;
-  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
 }
 
 CATDlgSpinner InstancesSpinner
@@ -38,13 +20,7 @@ CATDlgSpinner InstancesSpinner
   MIN = 0.000000;
   MAX = 10.000000;
   STEP = 10.000000;
-  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgLabel Label008
-{
-  FATHER = Frame001;
-  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgSpinner PitchSpinner
@@ -54,7 +30,19 @@ CATDlgSpinner PitchSpinner
   MIN = 0.000000;
   MAX = 10.000000;
   STEP = 10.000000;
-  GRID = { 2, 1, 1, 1, CATGRID_4SIDES };
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgRadioButton InstancesRB
+{
+  FATHER = Frame001;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgRadioButton PitchRB
+{
+  FATHER = Frame001;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgFrame Frame002

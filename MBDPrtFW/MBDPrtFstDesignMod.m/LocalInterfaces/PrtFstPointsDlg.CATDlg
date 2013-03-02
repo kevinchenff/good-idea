@@ -136,23 +136,4 @@ CATDlgPushButton DisToRefInvertPushB
   GRID = { 1, 2, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgFrame Frame021
-{
-  FATHER = PrtFstPointsDlg;
-  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
-  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgRadioButton LengthRadioB
-{
-  FATHER = Frame021;
-  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
-}
-
-CATDlgRadioButton RatioRadioB
-{
-  FATHER = Frame021;
-  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
-}
-
 // END WIZARD REPLACEMENT ZONE

@@ -37,12 +37,10 @@ PrtFstPointRepeatPanelDlg::PrtFstPointRepeatPanelDlg() :
 {
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
  _Frame001 = NULL;
- _Label003 = NULL;
- _RepeatTypeCombo = NULL;
- _Label005 = NULL;
  _InstancesSpinner = NULL;
- _Label008 = NULL;
  _PitchSpinner = NULL;
+ _InstancesRB = NULL;
+ _PitchRB = NULL;
  _Frame002 = NULL;
  _Label011 = NULL;
  _Label012 = NULL;
@@ -63,12 +61,10 @@ PrtFstPointRepeatPanelDlg::~PrtFstPointRepeatPanelDlg()
 //  --------------------------------------------------
 //CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
  _Frame001 = NULL;
- _Label003 = NULL;
- _RepeatTypeCombo = NULL;
- _Label005 = NULL;
  _InstancesSpinner = NULL;
- _Label008 = NULL;
  _PitchSpinner = NULL;
+ _InstancesRB = NULL;
+ _PitchRB = NULL;
  _Frame002 = NULL;
  _Label011 = NULL;
  _Label012 = NULL;
@@ -90,20 +86,17 @@ void PrtFstPointRepeatPanelDlg::Build()
  SetGridColumnResizable(0,1);
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _Label003 = new CATDlgLabel(_Frame001, "Label003");
-_Label003 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _RepeatTypeCombo = new CATDlgCombo(_Frame001, "RepeatTypeCombo", CATDlgCmbDropDown);
-_RepeatTypeCombo -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
- _Label005 = new CATDlgLabel(_Frame001, "Label005");
-_Label005 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Frame001 -> SetGridColumnResizable(1,1);
  _InstancesSpinner = new CATDlgSpinner(_Frame001, "InstancesSpinner", CATDlgSpnEntry);
  _InstancesSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
-_InstancesSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
- _Label008 = new CATDlgLabel(_Frame001, "Label008");
-_Label008 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+_InstancesSpinner -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _PitchSpinner = new CATDlgSpinner(_Frame001, "PitchSpinner", CATDlgSpnEntry);
  _PitchSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
-_PitchSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
+_PitchSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+ _InstancesRB = new CATDlgRadioButton(_Frame001, "InstancesRB");
+_InstancesRB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _PitchRB = new CATDlgRadioButton(_Frame001, "PitchRB");
+_PitchRB -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridColumnResizable(1,1);
