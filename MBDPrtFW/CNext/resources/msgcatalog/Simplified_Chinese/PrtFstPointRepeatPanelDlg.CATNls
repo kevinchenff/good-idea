@@ -1,0 +1,19 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+Title = "RepeatPanel";
+Frame001.Label003.Title = "Parameters:";
+Frame001.Label005.Title = "Instances:";
+Frame001.Label008.Title = "Pitch:";
+Frame002.Label011.Title = "Ref. End Point:";
+Frame002.Label012.Title = "Spacing To Ref. End Point:";
+Frame002.ExtremityPB.Title = "Extremity";
+CheckB.Title = "With end point";
+// END WIZARD REPLACEMENT ZONE
+
+
+// END WIZARD REPLACEMENT ZONE
+
+
+// END WIZARD REPLACEMENT ZONE
+
+
+// END WIZARD REPLACEMENT ZONE

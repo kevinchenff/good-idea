@@ -1,0 +1,108 @@
+// DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
+CATDlgDialog PrtFstPointRepeatPanelDlg
+{
+  STYLE = CATDlgWndNoButton|CATDlgGridLayout;
+  COLRES = { 0 };
+}
+
+CATDlgFrame Frame001
+{
+  FATHER = PrtFstPointRepeatPanelDlg;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label003
+{
+  FATHER = Frame001;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCombo RepeatTypeCombo
+{
+  FATHER = Frame001;
+  STYLE = CATDlgCmbDropDown;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label005
+{
+  FATHER = Frame001;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner InstancesSpinner
+{
+  FATHER = Frame001;
+  STYLE = CATDlgSpnEntry;
+  MIN = 0.000000;
+  MAX = 10.000000;
+  STEP = 10.000000;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label008
+{
+  FATHER = Frame001;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner PitchSpinner
+{
+  FATHER = Frame001;
+  STYLE = CATDlgSpnEntry;
+  MIN = 0.000000;
+  MAX = 10.000000;
+  STEP = 10.000000;
+  GRID = { 2, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgFrame Frame002
+{
+  FATHER = PrtFstPointRepeatPanelDlg;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+  COLRES = { 1 };
+}
+
+CATDlgLabel Label011
+{
+  FATHER = Frame002;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgLabel Label012
+{
+  FATHER = Frame002;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgSpinner SpaceToRefEndPointSpinner
+{
+  FATHER = Frame002;
+  STYLE = CATDlgSpnEntry;
+  MIN = 0.000000;
+  MAX = 10.000000;
+  STEP = 10.000000;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor RefEndPointExtremityEditor
+{
+  FATHER = Frame002;
+  GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgPushButton ExtremityPB
+{
+  FATHER = Frame002;
+  GRID = { 0, 2, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCheckButton CheckB
+{
+  FATHER = PrtFstPointRepeatPanelDlg;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
+// END WIZARD REPLACEMENT ZONE
