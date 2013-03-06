@@ -34,13 +34,16 @@ PrtFstPointRepeatPanelDlg::PrtFstPointRepeatPanelDlg() :
 "PrtFstPointRepeatPanelDlg",CATDlgWndNoButton|CATDlgGridLayout
 //END CAA2 WIZARD CONSTRUCTOR DECLARATION SECTION
                                )
+							   ,m_IChoosedIndex(0)
 {
 //CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
  _Frame001 = NULL;
  _InstancesSpinner = NULL;
  _PitchSpinner = NULL;
- _InstancesRB = NULL;
- _PitchRB = NULL;
+ _Label013 = NULL;
+ _Label014 = NULL;
+ _Label015 = NULL;
+ _FstTypeCombo = NULL;
  _Frame002 = NULL;
  _Label011 = NULL;
  _Label012 = NULL;
@@ -63,8 +66,10 @@ PrtFstPointRepeatPanelDlg::~PrtFstPointRepeatPanelDlg()
  _Frame001 = NULL;
  _InstancesSpinner = NULL;
  _PitchSpinner = NULL;
- _InstancesRB = NULL;
- _PitchRB = NULL;
+ _Label013 = NULL;
+ _Label014 = NULL;
+ _Label015 = NULL;
+ _FstTypeCombo = NULL;
  _Frame002 = NULL;
  _Label011 = NULL;
  _Label012 = NULL;
@@ -87,16 +92,20 @@ void PrtFstPointRepeatPanelDlg::Build()
  _Frame001 = new CATDlgFrame(this, "Frame001", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Frame001 -> SetGridColumnResizable(1,1);
- _InstancesSpinner = new CATDlgSpinner(_Frame001, "InstancesSpinner", CATDlgSpnEntry);
- _InstancesSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
-_InstancesSpinner -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
- _PitchSpinner = new CATDlgSpinner(_Frame001, "PitchSpinner", CATDlgSpnEntry);
- _PitchSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
-_PitchSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
- _InstancesRB = new CATDlgRadioButton(_Frame001, "InstancesRB");
-_InstancesRB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
- _PitchRB = new CATDlgRadioButton(_Frame001, "PitchRB");
-_PitchRB -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+// _InstancesSpinner = new CATDlgSpinner(_Frame001, "InstancesSpinner", CATDlgSpnEntry);
+// _InstancesSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+//_InstancesSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+// _PitchSpinner = new CATDlgSpinner(_Frame001, "PitchSpinner", CATDlgSpnEntry);
+// _PitchSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+//_PitchSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
+ _Label013 = new CATDlgLabel(_Frame001, "Label013");
+_Label013 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _Label014 = new CATDlgLabel(_Frame001, "Label014");
+_Label014 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _Label015 = new CATDlgLabel(_Frame001, "Label015");
+_Label015 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _FstTypeCombo = new CATDlgCombo(_Frame001, "FstTypeCombo", CATDlgCmbDropDown);
+_FstTypeCombo -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _Frame002 = new CATDlgFrame(this, "Frame002", CATDlgFraNoTitle|CATDlgGridLayout);
 _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
  _Frame002 -> SetGridColumnResizable(1,1);
@@ -104,9 +113,9 @@ _Frame002 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 _Label011 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
  _Label012 = new CATDlgLabel(_Frame002, "Label012");
 _Label012 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
- _SpaceToRefEndPointSpinner = new CATDlgSpinner(_Frame002, "SpaceToRefEndPointSpinner", CATDlgSpnEntry);
- _SpaceToRefEndPointSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
-_SpaceToRefEndPointSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+// _SpaceToRefEndPointSpinner = new CATDlgSpinner(_Frame002, "SpaceToRefEndPointSpinner", CATDlgSpnEntry);
+// _SpaceToRefEndPointSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+//_SpaceToRefEndPointSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
  _RefEndPointExtremityEditor = new CATDlgEditor(_Frame002, "RefEndPointExtremityEditor");
 _RefEndPointExtremityEditor -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _ExtremityPB = new CATDlgPushButton(_Frame002, "ExtremityPB");
@@ -115,8 +124,76 @@ _ExtremityPB -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
 _CheckB -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
+_InstancesSpinner = new CATDlgSpinner(_Frame001, "InstancesSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+_InstancesSpinner -> SetFormat("%d");
+_InstancesSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+_PitchSpinner = new CATDlgSpinner(_Frame001, "PitchSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+_PitchSpinner ->  SetFormat("%d");
+_PitchSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
+_SpaceToRefEndPointSpinner = new CATDlgSpinner(_Frame002, "SpaceToRefEndPointSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
+_SpaceToRefEndPointSpinner -> SetFormat("%d");
+_SpaceToRefEndPointSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+
+//
+_FstTypeCombo->SetLine("安装点个数模式");
+_FstTypeCombo->SetLine("安装点间距模式");
+_FstTypeCombo->SetLine("个数&间距模式");
+
+//设置参数
+double Start, End, StepMM,StepNum;
+Start = 0.0;
+End = 1e+6;
+StepMM = 0.001;
+StepNum = 1;
+//
+_InstancesSpinner->SetMinMaxStep(Start, End, StepNum);
+_PitchSpinner->SetMinMaxStep(Start, End, StepMM);
+_PitchSpinner->SetUnit(CATDlgControl::Millimeter);
+_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
+_SpaceToRefEndPointSpinner->SetUnit(CATDlgControl::Millimeter);
+
+//初始化状态
+_PitchSpinner->SetSensitivity(CATDlgDisable);
+_CheckB->SetState(CATDlgCheck,0);
+
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
+
+
+//对第一个COMBO设置单独的响应函数
+AddAnalyseNotificationCB (_FstTypeCombo,_FstTypeCombo->GetComboSelectNotification(),
+						  (CATCommandMethod)&PrtFstPointRepeatPanelDlg::FstTypeComboItemCB,NULL);
+
 //END CAA2 WIZARD CALLBACK DECLARATION SECTION
 
 }
 
+
+//-------------------------------------------------------------------------
+// Callback on RadBModify of _InstancesRB
+//-------------------------------------------------------------------------
+CATBoolean PrtFstPointRepeatPanelDlg::FstTypeComboItemCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+  // Add your code here
+	//获得第一个COMBO所选的内容
+	int tempIndex;
+	tempIndex = _FstTypeCombo->GetSelect();
+	m_IChoosedIndex=tempIndex;
+	//
+	if (tempIndex == 0)
+	{
+		_PitchSpinner->SetSensitivity(CATDlgDisable);
+		_InstancesSpinner->SetSensitivity(CATDlgEnable);
+	}
+	else if (tempIndex == 1)
+	{
+		_PitchSpinner->SetSensitivity(CATDlgEnable);
+		_InstancesSpinner->SetSensitivity(CATDlgDisable);
+	}
+	else if (tempIndex == 2)
+	{
+		_PitchSpinner->SetSensitivity(CATDlgEnable);
+		_InstancesSpinner->SetSensitivity(CATDlgEnable);
+	}
+
+	return TRUE;
+}

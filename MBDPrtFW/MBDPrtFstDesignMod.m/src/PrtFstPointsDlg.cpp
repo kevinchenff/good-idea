@@ -157,14 +157,8 @@ _DisToRefSpinner = new CATDlgSpinner(_Frame013, "DisToRefSpinner", CATDlgSpnEntr
 _DisToRefSpinner -> SetFormat("%d");
 _DisToRefSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 
-
-//_NumSpinner = new CATDlgSpinner(_Frame009, "NumSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
-//_NumSpinner -> SetFormat("%d");
-//_NumSpinner -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
 //
-//_PointDistSpinner = new CATDlgSpinner(_Frame009, "PointDistSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
-//_PointDistSpinner -> SetFormat("%d");
-//_PointDistSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
+_ContextSelectorList->SetLine("请选择连接零件");
 
 //设置参数
 double Start, End, StepMM,StepNum;
@@ -185,5 +179,8 @@ _DisToRefSpinner->SetUnit(CATDlgControl::Millimeter);
 
 _SurfSL->SetLine("No Selection");
 _CurveSL->SetLine("No Selection");
+
+this->SetOKSensitivity(CATDlgDisable);
+this->SetPREVIEWSensitivity(CATDlgDisable);
 
 }

@@ -33,6 +33,8 @@ using namespace std;
 #include "CATIGSMCurvePar.h"
 #include "CATIMeasurableCurve.h"
 #include "CATIGSMExtremum.h"
+#include "CATAcquisitionFilter.h"
+
 
 
 //-------------------------------------------------------------------------
@@ -41,7 +43,7 @@ using namespace std;
 PrtFstPointsCmd::PrtFstPointsCmd() :
   CATStateCommand ("PrtFstPointsCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
-  ,m_pDlg(NULL),m_pRepeatPanelDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL)
+  ,m_pDlg(NULL),m_pRepeatPanelDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL),m_piPrdAgt(NULL),m_piPrdSLAgt(NULL)
   ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var)
   ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1)
 {
@@ -112,6 +114,18 @@ PrtFstPointsCmd::~PrtFstPointsCmd()
 		m_pSurfSLAgt->RequestDelayedDestruction();
 		m_pSurfSLAgt=NULL;
 	}
+
+	if (NULL!=m_piPrdSLAgt)
+	{
+		m_piPrdSLAgt->RequestDelayedDestruction();
+		m_piPrdSLAgt=NULL;
+	}
+
+	if (NULL!=m_piPrdAgt)
+	{
+		m_piPrdAgt->RequestDelayedDestruction();
+		m_piPrdAgt=NULL;
+	}
 }
 
 
@@ -156,6 +170,13 @@ void PrtFstPointsCmd::BuildGraph()
 		(CATCommandMethod)&PrtFstPointsCmd::OnReverseDirePBCB,
 		NULL);
 
+	//创建prd代理
+	m_piPrdAgt = new CATPathElementAgent("选择连接零件");
+	m_piPrdAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
+	m_piPrdAgt -> AddElementType (IID_CATIProduct);
+	CATAcquisitionFilter * pFilterForPrt = Filter((FilterMethod) & PrtFstPointsCmd::SeletedIsPart,(void*)NULL);
+	m_piPrdAgt->SetFilter(pFilterForPrt);
+
 	//创建边线代理
 	m_pCurveAgt = new CATFeatureImportAgent("选择边线");
 	m_pCurveAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSO | CATDlgEngRepeat );
@@ -170,6 +191,11 @@ void PrtFstPointsCmd::BuildGraph()
 	m_pSurfAgt -> AddElementType (IID_CATIMfBiDimResult);
 	m_pSurfAgt -> AddElementType (IID_CATSurface);
 
+	//Surf SL
+	m_piPrdSLAgt = new CATDialogAgent("选择连接零件SL");
+	m_piPrdSLAgt->SetBehavior(CATDlgEngRepeat);
+	m_piPrdSLAgt->AcceptOnNotify(m_pDlg->_ContextSelectorList,m_pDlg->_ContextSelectorList->GetListSelectNotification());
+
 	//Curve SL
 	m_pCurveSLAgt = new CATDialogAgent("选择边线SL");
 	m_pCurveSLAgt->SetBehavior(CATDlgEngRepeat);
@@ -182,24 +208,58 @@ void PrtFstPointsCmd::BuildGraph()
 
 
 	//Define the StateChart
-	CATDialogState * StSelectCurve = GetInitialState("选择边线");
+	CATDialogState * StSelectPrds = GetInitialState("选择连接零件");
+	StSelectPrds -> AddDialogAgent (m_piPrdAgt);
+	StSelectPrds -> AddDialogAgent (m_piPrdSLAgt);
+	StSelectPrds -> AddDialogAgent (m_pCurveSLAgt);
+	StSelectPrds -> AddDialogAgent (m_pSurfSLAgt);	
+
+	CATDialogState * StSelectCurve = AddDialogState("选择边线");
 	StSelectCurve -> AddDialogAgent (m_pCurveAgt);
 	StSelectCurve -> AddDialogAgent (m_pCurveSLAgt);
 	StSelectCurve -> AddDialogAgent (m_pSurfSLAgt);
+	StSelectCurve -> AddDialogAgent (m_piPrdSLAgt);
 
 	CATDialogState * StSelectSurf = AddDialogState("选择安装面");
 	StSelectSurf -> AddDialogAgent (m_pSurfAgt);
 	StSelectSurf -> AddDialogAgent (m_pCurveSLAgt);
 	StSelectSurf -> AddDialogAgent (m_pSurfSLAgt);
+	StSelectSurf -> AddDialogAgent (m_piPrdSLAgt);
+
+	//转换关系 Prd Prd
+	AddTransition(StSelectPrds,StSelectPrds,
+		IsLastModifiedAgentCondition(m_piPrdAgt),
+		Action ((ActionMethod) &PrtFstPointsCmd::ChoosePrds));
+	//转换关系 Prd PrdSL
+	AddTransition(StSelectPrds,StSelectPrds,
+		IsLastModifiedAgentCondition(m_piPrdSLAgt),
+		Action ((ActionMethod) &PrtFstPointsCmd::ActivePrdSL));
+	//转换关系 Prd 线SL
+	AddTransition(StSelectPrds,StSelectCurve,
+		IsLastModifiedAgentCondition(m_pCurveSLAgt),
+		Action ((ActionMethod) &PrtFstPointsCmd::ActiveCurveSL));
+	//转换关系 Prd 面SL
+	AddTransition(StSelectPrds,StSelectSurf,
+		IsLastModifiedAgentCondition(m_pSurfSLAgt),
+		Action ((ActionMethod) &PrtFstPointsCmd::ActiveSurfSL));
 
 	//转换关系 线到线
 	AddTransition(StSelectCurve, StSelectCurve, 
 		IsLastModifiedAgentCondition(m_pCurveAgt),
 		Action ((ActionMethod) &PrtFstPointsCmd::ChooseCurve));
-	//转换关系 线到线
+	//转换关系 线到线SL
 	AddTransition(StSelectCurve, StSelectCurve, 
 		IsLastModifiedAgentCondition(m_pCurveSLAgt),
 		Action ((ActionMethod) &PrtFstPointsCmd::ActiveCurveSL));
+	//转换关系 线到PrdSL
+	AddTransition(StSelectCurve, StSelectPrds, 
+		IsLastModifiedAgentCondition(m_piPrdSLAgt),
+		Action ((ActionMethod) &PrtFstPointsCmd::ActivePrdSL));
+	//转换关系 线到面SL
+	AddTransition(StSelectCurve, StSelectSurf, 
+		IsLastModifiedAgentCondition(m_pSurfSLAgt),
+		Action ((ActionMethod) &PrtFstPointsCmd::ActiveSurfSL));
+
 
 	//转换关系 面到面
 	AddTransition(StSelectSurf, StSelectSurf, 
@@ -209,16 +269,92 @@ void PrtFstPointsCmd::BuildGraph()
 	AddTransition(StSelectSurf, StSelectSurf, 
 		IsLastModifiedAgentCondition(m_pSurfSLAgt),
 		Action ((ActionMethod) &PrtFstPointsCmd::ActiveSurfSL));
-
-	//转换关系 面到线
+	//转换关系 面到线SL
 	AddTransition(StSelectSurf, StSelectCurve, 
 		IsLastModifiedAgentCondition(m_pCurveSLAgt),
 		Action ((ActionMethod) &PrtFstPointsCmd::ActiveCurveSL));
-	//转换关系 线到面
-	AddTransition(StSelectCurve,StSelectSurf, 
-		IsLastModifiedAgentCondition(m_pSurfSLAgt),
-		Action ((ActionMethod) &PrtFstPointsCmd::ActiveSurfSL));
+	//转换关系 面到PrdSL
+	AddTransition(StSelectSurf, StSelectPrds, 
+		IsLastModifiedAgentCondition(m_piPrdSLAgt),
+		Action ((ActionMethod) &PrtFstPointsCmd::ActivePrdSL));
 	
+	
+}
+
+CATBoolean PrtFstPointsCmd::SeletedIsPart(CATDialogAgent * iAgent, void * iUsefulData)
+{
+	CATBoolean rc = FALSE ;
+	if ( NULL == iAgent ) return rc ;
+
+	CATBaseUnknown* piSelectElement =m_piPrdAgt->GetElementValue();//获得所选对象
+	if (piSelectElement != NULL)
+	{
+		CATIProduct_var spPrd = NULL_var;
+		spPrd = piSelectElement;
+
+		CATUnicodeString strDocType("");
+		PrdService::GetInstPrdType(spPrd,strDocType);
+
+		if (strDocType == "CATPart")
+		{
+			return TRUE;
+		}
+	}
+
+	return rc;
+}
+
+
+CATBoolean PrtFstPointsCmd::ActivePrdSL( void *UsefulData)
+{
+	m_pDlg->_SurfSL->ClearSelect();
+	m_pDlg->_CurveSL->ClearSelect();
+
+	//清除高亮
+	PrtService::ClearHSO();
+	//加入需要高亮的特征
+	ShowSeletedLine(m_pDlg->_ContextSelectorList,m_lstSpecPrds);
+
+	m_piPrdAgt->InitializeAcquisition();
+	return TRUE;
+}
+
+//高亮显示当前所选行
+void PrtFstPointsCmd::ShowSeletedLine(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs)
+{
+	//如果为空，直接退出
+	if (olstSpecs.Size() == 0)
+	{
+		return;
+	}
+	//获取所选行
+	int NumberOfRowsSelected;
+	NumberOfRowsSelected = opiSL->GetSelectCount();
+
+	int *iSelectedRows = new int[NumberOfRowsSelected];
+	opiSL->GetSelect(iSelectedRows,NumberOfRowsSelected);
+
+	//重新添加高亮
+	for (int i = 0; i < NumberOfRowsSelected; i ++)
+	{
+		PrtService::HighlightHSO(olstSpecs[iSelectedRows[i]+1]);
+	}
+}
+
+//转变OK APPLY按钮的显示状态
+void PrtFstPointsCmd::ChangeOKApplyState()
+{
+	//控制APPLY&OK状态
+	if (m_lstSpecCurves.Size()!=0 && m_lstSpecPrds.Size()!=0 && m_SpecSurfs!=NULL_var)
+	{
+		m_pDlg->SetOKSensitivity(CATDlgEnable);
+		m_pDlg->SetPREVIEWSensitivity(CATDlgEnable);
+	}
+	else
+	{
+		m_pDlg->SetOKSensitivity(CATDlgDisable);
+		m_pDlg->SetPREVIEWSensitivity(CATDlgDisable);
+	}
 }
 
 //消息框响应函数
@@ -245,6 +381,86 @@ void PrtFstPointsCmd::CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATComma
 	}
 
 	RequestDelayedDestruction();
+}
+
+//
+//响应
+CATBoolean PrtFstPointsCmd::ChoosePrds( void *UsefulData)
+{
+	HRESULT hr = E_FAIL;
+
+	CATPathElement* piSelectElement =m_piPrdAgt->GetValue();//获得所选对象
+	if (piSelectElement != NULL)
+	{
+		//获得SUB PATH
+		CATBaseUnknown * pLeaf =NULL ;
+		//获得路径下第一个特征spec类型
+		pLeaf = (*piSelectElement)[piSelectElement->GetSize()-1];
+		CATISpecObject_var spSpecOnSelection = NULL_var;
+		spSpecOnSelection = pLeaf;
+
+		if ( spSpecOnSelection != NULL_var )
+		{
+			CATBoolean existFlag = FALSE;
+			for (int i = 1; i <= m_lstSpecPrds.Size(); i ++)
+			{
+				if (m_lstSpecPrds[i] == spSpecOnSelection)
+				{
+					m_lstSpecPrds.RemoveValue(spSpecOnSelection);
+					existFlag = TRUE;
+					break;
+				}
+			}
+
+			if (existFlag == FALSE)
+			{
+				CATDocument* opiPrdDoc = NULL;
+				PrdService::GetInstPrdDoc(spSpecOnSelection,opiPrdDoc);
+				CATUnicodeString strPrdName;
+				PrtService::GetPrdNumberFormDoc(opiPrdDoc,strPrdName);
+
+				if (IsThisZPPrt(strPrdName))
+				{
+					PrtService::ktWarningMsgBox("不能选择ZP模型为安装零件，请重新选择！");
+					PrtService::RemoveHSO(spSpecOnSelection);
+				}
+				else
+					m_lstSpecPrds.Append(spSpecOnSelection);				
+			}
+
+			m_pDlg->_ContextSelectorList->ClearLine();
+			for (int i = 1; i <= m_lstSpecPrds.Size(); i ++)
+			{
+				//
+				CATUnicodeString strShowPath("");
+				CATPathElement *piPath = NULL;
+				PrtService::GetPathElementFromSpecObject(piPath,m_lstSpecPrds[i],NULL);
+				PrtService::PathElementString(piPath,strShowPath,TRUE);
+				m_pDlg->_ContextSelectorList->SetLine(strShowPath);
+
+				piPath->Release();
+				piPath=NULL;
+			}
+
+			if (m_lstSpecPrds.Size()==0)
+			{
+				m_pDlg->_ContextSelectorList->SetLine("请选择连接零件");
+			}
+		}
+	}
+
+	//
+	m_pDlg->_SurfSL->ClearSelect();
+	m_pDlg->_CurveSL->ClearSelect();
+
+	//
+	PrtService::ClearHSO();
+	PrtService::HighLightObjLst(m_lstSpecPrds);
+
+	//
+	ChangeOKApplyState();
+	m_piPrdAgt->InitializeAcquisition();
+	return TRUE;	
 }
 
 //
@@ -312,9 +528,12 @@ CATBoolean PrtFstPointsCmd::ChooseCurve( void *UsefulData)
 	//
 	m_pDlg->_SurfSL->ClearSelect();
 	
+	//
+	ChangeOKApplyState();
 	m_pCurveAgt->InitializeAcquisition();
 	return TRUE;
 }
+
 CATBoolean PrtFstPointsCmd::ChooseSurf( void *UsefulData)
 {
 	HRESULT hr = E_FAIL;
@@ -371,6 +590,8 @@ CATBoolean PrtFstPointsCmd::ChooseSurf( void *UsefulData)
 	//
 	m_pDlg->_CurveSL->ClearSelect();
 
+	//
+	ChangeOKApplyState();
 	m_pSurfAgt->InitializeAcquisition();
 	return TRUE;
 }
@@ -383,6 +604,7 @@ CATBoolean PrtFstPointsCmd::ActiveCurveSL( void *UsefulData)
 
 	//
 	m_pDlg->_SurfSL->ClearSelect();
+	m_pDlg->_ContextSelectorList->ClearSelect();
 
 	m_pCurveAgt->InitializeAcquisition();
 	return TRUE;
@@ -395,6 +617,7 @@ CATBoolean PrtFstPointsCmd::ActiveSurfSL( void *UsefulData)
 
 	//
 	m_pDlg->_CurveSL->ClearSelect();
+	m_pDlg->_ContextSelectorList->ClearSelect();
 
 	m_pSurfAgt->InitializeAcquisition();
 	return TRUE;

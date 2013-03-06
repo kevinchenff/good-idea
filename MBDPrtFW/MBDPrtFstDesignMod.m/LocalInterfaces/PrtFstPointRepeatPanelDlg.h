@@ -44,18 +44,19 @@ class PrtFstPointRepeatPanelDlg: public CATDlgDialog
 
   void Build ();
 
-
-  protected:
-
-  private:
+  CATBoolean FstTypeComboItemCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  
+ //private:
 
 
 //CAA2 WIZARD WIDGET DECLARATION SECTION
  CATDlgFrame*      _Frame001;
  CATDlgSpinner*      _InstancesSpinner;
  CATDlgSpinner*      _PitchSpinner;
- CATDlgRadioButton*      _InstancesRB;
- CATDlgRadioButton*      _PitchRB;
+ CATDlgLabel*      _Label013;
+ CATDlgLabel*      _Label014;
+ CATDlgLabel*      _Label015;
+ CATDlgCombo*      _FstTypeCombo;
  CATDlgFrame*      _Frame002;
  CATDlgLabel*      _Label011;
  CATDlgLabel*      _Label012;
@@ -66,19 +67,8 @@ class PrtFstPointRepeatPanelDlg: public CATDlgDialog
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
+ int m_IChoosedIndex;
 
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
-
-
-//END CAA2 WIZARD WIDGET DECLARATION SECTION
 };
 
 //----------------------------------------------------------------------
