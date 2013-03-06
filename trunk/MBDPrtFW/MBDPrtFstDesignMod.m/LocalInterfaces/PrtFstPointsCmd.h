@@ -61,16 +61,25 @@ class PrtFstPointsCmd: public CATStateCommand
   void OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void OnReverseDirePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
   //
+  void ShowSeletedLine(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
+  //
+  void ChangeOKApplyState();
 
+  //选择
+  CATBoolean ChoosePrds( void *UsefulData);
   CATBoolean ChooseCurve( void *UsefulData);
   CATBoolean ChooseSurf( void *UsefulData);
-  //
+  //激活
+  CATBoolean ActivePrdSL( void *UsefulData);
   CATBoolean ActiveCurveSL( void *UsefulData);
   CATBoolean ActiveSurfSL( void *UsefulData);
   //
   BOOL IsThisZPPrt(CATUnicodeString istrDocName);
   //
   void CreatePoints();
+
+  //选择Filter
+  CATBoolean SeletedIsPart(CATDialogAgent * iAgent, void * iUsefulData);
   
   private:
 
@@ -82,10 +91,12 @@ class PrtFstPointsCmd: public CATStateCommand
 	  CATUnicodeString m_strDocName;
 
 	  //定义代理
+	  CATPathElementAgent *m_piPrdAgt;
 	  CATFeatureImportAgent *m_pCurveAgt,*m_pSurfAgt;
-	  CATDialogAgent *m_pCurveSLAgt,*m_pSurfSLAgt;
+	  CATDialogAgent *m_pCurveSLAgt,*m_pSurfSLAgt,*m_piPrdSLAgt;
 
 	  //定义数据列表环境变量
+	  CATListValCATISpecObject_var m_lstSpecPrds;
 	  CATListValCATISpecObject_var m_lstSpecCurves;
 	  CATISpecObject_var m_SpecSurfs;
 

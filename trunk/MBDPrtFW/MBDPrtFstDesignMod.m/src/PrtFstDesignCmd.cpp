@@ -1167,7 +1167,7 @@ CATBoolean PrtFstDesignCmd::ChoosePrds( void *UsefulData)
 
 	//
 	ChangeOKApplyState();
-	m_piFirstSurfAgt->InitializeAcquisition();
+	m_piPrdAgt->InitializeAcquisition();
 	return TRUE;	
 }
 
