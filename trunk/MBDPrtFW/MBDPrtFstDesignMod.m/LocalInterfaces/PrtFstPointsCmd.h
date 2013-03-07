@@ -58,8 +58,20 @@ class PrtFstPointsCmd: public CATStateCommand
   void OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   void CloseDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //
+  //安装线偏移反向按钮响应
+  void OnReverseOffsetDirePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  //参考极值点转换按钮响应
+  void OnRefPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  //参考中心点转换按钮响应
+  void OnRefPointMiddlePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  //参考点距离模式下反向按钮响应
+  void OnDisToRefInvertPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  //Ref End Point反向按钮响应
+  void OnRefEndPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  //
+  //预览模式按钮
   void OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
-  void OnReverseDirePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+
   //
   void ShowSeletedLine(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
   //

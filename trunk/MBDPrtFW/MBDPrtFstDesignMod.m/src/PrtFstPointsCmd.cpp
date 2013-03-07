@@ -165,11 +165,34 @@ void PrtFstPointsCmd::BuildGraph()
 		(CATCommandMethod)&PrtFstPointsCmd::OnPREVIEWCB,
 		NULL);
 
+
+	// 安装线偏移反向按钮响应
 	AddAnalyseNotificationCB (m_pDlg->_ReverseDirePB, 
 		m_pDlg->_ReverseDirePB->GetPushBActivateNotification(),
-		(CATCommandMethod)&PrtFstPointsCmd::OnReverseDirePBCB,
+		(CATCommandMethod)&PrtFstPointsCmd::OnReverseOffsetDirePBCB,
+		NULL);
+	// 参考极值点转换按钮响应
+	AddAnalyseNotificationCB (m_pDlg->_ExtremityPB, 
+		m_pDlg->_ExtremityPB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OnRefPointExtremityPBCB,
+		NULL);
+	// 参考中心点转换按钮响应
+	AddAnalyseNotificationCB (m_pDlg->_MiddlePB, 
+		m_pDlg->_MiddlePB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OnRefPointMiddlePBCB,
+		NULL);
+	// 参考点距离模式下反向按钮响应
+	AddAnalyseNotificationCB (m_pDlg->_DisToRefInvertPushB, 
+		m_pDlg->_DisToRefInvertPushB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OnDisToRefInvertPBCB,
+		NULL);
+	//Ref End Point反向按钮响应
+	AddAnalyseNotificationCB (m_pRepeatPanelDlg->_ExtremityPB, 
+		m_pRepeatPanelDlg->_ExtremityPB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OnRefEndPointExtremityPBCB,
 		NULL);
 
+	//
 	//创建prd代理
 	m_piPrdAgt = new CATPathElementAgent("选择连接零件");
 	m_piPrdAgt -> SetBehavior( CATDlgEngWithPrevaluation | CATDlgEngWithPSOHSO | CATDlgEngRepeat  );
@@ -627,7 +650,9 @@ void PrtFstPointsCmd::OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATComm
 {
 	CreatePoints();	
 }
-void PrtFstPointsCmd::OnReverseDirePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+
+//安装线偏移反向按钮响应
+void PrtFstPointsCmd::OnReverseOffsetDirePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
 	//
 	if (m_spCurvePar!=NULL_var)
@@ -668,6 +693,29 @@ void PrtFstPointsCmd::OnReverseDirePBCB(CATCommand* cmd, CATNotification* evt, C
 	}
 	//
 }
+
+//参考极值点转换按钮响应
+void PrtFstPointsCmd::OnRefPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+//参考中心点转换按钮响应
+void PrtFstPointsCmd::OnRefPointMiddlePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+//参考点距离模式下反向按钮响应
+void PrtFstPointsCmd::OnDisToRefInvertPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+//Ref End Point反向按钮响应
+void PrtFstPointsCmd::OnRefEndPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+
+//
 
 void PrtFstPointsCmd::CreatePoints()
 {

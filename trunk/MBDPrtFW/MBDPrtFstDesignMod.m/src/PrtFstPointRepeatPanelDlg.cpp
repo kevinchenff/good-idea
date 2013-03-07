@@ -141,15 +141,15 @@ _FstTypeCombo->SetLine("个数&间距模式");
 
 //设置参数
 double Start, End, StepMM,StepNum;
-Start = 0.0;
+Start = 1.0;
 End = 1e+6;
 StepMM = 0.001;
 StepNum = 1;
 //
 _InstancesSpinner->SetMinMaxStep(Start, End, StepNum);
-_PitchSpinner->SetMinMaxStep(Start, End, StepMM);
+_PitchSpinner->SetMinMaxStep(Start*0.001, End, StepMM);
 _PitchSpinner->SetUnit(CATDlgControl::Millimeter);
-_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
+_SpaceToRefEndPointSpinner->SetMinMaxStep(Start*0.001, End, StepMM);
 _SpaceToRefEndPointSpinner->SetUnit(CATDlgControl::Millimeter);
 
 //初始化状态
