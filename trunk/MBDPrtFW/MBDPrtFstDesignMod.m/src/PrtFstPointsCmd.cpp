@@ -45,7 +45,7 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_pRepeatPanelDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL),m_piPrdAgt(NULL),m_piPrdSLAgt(NULL)
   ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var)
-  ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1)
+  ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1),m_spAssambleCurve(NULL_var),m_spRefPoint(NULL_var)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -190,6 +190,17 @@ void PrtFstPointsCmd::BuildGraph()
 	AddAnalyseNotificationCB (m_pRepeatPanelDlg->_ExtremityPB, 
 		m_pRepeatPanelDlg->_ExtremityPB->GetPushBActivateNotification(),
 		(CATCommandMethod)&PrtFstPointsCmd::OnRefEndPointExtremityPBCB,
+		NULL);
+
+	// 曲线偏移距离调整响应
+	AddAnalyseNotificationCB (m_pDlg->_DistanceSpinner, 
+		m_pDlg->_DistanceSpinner->GetSpinnerModifyNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OnOffsetDistanceSpinnerCB,
+		NULL);
+	//Distance To Ref Point调整响应
+	AddAnalyseNotificationCB (m_pDlg->_DisToRefSpinner, 
+		m_pDlg->_DisToRefSpinner->GetSpinnerModifyNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OnDisToRefSpinnerCB,
 		NULL);
 
 	//
@@ -715,6 +726,228 @@ void PrtFstPointsCmd::OnRefEndPointExtremityPBCB(CATCommand* cmd, CATNotificatio
 
 }
 
+//曲线偏移距离调整响应
+void PrtFstPointsCmd::OnOffsetDistanceSpinnerCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+
+//Distance To Ref Point调整响应
+void PrtFstPointsCmd::OnDisToRefSpinnerCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+
+}
+
+// [3/8/2013 WZ4]
+// 创建第一点函数，用于以后的循环创建模式
+HRESULT PrtFstPointsCmd::CreateFastenerPoint(CATISpecObject_var ispInputCirve,double idOffetValue,double idLengthToRefPoint)
+{
+	//
+	HRESULT rc = S_OK;
+	//
+	//创建偏移线
+	double dOffsetValue = m_pDlg->_DistanceSpinner->GetValue();
+	dOffsetValue *= 1000.0;
+	//	
+	//获得文档指针
+	CATIGSMFactory_var iospGSMFact = NULL_var;
+	PrtService::GetGSMFactory(m_piDoc,iospGSMFact);
+
+	//创建几何图形集
+	CATISpecObject_var ospFatGSSpecObj = NULL_var;
+	PrtService::ObtainGSMTool(m_piDoc,"过程元素",ospFatGSSpecObj);
+	CATIPrtContainer *opiRootContainer = NULL;
+	PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
+	//获得part
+	CATISpecObject_var spPart = opiRootContainer->GetPart();
+	if (ospFatGSSpecObj == NULL_var)
+	{
+		//不存在则创建
+		int oDiag = 0 ;
+		PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,"过程元素",NULL_var,ospFatGSSpecObj,oDiag,1,0);
+	}
+	//
+	//  [3/8/2013 WZ4]
+	//
+	CATISpecObject_var iospJointGSMTool = NULL_var;
+	CATListValCATUnicodeString ilstStrPartsInstName;
+	for (int i =1; i <= m_lstSpecPrds.Size(); i++)
+	{
+		CATIProduct_var spInsPrd = m_lstSpecPrds[i];
+		CATIProduct_var spRefPrd = spInsPrd->GetReferenceProduct();
+
+		CATUnicodeString strPrtName;
+		strPrtName = spRefPrd->GetPartNumber();
+		ilstStrPartsInstName.Append(strPrtName);
+	}
+
+	//找到正确的几何图形集放置点模型
+	GetPartsJointGSMTool(iospJointGSMTool,ilstStrPartsInstName);
+	//
+	//把连接零件的PRD指针数组放入该几何图形集，确保关联性
+	CATUnicodeString strKey("F_ATTEX_LINK_PRT");
+	if (!PrtService::IsExistSpecObjectAttEx(strKey,iospJointGSMTool))
+	{
+		PrtService::SetSepcObjectAttrEx(m_lstSpecPrds,strKey,iospJointGSMTool);
+	}
+
+	//
+	//创建几何图形集放置点集合
+	int oDiag = 0 ;
+	PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,"安装点集合",ospFatGSSpecObj,m_spPointGSMTool,oDiag,0,0);
+
+	//创建基线
+	if (m_lstSpecCurves.Size() >= 2 && m_spAssambleCurve==NULL_var)
+	{
+		m_spAssambleCurve = iospGSMFact->CreateAssemble(m_lstSpecCurves,NULL_var,TRUE);
+		PrtService::CAAGsiInsertInProceduralView(m_spAssambleCurve,m_spPointGSMTool);
+		PrtService::SetAlias(m_spAssambleCurve,"基线");
+		PrtService::SetSpecObjShowAttr(m_spAssambleCurve,"Hide");
+		rc = PrtService::ObjectUpdate(m_spAssambleCurve);
+		if (FAILED(rc))
+		{
+			PrtService::ShowDlgNotify("错误提示","所选线集合非连通，请重新选择!");
+			spInputCurve->GetFather()->Remove(m_spAssambleCurve);
+			m_spPointGSMTool->GetFather()->Remove(m_spPointGSMTool);
+			return;
+		}
+	}
+	else if (m_lstSpecCurves.Size() == 1 && m_spAssambleCurve==NULL_var)
+	{
+		m_spAssambleCurve = m_lstSpecCurves[1];
+	}
+
+	//创建平行线
+	double dOffsetValue = m_pDlg->_DistanceSpinner->GetValue();
+	dOffsetValue *= 1000.0;
+	m_dCurveOffsetValue = dOffsetValue;
+	//
+	CATICkeParm_var spCkeOffset = NULL_var;
+	spCkeOffset = PrtService::LocalInstLitteral(&dOffsetValue,1,"Length","Length");
+	//
+	m_spCurvePar = iospGSMFact->CreateCurvePar(m_spAssambleCurve,m_SpecSurfs,spCkeOffset,FALSE);
+	//PrtService::CAAGsiInsertInProceduralView(m_spCurvePar,m_spPointGSMTool);
+	PrtService::SetAlias(m_spCurvePar,"排布线");
+	PrtService::SetSpecObjShowAttr(m_spCurvePar,"Hide");
+	rc = PrtService::ObjectUpdate(m_spCurvePar);
+	if (FAILED(rc))
+	{
+		CATIGSMCurvePar_var spGSMPar = m_spCurvePar;
+		spGSMPar->SetInvertDirection(TRUE);
+	}
+	rc = PrtService::ObjectUpdate(m_spCurvePar);
+	if (FAILED(rc))
+	{
+		PrtService::ShowDlgNotify("错误提示","所选线在所选安装面上无法生成平行线!");
+		return;	
+	}
+
+	//创建极值点，采用Ratio模式
+	double dRatioValue = 0;
+	CATICkeParm_var spCkedRatioValue = NULL_var;
+	spCkedRatioValue = PrtService::LocalInstLitteral(&dRatioValue,1,"Real","Ratio");
+	m_spRefPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedRatioValue,FALSE);
+	//
+	PrtService::CAAGsiInsertInProceduralView(m_spRefPoint,m_spPointGSMTool);
+
+	//	
+	return S_OK;	
+}
+
+//
+//  [3/8/2013 WZ4]
+//获取放置点线模型的零件几何图形集
+void PrtFstPointsCmd::GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName)
+{
+	//获取所有该几何集下面所有的二级子集
+	CATISpecObject_var spLineDefGSMTool = NULL_var;
+	PrtService::ObtainGSMTool(m_piDoc,"过程元素",spLineDefGSMTool);
+	if (spLineDefGSMTool == NULL_var)
+	{
+		//获得文档指针
+		CATIPrtContainer *opiRootContainer = NULL;
+		PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
+		//不存在则创建
+		int oDiag = 0 ;
+		PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,"过程元素",NULL_var,spLineDefGSMTool,oDiag,1,0);
+	}
+	CATListValCATISpecObject_var iolstspFoundResult;
+	PrtService::SearchALLSonFromRootGSMTool(spLineDefGSMTool,iolstspFoundResult);
+
+	//解析这些几何图形集的名称，找到匹配名字的那个
+	CATBoolean IsGetTheOne = FALSE;
+	for (int i=1; i <= iolstspFoundResult.Size(); i++)
+	{
+		CATListValCATUnicodeString lststrResult;
+		CATUnicodeString strAlias = PrtService::GetAlias(iolstspFoundResult[i]);
+		CHandleString::StringToVector(strAlias,"|",lststrResult);
+
+		//先判断个数
+		if (lststrResult.Size() == ilstStrPartsInstName.Size())
+		{
+			//
+			CATListValCATUnicodeString lstIsOrNot;
+			//
+			for (int j = 1; j <= lststrResult.Size(); j ++)
+			{
+				for (int n = 1; n <= ilstStrPartsInstName.Size(); n ++ )
+				{
+					if (lststrResult[j] == ilstStrPartsInstName[n])
+					{
+						lstIsOrNot.Append("1");
+						break;
+					}
+					//
+					if (n == ilstStrPartsInstName.Size())
+					{
+						lstIsOrNot.Append("0");
+					}
+				}
+			}
+			//
+			CATBoolean IsRight=TRUE;
+			for (int n=1; n<=lstIsOrNot.Size(); n++)
+			{
+				if (lstIsOrNot[n]=="0")
+				{
+					IsRight = FALSE;
+					break;
+				}
+			}
+			//
+			if (IsRight == TRUE)
+			{
+				iospJointGSMTool = iolstspFoundResult[i];
+				IsGetTheOne = TRUE;
+				break;
+			}
+		} 
+		else //直接跳过
+		{
+			continue;
+		}
+	}
+
+	//所有查询后未发现需要的信息时，自动根据输入创建一个几何图形集
+	if (IsGetTheOne == FALSE)
+	{
+		//创建点线模型几何图形集
+		CATUnicodeString strPartsJointName;
+		for (int i=1; i <= ilstStrPartsInstName.Size(); i++)
+		{
+			strPartsJointName += ilstStrPartsInstName[i];
+			if (i != ilstStrPartsInstName.Size())
+			{
+				strPartsJointName += "|";
+			}
+		}
+		//不存在则创建
+		CATIPrtContainer *opiRootContainer = NULL;
+		PrtService::ObtainRootContainer(m_piDoc,opiRootContainer);
+		int oDiag = 0 ;
+		PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,strPartsJointName,spLineDefGSMTool,iospJointGSMTool,oDiag,0,0);
+	}
+}
 //
 
 void PrtFstPointsCmd::CreatePoints()
