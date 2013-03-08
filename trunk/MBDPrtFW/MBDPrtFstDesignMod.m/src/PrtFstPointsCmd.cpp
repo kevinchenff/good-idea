@@ -34,6 +34,7 @@ using namespace std;
 #include "CATIMeasurableCurve.h"
 #include "CATIGSMExtremum.h"
 #include "CATAcquisitionFilter.h"
+#include "CATIGSMPointOnCurve.h"
 
 
 
@@ -745,10 +746,6 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(CATISpecObject_var ispInputCirve,do
 	//
 	HRESULT rc = S_OK;
 	//
-	//创建偏移线
-	double dOffsetValue = m_pDlg->_DistanceSpinner->GetValue();
-	dOffsetValue *= 1000.0;
-	//	
 	//获得文档指针
 	CATIGSMFactory_var iospGSMFact = NULL_var;
 	PrtService::GetGSMFactory(m_piDoc,iospGSMFact);
@@ -807,9 +804,9 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(CATISpecObject_var ispInputCirve,do
 		if (FAILED(rc))
 		{
 			PrtService::ShowDlgNotify("错误提示","所选线集合非连通，请重新选择!");
-			spInputCurve->GetFather()->Remove(m_spAssambleCurve);
+			m_spAssambleCurve->GetFather()->Remove(m_spAssambleCurve);
 			m_spPointGSMTool->GetFather()->Remove(m_spPointGSMTool);
-			return;
+			return E_FAIL;
 		}
 	}
 	else if (m_lstSpecCurves.Size() == 1 && m_spAssambleCurve==NULL_var)
@@ -839,14 +836,14 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(CATISpecObject_var ispInputCirve,do
 	if (FAILED(rc))
 	{
 		PrtService::ShowDlgNotify("错误提示","所选线在所选安装面上无法生成平行线!");
-		return;	
+		return E_FAIL;	
 	}
 
 	//创建极值点，采用Ratio模式
 	double dRatioValue = 0;
 	CATICkeParm_var spCkedRatioValue = NULL_var;
 	spCkedRatioValue = PrtService::LocalInstLitteral(&dRatioValue,1,"Real","Ratio");
-	m_spRefPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedRatioValue,FALSE);
+	m_spRefPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedRatioValue,CATGSMSameOrientation);
 	//
 	PrtService::CAAGsiInsertInProceduralView(m_spRefPoint,m_spPointGSMTool);
 
