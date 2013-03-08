@@ -68,10 +68,20 @@ class PrtFstPointsCmd: public CATStateCommand
   void OnDisToRefInvertPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
   //Ref End Point反向按钮响应
   void OnRefEndPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  //曲线偏移距离调整响应
+  void OnOffsetDistanceSpinnerCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+  //Distance To Ref Point调整响应
+  void OnDisToRefSpinnerCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
+
   //
   //预览模式按钮
   void OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
-
+  //
+  //创建第一点函数，用于以后的循环创建模式
+  HRESULT CreateFastenerPoint(CATISpecObject_var ispInputCirve,double idOffetValue,double idLengthToRefPoint);
+  //
+  //获取放置点线模型的零件几何图形集
+  void GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName);
   //
   void ShowSeletedLine(CATDlgSelectorList* opiSL,CATListValCATISpecObject_var olstSpecs);
   //
@@ -101,6 +111,9 @@ class PrtFstPointsCmd: public CATStateCommand
 	  //文档指针
 	  CATDocument *m_piDoc;
 	  CATUnicodeString m_strDocName;
+	  CATFrmEditor *m_piEditor;
+	  CATHSO *m_piHSO;
+	  CATISO *m_piISO;
 
 	  //定义代理
 	  CATPathElementAgent *m_piPrdAgt;
@@ -111,15 +124,13 @@ class PrtFstPointsCmd: public CATStateCommand
 	  CATListValCATISpecObject_var m_lstSpecPrds;
 	  CATListValCATISpecObject_var m_lstSpecCurves;
 	  CATISpecObject_var m_SpecSurfs;
-
-	  //
+	  CATISpecObject_var m_spAssambleCurve, m_spRefPoint;
 	  CATISpecObject_var m_spPointGSMTool;
 	  CATISpecObject_var m_spCurvePar;
 	  CATListValCATISpecObject_var m_alstSpecPoint;
 
 	  //用户所选值
 	  double m_dCurveOffsetValue,m_dPointsCount,m_dPointDistance,m_dType;
-
 };
 
 //----------------------------------------------------------------------
