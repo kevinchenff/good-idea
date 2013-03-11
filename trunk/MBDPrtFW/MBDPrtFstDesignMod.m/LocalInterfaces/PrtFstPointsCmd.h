@@ -78,7 +78,7 @@ class PrtFstPointsCmd: public CATStateCommand
   void OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //
   //创建第一点函数，用于以后的循环创建模式
-  HRESULT CreateFastenerPoint(CATISpecObject_var ispInputCirve,double idOffetValue,double idLengthToRefPoint);
+  HRESULT CreateFastenerPoint(double idLengthToRefPoint);
   //
   //获取放置点线模型的零件几何图形集
   void GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName);
@@ -124,7 +124,7 @@ class PrtFstPointsCmd: public CATStateCommand
 	  CATListValCATISpecObject_var m_lstSpecPrds;
 	  CATListValCATISpecObject_var m_lstSpecCurves;
 	  CATISpecObject_var m_SpecSurfs;
-	  CATISpecObject_var m_spAssambleCurve, m_spRefPoint;
+	  CATISpecObject_var m_spAssambleCurve, m_spRefPoint, m_spFirstPoint;
 	  CATISpecObject_var m_spPointGSMTool;
 	  CATISpecObject_var m_spCurvePar;
 	  CATListValCATISpecObject_var m_alstSpecPoint;

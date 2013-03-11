@@ -46,7 +46,7 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_pRepeatPanelDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL),m_piPrdAgt(NULL),m_piPrdSLAgt(NULL)
   ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var)
-  ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1),m_spAssambleCurve(NULL_var),m_spRefPoint(NULL_var)
+  ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1),m_spAssambleCurve(NULL_var),m_spRefPoint(NULL_var),m_spFirstPoint(NULL_var)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -384,6 +384,9 @@ void PrtFstPointsCmd::ChangeOKApplyState()
 	{
 		m_pDlg->SetOKSensitivity(CATDlgEnable);
 		m_pDlg->SetPREVIEWSensitivity(CATDlgEnable);
+
+		//
+		CreateFastenerPoint(10);
 	}
 	else
 	{
@@ -741,7 +744,7 @@ void PrtFstPointsCmd::OnDisToRefSpinnerCB(CATCommand* cmd, CATNotification* evt,
 
 // [3/8/2013 WZ4]
 // 创建第一点函数，用于以后的循环创建模式
-HRESULT PrtFstPointsCmd::CreateFastenerPoint(CATISpecObject_var ispInputCirve,double idOffetValue,double idLengthToRefPoint)
+HRESULT PrtFstPointsCmd::CreateFastenerPoint(double idLengthToRefPoint)
 {
 	//
 	HRESULT rc = S_OK;
@@ -791,7 +794,7 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(CATISpecObject_var ispInputCirve,do
 	//
 	//创建几何图形集放置点集合
 	int oDiag = 0 ;
-	PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,"安装点集合",ospFatGSSpecObj,m_spPointGSMTool,oDiag,0,0);
+	PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,"安装点集合",iospJointGSMTool,m_spPointGSMTool,oDiag,0,0);
 
 	//创建基线
 	if (m_lstSpecCurves.Size() >= 2 && m_spAssambleCurve==NULL_var)
@@ -845,8 +848,17 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(CATISpecObject_var ispInputCirve,do
 	spCkedRatioValue = PrtService::LocalInstLitteral(&dRatioValue,1,"Real","Ratio");
 	m_spRefPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedRatioValue,CATGSMSameOrientation);
 	//
-	PrtService::CAAGsiInsertInProceduralView(m_spRefPoint,m_spPointGSMTool);
-
+	double dDisToRefValue = m_pDlg->_DisToRefSpinner->GetValue();
+	dDisToRefValue *= 1000.0;
+	CATICkeParm_var spCkedLengthValue = NULL_var;
+	spCkedLengthValue = PrtService::LocalInstLitteral(&dDisToRefValue,1,"Length","Length");
+	m_spFirstPoint = iospGSMFact->CreatePoint(m_spCurvePar,m_spRefPoint,spCkedLengthValue,CATGSMSameOrientation);
+	//
+	PrtService::CAAGsiInsertInProceduralView(m_spFirstPoint,m_spPointGSMTool);
+	rc = PrtService::ObjectUpdate(m_spFirstPoint);
+	//
+	PrtService::HighlightHSO(m_spFirstPoint);
+	PrtService::HighlightHSO(m_spCurvePar);
 	//	
 	return S_OK;	
 }
