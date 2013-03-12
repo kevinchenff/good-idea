@@ -828,7 +828,7 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(double idLengthToRefPoint)
 	m_spCurvePar = iospGSMFact->CreateCurvePar(m_spAssambleCurve,m_SpecSurfs,spCkeOffset,FALSE);
 	//PrtService::CAAGsiInsertInProceduralView(m_spCurvePar,m_spPointGSMTool);
 	PrtService::SetAlias(m_spCurvePar,"≈≈≤ºœﬂ");
-	PrtService::SetSpecObjShowAttr(m_spCurvePar,"Hide");
+	//PrtService::SetSpecObjShowAttr(m_spCurvePar,"Hide");
 	rc = PrtService::ObjectUpdate(m_spCurvePar);
 	if (FAILED(rc))
 	{
