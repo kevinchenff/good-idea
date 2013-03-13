@@ -384,14 +384,11 @@ void PrtFstPointsCmd::ChangeOKApplyState()
 	{
 		m_pDlg->SetOKSensitivity(CATDlgEnable);
 		m_pDlg->SetPREVIEWSensitivity(CATDlgEnable);
-
-		//
-		CreateFastenerPoint(10);
 	}
 	else
 	{
 		m_pDlg->SetOKSensitivity(CATDlgDisable);
-		m_pDlg->SetPREVIEWSensitivity(CATDlgDisable);
+		m_pDlg->SetPREVIEWSensitivity(CATDlgDisable);		
 	}
 }
 
@@ -663,7 +660,24 @@ CATBoolean PrtFstPointsCmd::ActiveSurfSL( void *UsefulData)
 
 void PrtFstPointsCmd::OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-	CreatePoints();	
+	//
+	//删除第一点的信息
+	if (m_spAssambleCurve != NULL_var && m_spRefPoint != NULL_var && m_spFirstPoint != NULL_var && m_spPointGSMTool != NULL_var && m_spCurvePar != NULL_var)
+	{
+		//删除已有信息
+		m_spPointGSMTool->GetFather()->Remove(m_spPointGSMTool);
+		//重置为NULL_var
+		m_spAssambleCurve = NULL_var;
+		m_spRefPoint=NULL_var;
+		m_spFirstPoint=NULL_var;
+		m_spPointGSMTool=NULL_var;
+		m_spCurvePar=NULL_var;	
+		//								
+	}
+	//
+	CreateFastenerPoint(10);
+	//显示方向标识
+	m_pDlg->_RefPointEditor->SetText("Start Extremity");
 }
 
 //安装线偏移反向按钮响应
@@ -712,34 +726,185 @@ void PrtFstPointsCmd::OnReverseOffsetDirePBCB(CATCommand* cmd, CATNotification* 
 //参考极值点转换按钮响应
 void PrtFstPointsCmd::OnRefPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
+	if (m_spFirstPoint!=NULL_var)
+	{
+		if (m_pDlg->_RefPointEditor->GetText() == "Start Extremity")
+		{
+			//
+			CATIGSMPointOnCurve_var spGSMPointOnCurve01 = m_spRefPoint;
+			spGSMPointOnCurve01->InvertOrientation ();
+			//
+			CATIGSMPointOnCurve_var spGSMPointOnCurve02 = m_spFirstPoint;
+			spGSMPointOnCurve02->InvertOrientation ();
 
+			HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
+			rc = PrtService::ObjectUpdate(m_spFirstPoint);
+			if (FAILED(rc))
+			{
+				PrtService::ShowDlgNotify("错误提示","反向后更新错误，将保持原方向!");
+				spGSMPointOnCurve01->InvertOrientation ();
+				spGSMPointOnCurve02->InvertOrientation ();
+				PrtService::ObjectUpdate(m_spFirstPoint);
+				m_pDlg->_RefPointEditor->SetText("Start Extremity");
+			}
+			else
+			{
+				m_pDlg->_RefPointEditor->SetText("End Extremity");
+			}
+
+		} 
+		else if (m_pDlg->_RefPointEditor->GetText() == "End Extremity")
+		{
+			//
+			CATIGSMPointOnCurve_var spGSMPointOnCurve01 = m_spRefPoint;
+			spGSMPointOnCurve01->InvertOrientation ();
+			//
+			CATIGSMPointOnCurve_var spGSMPointOnCurve02 = m_spFirstPoint;
+			spGSMPointOnCurve02->InvertOrientation ();
+
+			HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
+			rc = PrtService::ObjectUpdate(m_spFirstPoint);
+			if (FAILED(rc))
+			{
+				PrtService::ShowDlgNotify("错误提示","反向后更新错误，将保持原方向!");
+				spGSMPointOnCurve01->InvertOrientation ();
+				spGSMPointOnCurve02->InvertOrientation ();
+				PrtService::ObjectUpdate(m_spFirstPoint);
+				m_pDlg->_RefPointEditor->SetText("End Extremity");
+			}
+			else
+			{
+				m_pDlg->_RefPointEditor->SetText("Start Extremity");
+			}
+		}
+
+		else if (m_pDlg->_RefPointEditor->GetText() == "Middle")
+		{
+			//
+			CATIGSMPointOnCurve_var spGSMPointOnCurve01 = m_spRefPoint;
+			spGSMPointOnCurve01->SetOrientation(CATGSMSameOrientation);
+			//
+			CATIGSMPointOnCurve_var spGSMPointOnCurve02 = m_spFirstPoint;
+			spGSMPointOnCurve02->SetOrientation(CATGSMSameOrientation);
+			//
+			//创建极值点，采用Ratio模式
+			double dRatioValue = 0.0;
+			CATICkeParm_var spCkedRatioValue = NULL_var;
+			spCkedRatioValue = PrtService::LocalInstLitteral(&dRatioValue,1,"Real","Ratio");
+			//
+			CATIGSMPointOnCurve_var spGSMPointOnCurve = m_spRefPoint;
+			spGSMPointOnCurve->SetLength(spCkedRatioValue);
+			//
+			HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
+			//
+			m_pDlg->_RefPointEditor->SetText("Start Extremity");
+		}
+	}
 }
 //参考中心点转换按钮响应
 void PrtFstPointsCmd::OnRefPointMiddlePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-
+	if (m_spFirstPoint != NULL_var)
+	{
+		//创建极值点，采用Ratio模式
+		double dRatioValue = 0.5;
+		CATICkeParm_var spCkedRatioValue = NULL_var;
+		spCkedRatioValue = PrtService::LocalInstLitteral(&dRatioValue,1,"Real","Ratio");
+		//
+		CATIGSMPointOnCurve_var spGSMPointOnCurve = m_spRefPoint;
+		spGSMPointOnCurve->SetLength(spCkedRatioValue);
+		//
+		spGSMPointOnCurve->InvertOrientation();
+		//
+		HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		if (FAILED(rc))
+		{
+			PrtService::ShowDlgNotify("错误提示","当前设置参数无法基于中间点模式!");
+			return;	
+		}
+		//
+		m_pDlg->_RefPointEditor->SetText("Middle");
+	}
 }
 //参考点距离模式下反向按钮响应
 void PrtFstPointsCmd::OnDisToRefInvertPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-
+	//
+	if (m_spFirstPoint!=NULL_var && m_pDlg->_RefPointEditor->GetText() == "Middle")
+	{
+		CATIGSMPointOnCurve_var spGSMPointOnCurve = m_spFirstPoint;
+		spGSMPointOnCurve->InvertOrientation ();
+		//
+		HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		if (FAILED(rc))
+		{
+			PrtService::ShowDlgNotify("错误提示","反向后更新错误，将保持原方向!");
+			spGSMPointOnCurve->InvertOrientation ();
+			PrtService::ObjectUpdate(m_spFirstPoint);
+		}
+		//		
+	}
 }
 //Ref End Point反向按钮响应
 void PrtFstPointsCmd::OnRefEndPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-
+	
 }
 
 //曲线偏移距离调整响应
 void PrtFstPointsCmd::OnOffsetDistanceSpinnerCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-
+	if (m_spCurvePar != NULL_var)
+	{
+		//创建平行线
+		double dOffsetValue = m_pDlg->_DistanceSpinner->GetValue();
+		dOffsetValue *= 1000.0;
+		m_dCurveOffsetValue = dOffsetValue;
+		//
+		CATICkeParm_var spCkeOffset = NULL_var;
+		spCkeOffset = PrtService::LocalInstLitteral(&dOffsetValue,1,"Length","Length");
+		//
+		CATIGSMCurvePar_var spGSMCurvePar=m_spCurvePar;
+		spGSMCurvePar->SetCurveParValue(spCkeOffset);
+		//
+		HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		if (FAILED(rc))
+		{
+			spGSMCurvePar->SetInvertDirection(TRUE);
+		}
+		rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		if (FAILED(rc))
+		{
+			PrtService::ShowDlgNotify("错误提示","所选线在所选安装面上无法生成平行线!");
+			return;	
+		}
+	}	
 }
 
 //Distance To Ref Point调整响应
 void PrtFstPointsCmd::OnDisToRefSpinnerCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-
+	if (m_spFirstPoint != NULL_var)
+	{
+		//创建平行线
+		double dOffsetValue = m_pDlg->_DisToRefSpinner->GetValue();
+		dOffsetValue *= 1000.0;
+		//
+		CATICkeParm_var spCkeOffset = NULL_var;
+		spCkeOffset = PrtService::LocalInstLitteral(&dOffsetValue,1,"Length","Length");
+		//
+		CATIGSMPointOnCurve_var spGSMPointOnCurve = m_spFirstPoint;
+		spGSMPointOnCurve->SetLength(spCkeOffset);
+		//
+		HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		if (FAILED(rc))
+		{
+			PrtService::ShowDlgNotify("错误提示","偏移值超标!");
+			return;	
+		}
+	}
 }
 
 // [3/8/2013 WZ4]
@@ -809,6 +974,8 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(double idLengthToRefPoint)
 			PrtService::ShowDlgNotify("错误提示","所选线集合非连通，请重新选择!");
 			m_spAssambleCurve->GetFather()->Remove(m_spAssambleCurve);
 			m_spPointGSMTool->GetFather()->Remove(m_spPointGSMTool);
+			m_spPointGSMTool=NULL_var;
+			m_spAssambleCurve=NULL_var;
 			return E_FAIL;
 		}
 	}
@@ -857,7 +1024,7 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(double idLengthToRefPoint)
 	PrtService::CAAGsiInsertInProceduralView(m_spFirstPoint,m_spPointGSMTool);
 	rc = PrtService::ObjectUpdate(m_spFirstPoint);
 	//
-	PrtService::HighlightHSO(m_spFirstPoint);
+	//PrtService::HighlightHSO(m_spFirstPoint);
 	PrtService::HighlightHSO(m_spCurvePar);
 	//	
 	return S_OK;	
