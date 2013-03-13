@@ -116,7 +116,7 @@ _Label012 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 // _SpaceToRefEndPointSpinner = new CATDlgSpinner(_Frame002, "SpaceToRefEndPointSpinner", CATDlgSpnEntry);
 // _SpaceToRefEndPointSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
 //_SpaceToRefEndPointSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
- _RefEndPointExtremityEditor = new CATDlgEditor(_Frame002, "RefEndPointExtremityEditor");
+ _RefEndPointExtremityEditor = new CATDlgEditor(_Frame002, "RefEndPointExtremityEditor", CATDlgEdtReadOnly);
 _RefEndPointExtremityEditor -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _ExtremityPB = new CATDlgPushButton(_Frame002, "ExtremityPB");
 _ExtremityPB -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
