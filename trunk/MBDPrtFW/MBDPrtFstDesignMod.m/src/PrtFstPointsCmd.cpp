@@ -408,6 +408,11 @@ void PrtFstPointsCmd::ChangeOKApplyState()
 		if (m_spFirstPoint != NULL_var)
 		{
 			m_pRepeatPanelDlg->_PreviewPB->SetSensitivity(CATDlgEnable);
+			//
+			m_pDlg->_ExtremityPB->SetSensitivity(CATDlgEnable);
+			m_pDlg->_MiddlePB->SetSensitivity(CATDlgEnable);
+			m_pDlg->_ReverseDirePB->SetSensitivity(CATDlgEnable);
+			m_pDlg->_DisToRefInvertPushB->SetSensitivity(CATDlgEnable);			
 		} 		
 	}
 	else
@@ -415,6 +420,12 @@ void PrtFstPointsCmd::ChangeOKApplyState()
 		m_pDlg->SetOKSensitivity(CATDlgDisable);
 		m_pDlg->SetPREVIEWSensitivity(CATDlgDisable);	
 		m_pRepeatPanelDlg->_PreviewPB->SetSensitivity(CATDlgDisable);
+		//
+		//
+		m_pDlg->_ExtremityPB->SetSensitivity(CATDlgDisable);
+		m_pDlg->_MiddlePB->SetSensitivity(CATDlgDisable);
+		m_pDlg->_ReverseDirePB->SetSensitivity(CATDlgDisable);
+		m_pDlg->_DisToRefInvertPushB->SetSensitivity(CATDlgDisable);	
 		//
 		//删除第一点的信息
 		if (m_spAssambleCurve != NULL_var && m_spRefPoint != NULL_var && m_spFirstPoint != NULL_var && m_spPointGSMTool != NULL_var && m_spCurvePar != NULL_var)
@@ -943,7 +954,7 @@ void PrtFstPointsCmd::OnDisToRefInvertPBCB(CATCommand* cmd, CATNotification* evt
 //Ref End Point反向按钮响应
 void PrtFstPointsCmd::OnRefEndPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-	if (m_spFirstPoint != NULL_var)
+	if (m_spFirstPoint != NULL_var && m_pDlg->_RefPointEditor->GetText() == "Middle")
 	{
 		if (m_pRepeatPanelDlg->_RefEndPointExtremityEditor->GetText() == "Start Extremity")
 		{
