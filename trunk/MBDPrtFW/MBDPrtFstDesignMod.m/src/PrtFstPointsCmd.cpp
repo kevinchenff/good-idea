@@ -24,6 +24,7 @@ using namespace std;
 
 #include "CATLine.h"
 #include "CATSurface.h"
+#include "CATWire.h"
 #include "CATIMfBiDimResult.h"
 #include "CATIMfMonoDimResult.h"
 #include "CATCurve.h"
@@ -74,6 +75,24 @@ BOOL PrtFstPointsCmd::IsThisZPPrt(CATUnicodeString istrDocName)
 	  }
 	  else return FALSE;
 }
+//判断所选曲线是否CLOSED
+BOOL PrtFstPointsCmd::IsClosedCircle(CATISpecObject_var ispCircle)
+{
+	if (ispCircle != NULL_var)
+	{
+		CATIGeometricalElement_var spGeoEle = ispCircle;
+		CATBody_var spBody = spGeoEle->GetBodyResult();
+		CATDomain * pDomain = spBody->GetDomain(1);
+		//
+		if (((CATWire *)pDomain)->IsClosed())
+		{
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
 
 //-------------------------------------------------------------------------
 // Destructor
@@ -677,7 +696,15 @@ void PrtFstPointsCmd::OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATComm
 	//
 	CreateFastenerPoint(10);
 	//显示方向标识
-	m_pDlg->_RefPointEditor->SetText("Start Extremity");
+	//
+	if (IsClosedCircle(m_spAssambleCurve))
+	{
+		m_pDlg->_RefPointEditor->SetText("Extremum");
+	}
+	else
+	{
+		m_pDlg->_RefPointEditor->SetText("Start Extremity");
+	}	
 }
 
 //安装线偏移反向按钮响应
@@ -804,7 +831,7 @@ void PrtFstPointsCmd::OnRefPointExtremityPBCB(CATCommand* cmd, CATNotification* 
 //参考中心点转换按钮响应
 void PrtFstPointsCmd::OnRefPointMiddlePBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-	if (m_spFirstPoint != NULL_var)
+	if (m_spFirstPoint != NULL_var && m_pDlg->_RefPointEditor->GetText() != "Extremum")
 	{
 		//创建极值点，采用Ratio模式
 		double dRatioValue = 0.5;
@@ -1008,25 +1035,60 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(double idLengthToRefPoint)
 		PrtService::ShowDlgNotify("错误提示","所选线在所选安装面上无法生成平行线!");
 		return E_FAIL;	
 	}
-
-	//创建极值点，采用Ratio模式
-	double dRatioValue = 0;
-	CATICkeParm_var spCkedRatioValue = NULL_var;
-	spCkedRatioValue = PrtService::LocalInstLitteral(&dRatioValue,1,"Real","Ratio");
-	m_spRefPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedRatioValue,CATGSMSameOrientation);
 	//
-	double dDisToRefValue = m_pDlg->_DisToRefSpinner->GetValue();
-	dDisToRefValue *= 1000.0;
-	CATICkeParm_var spCkedLengthValue = NULL_var;
-	spCkedLengthValue = PrtService::LocalInstLitteral(&dDisToRefValue,1,"Length","Length");
-	m_spFirstPoint = iospGSMFact->CreatePoint(m_spCurvePar,m_spRefPoint,spCkedLengthValue,CATGSMSameOrientation);
+	if (IsClosedCircle(m_spAssambleCurve))
+	{
+		PrtService::ShowDlgNotify("提示","是闭合曲线！");
+		//
+		//采用极值点模式
+		double dDisToRefValue = m_pDlg->_DisToRefSpinner->GetValue();
+		dDisToRefValue *= 1000.0;
+		CATICkeParm_var spCkedLengthValue = NULL_var;
+		spCkedLengthValue = PrtService::LocalInstLitteral(&dDisToRefValue,1,"Length","Length");
+		m_spFirstPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedLengthValue,CATGSMSameOrientation);
+		//
+		PrtService::CAAGsiInsertInProceduralView(m_spFirstPoint,m_spPointGSMTool);
+		rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		//
+		CATIGSMDirection_var spGSMDir = iospGSMFact->CreateDirection(NULL_var,NULL_var,NULL_var);
+		spGSMDir->SetCoordinates(1,2,3);
+		spGSMDir->SetLocalCoordinates(-2,1,0);
+		//
+		m_spRefPoint = iospGSMFact->CreateExtremum(m_spCurvePar,spGSMDir,GSMMax);
+		//
+		//
+		CATIGSMPointOnCurve_var spGSMPointOnCurve = m_spFirstPoint;
+		spGSMPointOnCurve->SetReferencePoint(m_spRefPoint);
+		rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		//
+		PrtService::HighlightHSO(m_spCurvePar);
+		//
+	} 
+	else
+	{
+		//采用Ratio模式
+		double dDisToRefValue = m_pDlg->_DisToRefSpinner->GetValue();
+		dDisToRefValue *= 1000.0;
+		CATICkeParm_var spCkedLengthValue = NULL_var;
+		spCkedLengthValue = PrtService::LocalInstLitteral(&dDisToRefValue,1,"Length","Length");
+		m_spFirstPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedLengthValue,CATGSMSameOrientation);
+		//
+		PrtService::CAAGsiInsertInProceduralView(m_spFirstPoint,m_spPointGSMTool);
+		rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		//
+		double dRatioValue = 0;
+		CATICkeParm_var spCkedRatioValue = NULL_var;
+		spCkedRatioValue = PrtService::LocalInstLitteral(&dRatioValue,1,"Real","Ratio");
+		m_spRefPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedRatioValue,CATGSMSameOrientation);
+		//
+		CATIGSMPointOnCurve_var spGSMPointOnCurve = m_spFirstPoint;
+		spGSMPointOnCurve->SetReferencePoint(m_spRefPoint);
+		rc = PrtService::ObjectUpdate(m_spFirstPoint);
+		//
+		PrtService::HighlightHSO(m_spCurvePar);
+		//	
+	}
 	//
-	PrtService::CAAGsiInsertInProceduralView(m_spFirstPoint,m_spPointGSMTool);
-	rc = PrtService::ObjectUpdate(m_spFirstPoint);
-	//
-	//PrtService::HighlightHSO(m_spFirstPoint);
-	PrtService::HighlightHSO(m_spCurvePar);
-	//	
 	return S_OK;	
 }
 
