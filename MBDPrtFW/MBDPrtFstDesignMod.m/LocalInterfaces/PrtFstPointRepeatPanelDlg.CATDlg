@@ -106,4 +106,10 @@ CATDlgCheckButton CheckB
   GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
 }
 
+CATDlgPushButton PreviewPB
+{
+  FATHER = PrtFstPointRepeatPanelDlg;
+  GRID = { 3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
 // END WIZARD REPLACEMENT ZONE

@@ -5,9 +5,9 @@ Frame001.Label003.Title = "选择的基面:";
 Frame001.Label007.Title = "曲线偏移距离:";
 Frame001.ReverseDirePB.Title = "反向偏移线";
 Frame010.Title = "选择设计上下文";
-Frame013.Label014.Title = "Reference Point:";
-Frame013.ExtremityPB.Title = "Extremity";
-Frame013.MiddlePB.Title = "Middle";
+Frame013.Label014.Title = "参考点:";
+Frame013.ExtremityPB.Title = "端点模式&转换";
+Frame013.MiddlePB.Title = "中点模式";
 Frame013.Label018.Title = "Dis. To Reference";
-Frame013.DisToRefInvertPushB.Title = "Invert";
+Frame013.DisToRefInvertPushB.Title = "反向";
 // END WIZARD REPLACEMENT ZONE

@@ -73,6 +73,9 @@ class PrtFstPointsCmd: public CATStateCommand
   //Distance To Ref Point调整响应
   void OnDisToRefSpinnerCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);  
 
+  //获得长度值
+  void GetCurveLength();
+
   //
   //预览模式按钮
   void OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
@@ -134,6 +137,9 @@ class PrtFstPointsCmd: public CATStateCommand
 
 	  //用户所选值
 	  double m_dCurveOffsetValue,m_dPointsCount,m_dPointDistance,m_dType;
+
+	  //
+	  double m_dLengthspCurvePar,m_dLengthStart,m_dlengthEnd;
 };
 
 //----------------------------------------------------------------------
