@@ -48,6 +48,7 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
   ,m_pDlg(NULL),m_pRepeatPanelDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL),m_piPrdAgt(NULL),m_piPrdSLAgt(NULL)
   ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var)
   ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1),m_spAssambleCurve(NULL_var),m_spRefPoint(NULL_var),m_spFirstPoint(NULL_var)
+  ,m_dLengthspCurvePar(0),m_dLengthStart(0),m_dlengthEnd(0)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -403,11 +404,31 @@ void PrtFstPointsCmd::ChangeOKApplyState()
 	{
 		m_pDlg->SetOKSensitivity(CATDlgEnable);
 		m_pDlg->SetPREVIEWSensitivity(CATDlgEnable);
+
+		if (m_spFirstPoint != NULL_var)
+		{
+			m_pRepeatPanelDlg->_PreviewPB->SetSensitivity(CATDlgEnable);
+		} 		
 	}
 	else
 	{
 		m_pDlg->SetOKSensitivity(CATDlgDisable);
-		m_pDlg->SetPREVIEWSensitivity(CATDlgDisable);		
+		m_pDlg->SetPREVIEWSensitivity(CATDlgDisable);	
+		m_pRepeatPanelDlg->_PreviewPB->SetSensitivity(CATDlgDisable);
+		//
+		//删除第一点的信息
+		if (m_spAssambleCurve != NULL_var && m_spRefPoint != NULL_var && m_spFirstPoint != NULL_var && m_spPointGSMTool != NULL_var && m_spCurvePar != NULL_var)
+		{
+			//删除已有信息
+			m_spPointGSMTool->GetFather()->Remove(m_spPointGSMTool);
+			//重置为NULL_var
+			m_spAssambleCurve = NULL_var;
+			m_spRefPoint=NULL_var;
+			m_spFirstPoint=NULL_var;
+			m_spPointGSMTool=NULL_var;
+			m_spCurvePar=NULL_var;	
+			//								
+		}
 	}
 }
 
@@ -695,16 +716,35 @@ void PrtFstPointsCmd::OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATComm
 	}
 	//
 	CreateFastenerPoint(10);
+	//
+	ChangeOKApplyState();
 	//显示方向标识
 	//
 	if (IsClosedCircle(m_spAssambleCurve))
 	{
 		m_pDlg->_RefPointEditor->SetText("Extremum");
+		//
+		m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
+		m_pRepeatPanelDlg->_ExtremityPB->SetSensitivity(CATDlgDisable);
 	}
 	else
 	{
 		m_pDlg->_RefPointEditor->SetText("Start Extremity");
-	}	
+		m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
+		m_pRepeatPanelDlg->_ExtremityPB->SetSensitivity(CATDlgEnable);
+	}
+
+	//设置SPINNER范围
+	GetCurveLength();
+	//设置参数
+	double Start, End, StepMM;
+	Start = 0.0;
+	End = m_dLengthspCurvePar*0.001;
+	StepMM = 0.001;
+	//
+	m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
+	m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
+
 }
 
 //安装线偏移反向按钮响应
@@ -773,10 +813,12 @@ void PrtFstPointsCmd::OnRefPointExtremityPBCB(CATCommand* cmd, CATNotification* 
 				spGSMPointOnCurve02->InvertOrientation ();
 				PrtService::ObjectUpdate(m_spFirstPoint);
 				m_pDlg->_RefPointEditor->SetText("Start Extremity");
+				m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
 			}
 			else
 			{
 				m_pDlg->_RefPointEditor->SetText("End Extremity");
+				m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("Start Extremity");
 			}
 
 		} 
@@ -798,10 +840,12 @@ void PrtFstPointsCmd::OnRefPointExtremityPBCB(CATCommand* cmd, CATNotification* 
 				spGSMPointOnCurve02->InvertOrientation ();
 				PrtService::ObjectUpdate(m_spFirstPoint);
 				m_pDlg->_RefPointEditor->SetText("End Extremity");
+				m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("Start Extremity");
 			}
 			else
 			{
 				m_pDlg->_RefPointEditor->SetText("Start Extremity");
+				m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
 			}
 		}
 
@@ -825,6 +869,18 @@ void PrtFstPointsCmd::OnRefPointExtremityPBCB(CATCommand* cmd, CATNotification* 
 			HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
 			//
 			m_pDlg->_RefPointEditor->SetText("Start Extremity");
+			m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
+			//
+			//设置SPINNER范围
+			GetCurveLength();
+			//设置参数
+			double Start, End, StepMM;
+			Start = 0.0;
+			End = m_dLengthspCurvePar*0.001;
+			StepMM = 0.001;
+			//
+			m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
+			m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
 		}
 	}
 }
@@ -851,6 +907,17 @@ void PrtFstPointsCmd::OnRefPointMiddlePBCB(CATCommand* cmd, CATNotification* evt
 		}
 		//
 		m_pDlg->_RefPointEditor->SetText("Middle");
+		//
+		//设置SPINNER范围
+		GetCurveLength();
+		//设置参数
+		double Start, End, StepMM;
+		Start = 0.0;
+		End = m_dLengthspCurvePar*0.001*0.5;
+		StepMM = 0.001;
+		//
+		m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
+		m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
 	}
 }
 //参考点距离模式下反向按钮响应
@@ -876,7 +943,17 @@ void PrtFstPointsCmd::OnDisToRefInvertPBCB(CATCommand* cmd, CATNotification* evt
 //Ref End Point反向按钮响应
 void PrtFstPointsCmd::OnRefEndPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-	
+	if (m_spFirstPoint != NULL_var)
+	{
+		if (m_pRepeatPanelDlg->_RefEndPointExtremityEditor->GetText() == "Start Extremity")
+		{
+			m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
+		} 
+		else
+		{
+			m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("Start Extremity");
+		}
+	}
 }
 
 //曲线偏移距离调整响应
@@ -931,6 +1008,22 @@ void PrtFstPointsCmd::OnDisToRefSpinnerCB(CATCommand* cmd, CATNotification* evt,
 			PrtService::ShowDlgNotify("错误提示","偏移值超标!");
 			return;	
 		}
+	}
+}
+
+//
+//获得长度值
+void PrtFstPointsCmd::GetCurveLength()
+{
+	//
+	if (m_spCurvePar != NULL_var)
+	{
+		CATIMeasurableCurve_var spMeas = m_spCurvePar;
+		spMeas->GetLength(m_dLengthspCurvePar);
+	} 
+	else
+	{
+		m_dLengthspCurvePar = 0;
 	}
 }
 
@@ -1038,8 +1131,7 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(double idLengthToRefPoint)
 	//
 	if (IsClosedCircle(m_spAssambleCurve))
 	{
-		PrtService::ShowDlgNotify("提示","是闭合曲线！");
-		//
+		//PrtService::ShowDlgNotify("提示","是闭合曲线！");
 		//采用极值点模式
 		double dDisToRefValue = m_pDlg->_DisToRefSpinner->GetValue();
 		dDisToRefValue *= 1000.0;

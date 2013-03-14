@@ -183,7 +183,6 @@ _CurveSL->SetLine("No Selection");
 this->SetOKSensitivity(CATDlgDisable);
 this->SetPREVIEWSensitivity(CATDlgDisable);
 
-
 //
 _RefPointEditor->SetText("No selection");
 

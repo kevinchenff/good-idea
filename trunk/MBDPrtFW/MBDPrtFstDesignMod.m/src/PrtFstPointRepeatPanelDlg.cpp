@@ -51,6 +51,7 @@ PrtFstPointRepeatPanelDlg::PrtFstPointRepeatPanelDlg() :
  _RefEndPointExtremityEditor = NULL;
  _ExtremityPB = NULL;
  _CheckB = NULL;
+ _PreviewPB = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -77,6 +78,7 @@ PrtFstPointRepeatPanelDlg::~PrtFstPointRepeatPanelDlg()
  _RefEndPointExtremityEditor = NULL;
  _ExtremityPB = NULL;
  _CheckB = NULL;
+ _PreviewPB = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -116,12 +118,14 @@ _Label012 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 // _SpaceToRefEndPointSpinner = new CATDlgSpinner(_Frame002, "SpaceToRefEndPointSpinner", CATDlgSpnEntry);
 // _SpaceToRefEndPointSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
 //_SpaceToRefEndPointSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
- _RefEndPointExtremityEditor = new CATDlgEditor(_Frame002, "RefEndPointExtremityEditor", CATDlgEdtReadOnly);
+ _RefEndPointExtremityEditor = new CATDlgEditor(_Frame002, "RefEndPointExtremityEditor");
 _RefEndPointExtremityEditor -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _ExtremityPB = new CATDlgPushButton(_Frame002, "ExtremityPB");
 _ExtremityPB -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
  _CheckB = new CATDlgCheckButton(this, "CheckB");
 _CheckB -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _PreviewPB = new CATDlgPushButton(this, "PreviewPB");
+_PreviewPB -> SetGridConstraints(3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 _InstancesSpinner = new CATDlgSpinner(_Frame001, "InstancesSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
@@ -155,6 +159,7 @@ _SpaceToRefEndPointSpinner->SetUnit(CATDlgControl::Millimeter);
 //³õÊ¼»¯×´Ì¬
 _PitchSpinner->SetSensitivity(CATDlgDisable);
 _CheckB->SetState(CATDlgCheck,0);
+_PreviewPB->SetSensitivity(CATDlgDisable);
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 
