@@ -97,6 +97,9 @@ class PrtFstPointsCmd: public CATStateCommand
   CATBoolean ActiveSurfSL( void *UsefulData);
   //
   BOOL IsThisZPPrt(CATUnicodeString istrDocName);
+  //判断所选曲线是否CLOSED
+  BOOL IsClosedCircle(CATISpecObject_var ispCircle);
+
   //
   void CreatePoints();
 
