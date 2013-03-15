@@ -412,7 +412,8 @@ void PrtFstPointsCmd::ChangeOKApplyState()
 			m_pDlg->_ExtremityPB->SetSensitivity(CATDlgEnable);
 			m_pDlg->_MiddlePB->SetSensitivity(CATDlgEnable);
 			m_pDlg->_ReverseDirePB->SetSensitivity(CATDlgEnable);
-			m_pDlg->_DisToRefInvertPushB->SetSensitivity(CATDlgEnable);			
+			m_pDlg->_DisToRefInvertPushB->SetSensitivity(CATDlgEnable);	
+			m_pRepeatPanelDlg->_ExtremityPB->SetSensitivity(CATDlgEnable);
 		} 		
 	}
 	else
@@ -425,7 +426,8 @@ void PrtFstPointsCmd::ChangeOKApplyState()
 		m_pDlg->_ExtremityPB->SetSensitivity(CATDlgDisable);
 		m_pDlg->_MiddlePB->SetSensitivity(CATDlgDisable);
 		m_pDlg->_ReverseDirePB->SetSensitivity(CATDlgDisable);
-		m_pDlg->_DisToRefInvertPushB->SetSensitivity(CATDlgDisable);	
+		m_pDlg->_DisToRefInvertPushB->SetSensitivity(CATDlgDisable);
+		m_pRepeatPanelDlg->_ExtremityPB->SetSensitivity(CATDlgDisable);
 		//
 		//删除第一点的信息
 		if (m_spAssambleCurve != NULL_var && m_spRefPoint != NULL_var && m_spFirstPoint != NULL_var && m_spPointGSMTool != NULL_var && m_spCurvePar != NULL_var)
@@ -797,6 +799,33 @@ void PrtFstPointsCmd::OnReverseOffsetDirePBCB(CATCommand* cmd, CATNotification* 
 
 		//
 		PrtService::ObjectUpdate(m_spPointGSMTool);
+
+		//
+		//设置SPINNER范围
+		GetCurveLength();
+		//
+		if (m_pDlg->_RefPointEditor->GetText() == "Middle")
+		{
+			//设置参数
+			double Start, End, StepMM;
+			Start = 0.0;
+			End = m_dLengthspCurvePar*0.001;
+			StepMM = 0.001;
+			//
+			m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End*0.5, StepMM);
+			m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
+		} 
+		else 
+		{
+			//设置参数
+			double Start, End, StepMM;
+			Start = 0.0;
+			End = m_dLengthspCurvePar*0.001;
+			StepMM = 0.001;
+			//
+			m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
+			m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
+		}	
 	}
 	//
 }
@@ -954,7 +983,7 @@ void PrtFstPointsCmd::OnDisToRefInvertPBCB(CATCommand* cmd, CATNotification* evt
 //Ref End Point反向按钮响应
 void PrtFstPointsCmd::OnRefEndPointExtremityPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
 {
-	if (m_spFirstPoint != NULL_var && m_pDlg->_RefPointEditor->GetText() == "Middle")
+	if (m_spFirstPoint != NULL_var && m_pDlg->_RefPointEditor->GetText() != "Extremum")
 	{
 		if (m_pRepeatPanelDlg->_RefEndPointExtremityEditor->GetText() == "Start Extremity")
 		{
@@ -964,6 +993,11 @@ void PrtFstPointsCmd::OnRefEndPointExtremityPBCB(CATCommand* cmd, CATNotificatio
 		{
 			m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("Start Extremity");
 		}
+	}
+
+	if (m_spFirstPoint != NULL_var && m_pDlg->_RefPointEditor->GetText() == "Extremum")
+	{
+		m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
 	}
 }
 
@@ -994,6 +1028,34 @@ void PrtFstPointsCmd::OnOffsetDistanceSpinnerCB(CATCommand* cmd, CATNotification
 			PrtService::ShowDlgNotify("错误提示","所选线在所选安装面上无法生成平行线!");
 			return;	
 		}
+
+		//
+		//设置SPINNER范围
+		GetCurveLength();
+		//
+		if (m_pDlg->_RefPointEditor->GetText() == "Middle")
+		{
+			//设置参数
+			double Start, End, StepMM;
+			Start = 0.0;
+			End = m_dLengthspCurvePar*0.001;
+			StepMM = 0.001;
+			//
+			m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End*0.5, StepMM);
+			m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
+		} 
+		else 
+		{
+			//设置参数
+			double Start, End, StepMM;
+			Start = 0.0;
+			End = m_dLengthspCurvePar*0.001;
+			StepMM = 0.001;
+			//
+			m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
+			m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
+		}	
+		
 	}	
 }
 

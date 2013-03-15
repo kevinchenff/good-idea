@@ -160,6 +160,7 @@ _SpaceToRefEndPointSpinner->SetUnit(CATDlgControl::Millimeter);
 _PitchSpinner->SetSensitivity(CATDlgDisable);
 _CheckB->SetState(CATDlgCheck,0);
 _PreviewPB->SetSensitivity(CATDlgDisable);
+_ExtremityPB->SetSensitivity(CATDlgDisable);
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 
