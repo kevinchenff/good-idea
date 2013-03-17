@@ -48,7 +48,7 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
   ,m_pDlg(NULL),m_pRepeatPanelDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL),m_piPrdAgt(NULL),m_piPrdSLAgt(NULL)
   ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var)
   ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1),m_spAssambleCurve(NULL_var),m_spRefPoint(NULL_var),m_spFirstPoint(NULL_var)
-  ,m_dLengthspCurvePar(0),m_dLengthStart(0),m_dlengthEnd(0)
+  ,m_dLengthspCurvePar(0),m_dLengthEndToStart(0),m_GSMOrientFirstPoint(CATGSMSameOrientation)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -1767,4 +1767,73 @@ void PrtFstPointsCmd::CreatePoints()
 		PrtService::SetSpecObjShowAttr(m_SpecSurfs,"Hide");
 	}
 	*/
+}
+
+
+//核心算法，比较始点终点相对参考点的坐标位置信息
+void PrtFstPointsCmd::CalculateStartEndPointInfo()
+{
+	//
+	if (m_pDlg->_RefPointEditor->GetText() != "Middle") //如果是Start Extremity、End Extremity、Extremum模式
+	{
+		//Start Extremity、End Extremity
+		if (m_pDlg->_RefPointEditor->GetText() == m_pRepeatPanelDlg->_RefEndPointExtremityEditor->GetText())
+		{
+			double dValue01,dValue02;
+			dValue01 = m_pDlg->_DisToRefSpinner->GetValue() * 1000.0;
+			dValue02 = m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->GetValue() * 1000.0;
+			//
+			m_dLengthEndToStart = dValue02-dValue01;
+		} 
+		else
+		{
+			//
+			double dValue01,dValue02;
+			dValue01 = m_pDlg->_DisToRefSpinner->GetValue() * 1000.0;
+			dValue02 = m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->GetValue() * 1000.0;
+			//
+			m_dLengthEndToStart = m_dLengthspCurvePar - dValue02 - dValue01;
+		}
+		//
+		((CATIGSMPointOnCurve_var)m_spFirstPoint)->GetOrientation(m_GSMOrientFirstPoint);
+
+	} 
+	else //其它模式Middle
+	{
+		//
+		CATGSMOrientation iOrientationStart,oOrientationEnd; 
+		//
+		if (m_pRepeatPanelDlg->_RefEndPointExtremityEditor->GetText() == "Start Extremity")
+		{
+			oOrientationEnd = CATGSMSameOrientation;
+		} 
+		else
+		{
+			oOrientationEnd = CATGSMInvertOrientation;
+		}
+		//
+		((CATIGSMPointOnCurve_var)m_spFirstPoint)->GetOrientation(iOrientationStart);
+		m_GSMOrientFirstPoint = iOrientationStart;
+		//
+		if (iOrientationStart == oOrientationEnd) //如果同向
+		{
+			//
+			double dValue01,dValue02;
+			dValue01 = m_pDlg->_DisToRefSpinner->GetValue() * 1000.0;
+			dValue02 = m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->GetValue() * 1000.0;
+			//
+			m_dLengthEndToStart = dValue02 - dValue01 - m_dLengthspCurvePar*0.5;
+		} 
+		else //如果异向
+		{
+			//
+			//
+			double dValue01,dValue02;
+			dValue01 = m_pDlg->_DisToRefSpinner->GetValue() * 1000.0;
+			dValue02 = m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->GetValue() * 1000.0;
+			//
+			m_dLengthEndToStart = m_dLengthspCurvePar*0.5 - dValue02 - dValue01;			
+		}
+
+	}
 }
