@@ -108,6 +108,10 @@ class PrtFstPointsCmd: public CATStateCommand
 
   //选择Filter
   CATBoolean SeletedIsPart(CATDialogAgent * iAgent, void * iUsefulData);
+
+  //核心算法，比较始点终点相对参考点的坐标位置信息
+  void CalculateStartEndPointInfo();
+
   
   private:
 
@@ -139,7 +143,10 @@ class PrtFstPointsCmd: public CATStateCommand
 	  double m_dCurveOffsetValue,m_dPointsCount,m_dPointDistance,m_dType;
 
 	  //
-	  double m_dLengthspCurvePar,m_dLengthStart,m_dlengthEnd;
+	  double m_dLengthspCurvePar,m_dLengthEndToStart;
+
+	  //起始点的方向
+	  CATGSMOrientation m_GSMOrientFirstPoint;
 };
 
 //----------------------------------------------------------------------
