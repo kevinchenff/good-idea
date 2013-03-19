@@ -80,6 +80,10 @@ class PrtFstPointsCmd: public CATStateCommand
   //预览模式按钮
   void OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
   //
+  //预览Repeat Panel Point 模式按钮
+  void OnRepeatPanelPreviewPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data);
+  
+  //
   //创建第一点函数，用于以后的循环创建模式
   HRESULT CreateFastenerPoint(double idLengthToRefPoint);
   //
@@ -111,6 +115,9 @@ class PrtFstPointsCmd: public CATStateCommand
 
   //核心算法，比较始点终点相对参考点的坐标位置信息
   void CalculateStartEndPointInfo();
+
+  //创建高亮显示虚拟点位置信息
+  void HighLightPreviewPoint(double iLength, CATMathPoint&  ioResultPoint);
 
   
   private:
