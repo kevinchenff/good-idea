@@ -50,9 +50,11 @@ PrtFstPointRepeatPanelDlg::PrtFstPointRepeatPanelDlg() :
  _SpaceToRefEndPointSpinner = NULL;
  _RefEndPointExtremityEditor = NULL;
  _ExtremityPB = NULL;
- _CheckB = NULL;
  _PreviewPB = NULL;
+ _Frame017 = NULL;
+ _CheckB = NULL;
  _BestFitCheckB = NULL;
+ _BestFitEditor = NULL;
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
 }
 
@@ -78,9 +80,11 @@ PrtFstPointRepeatPanelDlg::~PrtFstPointRepeatPanelDlg()
  _SpaceToRefEndPointSpinner = NULL;
  _RefEndPointExtremityEditor = NULL;
  _ExtremityPB = NULL;
- _CheckB = NULL;
  _PreviewPB = NULL;
+ _Frame017 = NULL;
+ _CheckB = NULL;
  _BestFitCheckB = NULL;
+ _BestFitEditor = NULL;
 //END CAA2 WIZARD DESTRUCTOR DECLARATION SECTION
 }
 
@@ -100,7 +104,7 @@ _Frame001 -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
 // _InstancesSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
 //_InstancesSpinner -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 // _PitchSpinner = new CATDlgSpinner(_Frame001, "PitchSpinner", CATDlgSpnEntry);
-//_PitchSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
+// _PitchSpinner -> SetRange(0.000000, 10.000000, (float)10.000000);
 //_PitchSpinner -> SetGridConstraints(2, 1, 1, 1, CATGRID_4SIDES);
  _Label013 = new CATDlgLabel(_Frame001, "Label013");
 _Label013 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
@@ -124,12 +128,16 @@ _Label012 -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
 _RefEndPointExtremityEditor -> SetGridConstraints(0, 1, 1, 1, CATGRID_4SIDES);
  _ExtremityPB = new CATDlgPushButton(_Frame002, "ExtremityPB");
 _ExtremityPB -> SetGridConstraints(0, 2, 1, 1, CATGRID_4SIDES);
- _CheckB = new CATDlgCheckButton(this, "CheckB");
-_CheckB -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
  _PreviewPB = new CATDlgPushButton(this, "PreviewPB");
-_PreviewPB -> SetGridConstraints(4, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
- _BestFitCheckB = new CATDlgCheckButton(this, "BestFitCheckB");
-_BestFitCheckB -> SetGridConstraints(3, 0, 1, 1, CATGRID_4SIDES);
+_PreviewPB -> SetGridConstraints(3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM);
+ _Frame017 = new CATDlgFrame(this, "Frame017", CATDlgFraNoTitle|CATDlgGridLayout);
+_Frame017 -> SetGridConstraints(2, 0, 1, 1, CATGRID_4SIDES);
+ _CheckB = new CATDlgCheckButton(_Frame017, "CheckB");
+_CheckB -> SetGridConstraints(0, 0, 1, 1, CATGRID_4SIDES);
+ _BestFitCheckB = new CATDlgCheckButton(_Frame017, "BestFitCheckB");
+_BestFitCheckB -> SetGridConstraints(1, 0, 1, 1, CATGRID_4SIDES);
+ _BestFitEditor = new CATDlgEditor(_Frame017, "BestFitEditor", CATDlgEdtReadOnly);
+_BestFitEditor -> SetGridConstraints(1, 1, 1, 1, CATGRID_4SIDES);
 //END CAA2 WIZARD WIDGET CONSTRUCTION SECTION
 
 _InstancesSpinner = new CATDlgSpinner(_Frame001, "InstancesSpinner", CATDlgSpnEntry|CATDlgSpnDouble);
@@ -167,6 +175,7 @@ _CheckB->SetState(CATDlgCheck,0);
 _PreviewPB->SetSensitivity(CATDlgDisable);
 _ExtremityPB->SetSensitivity(CATDlgDisable);
 _BestFitCheckB->SetVisibility(CATDlgHide);
+_BestFitEditor->SetVisibility(CATDlgHide);
 
 //CAA2 WIZARD CALLBACK DECLARATION SECTION
 
@@ -200,6 +209,8 @@ CATBoolean PrtFstPointRepeatPanelDlg::FstTypeComboItemCB(CATCommand* cmd, CATNot
 		_SpaceToRefEndPointSpinner->SetSensitivity(CATDlgEnable);
 		//
 		_BestFitCheckB->SetVisibility(CATDlgHide);
+		_BestFitEditor->SetVisibility(CATDlgHide);
+
 	}
 	else if (tempIndex == 1)
 	{
@@ -210,7 +221,8 @@ CATBoolean PrtFstPointRepeatPanelDlg::FstTypeComboItemCB(CATCommand* cmd, CATNot
 		_SpaceToRefEndPointSpinner->SetSensitivity(CATDlgEnable);
 		//
 		_BestFitCheckB->SetVisibility(CATDlgShow);
-
+		_BestFitEditor->SetVisibility(CATDlgShow);
+		_BestFitEditor->SetText("");
 	}
 	else if (tempIndex == 2)
 	{
@@ -221,6 +233,8 @@ CATBoolean PrtFstPointRepeatPanelDlg::FstTypeComboItemCB(CATCommand* cmd, CATNot
 		_SpaceToRefEndPointSpinner->SetSensitivity(CATDlgDisable);
 		//
 		_BestFitCheckB->SetVisibility(CATDlgHide);
+		_BestFitEditor->SetVisibility(CATDlgHide);
+
 
 	}
 

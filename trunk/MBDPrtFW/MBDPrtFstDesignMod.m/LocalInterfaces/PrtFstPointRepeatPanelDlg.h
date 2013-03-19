@@ -63,9 +63,11 @@ class PrtFstPointRepeatPanelDlg: public CATDlgDialog
  CATDlgSpinner*      _SpaceToRefEndPointSpinner;
  CATDlgEditor*      _RefEndPointExtremityEditor;
  CATDlgPushButton*      _ExtremityPB;
- CATDlgCheckButton*      _CheckB;
  CATDlgPushButton*      _PreviewPB;
+ CATDlgFrame*      _Frame017;
+ CATDlgCheckButton*      _CheckB;
  CATDlgCheckButton*      _BestFitCheckB;
+ CATDlgEditor*      _BestFitEditor;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 
