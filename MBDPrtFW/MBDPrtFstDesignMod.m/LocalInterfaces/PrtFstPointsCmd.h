@@ -85,7 +85,9 @@ class PrtFstPointsCmd: public CATStateCommand
   
   //
   //创建第一点函数，用于以后的循环创建模式
-  HRESULT CreateFastenerPoint(double idLengthToRefPoint);
+  HRESULT CreateFastenerFirstPoint();
+  //依据第一点提供的信息创建剩下的所有点
+  HRESULT CreateResultPoints(double iLength, CATGSMOrientation GSMOrientRef);
   //
   //获取放置点线模型的零件几何图形集
   void GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,CATListValCATUnicodeString ilstStrPartsInstName);
@@ -106,9 +108,6 @@ class PrtFstPointsCmd: public CATStateCommand
   BOOL IsThisZPPrt(CATUnicodeString istrDocName);
   //判断所选曲线是否CLOSED
   BOOL IsClosedCircle(CATISpecObject_var ispCircle);
-
-  //
-  void CreatePoints();
 
   //选择Filter
   CATBoolean SeletedIsPart(CATDialogAgent * iAgent, void * iUsefulData);

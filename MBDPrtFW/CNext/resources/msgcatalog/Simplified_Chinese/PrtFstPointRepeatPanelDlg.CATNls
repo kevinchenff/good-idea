@@ -1,12 +1,12 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "RepeatPanel";
-Frame001.Label013.Title = "Instances:";
-Frame001.Label014.Title = "Pitch:";
-Frame001.Label015.Title = "Paramters:";
+Title = "Repeat Panel";
+Frame001.Label013.Title = "实例数:";
+Frame001.Label014.Title = "间距值:";
+Frame001.Label015.Title = "创建类型:";
 Frame002.Label011.Title = "Ref. End Point:";
 Frame002.Label012.Title = "Spacing To Ref. End Point:";
-Frame002.ExtremityPB.Title = "Extremity";
-PreviewPB.Title = "Preview";
-Frame017.CheckB.Title = "With end point";
-Frame017.BestFitCheckB.Title = "Best Fit With End Ref";
+Frame002.ExtremityPB.Title = "参考端点&转换";
+PreviewPB.Title = "预览安装点位置";
+Frame017.CheckB.Title = "保留末尾点";
+Frame017.BestFitCheckB.Title = "采用最佳适应算法";
 // END WIZARD REPLACEMENT ZONE

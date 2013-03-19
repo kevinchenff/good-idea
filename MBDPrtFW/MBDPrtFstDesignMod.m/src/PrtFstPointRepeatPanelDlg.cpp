@@ -210,6 +210,8 @@ CATBoolean PrtFstPointRepeatPanelDlg::FstTypeComboItemCB(CATCommand* cmd, CATNot
 		//
 		_BestFitCheckB->SetVisibility(CATDlgHide);
 		_BestFitEditor->SetVisibility(CATDlgHide);
+		//
+		_ExtremityPB->SetSensitivity(CATDlgEnable);
 
 	}
 	else if (tempIndex == 1)
@@ -223,6 +225,8 @@ CATBoolean PrtFstPointRepeatPanelDlg::FstTypeComboItemCB(CATCommand* cmd, CATNot
 		_BestFitCheckB->SetVisibility(CATDlgShow);
 		_BestFitEditor->SetVisibility(CATDlgShow);
 		_BestFitEditor->SetText("");
+		//
+		_ExtremityPB->SetSensitivity(CATDlgEnable);
 	}
 	else if (tempIndex == 2)
 	{
@@ -234,8 +238,7 @@ CATBoolean PrtFstPointRepeatPanelDlg::FstTypeComboItemCB(CATCommand* cmd, CATNot
 		//
 		_BestFitCheckB->SetVisibility(CATDlgHide);
 		_BestFitEditor->SetVisibility(CATDlgHide);
-
-
+		_ExtremityPB->SetSensitivity(CATDlgDisable);
 	}
 
 	return TRUE;
