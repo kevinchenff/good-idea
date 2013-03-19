@@ -1,12 +1,12 @@
 // DO NOT EDIT :: THE CAA2 WIZARD WILL REPLACE ALL THE CODE HERE
-Title = "Repeat Panel";
-Frame001.Label013.Title = "å®ä¾‹æ•°:";
-Frame001.Label014.Title = "é—´è·å€¼:";
-Frame001.Label015.Title = "åˆ›å»ºç±»å‹:";
+Title = "´´½¨¶àµã²ÎÊıÉèÖÃ";
+Frame001.Label013.Title = "ÊµÀıÊı:";
+Frame001.Label014.Title = "¼ä¾àÖµ:";
+Frame001.Label015.Title = "´´½¨ÀàĞÍ:";
 Frame002.Label011.Title = "Ref. End Point:";
 Frame002.Label012.Title = "Spacing To Ref. End Point:";
-Frame002.ExtremityPB.Title = "å‚è€ƒç«¯ç‚¹&è½¬æ¢";
-PreviewPB.Title = "é¢„è§ˆå®‰è£…ç‚¹ä½ç½®";
-Frame017.CheckB.Title = "ä¿ç•™æœ«å°¾ç‚¹";
-Frame017.BestFitCheckB.Title = "é‡‡ç”¨æœ€ä½³é€‚åº”ç®—æ³•";
+Frame002.ExtremityPB.Title = "²Î¿¼¶Ëµã×ª»»";
+PreviewPB.Title = "Ô¤ÀÀ°²×°µãÎ»ÖÃ";
+Frame017.CheckB.Title = "±£ÁôÄ©Î²µã";
+Frame017.BestFitCheckB.Title = "²ÉÓÃ×î¼ÑÊÊÓ¦Ëã·¨";
 // END WIZARD REPLACEMENT ZONE
