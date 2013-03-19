@@ -37,13 +37,9 @@ using namespace std;
 #include "CATAcquisitionFilter.h"
 #include "CATIGSMPointOnCurve.h"
 #include "CATTopPointOperator.h"
-#include "CatTopPointLMode.h"
+//#include "CatTopPointLMode.h"
 #include "CATComputePointOnWire.h"
 #include "CAT3DPointRep.h"
-
-
-
-
 
 
 //-------------------------------------------------------------------------
@@ -55,7 +51,7 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
   ,m_pDlg(NULL),m_pRepeatPanelDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL),m_piPrdAgt(NULL),m_piPrdSLAgt(NULL)
   ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var),m_piISO(NULL)
   ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1),m_spAssambleCurve(NULL_var),m_spRefPoint(NULL_var),m_spFirstPoint(NULL_var)
-  ,m_dLengthspCurvePar(0),m_dLengthEndToStart(0),m_GSMOrientFirstPoint(CATGSMSameOrientation)
+  ,m_dLengthspCurvePar(0),m_dLengthEndToStart(0),m_GSMOrientFirstPoint(CATGSMSameOrientation),m_ChangeFlag(FALSE)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
@@ -396,7 +392,12 @@ CATBoolean PrtFstPointsCmd::ActivePrdSL( void *UsefulData)
 	PrtService::ClearHSO();
 	//加入需要高亮的特征
 	ShowSeletedLine(m_pDlg->_ContextSelectorList,m_lstSpecPrds);
-
+	//
+	if (NULL_var != m_SpecSurfs)
+	{
+		PrtService::SetSpecObjShowAttr(m_SpecSurfs,"Hide");
+	}
+	//
 	m_piPrdAgt->InitializeAcquisition();
 	return TRUE;
 }
@@ -434,14 +435,23 @@ void PrtFstPointsCmd::ChangeOKApplyState()
 
 		if (m_spFirstPoint != NULL_var)
 		{
-			m_pRepeatPanelDlg->_PreviewPB->SetSensitivity(CATDlgEnable);
 			//
 			m_pDlg->_ExtremityPB->SetSensitivity(CATDlgEnable);
 			m_pDlg->_MiddlePB->SetSensitivity(CATDlgEnable);
 			m_pDlg->_ReverseDirePB->SetSensitivity(CATDlgEnable);
 			m_pDlg->_DisToRefInvertPushB->SetSensitivity(CATDlgEnable);	
 			m_pRepeatPanelDlg->_ExtremityPB->SetSensitivity(CATDlgEnable);
-		} 		
+		}
+
+		//
+		if (m_spFirstPoint != NULL_var && m_ChangeFlag == FALSE)
+		{
+			m_pRepeatPanelDlg->_PreviewPB->SetSensitivity(CATDlgEnable);
+		}
+		else
+		{
+			m_pRepeatPanelDlg->_PreviewPB->SetSensitivity(CATDlgDisable);
+		}
 	}
 	else
 	{
@@ -640,11 +650,13 @@ CATBoolean PrtFstPointsCmd::ChooseCurve( void *UsefulData)
 				m_pDlg->_CurveSL->SetLine("No Selection",0,CATDlgDataModify);
 			}
 		}
+
+		//
+		m_ChangeFlag = TRUE;
 	}
 
 	//
 	m_pDlg->_SurfSL->ClearSelect();
-	
 	//
 	ChangeOKApplyState();
 	m_pCurveAgt->InitializeAcquisition();
@@ -702,6 +714,9 @@ CATBoolean PrtFstPointsCmd::ChooseSurf( void *UsefulData)
 				piPath=NULL;
 			}
 		}
+
+		//
+		m_ChangeFlag = TRUE;
 	}
 
 	//
@@ -722,7 +737,12 @@ CATBoolean PrtFstPointsCmd::ActiveCurveSL( void *UsefulData)
 	//
 	m_pDlg->_SurfSL->ClearSelect();
 	m_pDlg->_ContextSelectorList->ClearSelect();
-
+	//
+	if (NULL_var != m_SpecSurfs)
+	{
+		PrtService::SetSpecObjShowAttr(m_SpecSurfs,"Hide");
+	}
+	//
 	m_pCurveAgt->InitializeAcquisition();
 	return TRUE;
 }
@@ -735,7 +755,13 @@ CATBoolean PrtFstPointsCmd::ActiveSurfSL( void *UsefulData)
 	//
 	m_pDlg->_CurveSL->ClearSelect();
 	m_pDlg->_ContextSelectorList->ClearSelect();
-
+	//
+	//
+	if (NULL_var != m_SpecSurfs)
+	{
+		PrtService::SetSpecObjShowAttr(m_SpecSurfs,"Show");
+	}
+	//
 	m_pSurfAgt->InitializeAcquisition();
 	return TRUE;
 }
@@ -758,8 +784,7 @@ void PrtFstPointsCmd::OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATComm
 	}
 	//
 	CreateFastenerPoint(10);
-	//
-	ChangeOKApplyState();
+	
 	//显示方向标识
 	//
 	if (IsClosedCircle(m_spAssambleCurve))
@@ -787,6 +812,10 @@ void PrtFstPointsCmd::OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATComm
 	m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
 	m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
 
+	//
+	//
+	m_ChangeFlag = FALSE;
+	ChangeOKApplyState();
 }
 
 //安装线偏移反向按钮响应

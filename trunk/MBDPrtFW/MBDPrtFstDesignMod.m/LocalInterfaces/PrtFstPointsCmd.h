@@ -154,6 +154,9 @@ class PrtFstPointsCmd: public CATStateCommand
 
 	  //起始点的方向
 	  CATGSMOrientation m_GSMOrientFirstPoint;
+
+	  //状态值，确定在Preview之后，输入条件没有发生变化
+	  CATBoolean m_ChangeFlag;
 };
 
 //----------------------------------------------------------------------
