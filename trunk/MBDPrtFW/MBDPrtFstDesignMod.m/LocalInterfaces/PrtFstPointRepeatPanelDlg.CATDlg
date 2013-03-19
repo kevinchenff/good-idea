@@ -91,6 +91,7 @@ CATDlgSpinner SpaceToRefEndPointSpinner
 CATDlgEditor RefEndPointExtremityEditor
 {
   FATHER = Frame002;
+  STYLE = CATDlgEdtReadOnly;
   GRID = { 0, 1, 1, 1, CATGRID_4SIDES };
 }
 
@@ -109,7 +110,13 @@ CATDlgCheckButton CheckB
 CATDlgPushButton PreviewPB
 {
   FATHER = PrtFstPointRepeatPanelDlg;
-  GRID = { 3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+  GRID = { 4, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgCheckButton BestFitCheckB
+{
+  FATHER = PrtFstPointRepeatPanelDlg;
+  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE

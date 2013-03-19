@@ -784,38 +784,45 @@ void PrtFstPointsCmd::OnPREVIEWCB(CATCommand* cmd, CATNotification* evt, CATComm
 	}
 	//
 	CreateFastenerPoint(10);
-	
-	//显示方向标识
+
 	//
-	if (IsClosedCircle(m_spAssambleCurve))
+	if (m_spAssambleCurve != NULL_var && m_spRefPoint != NULL_var && m_spFirstPoint != NULL_var && m_spPointGSMTool != NULL_var && m_spCurvePar != NULL_var)
 	{
-		m_pDlg->_RefPointEditor->SetText("Extremum");
+		//显示方向标识
 		//
-		m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
-		m_pRepeatPanelDlg->_ExtremityPB->SetSensitivity(CATDlgDisable);
-	}
-	else
-	{
-		m_pDlg->_RefPointEditor->SetText("Start Extremity");
-		m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
-		m_pRepeatPanelDlg->_ExtremityPB->SetSensitivity(CATDlgEnable);
-	}
+		if (IsClosedCircle(m_spAssambleCurve))
+		{
+			m_pDlg->_RefPointEditor->SetText("Extremum");
+			//
+			m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
+			m_pRepeatPanelDlg->_ExtremityPB->SetSensitivity(CATDlgDisable);
+		}
+		else
+		{
+			m_pDlg->_RefPointEditor->SetText("Start Extremity");
+			m_pRepeatPanelDlg->_RefEndPointExtremityEditor->SetText("End Extremity");
+			m_pRepeatPanelDlg->_ExtremityPB->SetSensitivity(CATDlgEnable);
+		}
 
-	//设置SPINNER范围
-	GetCurveLength();
-	//设置参数
-	double Start, End, StepMM;
-	Start = 0.0;
-	End = m_dLengthspCurvePar*0.001;
-	StepMM = 0.001;
+		//设置SPINNER范围
+		GetCurveLength();
+		//设置参数
+		double Start, End, StepMM;
+		Start = 0.0;
+		End = m_dLengthspCurvePar*0.001;
+		StepMM = 0.001;
+		//
+		m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
+		m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
+		//
+		//
+		m_ChangeFlag = FALSE;
+		ChangeOKApplyState();
+	}
+	
 	//
-	m_pDlg->_DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
-	m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->SetMinMaxStep(Start, End, StepMM);
-
-	//
-	//
-	m_ChangeFlag = FALSE;
-	ChangeOKApplyState();
+	m_piISO->Empty();
+	m_piHSO->Empty();
 }
 
 //安装线偏移反向按钮响应
@@ -1257,6 +1264,16 @@ HRESULT PrtFstPointsCmd::CreateFastenerPoint(double idLengthToRefPoint)
 	if (FAILED(rc))
 	{
 		PrtService::ShowDlgNotify("错误提示","所选线在所选安装面上无法生成平行线!");
+		//
+		//删除已有信息
+		m_spPointGSMTool->GetFather()->Remove(m_spPointGSMTool);
+		//重置为NULL_var
+		m_spAssambleCurve = NULL_var;
+		m_spRefPoint=NULL_var;
+		m_spFirstPoint=NULL_var;
+		m_spPointGSMTool=NULL_var;
+		m_spCurvePar=NULL_var;		
+		//
 		return E_FAIL;	
 	}
 	//
