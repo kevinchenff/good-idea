@@ -144,8 +144,9 @@ _FstTypeCombo->SetLine("安装点间距模式");
 _FstTypeCombo->SetLine("个数&间距模式");
 
 //设置参数
-double Start, End, StepMM,StepNum;
+double Start,StartZero, End, StepMM,StepNum;
 Start = 1.0;
+StartZero = 0.0;
 End = 1e+6;
 StepMM = 0.001;
 StepNum = 1;
@@ -153,7 +154,7 @@ StepNum = 1;
 _InstancesSpinner->SetMinMaxStep(Start, End, StepNum);
 _PitchSpinner->SetMinMaxStep(Start*0.001, End, StepMM);
 _PitchSpinner->SetUnit(CATDlgControl::Millimeter);
-_SpaceToRefEndPointSpinner->SetMinMaxStep(Start*0.001, End, StepMM);
+_SpaceToRefEndPointSpinner->SetMinMaxStep(StartZero, End, StepMM);
 _SpaceToRefEndPointSpinner->SetUnit(CATDlgControl::Millimeter);
 
 //初始化状态

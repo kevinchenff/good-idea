@@ -36,6 +36,13 @@ using namespace std;
 #include "CATIGSMExtremum.h"
 #include "CATAcquisitionFilter.h"
 #include "CATIGSMPointOnCurve.h"
+#include "CATTopPointOperator.h"
+#include "CatTopPointLMode.h"
+#include "CATComputePointOnWire.h"
+#include "CAT3DPointRep.h"
+
+
+
 
 
 
@@ -46,13 +53,24 @@ PrtFstPointsCmd::PrtFstPointsCmd() :
   CATStateCommand ("PrtFstPointsCmd", CATDlgEngOneShot, CATCommandModeShared) 
 //  Valid states are CATDlgEngOneShot and CATDlgEngRepeat
   ,m_pDlg(NULL),m_pRepeatPanelDlg(NULL),m_pCurveAgt(NULL),m_pSurfAgt(NULL),m_pCurveSLAgt(NULL),m_pSurfSLAgt(NULL),m_piPrdAgt(NULL),m_piPrdSLAgt(NULL)
-  ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var)
+  ,m_SpecSurfs(NULL_var),m_piDoc(NULL),m_spPointGSMTool(NULL_var),m_spCurvePar(NULL_var),m_piISO(NULL)
   ,m_dCurveOffsetValue(0),m_dPointsCount(0),m_dPointDistance(0),m_dType(1),m_spAssambleCurve(NULL_var),m_spRefPoint(NULL_var),m_spFirstPoint(NULL_var)
   ,m_dLengthspCurvePar(0),m_dLengthEndToStart(0),m_GSMOrientFirstPoint(CATGSMSameOrientation)
 {
 	//初始化获得当前文档及名称
 	m_piDoc = PrtService::GetPrtDocument();
 	PrtService::GetPrdNumberFormDoc(m_piDoc,m_strDocName);
+
+	//
+	m_piEditor = CATFrmEditor::GetCurrentEditor();
+	if (NULL != m_piEditor)
+	{
+		m_piHSO = m_piEditor->GetHSO();
+		m_piHSO->Empty();
+
+		m_piISO = m_piEditor->GetISO();
+		m_piISO->Empty();
+	}
 
 	//判断是否为ZP模型;
 	if ((!IsThisZPPrt(m_strDocName))||(!PrdService::IsContextualPrd()))
@@ -147,6 +165,10 @@ PrtFstPointsCmd::~PrtFstPointsCmd()
 		m_piPrdAgt->RequestDelayedDestruction();
 		m_piPrdAgt=NULL;
 	}
+
+	//高亮点清空
+	m_piHSO->Empty();
+	m_piISO->Empty();
 }
 
 
@@ -211,6 +233,11 @@ void PrtFstPointsCmd::BuildGraph()
 	AddAnalyseNotificationCB (m_pRepeatPanelDlg->_ExtremityPB, 
 		m_pRepeatPanelDlg->_ExtremityPB->GetPushBActivateNotification(),
 		(CATCommandMethod)&PrtFstPointsCmd::OnRefEndPointExtremityPBCB,
+		NULL);
+	//预览按钮响应
+	AddAnalyseNotificationCB (m_pRepeatPanelDlg->_PreviewPB, 
+		m_pRepeatPanelDlg->_PreviewPB->GetPushBActivateNotification(),
+		(CATCommandMethod)&PrtFstPointsCmd::OnRepeatPanelPreviewPBCB,
 		NULL);
 
 	// 曲线偏移距离调整响应
@@ -442,6 +469,8 @@ void PrtFstPointsCmd::ChangeOKApplyState()
 			m_spCurvePar=NULL_var;	
 			//								
 		}
+		//
+		m_piISO->Empty();
 	}
 }
 
@@ -1827,7 +1856,6 @@ void PrtFstPointsCmd::CalculateStartEndPointInfo()
 		else //如果异向
 		{
 			//
-			//
 			double dValue01,dValue02;
 			dValue01 = m_pDlg->_DisToRefSpinner->GetValue() * 1000.0;
 			dValue02 = m_pRepeatPanelDlg->_SpaceToRefEndPointSpinner->GetValue() * 1000.0;
@@ -1836,4 +1864,226 @@ void PrtFstPointsCmd::CalculateStartEndPointInfo()
 		}
 
 	}
+}
+
+//创建高亮显示虚拟点位置信息
+void PrtFstPointsCmd::HighLightPreviewPoint(double  iLength, CATMathPoint&  ioResultPoint)
+{
+	//
+	CATBody *piWireBody = NULL,*piResultBody = NULL;
+	//
+	// defines an open configuration for the operator
+	CATSoftwareConfiguration * pConfig = new CATSoftwareConfiguration();
+	// defines the data of the operator: configuration + journal
+	CATTopData topdata(pConfig,NULL);
+	//
+	//获得输入曲线的拓扑
+	CATIGeometricalElement_var spGeomEle01 = m_spCurvePar;
+	CATBody_var spWireBody = spGeomEle01->GetBodyResult();	
+	//获得参考点的拓扑
+	CATIGeometricalElement_var spGeomEle02 = m_spFirstPoint;
+	CATBody_var spRefPointBody = spGeomEle02->GetBodyResult();
+	//
+	CATGeoFactory* iFactory = spWireBody->GetFactory();
+	//
+	//获得曲线上点位置信息的拓扑
+	CATBody * piTopPointOnWire = CATCreateTopPointOnWire(iFactory,&topdata,spWireBody,iLength,spRefPointBody,CatTopPointLMode::CatTopPointLValue);
+	//获取BODY结果
+	CATLISTP(CATCell) ioResult01;
+	piTopPointOnWire->GetAllCells(ioResult01,0);
+	CATVertex* pVertex01 = (CATVertex*)ioResult01[1];
+	CATPoint* pPoint01=pVertex01->GetPoint();
+	pPoint01->GetMathPoint(ioResultPoint);
+	//
+	//去除内存
+	CATICGMContainer * piContainer = spWireBody->GetContainer();
+	piContainer->Remove(piTopPointOnWire);
+}
+
+//
+//预览Repeat Panel Point 模式按钮
+void PrtFstPointsCmd::OnRepeatPanelPreviewPBCB(CATCommand* cmd, CATNotification* evt, CATCommandClientData data)
+{
+	//
+	m_piISO->Empty();
+	m_piHSO->Empty();
+	//计算当前长度，方向等参考信息
+	CalculateStartEndPointInfo();
+
+	// 获取Repeat Panel界面的参数信息
+	if (m_pRepeatPanelDlg->m_IChoosedIndex == 0)
+	{
+		//
+		double dStepValue = 0;
+		//安装点个数模式
+		double dCount = m_pRepeatPanelDlg->_InstancesSpinner->GetValue();
+		//
+		if (m_pRepeatPanelDlg->_CheckB->GetState() == CATDlgCheck && dCount != 1)
+		{
+			//
+			dStepValue = m_dLengthEndToStart / (dCount-1);						
+		} 
+		else
+		{
+			//
+			dStepValue = m_dLengthEndToStart / dCount;
+		}
+		//
+		//显示安装点位置信息
+		//
+		for (int i = 0; i < dCount; i++)
+		{
+			//
+			CATMathPoint  ioResultPoint;
+			if (m_GSMOrientFirstPoint == CATGSMSameOrientation)
+			{
+				HighLightPreviewPoint(dStepValue*i,ioResultPoint);
+			} 
+			else
+			{
+				HighLightPreviewPoint(-dStepValue*i,ioResultPoint);
+			}
+			
+			//
+			CATUnicodeString StrTextValue;
+			StrTextValue.BuildFromNum(i+1);
+			//
+			CATMathPointf TextPosNode;
+			TextPosNode.x = (float)(ioResultPoint.GetX());
+			TextPosNode.y = (float)(ioResultPoint.GetY());
+			TextPosNode.z = (float)(ioResultPoint.GetZ());
+			//
+			CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
+			CATGraphicAttributeSet   TextGaNode ;
+			TextGaNode.SetColor(BLUE);
+			CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
+			pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
+			//
+			CAT3DPointRep *p3DPoint = new CAT3DPointRep(TextPosNode,STAR);
+			p3DPoint->SetColor(GREEN);
+			//
+			CAT3DBagRep *pi3DBagRep = new CAT3DBagRep(); 
+			pi3DBagRep->AddChild(*pRepForTextStart);
+			pi3DBagRep->AddChild(*p3DPoint);
+			//	
+			CATModelForRep3D *piRepPtAlias = new CATModelForRep3D();
+			piRepPtAlias->SetRep(pi3DBagRep) ;
+			m_piISO->AddElement(piRepPtAlias);
+
+			piRepPtAlias->Release();
+			piRepPtAlias=NULL;
+		}
+
+	} 
+	else if (m_pRepeatPanelDlg->m_IChoosedIndex == 1)
+	{
+		//安装点间距模式
+		//个数&间距模式
+		double dStepValue = m_pRepeatPanelDlg->_PitchSpinner->GetValue()*1000;
+		//安装点个数模式
+		double dCount = (int)(m_dLengthEndToStart/dStepValue)+1;
+		//
+		if (m_pRepeatPanelDlg->_CheckB->GetState() == CATDlgUncheck && dCount != 1)
+		{
+			//
+			dCount -= 1;						
+		} 
+		
+		//显示安装点位置信息
+		//
+		for (int i = 0; i < dCount; i++)
+		{
+			//
+			CATMathPoint  ioResultPoint;
+			if (m_GSMOrientFirstPoint == CATGSMSameOrientation)
+			{
+				HighLightPreviewPoint(dStepValue*i,ioResultPoint);
+			} 
+			else
+			{
+				HighLightPreviewPoint(-dStepValue*i,ioResultPoint);
+			}
+
+			//
+			CATUnicodeString StrTextValue;
+			StrTextValue.BuildFromNum(i+1);
+			//
+			CATMathPointf TextPosNode;
+			TextPosNode.x = (float)(ioResultPoint.GetX());
+			TextPosNode.y = (float)(ioResultPoint.GetY());
+			TextPosNode.z = (float)(ioResultPoint.GetZ());
+			//
+			CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
+			CATGraphicAttributeSet   TextGaNode ;
+			TextGaNode.SetColor(BLUE);
+			CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
+			pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
+			//
+			CAT3DPointRep *p3DPoint = new CAT3DPointRep(TextPosNode,STAR);
+			p3DPoint->SetColor(GREEN);
+			//
+			CAT3DBagRep *pi3DBagRep = new CAT3DBagRep(); 
+			pi3DBagRep->AddChild(*pRepForTextStart);
+			pi3DBagRep->AddChild(*p3DPoint);
+			//	
+			CATModelForRep3D *piRepPtAlias = new CATModelForRep3D();
+			piRepPtAlias->SetRep(pi3DBagRep) ;
+			m_piISO->AddElement(piRepPtAlias);
+
+			piRepPtAlias->Release();
+			piRepPtAlias=NULL;
+		}
+	} 
+	else if (m_pRepeatPanelDlg->m_IChoosedIndex == 2)
+	{
+		//个数&间距模式
+		double dStepValue = m_pRepeatPanelDlg->_PitchSpinner->GetValue()*1000;
+		//安装点个数模式
+		double dCount = m_pRepeatPanelDlg->_InstancesSpinner->GetValue();
+		//显示安装点位置信息
+		//
+		for (int i = 0; i < dCount; i++)
+		{
+			//
+			CATMathPoint  ioResultPoint;
+			if (m_GSMOrientFirstPoint == CATGSMSameOrientation)
+			{
+				HighLightPreviewPoint(dStepValue*i,ioResultPoint);
+			} 
+			else
+			{
+				HighLightPreviewPoint(-dStepValue*i,ioResultPoint);
+			}
+
+			//
+			CATUnicodeString StrTextValue;
+			StrTextValue.BuildFromNum(i+1);
+			//
+			CATMathPointf TextPosNode;
+			TextPosNode.x = (float)(ioResultPoint.GetX());
+			TextPosNode.y = (float)(ioResultPoint.GetY());
+			TextPosNode.z = (float)(ioResultPoint.GetZ());
+			//
+			CAT3DCustomRep * pRepForTextStart= new CAT3DCustomRep();
+			CATGraphicAttributeSet   TextGaNode ;
+			TextGaNode.SetColor(BLUE);
+			CAT3DAnnotationTextGP   *pTextGPSrart = new CAT3DAnnotationTextGP(TextPosNode,StrTextValue);
+			pRepForTextStart->AddGP(pTextGPSrart,TextGaNode);
+			//
+			CAT3DPointRep *p3DPoint = new CAT3DPointRep(TextPosNode,STAR);
+			p3DPoint->SetColor(GREEN);
+			//
+			CAT3DBagRep *pi3DBagRep = new CAT3DBagRep(); 
+			pi3DBagRep->AddChild(*pRepForTextStart);
+			pi3DBagRep->AddChild(*p3DPoint);
+			//	
+			CATModelForRep3D *piRepPtAlias = new CATModelForRep3D();
+			piRepPtAlias->SetRep(pi3DBagRep) ;
+			m_piISO->AddElement(piRepPtAlias);
+
+			piRepPtAlias->Release();
+			piRepPtAlias=NULL;
+		}
+
+	}	
 }
