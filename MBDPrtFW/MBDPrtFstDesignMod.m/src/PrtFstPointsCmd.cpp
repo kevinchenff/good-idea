@@ -2034,6 +2034,16 @@ void PrtFstPointsCmd::OnRepeatPanelPreviewPBCB(CATCommand* cmd, CATNotification*
 			//
 			dCount -= 1;						
 		} 
+		//
+		if (m_pRepeatPanelDlg->_BestFitCheckB->GetState() == CATDlgCheck)
+		{
+			int iCount =  (int)(m_dLengthEndToStart/dStepValue);
+			dStepValue = m_dLengthEndToStart/iCount;
+			//
+			CATUnicodeString str; str.BuildFromNum(dStepValue);
+			str += "mm";
+			m_pRepeatPanelDlg->_BestFitEditor->SetText(str);
+		}
 		
 		//显示安装点位置信息
 		//

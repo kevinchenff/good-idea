@@ -101,22 +101,36 @@ CATDlgPushButton ExtremityPB
   GRID = { 0, 2, 1, 1, CATGRID_4SIDES };
 }
 
-CATDlgCheckButton CheckB
-{
-  FATHER = PrtFstPointRepeatPanelDlg;
-  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
-}
-
 CATDlgPushButton PreviewPB
 {
   FATHER = PrtFstPointRepeatPanelDlg;
-  GRID = { 4, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+  GRID = { 3, 0, 1, 1, CATGRID_RIGHT|CATGRID_TOP|CATGRID_BOTTOM };
+}
+
+CATDlgFrame Frame017
+{
+  FATHER = PrtFstPointRepeatPanelDlg;
+  STYLE = CATDlgFraNoTitle|CATDlgGridLayout;
+  GRID = { 2, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgCheckButton CheckB
+{
+  FATHER = Frame017;
+  GRID = { 0, 0, 1, 1, CATGRID_4SIDES };
 }
 
 CATDlgCheckButton BestFitCheckB
 {
-  FATHER = PrtFstPointRepeatPanelDlg;
-  GRID = { 3, 0, 1, 1, CATGRID_4SIDES };
+  FATHER = Frame017;
+  GRID = { 1, 0, 1, 1, CATGRID_4SIDES };
+}
+
+CATDlgEditor BestFitEditor
+{
+  FATHER = Frame017;
+  STYLE = CATDlgEdtReadOnly;
+  GRID = { 1, 1, 1, 1, CATGRID_4SIDES };
 }
 
 // END WIZARD REPLACEMENT ZONE
