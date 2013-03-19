@@ -171,9 +171,6 @@ _DistanceSpinner->SetMinMaxStep(Start, End, StepMM);
 _DisToRefSpinner->SetMinMaxStep(Start, End, StepMM);
 
 //
-//_DistanceSpinner->SetMagnitude (CATDlgControl::Length);
-//_PointDistSpinner->SetMagnitude (CATDlgControl::Length);
-//
 _DistanceSpinner->SetUnit(CATDlgControl::Millimeter);
 _DisToRefSpinner->SetUnit(CATDlgControl::Millimeter);
 

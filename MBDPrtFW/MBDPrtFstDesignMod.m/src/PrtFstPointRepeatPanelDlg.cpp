@@ -190,16 +190,25 @@ CATBoolean PrtFstPointRepeatPanelDlg::FstTypeComboItemCB(CATCommand* cmd, CATNot
 	{
 		_PitchSpinner->SetSensitivity(CATDlgDisable);
 		_InstancesSpinner->SetSensitivity(CATDlgEnable);
+		//
+		_CheckB->SetVisibility(CATDlgShow);
+		_SpaceToRefEndPointSpinner->SetSensitivity(CATDlgEnable);
 	}
 	else if (tempIndex == 1)
 	{
 		_PitchSpinner->SetSensitivity(CATDlgEnable);
 		_InstancesSpinner->SetSensitivity(CATDlgDisable);
+		//
+		_CheckB->SetVisibility(CATDlgShow);
+		_SpaceToRefEndPointSpinner->SetSensitivity(CATDlgEnable);
 	}
 	else if (tempIndex == 2)
 	{
 		_PitchSpinner->SetSensitivity(CATDlgEnable);
 		_InstancesSpinner->SetSensitivity(CATDlgEnable);
+		//
+		_CheckB->SetVisibility(CATDlgHide);
+		_SpaceToRefEndPointSpinner->SetSensitivity(CATDlgDisable);
 	}
 
 	return TRUE;
