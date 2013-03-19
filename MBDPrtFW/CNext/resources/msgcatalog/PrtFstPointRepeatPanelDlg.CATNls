@@ -8,4 +8,5 @@ Frame002.Label012.Title = "Spacing To Ref. End Point:";
 Frame002.ExtremityPB.Title = "Extremity";
 CheckB.Title = "With end point";
 PreviewPB.Title = "Preview";
+BestFitCheckB.Title = "Best Fit With End Ref";
 // END WIZARD REPLACEMENT ZONE

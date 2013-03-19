@@ -65,6 +65,7 @@ class PrtFstPointRepeatPanelDlg: public CATDlgDialog
  CATDlgPushButton*      _ExtremityPB;
  CATDlgCheckButton*      _CheckB;
  CATDlgPushButton*      _PreviewPB;
+ CATDlgCheckButton*      _BestFitCheckB;
 //END CAA2 WIZARD WIDGET DECLARATION SECTION
 
 
