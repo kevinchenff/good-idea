@@ -1957,7 +1957,7 @@ HRESULT PrtFstPointsCmd::CreateResultPoints(double iLength, CATGSMOrientation GS
 		//
 		CATICkeParm_var spCkedRatioValue = NULL_var;
 		spCkedRatioValue = PrtService::LocalInstLitteral(&dRatioValue,1,"Real","Ratio");
-		CATISpecObject_var spRefPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedRatioValue,CATGSMSameOrientation);
+		CATISpecObject_var spRefPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedRatioValue,GSMOrientRef);
 		//
 		CATIGSMPointOnCurve_var spGSMPointOnCurve = spFastenerPoint;
 		spGSMPointOnCurve->SetReferencePoint(spRefPoint);
