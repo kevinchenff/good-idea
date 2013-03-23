@@ -117,6 +117,10 @@ class PrtFstPointsCmd: public CATStateCommand
 
   //创建高亮显示虚拟点位置信息
   void HighLightPreviewPoint(double iLength, CATMathPoint&  ioResultPoint);
+  //获得传入特征的的父级节点
+  HRESULT GetLinkImportPrd(CATISpecObject_var& ispFeature,CATIProduct_var &ospSourcePrd);
+  //判断一个曲面特征是否在另一个数组中
+  BOOL IsTheSpecInLstSpec(CATISpecObject_var iSpec, CATListValCATISpecObject_var iLstSpec);
 
   
   private:
@@ -139,8 +143,10 @@ class PrtFstPointsCmd: public CATStateCommand
 	  //定义数据列表环境变量
 	  CATListValCATISpecObject_var m_lstSpecPrds;
 	  CATListValCATISpecObject_var m_lstSpecCurves;
-	  CATISpecObject_var m_SpecSurfs;
-	  CATISpecObject_var m_spAssambleCurve, m_spRefPoint, m_spFirstPoint;
+	  //
+	  CATListValCATISpecObject_var m_lstSpecSurfs;
+	  //
+	  CATISpecObject_var m_spAssambleCurve,m_spAssembleSurfs, m_spRefPoint, m_spFirstPoint;
 	  CATISpecObject_var m_spPointGSMTool;
 	  CATISpecObject_var m_spCurvePar;
 	  CATListValCATISpecObject_var m_alstSpecPoint;
