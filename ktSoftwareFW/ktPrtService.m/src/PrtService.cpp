@@ -1260,7 +1260,7 @@ void PrtService::GetContentSpecsByNameFromGSMTool(CATISpecObject_var spFatherGSM
 	CATIDescendants_var spDescendants = spFatherGSMTool;
 
 	CATListValCATBaseUnknown_var listBaseUnknow;
-	spDescendants->GetAllChildren(strSpecIID,iolistSpecs);
+	spDescendants->GetDirectChildren(strSpecIID,iolistSpecs);
 }
 
 
