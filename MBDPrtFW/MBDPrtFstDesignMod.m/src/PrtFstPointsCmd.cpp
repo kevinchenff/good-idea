@@ -1119,7 +1119,7 @@ void PrtFstPointsCmd::OnReverseOffsetDirePBCB(CATCommand* cmd, CATNotification* 
 			//
 			spGSMPar->SetInvertDirection(TRUE);
 			//
-			HRESULT rc = PrtService::ObjectUpdate(m_spCurvePar);
+			HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
 			if (FAILED(rc))
 			{
 				PrtService::ShowDlgNotify("错误提示","反向更新错误，将保持原方向");
@@ -1132,7 +1132,7 @@ void PrtFstPointsCmd::OnReverseOffsetDirePBCB(CATCommand* cmd, CATNotification* 
 			//
 			spGSMPar->SetInvertDirection(FALSE);
 			//
-			HRESULT rc = PrtService::ObjectUpdate(m_spCurvePar);
+			HRESULT rc = PrtService::ObjectUpdate(m_spFirstPoint);
 			if (FAILED(rc))
 			{
 				PrtService::ShowDlgNotify("错误提示","反向更新错误，将保持原方向");
