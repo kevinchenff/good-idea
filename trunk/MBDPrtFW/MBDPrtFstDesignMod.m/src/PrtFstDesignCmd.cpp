@@ -32,6 +32,10 @@ CATCreateClass( PrtFstDesignCmd);
 const double LINEWIDTH=3;
 const double POINTSYMBOL=7;
 
+const double LOWERMIN=0.8;
+const double UPPERMAX=1.2;
+
+
 //-------------------------------------------------------------------------
 // Constructor
 //-------------------------------------------------------------------------
@@ -3578,21 +3582,21 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 			double dSTDLengthMin=0,dSTDLengthMax=0;
 			if (dMin > 4)
 			{
-				dSTDLengthMin = (dMin + 1.1*m_dJstThickMax);
+				dSTDLengthMin = (dMin + 1.1*m_dJstThickMax)*LOWERMIN;
 			}
 			else
 			{
-				dSTDLengthMin = (dMin + 1.3*m_dJstThickMax);
+				dSTDLengthMin = (dMin + 1.3*m_dJstThickMax)*LOWERMIN;
 			}
 
 			//
 			if (dMax > 4)
 			{
-				dSTDLengthMax = (dMax + 1.1*m_dJstThickMax) * 1.2;
+				dSTDLengthMax = (dMax + 1.1*m_dJstThickMax) * UPPERMAX;
 			}
 			else
 			{
-				dSTDLengthMax = (dMax + 1.3*m_dJstThickMax) * 1.2;
+				dSTDLengthMax = (dMax + 1.3*m_dJstThickMax) * UPPERMAX;
 			}
 
 			//
@@ -3727,8 +3731,8 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
-			dSTDLengthMin = (1.3*dMin + m_dJstThickMax + m_dFirstPrdThickMax);
-			dSTDLengthMax = (1.3*dMax + m_dJstThickMax + m_dFirstPrdThickMax) * 1.2;
+			dSTDLengthMin = (1.3*dMin + m_dJstThickMax + m_dFirstPrdThickMax) * LOWERMIN;
+			dSTDLengthMax = (1.3*dMax + m_dJstThickMax + m_dFirstPrdThickMax) * UPPERMAX;
 
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
@@ -3855,8 +3859,8 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
-			dSTDLengthMin = (0.6*dMin + m_dJstThickMax);
-			dSTDLengthMax = (0.6*dMax + m_dJstThickMax) * 1.2;
+			dSTDLengthMin = (0.6*dMin + m_dJstThickMax) * LOWERMIN;
+			dSTDLengthMax = (0.6*dMax + m_dJstThickMax) * UPPERMAX;
 
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
@@ -3983,8 +3987,8 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 		{
 			//
 			double dSTDLengthMin=0,dSTDLengthMax=0;
-			dSTDLengthMin = (0.7*dMin + m_dJstThickMax);
-			dSTDLengthMax = (0.7*dMax + m_dJstThickMax) * 1.2;
+			dSTDLengthMin = (0.7*dMin + m_dJstThickMax) * LOWERMIN;
+			dSTDLengthMax = (0.7*dMax + m_dJstThickMax) * UPPERMAX;
 
 			//
 			CATUnicodeString strdSTDLengthMax,strdSTDLengthMin;
