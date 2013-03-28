@@ -30,7 +30,7 @@ CATCreateClass( PrtFstUpdateCmd);
 
 // 螺母尾端2mm余量 
 const double BOLTENDALLOWENCE = 2;
-const double LOWERBOLTMINCHECK = 0.8;
+const double LOWERBOLTMINCHECK = 0.6;
 
 
 //-------------------------------------------------------------------------
@@ -560,7 +560,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		{
 			CATUnicodeString strInfo(""),strTemp("");
 			strTemp.BuildFromNum(dThick-dThickLimit,"%lf");
-			strInfo += CATUnicodeString("螺栓光杆凹入夹层中长度超过夹持长度的20%，凹入夹层部分尺寸值为：") + strTemp + CATUnicodeString("mm");
+			strInfo += CATUnicodeString("螺栓光杆凹入夹层中长度超过夹层厚度的40%，凹入夹层部分尺寸值为：") + strTemp + CATUnicodeString("mm");
 			
 			alstErrorInfoItems.Append(strInfo);
 		}
