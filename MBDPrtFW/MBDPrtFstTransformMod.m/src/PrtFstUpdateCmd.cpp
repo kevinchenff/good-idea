@@ -28,8 +28,9 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstUpdateCmd);
 
-// 3mm余量 
-const double ALLOWENCE = 2;
+// 螺母尾端2mm余量 
+const double BOLTENDALLOWENCE = 2;
+const double LOWERBOLTMIN = 0.8;
 
 
 //-------------------------------------------------------------------------
@@ -544,7 +545,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 	if (alststrDetailType[1] == "螺栓")
 	{
 		//光杆应凸出夹层最大至1mm，不允许螺纹进入夹层
-		if (dThickLimit >= dThick && dThickLimit <= (dThick+1) && dLength >= (dThick+dNutsThick+2))
+		if (dThickLimit >= dThick && dThickLimit <= (dThick+1) && dLength >= (dThick+dNutsThick+BOLTENDALLOWENCE))
 		{
 			m_alistSuccessfulSpec.Append(spLine);
 			m_aliststrSuccessfulInfo.Append("螺栓更新成功，满足安装要求");
@@ -573,7 +574,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 			alstErrorInfoItems.Append(strInfo);
 		}
 
-		if (dLength < (dThick+dNutsThick+2))
+		if (dLength < (dThick+dNutsThick+BOLTENDALLOWENCE))
 		{
 			CATUnicodeString strInfo(""),strTemp("");
 			strTemp.BuildFromNum(dLength - (dThick+dNutsThick),"%lf");

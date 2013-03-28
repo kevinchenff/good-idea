@@ -34,6 +34,7 @@ const double POINTSYMBOL=7;
 
 const double LOWERMIN=0.8;
 const double UPPERMAX=1.2;
+const double LOWERBOLTMIN = 0.8;
 
 
 //-------------------------------------------------------------------------
@@ -3027,6 +3028,11 @@ void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotificati
 		strValue02 += "mm";
 		m_pFstFreeStyleMainBoltDlg->_MinLayerThicknessEditor->SetText(strValue02);
 		//
+		if (m_dJstThickMax != m_dJstThickMin)
+		{
+			PrtService::ShowDlgNotify("提示","当前零件存在夹持厚度不均匀分布的状态，请您确认操作！");
+		}
+		//
 		CATUnicodeString strValue03;
 		strValue03.BuildFromNum(m_dFirstPrdThickMax);
 		strValue03 += "mm";
@@ -3216,7 +3222,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 	{
 		//夹持厚度过滤
 		CATUnicodeString strThick;
-		strThick.BuildFromNum(m_dJstThickMax,"%lf");
+		strThick.BuildFromNum(m_dJstThickMax*LOWERBOLTMIN,"%lf");
 		//
 		CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
 		alsStrSearchItemsValue.Append(str03);
@@ -6597,7 +6603,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgGoToSearchPBCB(CATCommand* cmd
 	{
 		//夹持厚度过滤
 		CATUnicodeString strThick;
-		strThick.BuildFromNum(m_dJstThickMax,"%lf");
+		strThick.BuildFromNum(m_dJstThickMax*LOWERBOLTMIN,"%lf");
 		//
 		CATUnicodeString str03 = m_pFstKnowledgeBasedDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
 		alsStrSearchItemsValue.Append(str03);
