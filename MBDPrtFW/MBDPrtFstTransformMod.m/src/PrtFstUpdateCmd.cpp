@@ -30,7 +30,7 @@ CATCreateClass( PrtFstUpdateCmd);
 
 // 螺母尾端2mm余量 
 const double BOLTENDALLOWENCE = 2;
-const double LOWERBOLTMIN = 0.8;
+const double LOWERBOLTMINCHECK = 0.8;
 
 
 //-------------------------------------------------------------------------
@@ -544,8 +544,8 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 
 	if (alststrDetailType[1] == "螺栓")
 	{
-		//光杆应凸出夹层最大至1mm，不允许螺纹进入夹层
-		if (dThickLimit >= dThick && dThickLimit <= (dThick+1) && dLength >= (dThick+dNutsThick+BOLTENDALLOWENCE))
+		//光杆应凸出夹层最大至1mm，不允许螺纹进入夹层*LOWERBOLTMINCHECK
+		if (dThickLimit >= dThick*LOWERBOLTMINCHECK && dThickLimit <= (dThick+1) && dLength >= (dThick+dNutsThick+BOLTENDALLOWENCE))
 		{
 			m_alistSuccessfulSpec.Append(spLine);
 			m_aliststrSuccessfulInfo.Append("螺栓更新成功，满足安装要求");
@@ -556,11 +556,11 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		}
 		
 		//生成错误信息
-		if (dThickLimit < dThick)
+		if (dThickLimit < dThick*LOWERBOLTMINCHECK)
 		{
 			CATUnicodeString strInfo(""),strTemp("");
 			strTemp.BuildFromNum(dThick-dThickLimit,"%lf");
-			strInfo += CATUnicodeString("螺栓光杆凹入夹层中，凹入夹层部分尺寸值为：") + strTemp + CATUnicodeString("mm");
+			strInfo += CATUnicodeString("螺栓光杆凹入夹层中长度超过夹持长度的20%，凹入夹层部分尺寸值为：") + strTemp + CATUnicodeString("mm");
 			
 			alstErrorInfoItems.Append(strInfo);
 		}
