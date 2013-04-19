@@ -233,7 +233,8 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 
 		//1 获得“紧固件描述”参数集
 		CATISpecObject_var spJstDescripParmSet=NULL_var;
-		PrtService::GetParmSetFromSpeObjt(iolstspFoundResult02[i],spJstDescripParmSet,"紧固件描述");
+		PrtService::CreateOrRetrieveGS(iolstspFoundResult02[i],"紧固件描述",spJstDescripParmSet);
+		//PrtService::GetParmSetFromSpeObjt(iolstspFoundResult02[i],spJstDescripParmSet,"紧固件描述");
 		//1.1 获得紧固件描述
 		CATListValCATISpecObject_var iolstspParmSet;
 		if (NULL_var != spJstDescripParmSet)
@@ -257,7 +258,7 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			PrtService::SearchALLSonFromRootGSMTool(iolstspFoundResult03[j],iolstspFoundResult04);
 
 			//
-			if (iolstspFoundResult04.Size()==0)
+			if (iolstspFoundResult04.Size()==0 && spJstDescripParmSet != iolstspFoundResult03[j])
 			{
 				iolstspFoundResult02[i]->Remove(iolstspFoundResult03[j]);
 				continue;
@@ -385,7 +386,9 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 		//删除已经不存在紧固件的属性描述
 		for (int m=1; m <= alistDeleteFstParam.Size(); m++)
 		{
-			alistDeleteFstParam[m]->GetFather()->Remove(alistDeleteFstParam[m]);
+			CATIParmPublisher_var spParmPub = spJstDescripParmSet;
+			spParmPub->RemoveChild(alistDeleteFstParam[m]);
+			//alistDeleteFstParam[m]->GetFather()->Remove(alistDeleteFstParam[m]);
 		}
 
 		//收起参数几何集
@@ -1190,7 +1193,8 @@ void PrtFstUpdateCmd::DeleteAllErrorCB(CATCommand* cmd, CATNotification* evt, CA
 
 		//1 获得“紧固件描述”参数集
 		CATISpecObject_var spJstDescripParmSet=NULL_var;
-		PrtService::GetParmSetFromSpeObjt(iolstspFoundResult02[i],spJstDescripParmSet,"紧固件描述");
+		PrtService::CreateOrRetrieveGS(iolstspFoundResult02[i],"紧固件描述",spJstDescripParmSet);
+		//PrtService::GetParmSetFromSpeObjt(iolstspFoundResult02[i],spJstDescripParmSet,"紧固件描述");
 		//1.1 获得紧固件描述
 		CATListValCATISpecObject_var iolstspParmSet;
 		if (NULL_var != spJstDescripParmSet)
