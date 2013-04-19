@@ -2007,7 +2007,8 @@ void PrtFstDesignCmd::SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool
 	//
 	//获得“紧固件描述”参数集
 	CATISpecObject_var spJstDescripParmSet=NULL_var;
-	PrtService::GetParmSetFromSpeObjt(iospJointGSMTool,spJstDescripParmSet,"紧固件描述");
+	PrtService::CreateOrRetrieveGS(iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
+	//PrtService::GetParmSetFromSpeObjt(iospJointGSMTool,spJstDescripParmSet,"紧固件描述");
 	if (NULL_var != spJstDescripParmSet)
 	{
 		CATISpecObject_var spJstTypeInfoSet = NULL_var;
@@ -2047,7 +2048,8 @@ void PrtFstDesignCmd::SetOrChangeJstTypeInfo(CATISpecObject_var iospJointGSMTool
 	else
 	{
 		//
-		PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
+		PrtService::CreateOrRetrieveGS(iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
+		//PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
 		CATISpecObject_var spJstTypeInfoSet = NULL_var;
 		//检查是否存在
 		PrtService::GetParmSetFromSpeObjt(spJstDescripParmSet,spJstTypeInfoSet,strChooseFstType,1);
@@ -2184,7 +2186,9 @@ void PrtFstDesignCmd::GetPartsJointGSMTool(CATISpecObject_var &iospJointGSMTool,
 		PrtService::CAAGsiCreateGeometricFeatureSets(opiRootContainer,strPartsJointName,spLineDefGSMTool,iospJointGSMTool,oDiag,0,0);
 		//
 		CATISpecObject_var spJstDescripParmSet=NULL_var;
-		PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
+		//
+		PrtService::CreateOrRetrieveGS(iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
+		//PrtService::CreateParmSetOnSpeObjt(m_piDoc,iospJointGSMTool,"紧固件描述",spJstDescripParmSet);
 	}
 }
 

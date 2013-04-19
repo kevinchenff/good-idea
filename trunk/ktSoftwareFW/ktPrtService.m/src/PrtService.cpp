@@ -187,6 +187,7 @@ HRESULT PrtService::CreateOrRetrieveGS(CATISpecObject_var iParentGS,CATUnicodeSt
 	CATIPrtContainer_var spPartContainer=iParentGS->GetFeatContainer();
 	CATIMechanicalRootFactory_var spMechRootFact=iParentGS->GetFeatContainer();
 	rc=spMechRootFact->CreateGeometricalSet(iName,iParentGS,oGSSpecObj,0);
+	PrtService::CAAGsiInsertInProceduralView(oGSSpecObj,iParentGS);
 	return rc;
 }
 
