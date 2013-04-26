@@ -1544,7 +1544,7 @@ HRESULT PrtFstPointsCmd::CreateFastenerFirstPoint()
 	spCkeOffset = PrtService::LocalInstLitteral(&dOffsetValue,1,"Length","Length");
 	//
 	m_spCurvePar = iospGSMFact->CreateCurvePar(m_spAssambleCurve,m_spAssembleSurfs,spCkeOffset,FALSE);
-	//PrtService::CAAGsiInsertInProceduralView(m_spCurvePar,m_spPointGSMTool);
+	PrtService::CAAGsiInsertInProceduralView(m_spCurvePar,m_spPointGSMTool);
 	PrtService::SetAlias(m_spCurvePar,"排布线");
 	//PrtService::SetSpecObjShowAttr(m_spCurvePar,"Hide");
 	rc = PrtService::ObjectUpdate(m_spCurvePar);
@@ -2046,16 +2046,16 @@ HRESULT PrtFstPointsCmd::CreateResultPoints(double iLength, CATGSMOrientation GS
 	CATIGSMCurvePar_var spFirstGSMPar = m_spCurvePar;
 	spFirstGSMPar->GetInvertDirection(oInvert);	
 	//
-	CATISpecObject_var spCurvePar = iospGSMFact->CreateCurvePar(m_spAssambleCurve,m_spAssembleSurfs,spCkeOffset,oInvert);
-	PrtService::SetAlias(spCurvePar,"排布线");
-	rc = PrtService::ObjectUpdate(spCurvePar);
+	//CATISpecObject_var spCurvePar = iospGSMFact->CreateCurvePar(m_spAssambleCurve,m_spAssembleSurfs,spCkeOffset,oInvert);
+	//PrtService::SetAlias(spCurvePar,"排布线");
+	//rc = PrtService::ObjectUpdate(spCurvePar);
 	//
 	if (IsClosedCircle(m_spAssambleCurve))
 	{
 		//采用极值点模式
 		CATICkeParm_var spCkedLengthValue = NULL_var;
 		spCkedLengthValue = PrtService::LocalInstLitteral(&iLength,1,"Length","Length");
-		CATISpecObject_var spFastenerPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedLengthValue,GSMOrientRef);
+		CATISpecObject_var spFastenerPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedLengthValue,GSMOrientRef);
 		//
 		PrtService::CAAGsiInsertInProceduralView(spFastenerPoint,m_spPointGSMTool);
 		rc = PrtService::ObjectUpdate(spFastenerPoint);
@@ -2064,7 +2064,7 @@ HRESULT PrtFstPointsCmd::CreateResultPoints(double iLength, CATGSMOrientation GS
 		spGSMDir->SetCoordinates(1,2,3);
 		spGSMDir->SetLocalCoordinates(-2,1,0);
 		//
-		CATISpecObject_var spRefPoint = iospGSMFact->CreateExtremum(spCurvePar,spGSMDir,GSMMax);
+		CATISpecObject_var spRefPoint = iospGSMFact->CreateExtremum(m_spCurvePar,spGSMDir,GSMMax);
 		//
 		//
 		CATIGSMPointOnCurve_var spGSMPointOnCurve = spFastenerPoint;
@@ -2076,7 +2076,7 @@ HRESULT PrtFstPointsCmd::CreateResultPoints(double iLength, CATGSMOrientation GS
 		//采用Ratio模式
 		CATICkeParm_var spCkedLengthValue = NULL_var;
 		spCkedLengthValue = PrtService::LocalInstLitteral(&iLength,1,"Length","Length");
-		CATISpecObject_var spFastenerPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedLengthValue,GSMOrientRef);
+		CATISpecObject_var spFastenerPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedLengthValue,GSMOrientRef);
 		//
 		PrtService::CAAGsiInsertInProceduralView(spFastenerPoint,m_spPointGSMTool);
 		rc = PrtService::ObjectUpdate(spFastenerPoint);
@@ -2090,7 +2090,7 @@ HRESULT PrtFstPointsCmd::CreateResultPoints(double iLength, CATGSMOrientation GS
 		//
 		CATICkeParm_var spCkedRatioValue = NULL_var;
 		spCkedRatioValue = PrtService::LocalInstLitteral(&dRatioValue,1,"Real","Ratio");
-		CATISpecObject_var spRefPoint = iospGSMFact->CreatePoint(spCurvePar,NULL_var,spCkedRatioValue,GSMOrientRef);
+		CATISpecObject_var spRefPoint = iospGSMFact->CreatePoint(m_spCurvePar,NULL_var,spCkedRatioValue,GSMOrientRef);
 		//
 		CATIGSMPointOnCurve_var spGSMPointOnCurve = spFastenerPoint;
 		spGSMPointOnCurve->SetReferencePoint(spRefPoint);
