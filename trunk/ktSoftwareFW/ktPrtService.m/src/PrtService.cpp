@@ -1198,19 +1198,24 @@ void PrtService::ModifyMBDParamToGSMTool(CATDocument * ipDoc,CATListValCATUnicod
 //获得part文件的document,无论打开的是product环境，或者part环境 
 CATDocument* PrtService::GetPrtDocument()
 {
-	CATIPrtContainer_var spPartContainer = NULL_var;
-
 	//-------------------------------------------
 	CATFrmEditor * pEditor =CATFrmEditor::GetCurrentEditor();
-
+	//
 	if (pEditor != NULL)
 	{
 		CATPathElement spPath = pEditor->GetUIActiveObject( );
+		//CATBaseUnknown* pcurrbase = spPath.CurrentElement( );
+		//
+		CATISpecObject_var spLastSpec = PrtService::GetLastSpecObject(&spPath);
+		//
+		if (spLastSpec == NULL_var)
+		{
+			return NULL;
+		}
 
-		CATBaseUnknown* pcurrbase = spPath.CurrentElement( );
-
+		//
 		CATILinkableObject *piLinkableObject = NULL;
-		HRESULT rc = pcurrbase->QueryInterface( IID_CATILinkableObject, (void**)& piLinkableObject );
+		HRESULT rc = spLastSpec->QueryInterface( IID_CATILinkableObject, (void**)& piLinkableObject );
 		CATDocument * pDocument = NULL ;
 		if ( SUCCEEDED(rc) )
 		{

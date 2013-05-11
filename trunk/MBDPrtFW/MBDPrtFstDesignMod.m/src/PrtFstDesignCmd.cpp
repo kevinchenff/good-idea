@@ -3034,7 +3034,7 @@ void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotificati
 		//
 		if (m_dJstThickMax != m_dJstThickMin)
 		{
-			PrtService::ShowDlgNotify("提示","当前零件存在夹持厚度不均匀分布的状态，请您确认操作！");
+			PrtService::ShowDlgNotify("提示","当前零件存在夹持厚度不均匀分布的状态，安装规则过滤条件将全部失效，请选用后选择更新校验紧固件安装有效性！");
 		}
 		//
 		CATUnicodeString strValue03;
@@ -3226,7 +3226,8 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 	{
 		//夹持厚度过滤
 		CATUnicodeString strThick;
-		strThick.BuildFromNum(m_dJstThickMax*LOWERBOLTMIN,"%lf");
+		//strThick.BuildFromNum(m_dJstThickMax*LOWERBOLTMIN,"%lf");
+		strThick.BuildFromNum(m_dJstThickMin*LOWERBOLTMIN,"%lf");
 		//
 		CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
 		alsStrSearchItemsValue.Append(str03);
@@ -3327,10 +3328,26 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 
 				}
 				//
-				double dLeft = dThickLimit-m_dJstThickMax;
-				CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 				//
-				m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+				if (m_dJstThickMax == m_dJstThickMin)
+				{
+					double dLeft = dThickLimit-m_dJstThickMax;
+					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+					//
+					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+				} 
+				else
+				{
+					double dLeft01 = dThickLimit-m_dJstThickMax;
+					double dLeft02 = dThickLimit-m_dJstThickMin;
+					CATUnicodeString strdLeft01,strdLeft02;
+					strdLeft01.BuildFromNum(dLeft01);
+					strdLeft02.BuildFromNum(dLeft02);
+					CATUnicodeString strResult = strdLeft01 + "~" + strdLeft02;
+					//
+					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strResult,i-1);
+				}
+				
 			}
 		}
 	}
@@ -3440,10 +3457,28 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 
 				}
 				//
-				double dLeft = dThickLimit-m_dJstThickMax;
-				CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
-				//
-				m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+				//double dLeft = dThickLimit-m_dJstThickMax;
+				//CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+				////
+				//m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+				if (m_dJstThickMax == m_dJstThickMin)
+				{
+					double dLeft = dThickLimit-m_dJstThickMax;
+					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+					//
+					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+				} 
+				else
+				{
+					double dLeft01 = dThickLimit-m_dJstThickMax;
+					double dLeft02 = dThickLimit-m_dJstThickMin;
+					CATUnicodeString strdLeft01,strdLeft02;
+					strdLeft01.BuildFromNum(dLeft01);
+					strdLeft02.BuildFromNum(dLeft02);
+					CATUnicodeString strResult = strdLeft01 + "~" + strdLeft02;
+					//
+					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strResult,i-1);
+				}
 			}
 		}
 	}
@@ -3477,7 +3512,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 		{
 			//夹持厚度过滤
 			CATUnicodeString strThick;
-			strThick.BuildFromNum(m_dJstThickMax,"%lf");
+			strThick.BuildFromNum(m_dJstThickMin,"%lf");
 			//
 			CATUnicodeString str03 = m_pFstFreeStyleDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
 			alsStrSearchItemsValue.Append(str03);
@@ -3577,10 +3612,30 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 
 					}
 					//
+					/*
 					double dLeft = dThickLimit-m_dJstThickMax;
 					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 					//
 					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					*/
+					if (m_dJstThickMax == m_dJstThickMin)
+					{
+						double dLeft = dThickLimit-m_dJstThickMax;
+						CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					} 
+					else
+					{
+						double dLeft01 = dThickLimit-m_dJstThickMax;
+						double dLeft02 = dThickLimit-m_dJstThickMin;
+						CATUnicodeString strdLeft01,strdLeft02;
+						strdLeft01.BuildFromNum(dLeft01);
+						strdLeft02.BuildFromNum(dLeft02);
+						CATUnicodeString strResult = strdLeft01 + "~" + strdLeft02;
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strResult,i-1);
+					}
 				}
 			}
 		}
@@ -3592,11 +3647,11 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 			double dSTDLengthMin=0,dSTDLengthMax=0;
 			if (dMin > 4)
 			{
-				dSTDLengthMin = (dMin + 1.1*m_dJstThickMax)*LOWERMIN;
+				dSTDLengthMin = (dMin + 1.1*m_dJstThickMin)*LOWERMIN;
 			}
 			else
 			{
-				dSTDLengthMin = (dMin + 1.3*m_dJstThickMax)*LOWERMIN;
+				dSTDLengthMin = (dMin + 1.3*m_dJstThickMin)*LOWERMIN;
 			}
 
 			//
@@ -3719,6 +3774,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					}
 					//
 					//
+					/*
 					if (dDiaValue>4)
 					{
 						dSTDThick = dDiaValue + 1.1*m_dJstThickMax;
@@ -3732,6 +3788,54 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 					//
 					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					*/
+					if (m_dJstThickMax == m_dJstThickMin)
+					{
+						if (dDiaValue>4)
+						{
+							dSTDThick = dDiaValue + 1.1*m_dJstThickMax;
+						}
+						else
+						{
+							dSTDThick = dDiaValue + 1.3*m_dJstThickMax;
+						}
+						//
+						double dLeft = dThickLimit-dSTDThick;
+						CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					} 
+					else
+					{
+						double dSTDThick01,dSTDThick02;
+						//
+						if (dDiaValue>4)
+						{
+							dSTDThick01 = dDiaValue + 1.1*m_dJstThickMax;
+						}
+						else
+						{
+							dSTDThick01 = dDiaValue + 1.3*m_dJstThickMax;
+						}
+						//
+						if (dDiaValue>4)
+						{
+							dSTDThick02 = dDiaValue + 1.1*m_dJstThickMin;
+						}
+						else
+						{
+							dSTDThick02 = dDiaValue + 1.3*m_dJstThickMin;
+						}
+						//
+						double dLeft01 = dThickLimit-dSTDThick01;
+						double dLeft02 = dThickLimit-dSTDThick02;
+						CATUnicodeString strdLeft01,strdLeft02;
+						strdLeft01.BuildFromNum(dLeft01);
+						strdLeft02.BuildFromNum(dLeft02);
+						CATUnicodeString strResult = strdLeft01 + "~" + strdLeft02;
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strResult,i-1);
+					}
 				}
 			}
 
@@ -3853,6 +3957,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 						}
 
 					}
+					/*
 					//
 					dSTDThick = 1.3*dDiaValue + m_dJstThickMax + m_dFirstPrdThickMax;
 					//
@@ -3860,6 +3965,34 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 					//
 					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					*/
+					//
+					if (m_dJstThickMax == m_dJstThickMin)
+					{
+						dSTDThick = 1.3*dDiaValue + m_dJstThickMax + m_dFirstPrdThickMax;
+						//
+						double dLeft = dThickLimit-dSTDThick;
+						CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					} 
+					else
+					{
+						double dSTDThick01,dSTDThick02;
+						//
+						dSTDThick01 = 1.3*dDiaValue + m_dJstThickMax + m_dFirstPrdThickMax;
+						//
+						dSTDThick02 = 1.3*dDiaValue + m_dJstThickMax + m_dFirstPrdThickMin;
+						//
+						double dLeft01 = dThickLimit-dSTDThick01;
+						double dLeft02 = dThickLimit-dSTDThick02;
+						CATUnicodeString strdLeft01,strdLeft02;
+						strdLeft01.BuildFromNum(dLeft01);
+						strdLeft02.BuildFromNum(dLeft02);
+						CATUnicodeString strResult = strdLeft01 + "~" + strdLeft02;
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strResult,i-1);
+					}
 				}
 			}
 			
@@ -3982,12 +4115,38 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 
 					}
 					//
+					/*
 					dSTDThick = 0.6*dDiaValue + m_dJstThickMax;
 					//
 					double dLeft = dThickLimit-dSTDThick;
 					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 					//
 					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					*/
+					if (m_dJstThickMin == m_dJstThickMax)
+					{
+						dSTDThick = 0.6*dDiaValue + m_dJstThickMax;
+						//
+						double dLeft = dThickLimit-dSTDThick;
+						CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					} 
+					else
+					{
+						double dSTDThick01,dSTDThick02;
+						dSTDThick01 = 0.6*dDiaValue + m_dJstThickMax;
+						dSTDThick02 = 0.6*dDiaValue + m_dJstThickMin;
+						//
+						double dLeft01 = dThickLimit-dSTDThick01;
+						double dLeft02 = dThickLimit-dSTDThick02;
+						CATUnicodeString strdLeft01,strdLeft02;
+						strdLeft01.BuildFromNum(dLeft01);
+						strdLeft02.BuildFromNum(dLeft02);
+						CATUnicodeString strResult = strdLeft01 + "~" + strdLeft02;
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strResult,i-1);
+					}
 				}
 			}
 
@@ -4110,12 +4269,38 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgGoToSearchPBCB(CATCommand* cmd, CAT
 
 					}
 					//
+					/*
 					dSTDThick = 0.7*dDiaValue + m_dJstThickMax;
 					//
 					double dLeft = dThickLimit-dSTDThick;
 					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 					//
 					m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					*/
+					if (m_dJstThickMin == m_dJstThickMax)
+					{
+						dSTDThick = 0.7*dDiaValue + m_dJstThickMax;
+						//
+						double dLeft = dThickLimit-dSTDThick;
+						CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strdLeft,i-1);
+					} 
+					else
+					{
+						double dSTDThick01,dSTDThick02;
+						dSTDThick01 = 0.7*dDiaValue + m_dJstThickMax;
+						dSTDThick02 = 0.7*dDiaValue + m_dJstThickMin;
+						//
+						double dLeft01 = dThickLimit-dSTDThick01;
+						double dLeft02 = dThickLimit-dSTDThick02;
+						CATUnicodeString strdLeft01,strdLeft02;
+						strdLeft01.BuildFromNum(dLeft01);
+						strdLeft02.BuildFromNum(dLeft02);
+						CATUnicodeString strResult = strdLeft01 + "~" + strdLeft02;
+						//
+						m_pFstFreeStyleMainBoltDlg->_SearchResultML->SetColumnItem(10,strResult,i-1);
+					}
 				}
 			}
 		}
@@ -4131,7 +4316,7 @@ void PrtFstDesignCmd::FstFreeStyleMainBoltDlgNextStepPBCB(CATCommand* cmd, CATNo
     if (m_pFstFreeStyleDlg->m_IChoosedIndex != 2) //如果是铆钉 螺钉直接获取所选信息，退出向导
 	{
 		//如果是铆钉，并且余量值为负值，则
-		if (m_pFstFreeStyleDlg->m_IChoosedIndex == 1 && m_dLeftCheck <0 )
+		if (m_pFstFreeStyleDlg->m_IChoosedIndex == 1 && m_dLeftCheck <0 && m_dJstThickMin==m_dJstThickMax)
 		{
 			PrtService::ShowDlgNotify("提示信息","所选铆钉长度不满足安装规范要求，请重新选择！");
 			return;
@@ -4642,10 +4827,30 @@ void PrtFstDesignCmd::FstFreeStyleNutDlgNextStepPBCB(CATCommand* cmd, CATNotific
 		m_dWasherFstThickValueStart=0;
 		m_dWasherFstThickValueEnd=0;
 		//
+		/*
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+            CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+		}
 
 
 		// 主对话框的消息响应
@@ -4970,6 +5175,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 		double dCheck01=0,dCheck02=0;
 		dCheck01 = m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
 		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
+		//
 		if (/*dCheck02 >=-5 &&*/ dCheck02 <= 1 && dCheck01 >= 2)
 		{
 			//
@@ -5365,19 +5571,65 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgRemovePBCB(CATCommand* cmd, CATNotifi
 	//垫圈位置信息
 	if (m_lstStrWasherPos[m_IndexChoosedWasher] == "START")
 	{
+		/*
 		m_dWasherFstThickValueStart -= m_dChoosedWasherThick;
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		//
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			m_dWasherFstThickValueStart -= m_dChoosedWasherThick;
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			m_dWasherFstThickValueStart -= m_dChoosedWasherThick;
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+		}
+
 	}
 	else
 	{
+		/*
 		m_dWasherFstThickValueEnd -= m_dChoosedWasherThick;
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			m_dWasherFstThickValueEnd -= m_dChoosedWasherThick;
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			m_dWasherFstThickValueEnd -= m_dChoosedWasherThick;
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+		}
 	}
 	//
 	m_lstStrWasherPos.RemovePosition(m_IndexChoosedWasher);
@@ -5434,10 +5686,31 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgClearAllPBCB(CATCommand* cmd, CATNoti
 	m_dWasherFstThickValueStart = 0;
 	m_dWasherFstThickValueEnd = 0;
 	//
+	/*
 	CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 	m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 	strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 	m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+	*/
+	if (m_dJstThickMax == m_dJstThickMin)
+	{
+		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+		m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+		m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+	} 
+	else
+	{
+		CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+		CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+		CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+		m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+		strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+		strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+		CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+		m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+	}
+
 	//清除列表中的内容
 	//清除已有的指针信息
 	for (int k=1;k<=m_plstWasherFstChoosedTitles01.Size();k++)
@@ -5538,10 +5811,30 @@ CATBoolean PrtFstDesignCmd::OnWasherPushItemSelectCB(CATCommand* cmd, CATNotific
 		//垫圈位置信息
 		m_dWasherFstThickValueEnd += m_dSearchedWasherThick;
 		//
+		/*
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+		}
 	}
 	else
 	{
@@ -5551,10 +5844,30 @@ CATBoolean PrtFstDesignCmd::OnWasherPushItemSelectCB(CATCommand* cmd, CATNotific
 		//
 		m_dWasherFstThickValueStart += m_dSearchedWasherThick;
 		//
+		/*
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstFreeStyleWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+		}
 	}
 	//
 	m_lstStrWasherFstTypeFlag.Append(m_strWasherFstTypeFlag);
@@ -6345,7 +6658,11 @@ void PrtFstDesignCmd::FstKnowledgeBasedDlgNextStepPBCB(CATCommand* cmd, CATNotif
 		strValue03.BuildFromNum(m_dFirstPrdThickMax);
 		strValue03 += "mm";
 		m_pFstKnowledgeMainBoltDlg->_FirstLayerThicknessEditor->SetText(strValue03);
-
+		//
+		if (m_dJstThickMax != m_dJstThickMin)
+		{
+			PrtService::ShowDlgNotify("提示","当前零件存在夹持厚度不均匀分布的状态，安装规则过滤条件将全部失效，请选用后选择更新校验紧固件安装有效性！");
+		}
 		//
 		//设置前对话框隐藏
 		m_pFstKnowledgeBasedDlg->SetVisibility(CATDlgHide);
@@ -6607,7 +6924,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgGoToSearchPBCB(CATCommand* cmd
 	{
 		//夹持厚度过滤
 		CATUnicodeString strThick;
-		strThick.BuildFromNum(m_dJstThickMax*LOWERBOLTMIN,"%lf");
+		strThick.BuildFromNum(m_dJstThickMin*LOWERBOLTMIN,"%lf");
 		//
 		CATUnicodeString str03 = m_pFstKnowledgeBasedDlg->m_strNextStepWBSItem[3] + "=>" + strThick;
 		alsStrSearchItemsValue.Append(str03);
@@ -6727,10 +7044,31 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgGoToSearchPBCB(CATCommand* cmd
 
 				}
 				//
+				/*
 				double dLeft = dThickLimit-m_dJstThickMax;
 				CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
 				//
 				m_pFstKnowledgeMainBoltDlg->_SearchResultsML->SetColumnItem(14,strdLeft,i-1);
+				*/
+				if (m_dJstThickMax == m_dJstThickMin)
+				{
+					double dLeft = dThickLimit-m_dJstThickMax;
+					CATUnicodeString strdLeft;strdLeft.BuildFromNum(dLeft);
+					//
+					m_pFstKnowledgeMainBoltDlg->_SearchResultsML->SetColumnItem(14,strdLeft,i-1);
+				} 
+				else
+				{
+					double dLeft01 = dThickLimit-m_dJstThickMax;
+					double dLeft02 = dThickLimit-m_dJstThickMin;
+
+					CATUnicodeString strdLeft01;strdLeft01.BuildFromNum(dLeft01);
+					CATUnicodeString strdLeft02;strdLeft02.BuildFromNum(dLeft02);
+					CATUnicodeString strEnd = strdLeft01 + "~" + strdLeft02;
+
+					//
+					m_pFstKnowledgeMainBoltDlg->_SearchResultsML->SetColumnItem(14,strEnd,i-1);
+				}
 			}
 		}
 	}
@@ -7025,9 +7363,9 @@ void PrtFstDesignCmd::FstKnowledgeBasedMainBoltDlgSearchResultsMLCB(CATCommand* 
 		m_pFstKnowledgeMainBoltDlg->_SearchResultsML->GetSelect(ioTabRow,iSize);
 		//
 		//
-		CATUnicodeString strLeftValue;
+		/*CATUnicodeString strLeftValue;
 		m_pFstKnowledgeMainBoltDlg->_SearchResultsML->GetColumnItem(14,strLeftValue,ioTabRow[0]);
-		strLeftValue.ConvertToNum(&m_dLeftCheck,"%lf");
+		strLeftValue.ConvertToNum(&m_dLeftCheck,"%lf");*/
 
 		//获得该行的信息
 		GetChoosedMLValue(ioTabRow[0]+1,m_plstMainFstResults02,m_lstStrMainFstChoosed02);
@@ -7136,10 +7474,33 @@ void PrtFstDesignCmd::FstKnowledgeBasedNutDlgNextStepPBCB(CATCommand* cmd, CATNo
 		m_dWasherFstThickValueStart=0;
 		m_dWasherFstThickValueEnd=0;
 		//
+		/*
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			//
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			//
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+
+		}
 
 		//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -7858,19 +8219,65 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgRemovePBCB(CATCommand* cmd, CATN
 	//垫圈位置信息
 	if (m_lstStrWasherPos[m_IndexChoosedWasher] == "START")
 	{
+		/*
 		m_dWasherFstThickValueStart -= m_dChoosedWasherThick;
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			//
+			m_dWasherFstThickValueStart -= m_dChoosedWasherThick;
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			m_dWasherFstThickValueStart -= m_dChoosedWasherThick;
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+		}
 	}
 	else
 	{
+		/*
 		m_dWasherFstThickValueEnd -= m_dChoosedWasherThick;
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			//
+			m_dWasherFstThickValueEnd -= m_dChoosedWasherThick;
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			m_dWasherFstThickValueEnd -= m_dChoosedWasherThick;
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+		}
 	}
 	//
 	m_lstStrWasherPos.RemovePosition(m_IndexChoosedWasher);
@@ -7925,10 +8332,30 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgClearAllPBCB(CATCommand* cmd, CA
 	m_dWasherFstThickValueStart = 0;
 	m_dWasherFstThickValueEnd = 0;
 	//
+	/*
 	CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 	m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 	strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 	m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+	*/
+	if (m_dJstThickMax == m_dJstThickMin)
+	{
+		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+	} 
+	else
+	{
+		CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+		CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+		CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+		strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+		strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+		CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+	}
 	//清除列表中的内容
 	//清除已有的指针信息
 	for (int k=1;k<=m_plstWasherFstChoosedTitles01.Size();k++)
@@ -8011,10 +8438,30 @@ CATBoolean PrtFstDesignCmd::OnKnowledgeBasedWasherPushItemSelectCB(CATCommand* c
 		//垫圈位置信息
 		m_dWasherFstThickValueEnd += m_dSearchedWasherThick;
 		//
+		/*
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+		}
 	}
 	else
 	{
@@ -8024,10 +8471,31 @@ CATBoolean PrtFstDesignCmd::OnKnowledgeBasedWasherPushItemSelectCB(CATCommand* c
 		//
 		m_dWasherFstThickValueStart += m_dSearchedWasherThick;
 		//
+		/*
 		CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
 		m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
 		strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
 		m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		*/
+		if (m_dJstThickMax == m_dJstThickMin)
+		{
+			CATUnicodeString strTemp;strTemp.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTemp+"mm");
+			strTemp.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTemp+"mm");
+		} 
+		else
+		{
+			CATUnicodeString strTemp01;strTemp01.BuildFromNum(m_dMainFstLength-m_dJstThickMax-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTemp02;strTemp02.BuildFromNum(m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue);
+			CATUnicodeString strTempEnd01 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_EndLeftEditor->SetText(strTempEnd01);
+			strTemp01.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart);
+			strTemp02.BuildFromNum(m_dMainFstThickLimit-m_dJstThickMin-m_dWasherFstThickValueStart);
+			CATUnicodeString strTempEnd02 = strTemp01 + "~" + strTemp02 + "mm";
+			m_pFstKnowledgeWasherDlg->_ThickLeftEditor->SetText(strTempEnd02);
+		}
+
 	}
 	//
 	m_lstStrWasherFstTypeFlag.Append(m_strWasherFstTypeFlag);
