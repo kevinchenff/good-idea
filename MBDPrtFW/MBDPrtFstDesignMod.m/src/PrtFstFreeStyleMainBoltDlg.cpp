@@ -69,7 +69,7 @@ PrtFstFreeStyleMainBoltDlg::PrtFstFreeStyleMainBoltDlg() :
  m_lstStrPropertyName[7]=CATUnicodeString("头部厚度");
  m_lstStrPropertyName[8]=CATUnicodeString("边距"); 
  m_lstStrPropertyName[9]=CATUnicodeString("间距");
- m_lstStrPropertyName[10]=CATUnicodeString("**余量**");
+ m_lstStrPropertyName[10]=CATUnicodeString("*****余量*****");
  //
 
 }

@@ -72,7 +72,7 @@ PrtFstKnowledgeMainBoltDlg::PrtFstKnowledgeMainBoltDlg() :
  m_lstStrPropertyName[11]=CATUnicodeString("头部厚度");
  m_lstStrPropertyName[12]=CATUnicodeString("边距");
  m_lstStrPropertyName[13]=CATUnicodeString("间距");
- m_lstStrPropertyName[14]=CATUnicodeString("**余量**");
+ m_lstStrPropertyName[14]=CATUnicodeString("*****余量*****");
  //
 
 //END CAA2 WIZARD CONSTRUCTOR INITIALIZATION SECTION
