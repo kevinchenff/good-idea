@@ -3032,11 +3032,6 @@ void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotificati
 		strValue02 += "mm";
 		m_pFstFreeStyleMainBoltDlg->_MinLayerThicknessEditor->SetText(strValue02);
 		//
-		if (m_dJstThickMax != m_dJstThickMin)
-		{
-			PrtService::ShowDlgNotify("提示","当前零件存在夹持厚度不均匀分布的状态，安装规则过滤条件将全部失效，请选用后选择更新校验紧固件安装有效性！");
-		}
-		//
 		CATUnicodeString strValue03;
 		strValue03.BuildFromNum(m_dFirstPrdThickMax);
 		strValue03 += "mm";
@@ -3048,7 +3043,11 @@ void PrtFstDesignCmd::FstFreeStyleDlgNextStepPBCB(CATCommand* cmd, CATNotificati
 
 		//对按钮状态的控制
 		m_pFstFreeStyleMainBoltDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
-
+		//
+		if (m_dJstThickMax != m_dJstThickMin)
+		{
+			PrtService::ShowDlgNotify("提示","夹持厚度不均匀分布，过滤规则将失效，请结束选用后使用更新紧固件功能校验安装有效性！");
+		}
 		//设置铆钉计算规则按钮的显隐
 		CATUnicodeString strType01("");
 		int selectComboItem = m_pFstFreeStyleDlg->_Combo01->GetSelect();
@@ -6659,16 +6658,16 @@ void PrtFstDesignCmd::FstKnowledgeBasedDlgNextStepPBCB(CATCommand* cmd, CATNotif
 		strValue03 += "mm";
 		m_pFstKnowledgeMainBoltDlg->_FirstLayerThicknessEditor->SetText(strValue03);
 		//
-		if (m_dJstThickMax != m_dJstThickMin)
-		{
-			PrtService::ShowDlgNotify("提示","当前零件存在夹持厚度不均匀分布的状态，安装规则过滤条件将全部失效，请选用后选择更新校验紧固件安装有效性！");
-		}
-		//
 		//设置前对话框隐藏
 		m_pFstKnowledgeBasedDlg->SetVisibility(CATDlgHide);
 
 		//对按钮状态的控制
 		m_pFstKnowledgeMainBoltDlg->_NextStepPB->SetSensitivity(CATDlgDisable);
+		//
+		if (m_dJstThickMax != m_dJstThickMin)
+		{
+			PrtService::ShowDlgNotify("提示","夹持厚度不均匀分布，过滤规则将失效，请结束选用后使用更新紧固件功能校验安装有效性！");
+		}
 
 		//-----------------------------------------------------------------------------------------------
 		// [9/26/2012 wz4]
