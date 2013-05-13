@@ -5175,7 +5175,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 		dCheck01 = m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
 		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
 		//
-		if (/*dCheck02 >=-5 &&*/ dCheck02 <= 1 && dCheck01 >= 2)
+		if (/*dCheck02 >=-5 &&*/ /*dCheck02 <= 1 &&*/ dCheck01 >= 2)
 		{
 			//
 			m_pFstFreeStyleShelterDlg = new PrtFstFreeStyleShelterDlg();
@@ -5238,7 +5238,7 @@ void PrtFstDesignCmd::FstFreeStyleWasherDlgNextStepPBCB(CATCommand* cmd, CATNoti
 		double dCheck01=0,dCheck02=0;
 		dCheck01 = m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
 		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
-		if (/*dCheck02 >=-5 &&*/ dCheck02 <= 1 && dCheck01 >= 2)
+		if (/*dCheck02 >=-5 &&*/ /*dCheck02 <= 1 &&*/ dCheck01 >= 2)
 		{
 			//
 			//Çå¿Õ
@@ -7849,7 +7849,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgNextStepPBCB(CATCommand* cmd, CA
 		double dCheck01=0,dCheck02=0;
 		dCheck01 = m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
 		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
-		if (/*dCheck02 >=-5 &&*/ dCheck02 <= 1 && dCheck01 >= 2)
+		if (/*dCheck02 >=-5 &&*/ /*dCheck02 <= 1 &&*/ dCheck01 >= 2)
 		{
 			//
 			m_pFstKnowledgeShelterDlg = new PrtFstFreeStyleShelterDlg();
@@ -7912,7 +7912,7 @@ void PrtFstDesignCmd::FstKnowledgeBasedWasherDlgNextStepPBCB(CATCommand* cmd, CA
 		double dCheck01=0,dCheck02=0;
 		dCheck01 = m_dMainFstLength-m_dJstThickMin-m_dWasherFstThickValueStart-m_dWasherFstThickValueEnd-m_dNutFstThickValue;
 		dCheck02 = m_dMainFstThickLimit-m_dJstThickMax-m_dWasherFstThickValueStart;
-		if (/*dCheck02 >=-5 &&*/ dCheck02 <= 1 && dCheck01 >= 2)
+		if (/*dCheck02 >=-5 &&*/ /*dCheck02 <= 1 &&*/ dCheck01 >= 2)
 		{
 			//
 			//Çå¿Õ
