@@ -28,8 +28,8 @@
 #include "CATCreateExternalObject.h"
 CATCreateClass( PrtFstUpdateCmd);
 
-// 螺母尾端2mm余量 
-const double BOLTENDALLOWENCE = 2;
+// 螺母尾端0mm余量 
+const double BOLTENDALLOWENCE = 0;
 const double LOWERBOLTMINCHECK = 0.6;
 
 
@@ -360,6 +360,12 @@ void PrtFstUpdateCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			CATUnicodeString strExistName = PrtService::GetAlias(iolstspParmSet[m]);
 			CHandleString::StringToVector(strExistName,"|",lststrResult);
 			//
+			//增加自定义模式的不更新不删除
+			if (lststrResult.Size() > 2)
+			{
+				continue;
+			}
+			//
 			CATBoolean existFlag = FALSE;
 			//
 			for (int n=1; n<=alistStrFstName.Size(); n++)
@@ -581,7 +587,7 @@ HRESULT PrtFstUpdateCmd::CheckFstLineLengthInfo(CATListValCATISpecObject_var &al
 		{
 			CATUnicodeString strInfo(""),strTemp("");
 			strTemp.BuildFromNum(dLength - (dThick+dNutsThick),"%lf");
-			strInfo += CATUnicodeString("螺栓尾端凸出螺母的高度H不得小于2mm，当前尺寸值为：") + strTemp + CATUnicodeString("mm");
+			strInfo += CATUnicodeString("螺栓尾端凸出螺母的高度H不得小于0mm，当前尺寸值为：") + strTemp + CATUnicodeString("mm");
 
 			alstErrorInfoItems.Append(strInfo);
 		}
