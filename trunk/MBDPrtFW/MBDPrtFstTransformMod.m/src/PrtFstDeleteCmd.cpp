@@ -396,6 +396,12 @@ void PrtFstDeleteCmd::OkDlgCB(CATCommand* cmd, CATNotification* evt, CATCommandC
 			CATUnicodeString strExistName = PrtService::GetAlias(iolstspParmSet[m]);
 			CHandleString::StringToVector(strExistName,"|",lststrResult);
 			//
+			//增加自定义模式的不更新不删除
+			if (lststrResult.Size() > 2)
+			{
+				continue;
+			}
+			//
 			CATBoolean existFlag = FALSE;
 			//
 			for (int n=1; n<=alistStrFstName.Size(); n++)
